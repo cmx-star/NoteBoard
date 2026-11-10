@@ -118,11 +118,17 @@ function delimiterCell(align: CellAlign, dashCount: number): string {
   return dashes;
 }
 
+export interface RenderTableOptions {
+  /** 无表头选区写入剪贴板时只输出数据行，不补空表头与分隔行 */
+  rowsOnly?: boolean;
+}
+
 /** 按指定风格把表格节点序列化为 Markdown（首尾带换行，与官方实现一致，由调用方修剪） */
 export function renderTableMarkdown(
   node: JSONContent,
   h: MarkdownRendererHelpers,
   style: TableMarkdownStyle,
+  options: RenderTableOptions = {},
 ): string {
   const rows = renderCells(node, h);
   const columnCount = rows.reduce((max, row) => Math.max(max, row.length), 0);
@@ -140,14 +146,23 @@ export function renderTableMarkdown(
     Array.from({ length: columnCount }, (_, index) => row[index]?.text ?? ''),
   );
   const line = (cells: string[]) => `| ${cells.join(' | ')} |\n`;
+  const rowsOnly = options.rowsOnly === true && !hasHeader;
 
   if (style === 'compact' || style === 'compact-bare') {
+    if (rowsOnly) return `\n${bodyTexts.map(line).join('')}`;
     const delimiterCells = alignments.map((align) => delimiterCell(align, 3));
     const delimiterLine = style === 'compact-bare' ? `|${delimiterCells.join('|')}|\n` : line(delimiterCells);
     return `\n${line(headerTexts)}${delimiterLine}${bodyTexts.map(line).join('')}`;
   }
 
   const measure = style === 'aligned' ? displayWidth : (text: string) => text.length;
+  if (rowsOnly) {
+    const widths = Array.from({ length: columnCount }, (_, index) =>
+      Math.max(3, ...bodyTexts.map((row) => measure(row[index]))),
+    );
+    const pad = (text: string, index: number) => text + ' '.repeat(Math.max(0, widths[index] - measure(text)));
+    return `\n${bodyTexts.map((row) => line(row.map(pad))).join('')}`;
+  }
   // 列宽至少为 3，保证分隔行能写下 `---` / `:-:`
   const widths = Array.from({ length: columnCount }, (_, index) =>
     Math.max(3, measure(headerTexts[index]), ...bodyTexts.map((row) => measure(row[index]))),

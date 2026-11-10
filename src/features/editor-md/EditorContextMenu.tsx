@@ -7,6 +7,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import type { Editor } from '@tiptap/core';
 import { isInTable } from '@tiptap/pm/tables';
 import { applyTablePaste } from './tableClipboard';
+import { serializeSelectionPlainText } from './markdownClipboard';
 import { DEFAULT_DETAILS_SUMMARY, insertDetailsContent, requestDetailsSummaryFocus } from './detailsExtension';
 import { insertColumnsBlock } from './columnsExtension';
 import { insertCalloutBlock } from './calloutExtension';
@@ -132,6 +133,25 @@ const TEXT_FORMAT_ITEMS: Array<{
     run: (editor) => void editor.chain().focus().toggleStrike().run(),
   },
 ];
+
+/** 写入纯文本；剪贴板 API 不可用时退回临时 textarea，避免触发编辑器的 Markdown 复制处理器。 */
+async function copyPlainText(text: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  }
+}
 
 export function EditorContextMenu({
   editor,
@@ -308,6 +328,26 @@ export function EditorContextMenu({
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Copy size={15} color="var(--accent-500, #3b82f6)" />
                 <span>{formatShortcut('复制 (Ctrl+C)')}</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              style={btnStyle}
+              onClick={() => {
+                onClose();
+                const text = serializeSelectionPlainText(editor);
+                if (text) void copyPlainText(text);
+              }}
+              onMouseEnter={(e) => {
+                setActiveSubmenu(null);
+                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+              }}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <RemoveFormatting size={15} color="var(--accent-500, #3b82f6)" />
+                <span>复制为纯文本</span>
               </div>
             </button>
 

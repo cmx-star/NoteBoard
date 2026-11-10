@@ -95,6 +95,11 @@ export const MarkdownTable = Table.extend({
         default: null,
         rendered: false,
       },
+      // 剪贴板专用：无表头选区只序列化数据行，不写入文档内容
+      clipboardRowsOnly: {
+        default: null,
+        rendered: false,
+      },
     };
   },
   parseMarkdown(token, helpers) {
@@ -108,7 +113,9 @@ export const MarkdownTable = Table.extend({
   renderMarkdown(node, helpers, context) {
     // 新建的表格没有原文风格，默认按显示宽度对齐
     const style = (node.attrs?.markdownStyle as TableMarkdownStyle | null | undefined) ?? 'aligned';
-    const rendered = renderTableMarkdown(node, helpers, style);
+    const rendered = renderTableMarkdown(node, helpers, style, {
+      rowsOnly: node.attrs?.clipboardRowsOnly === true,
+    });
     const withoutTrailing = rendered.replace(/(?:\n[ \t]*)+$/, '');
     // 折叠块正文、分栏的单栏、高亮块正文与文档一样以空行分隔子块，首部换行同样会多出一个空行
     const isTopLevel =

@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="logo.png" alt="NoteBoard" width="120" />
+  <img src="logo.png" alt="Loomark" width="120" />
 
-  # NoteBoard
+  # Loomark
 
   **Windows / macOS / Linux / 安卓 / 网页 笔记 + 画板 + 多维表格 + 知识工作台**
 
@@ -12,7 +12,7 @@
 </div>
 
 <p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/CrazyFigure/NoteBoard@7a93c374fca401830bbc655dda050618fe78e6e2/assets/tour.mp4"><img src="assets/tour.webp" alt="NoteBoard 一分钟速览：Markdown 双模编辑、多维表格（表格 / 看板 / 甘特图）、思维导图、白板、图表与信息图、文本对比、Office / PDF / CAD / EPUB 插件、多端同步、三套主题与全平台支持" /></a>
+  <a href="https://cdn.jsdelivr.net/gh/CrazyFigure/NoteBoard@7a93c374fca401830bbc655dda050618fe78e6e2/assets/tour.mp4"><img src="assets/tour.webp" alt="Loomark 一分钟速览：Markdown 双模编辑、多维表格（表格 / 看板 / 甘特图）、思维导图、白板、图表与信息图、文本对比、Office / PDF / CAD / EPUB 插件、多端同步、三套主题与全平台支持" /></a>
   <br />
   ▶ <a href="https://cdn.jsdelivr.net/gh/CrazyFigure/NoteBoard@7a93c374fca401830bbc655dda050618fe78e6e2/assets/tour.mp4">观看高清完整版</a>
 </p>
@@ -21,22 +21,24 @@
 
 本地优先、文件优先：无强制工作区、无强制云同步，双击即开、即开即写，数据完全由你掌控。
 
+> Loomark 是 [NoteBoard](https://github.com/CrazyFigure/NoteBoard) 的开源分支，遵循 AGPL-3.0，保留上游版权与作者署名；与官方 NoteBoard 使用不同的应用标识，可以同时安装，数据和文件关联互不影响。
+
 ## 下载安装
 
 | 平台 | 安装包（[最新 Release](https://github.com/cmx-star/NoteBoard/releases/latest)） | 说明 |
 |---|---|---|
-| **Windows** | `NoteBoard_x.y.z_windows_x64-setup.exe` | Win10 1809+，需 WebView2（Win11 已内置） |
-| **Windows 免安装** | `NoteBoard_x.y.z_windows_x64_portable.exe` | 双击即用，不注册文件关联；数据独立保存在 EXE 同目录的 `data/NoteBoard/` |
-| **安卓** | `NoteBoard_x.y.z_android_arm64.apk` | arm64 设备 |
+| **Windows** | `Loomark_x.y.z_windows_x64-setup.exe` | Win10 1809+，需 WebView2（Win11 已内置） |
+| **Windows 免安装** | `Loomark_x.y.z_windows_x64_portable.exe` | 双击即用，不注册文件关联；数据独立保存在 EXE 同目录的 `data/Loomark/` |
+| **安卓** | `Loomark_x.y.z_android_arm64.apk` | arm64 设备 |
 | **macOS** | `.dmg` | Apple Silicon / Intel 分别提供；未经 Apple 公证 |
 | **Linux** | `.deb` / `.AppImage` | x86_64；AppImage 需 `chmod +x`，可能需安装 FUSE |
-| **网页** | Docker 镜像 `starcmx/noteboard`（手动构建） | 见下方 [网页部署](#网页部署) |
+| **网页** | Docker 镜像 `starcmx/loomark`（手动构建） | 见下方 [网页部署](#网页部署) |
 
 国内访问 GitHub 较慢时，可从腾讯云 CNB 镜像 [cnb.cool/starcmx/NoteBoard](https://cnb.cool/starcmx/NoteBoard/-/releases) 下载同名安装包；镜像由 GitHub 自动同步，只读，问题反馈与 PR 请提交到 GitHub。
 
-Windows 免安装版首次运行会自动创建 `data/NoteBoard/`，设置、会话、草稿、默认暂存、历史、同步配置、插件、字体和 WebView 数据均保存在其中；`data/` 中其他内容保持原样。同名 `NoteBoard/` 子目录若已有内容但没有应用归属标记，或目录不可写，会提示并停止，不会覆盖文件或回退到安装版目录。更新时替换 EXE，搬移时同时带上 `data/`；同目录的程序共用一份数据，不同目录的副本可以独立运行。
+Windows 免安装版首次运行会自动创建 `data/Loomark/`，设置、会话、草稿、默认暂存、历史、同步配置、插件、字体和 WebView 数据均保存在其中；`data/` 中其他内容保持原样。同名 `Loomark/` 子目录若已有内容但没有应用归属标记，或目录不可写，会提示并停止，不会覆盖文件或回退到安装版目录。更新时替换 EXE，搬移时同时带上 `data/`；同目录的程序共用一份数据，不同目录的副本可以独立运行。
 
-旧版本的 `%APPDATA%\NoteBoard` 和 `%LOCALAPPDATA%\com.crazyfigure.noteboard` 数据保持原样，不会自动导入。需要迁移时先运行新免安装版生成目录并完全退出所有 NoteBoard 实例，再按需把旧设置、会话等复制到 `data/NoteBoard/`，把旧插件和字体复制到其 `plugins/`、`font-packs/` 子目录，保留新生成的 `.noteboard-portable` 标记。迁移的暂存自选路径和文档绝对路径仍需按实际位置调整；Windows 加密的同步密码/令牌换电脑后需重新填写。Windows 安装版和开发版保留原目录；macOS、Linux、Android/iOS 继续使用平台应用数据/缓存目录，网页端继续使用服务器数据卷。
+原版 NoteBoard 的 `%APPDATA%\NoteBoard` 和 `%LOCALAPPDATA%\com.crazyfigure.noteboard` 数据不会自动导入。需要迁移时先运行 Loomark 生成目录并完全退出所有实例，再按需把旧设置、会话等复制到 `data/Loomark/`，把旧插件和字体复制到其 `plugins/`、`font-packs/` 子目录，保留新生成的 `.loomark-portable` 标记。迁移的暂存自选路径和文档绝对路径仍需按实际位置调整；Windows 加密的同步密码/令牌换电脑后需重新填写。Windows 安装版和开发版保留原目录；macOS、Linux、Android/iOS 继续使用平台应用数据/缓存目录，网页端继续使用服务器数据卷。
 
 ## 插件与字体
 
@@ -56,7 +58,7 @@ Windows 免安装版首次运行会自动创建 `data/NoteBoard/`，设置、会
 - **更新渠道**：「设置 → 关于」可选 GitHub（默认）或腾讯云 CNB，检测更新、安装包、插件和字体均从所选渠道下载；检测失败时弹窗可一键切换渠道重试。
 - **应用**：Windows 支持应用内更新，免安装版检查到新版本后跳转所选渠道的 Release 页面手动下载替换；安卓应用内检查后跳转下载 APK；macOS / Linux 手动下载或使用包管理器；网页执行 `docker compose pull && docker compose up -d`。
 - **插件独立更新**：升级应用不会更新插件，请到「设置 → 插件」检查更新。
-- **版本要求**：插件需 NoteBoard **0.5.8+**；EPUB 阅读等新插件需 **0.6.0+**，旧版本看不到。
+- **版本要求**：插件需 Loomark **0.5.8+**；EPUB 阅读等新插件需 **0.6.0+**，旧版本看不到。
 - **macOS 首次打开**被拦截时，到「系统设置 → 隐私与安全性」允许打开。
 - **WinGet** 新版本需等官方审核合并后才能升级，通常晚于 Release。
 - **Docker 升级 / 重建**时务必复用原数据挂载，不要删除数据卷。
@@ -72,7 +74,7 @@ docker compose up -d    # 访问 http://服务器IP:18427
 - **多用户**：设置管理员账号后启用登录页与多用户。管理员在「设置 → 用户管理」创建普通用户；每人的笔记、设置、草稿与历史彼此独立，可右键把文件或文件夹以「只读 / 可编辑」共享给指定用户。
 - 两项留空为公开模式：无需登录，所有访问者共用一份笔记。**网页同步仅管理员可用，需设置账号密码**。
 - 从旧版本升级无需改配置：原有笔记归管理员，登录方式由浏览器弹窗改为登录页。
-- 1Panel 用本机目录挂载时，**先执行 `sudo chown 1000:1000 /opt/noteboard/data`**，否则启动报 `EACCES`。
+- 1Panel 用本机目录挂载时，**先执行 `sudo chown 1000:1000 /opt/loomark/data`**，否则启动报 `EACCES`。
 
 1Panel 完整参数、反向代理与数据说明见 [docs/网页部署.md](docs/网页部署.md)。
 

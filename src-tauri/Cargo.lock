@@ -2497,6 +2497,58 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ceec5bc11778974d1bcb055b18002eba7f4b3518b6a0081b3af5f21666da9ad"
 
 [[package]]
+name = "loomark"
+version = "0.8.4"
+dependencies = [
+ "arboard",
+ "axum",
+ "base64 0.22.1",
+ "chardetng",
+ "chrono",
+ "crc32fast",
+ "crossbeam-channel",
+ "drag",
+ "dunce",
+ "encoding_rs",
+ "flate2",
+ "font-kit",
+ "gtk",
+ "hex",
+ "image",
+ "libc",
+ "log",
+ "memchr",
+ "notify",
+ "percent-encoding",
+ "reqwest 0.12.28",
+ "rustc-hash",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tao",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-fs",
+ "tauri-plugin-global-shortcut",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "tempfile",
+ "tokio",
+ "trash",
+ "url",
+ "uuid",
+ "webkit2gtk",
+ "webview2-com",
+ "windows 0.58.0",
+ "windows-core 0.61.2",
+ "winreg",
+ "zip",
+]
+
+[[package]]
 name = "lru-slab"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2633,58 +2685,6 @@ dependencies = [
  "cfg-if",
  "cfg_aliases",
  "libc",
-]
-
-[[package]]
-name = "noteboard"
-version = "0.8.3"
-dependencies = [
- "arboard",
- "axum",
- "base64 0.22.1",
- "chardetng",
- "chrono",
- "crc32fast",
- "crossbeam-channel",
- "drag",
- "dunce",
- "encoding_rs",
- "flate2",
- "font-kit",
- "gtk",
- "hex",
- "image",
- "libc",
- "log",
- "memchr",
- "notify",
- "percent-encoding",
- "reqwest 0.12.28",
- "rustc-hash",
- "serde",
- "serde_json",
- "sha2",
- "tao",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-fs",
- "tauri-plugin-global-shortcut",
- "tauri-plugin-opener",
- "tauri-plugin-os",
- "tauri-plugin-single-instance",
- "tauri-plugin-window-state",
- "tempfile",
- "tokio",
- "trash",
- "url",
- "uuid",
- "webkit2gtk",
- "webview2-com",
- "windows 0.58.0",
- "windows-core 0.61.2",
- "winreg",
- "zip",
 ]
 
 [[package]]

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "NoteBoard",
-  "version": "0.8.3",
-  "identifier": "com.crazyfigure.noteboard",
+  "productName": "Loomark",
+  "version": "0.8.4",
+  "identifier": "com.starcmx.loomark",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://127.0.0.1:1421",
@@ -14,7 +14,7 @@
     "windows": [
       {
         "label": "nb-main",
-        "title": "NoteBoard",
+        "title": "Loomark",
         "width": 1200,
         "height": 800,
         "minWidth": 680,
@@ -65,8 +65,8 @@
           "note",
           "goodnotes"
         ],
-        "name": "NoteBoard.DocumentPreview",
-        "description": "NoteBoard 只读文档预览",
+        "name": "Loomark.DocumentPreview",
+        "description": "Loomark 只读文档预览",
         "role": "Viewer",
         "rank": "Alternate"
       },
@@ -75,32 +75,32 @@
           "md",
           "markdown"
         ],
-        "name": "NoteBoard.Markdown",
-        "description": "NoteBoard Markdown 笔记",
+        "name": "Loomark.Markdown",
+        "description": "Loomark Markdown 笔记",
         "rank": "Alternate"
       },
       {
         "ext": [
           "txt"
         ],
-        "name": "NoteBoard.Text",
-        "description": "NoteBoard 文本文件",
+        "name": "Loomark.Text",
+        "description": "Loomark 文本文件",
         "rank": "Alternate"
       },
       {
         "ext": [
           "sql"
         ],
-        "name": "NoteBoard.Sql",
-        "description": "NoteBoard SQL 文件",
+        "name": "Loomark.Sql",
+        "description": "Loomark SQL 文件",
         "rank": "Alternate"
       },
       {
         "ext": [
           "json"
         ],
-        "name": "NoteBoard.Json",
-        "description": "NoteBoard JSON 文件",
+        "name": "Loomark.Json",
+        "description": "Loomark JSON 文件",
         "rank": "Alternate"
       },
       {
@@ -108,16 +108,16 @@
           "yaml",
           "yml"
         ],
-        "name": "NoteBoard.Yaml",
-        "description": "NoteBoard YAML 文件",
+        "name": "Loomark.Yaml",
+        "description": "Loomark YAML 文件",
         "rank": "Alternate"
       },
       {
         "ext": [
           "xml"
         ],
-        "name": "NoteBoard.Xml",
-        "description": "NoteBoard XML 文件",
+        "name": "Loomark.Xml",
+        "description": "Loomark XML 文件",
         "rank": "Alternate"
       },
       {
@@ -126,8 +126,8 @@
           "board",
           "canvas"
         ],
-        "name": "NoteBoard.Board",
-        "description": "NoteBoard 画板",
+        "name": "Loomark.Board",
+        "description": "Loomark 画板",
         "rank": "Alternate"
       },
       {
@@ -141,8 +141,8 @@
           "svg",
           "bmp"
         ],
-        "name": "NoteBoard.Image",
-        "description": "NoteBoard 图片",
+        "name": "Loomark.Image",
+        "description": "Loomark 图片",
         "rank": "Alternate"
       }
     ],

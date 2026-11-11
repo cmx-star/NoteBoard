@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 256 256">
+  <!-- Loomark 桌面 / 网页图标：延续原画板的青蓝紫渐变与折角，内部用经纬线织出字母 L。 -->
+  <defs>
+    <linearGradient id="frame" x1="34" y1="20" x2="212" y2="234" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#12c5d5"/>
+      <stop offset=".48" stop-color="#308cff"/>
+      <stop offset="1" stop-color="#8b35ff"/>
+    </linearGradient>
+    <linearGradient id="loom" x1="70" y1="64" x2="180" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#308cff"/>
+      <stop offset="1" stop-color="#853dff"/>
+    </linearGradient>
+  </defs>
+  <!-- 板身：外部透明，板面保持实色白底，深色桌面下仍能保住轮廓。 -->
+  <rect x="28" y="18" width="200" height="220" rx="44" fill="#fff" stroke="url(#frame)" stroke-width="12"/>
+  <!-- 经纬线交错：相邻交叉点交替断开，形成织物质感。 -->
+  <g fill="none" stroke="#c3ccdb" stroke-width="10" stroke-linecap="round">
+    <path d="M92 62v118"/>
+    <path d="M128 62v36M128 112v24M128 152v28"/>
+    <path d="M164 62v118"/>
+    <path d="M58 92h56M128 92h44"/>
+    <path d="M58 128h20M92 128h56M162 128h10"/>
+    <path d="M58 164h56M128 164h44"/>
+  </g>
+  <!-- 折角保留页面翻折的语义，贴合板内沿，放在右上角避开 L 的起笔。 -->
+  <path d="M222 74V49q0-25-25-25h-25Z" fill="#1dc2d6"/>
+  <!-- 主字形：一竖一横构成 L，末端圆点作为 mark。 -->
+  <path d="M76 66v130h100" fill="none" stroke="url(#loom)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="198" cy="196" r="9" fill="url(#loom)" stroke="#fff" stroke-width="4"/>
+</svg>

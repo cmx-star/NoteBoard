@@ -1,4 +1,4 @@
-// NoteBoard 设置中心模态弹窗
+// Loomark 设置中心模态弹窗
 // 外观主题切换（素白/纸感/墨黑/雾面/跟随系统） + 排版设置（字体/字号/行高/内容宽度） + 快捷键与关于
 // 详见 docs/06-主题与设计规范.md 及 docs/07-UI布局与交互规范.md
 
@@ -217,8 +217,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
-            <img src="/logo.ico" alt="NoteBoard" width={18} height={18} />
-            <span style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-14)' }}>NoteBoard 设置</span>
+            <img src="/logo.ico" alt="Loomark" width={18} height={18} />
+            <span style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-14)' }}>Loomark 设置</span>
           </div>
           <Tooltip content="关闭设置" shortcut="Esc" side="bottom" sideOffset={4}>
             <button
@@ -501,7 +501,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
-                        <span style={{ fontWeight: 'var(--weight-600)' }}>NoteBoard 界面</span>
+                        <span style={{ fontWeight: 'var(--weight-600)' }}>Loomark 界面</span>
                         <span style={{ fontSize: 'var(--em-0-88)', color: 'var(--editor-text-muted)' }}>提示信息：文档已就绪 (File Ready)</span>
                       </div>
                       <div style={{ display: 'flex', gap: 'var(--dim-6)' }}>
@@ -690,7 +690,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                           fontFamily: 'var(--mono-font-family)',
                           fontSize: 'var(--em-0-88)',
                           border: 'var(--dim-1) solid var(--editor-border)',
-                        }}>const note = "NoteBoard 2026";</code> 行内代码。
+                        }}>const note = "Loomark 2026";</code> 行内代码。
                       </p>
                       {/* 第二段：体现段落间距设置 */}
                       <p style={{ margin: `${settings.typography.contentParagraphSpacing ?? 14}px 0 0` }}>
@@ -1789,9 +1789,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             {/* 4. 关于 */}
             {activeTab === 'about' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 'var(--dim-18)', padding: 'var(--dim-24) 0' }}>
-                <img src="/logo.ico" alt="NoteBoard Logo" width={56} height={56} />
+                <img src="/logo.ico" alt="Loomark Logo" width={56} height={56} />
                 <div>
-                  <h2 style={{ fontSize: 'var(--text-18)', fontWeight: 'var(--weight-600)', margin: 'var(--dim-4) 0' }}>NoteBoard</h2>
+                  <h2 style={{ fontSize: 'var(--text-18)', fontWeight: 'var(--weight-600)', margin: 'var(--dim-4) 0' }}>Loomark</h2>
                   <span style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)' }}>Windows 优雅桌面笔记 + 自由画板</span>
                 </div>
                 <p style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-secondary)', maxWidth: 'var(--dim-420)', lineHeight: 'var(--leading-1-6)', margin: 'var(--dim-4) 0' }}>
@@ -1986,7 +1986,7 @@ function AppearancePreview() {
     <div className="nb-preview" aria-hidden="true">
       <div className="nb-preview-titlebar">
         <span className="nb-preview-dots"><i /><i /><i /></span>
-        <span className="nb-preview-title">NoteBoard</span>
+        <span className="nb-preview-title">Loomark</span>
       </div>
       <div className="nb-preview-body">
         <div className="nb-preview-sidebar">

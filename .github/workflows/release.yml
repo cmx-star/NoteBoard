@@ -130,7 +130,7 @@ jobs:
           if ($LASTEXITCODE -eq 0) { exit 0 }
           $notes = Join-Path $env:RUNNER_TEMP 'release-notes.md'
           $env:RELEASE_BODY | Set-Content -Encoding utf8 $notes
-          $createArgs = @('release', 'create', $env:GITHUB_REF_NAME, '--verify-tag', '--title', "NoteBoard $env:GITHUB_REF_NAME", '--notes-file', $notes)
+          $createArgs = @('release', 'create', $env:GITHUB_REF_NAME, '--verify-tag', '--title', "Loomark $env:GITHUB_REF_NAME", '--notes-file', $notes)
           if ($env:GITHUB_REF_NAME -like '*-*') { $createArgs += '--prerelease' }
           gh @createArgs
           if ($LASTEXITCODE -ne 0) { throw '创建 Release 失败' }
@@ -142,23 +142,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: NoteBoard ${{ github.ref_name }}
+          releaseName: Loomark ${{ github.ref_name }}
           releaseBody: ${{ steps.release_notes.outputs.body }}
           releaseDraft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
           # 规范产物文件命名
-          assetNamePattern: NoteBoard_[version]_[platform]_[arch][setup][ext]
+          assetNamePattern: Loomark_[version]_[platform]_[arch][setup][ext]
 
-      # 免安装版复用同一 EXE；程序按旁边是否存在 NSIS uninstall.exe 区分，数据独立写入 EXE 同目录 data/NoteBoard。
+      # 免安装版复用同一 EXE；程序按旁边是否存在 NSIS uninstall.exe 区分，数据独立写入 EXE 同目录 data/Loomark。
       - name: Collect portable EXE
         id: portable
         shell: pwsh
         run: |
           $version = (Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
-          $source = 'src-tauri/target/release/noteboard.exe'
+          $source = 'src-tauri/target/release/loomark.exe'
           if (-not (Test-Path $source)) { throw "未找到主程序：$source" }
           # 文件名带 portable 且不含 setup，应用内更新据此只挑选安装包
-          $target = "NoteBoard_${version}_windows_x64_portable.exe"
+          $target = "Loomark_${version}_windows_x64_portable.exe"
           Copy-Item $source $target
           "path=$target" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
@@ -318,7 +318,7 @@ jobs:
             find src-tauri/gen/android/app/build/outputs -type f >&2 || true
             exit 1
           fi
-          TARGET="NoteBoard_${VERSION}_android_arm64.apk"
+          TARGET="Loomark_${VERSION}_android_arm64.apk"
           cp "${SOURCE}" "${TARGET}"
           echo "path=${TARGET}" >> "$GITHUB_OUTPUT"
 

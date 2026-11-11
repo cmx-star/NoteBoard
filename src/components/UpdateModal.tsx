@@ -1,4 +1,4 @@
-// NoteBoard 自动更新模态弹窗组件
+// Loomark 自动更新模态弹窗组件
 // 支持新版本展示、分版本可折叠的 Release Notes、下载进度条、代理与错误提示及一键安装
 // 桌面端为居中弹窗，移动端为底部面板（Android 应用内下载 APK 后调起系统安装器）
 
@@ -250,7 +250,7 @@ export function UpdateModal({
               {checking
                 ? '检查更新'
                 : showDetail
-                ? '发现新版本 NoteBoard'
+                ? '发现新版本 Loomark'
                 : '软件更新'}
             </span>
           </div>
@@ -377,7 +377,7 @@ export function UpdateModal({
               <CheckCircle2 size={36} color="var(--nb-emerald-500)" />
               <div style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-15)' }}>已是最新版本</div>
               <div style={{ fontSize: 'var(--text-13)', color: 'var(--editor-text-secondary)' }}>
-                NoteBoard 当前版本 (v{result.currentVersion}) 已经是最新版本，无需更新。
+                Loomark 当前版本 (v{result.currentVersion}) 已经是最新版本，无需更新。
               </div>
             </div>
           )}

@@ -63,7 +63,7 @@ pub fn plugin<R: tauri::Runtime>() -> tauri::plugin::TauriPlugin<R> {
     use tauri::Manager;
     tauri::plugin::Builder::new("nb-mobile")
         .setup(|app, api| {
-            let handle = api.register_android_plugin("com.crazyfigure.noteboard", "NbMobilePlugin")?;
+            let handle = api.register_android_plugin("com.starcmx.loomark", "NbMobilePlugin")?;
             app.manage(NbMobile(handle));
             Ok(())
         })

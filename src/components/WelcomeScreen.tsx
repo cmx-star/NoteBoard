@@ -1,4 +1,4 @@
-// NoteBoard WelcomeScreen
+// Loomark WelcomeScreen
 // 无 tab 时的欢迎页：直接展示的新建格式卡片 + 更多格式展开（布局由设置「全局 → 新建入口」配置）
 // 详见 docs/07-UI布局与交互规范.md §11
 
@@ -216,7 +216,7 @@ export function WelcomeScreen({
       >
         <img
           src="/logo.ico"
-          alt="NoteBoard"
+          alt="Loomark"
           width={compact ? 44 : 64}
           height={compact ? 44 : 64}
           style={{ filter: 'drop-shadow(0 var(--dim-4) var(--dim-12) var(--nb-black-a12))' }}
@@ -230,7 +230,7 @@ export function WelcomeScreen({
             letterSpacing: '-var(--em-0-02)',
           }}
         >
-          NoteBoard
+          Loomark
         </h1>
       </div>
 

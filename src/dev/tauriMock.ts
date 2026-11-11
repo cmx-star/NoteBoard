@@ -12,7 +12,7 @@ interface MockFile {
   mtime: number;
 }
 
-const WORKSPACE = '/data/user/0/com.crazyfigure.noteboard/workspace';
+const WORKSPACE = '/data/user/0/com.starcmx.loomark/workspace';
 const STAGING_DIR = `${WORKSPACE}/../staging`;
 
 /** 模拟暂存路径：同一文档在本次会话内复用同一路径，与 Rust 端行为一致。 */

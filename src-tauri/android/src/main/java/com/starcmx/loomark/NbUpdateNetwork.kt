@@ -1,6 +1,6 @@
 // NoteBoard Android 更新直连：绑定已有非 VPN 网络，同时忽略该网络的 HTTP 代理。
 // 是否允许绕过 VPN 由系统与 VPN 服务决定；禁止修改全进程路由或自行启动蜂窝数据。
-package com.crazyfigure.noteboard
+package com.starcmx.loomark
 
 import android.content.Context
 import android.net.ConnectivityManager

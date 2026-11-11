@@ -184,7 +184,7 @@ export default function App() {
     // 普通链接继续禁止原生导航；导出下载按浏览器或原生文件系统分别处理。
     const stopAnchorNavigationGuard = installAnchorNavigationGuard();
 
-    // 从其他软件或任务切回 NoteBoard 时检查活动文件是否在运行期间被删除，
+    // 从其他软件或任务切回 Loomark 时检查活动文件是否在运行期间被删除，
     // 并重新消费打开队列（窗口重新获得焦点时的恢复机制）。
     const handleWindowFocus = () => {
       // 🔴 N07：事件唤醒受业务就绪门槛——设置加载完成前仅记录待处理
@@ -361,7 +361,7 @@ export default function App() {
           fontFamily: 'var(--content-font-family)',
         }}
       >
-        <span style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)' }}>NoteBoard 加载中</span>
+        <span style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)' }}>Loomark 加载中</span>
       </div>
     );
   }

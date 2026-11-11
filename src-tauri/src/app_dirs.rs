@@ -1,5 +1,5 @@
-// NoteBoard 应用目录统一入口
-// Windows 安装版使用 APPDATA/NoteBoard，开发版使用其 dev 子目录，免安装发布版使用 EXE 同目录的 data/NoteBoard。
+// Loomark 应用目录统一入口
+// Windows 安装版使用 APPDATA/Loomark，开发版使用其 dev 子目录，免安装发布版使用 EXE 同目录的 data/Loomark。
 // macOS / Linux 与移动端在 setup 中使用 Tauri 平台目录，不能套用 Windows 的免安装判定。
 
 use std::path::{Path, PathBuf};
@@ -19,7 +19,7 @@ fn windows_portable_root(exe: &Path, development: bool) -> Option<PathBuf> {
         return None;
     }
     // data 可能属于其他程序，应用文件仅写入自己的专用子目录。
-    Some(directory.join("data").join("NoteBoard"))
+    Some(directory.join("data").join("Loomark"))
 }
 
 /// 返回当前免安装版的数据根目录；其他平台、安装版及开发版均返回 None。
@@ -88,12 +88,12 @@ fn prepare_portable_root(root: &Path) -> std::io::Result<()> {
     use std::io::ErrorKind;
     std::fs::create_dir_all(root)?;
     // 首次运行只接管空的专用目录；已有同名目录且无法确认归属时停止，不读取或覆盖其中的配置。
-    let marker = root.join(".noteboard-portable");
+    let marker = root.join(".loomark-portable");
     if !marker.is_file() && std::fs::read_dir(root)?.next().is_some() && !marker.is_file() {
         return Err(std::io::Error::new(
             ErrorKind::AlreadyExists,
             format!(
-                "{} 已有其他内容且缺少 NoteBoard 标记，请先移动该子目录或换一个程序位置",
+                "{} 已有其他内容且缺少 Loomark 标记，请先移动该子目录或换一个程序位置",
                 root.display()
             ),
         ));
@@ -143,7 +143,7 @@ pub fn app_data_dir() -> PathBuf {
         .or_else(|_| std::env::var("HOME"))
         .unwrap_or_else(|_| ".".to_string());
     profile_data_root(
-        PathBuf::from(base).join("NoteBoard"),
+        PathBuf::from(base).join("Loomark"),
         cfg!(all(windows, desktop, debug_assertions)),
     )
 }
@@ -173,7 +173,7 @@ mod tests {
     /// 开发配置只增加 dev 层级，发布配置与带空格、中文的正式目录均按原路径解析。
     #[test]
     fn development_profile_uses_a_dedicated_subdirectory() {
-        let installed = PathBuf::from("用户配置/NoteBoard data");
+        let installed = PathBuf::from("用户配置/Loomark data");
         assert_eq!(
             profile_data_root(installed.clone(), true),
             installed.join("dev")
@@ -188,7 +188,7 @@ mod tests {
         const TEST_ROOT: &str = "NOTEBOARD_DEVELOPMENT_TEST_ROOT";
         let Ok(root) = std::env::var(TEST_ROOT) else {
             let directory = tempfile::tempdir().unwrap();
-            let installed = directory.path().join("roaming/NoteBoard");
+            let installed = directory.path().join("roaming/Loomark");
             std::fs::create_dir_all(&installed).unwrap();
             // 正式配置和旧开发会话作为哨兵，开发初始化后逐字核对其内容。
             let settings = br#"{"revision":99}"#;
@@ -278,19 +278,19 @@ mod tests {
     #[test]
     fn portable_release_uses_executable_directory_even_after_rename() {
         let directory = tempfile::tempdir().unwrap();
-        for name in ["NoteBoard_0.6.7_windows_x64_portable.exe", "笔记.exe"] {
+        for name in ["Loomark_0.6.7_windows_x64_portable.exe", "笔记.exe"] {
             assert_eq!(
                 windows_portable_root(&directory.path().join(name), false),
-                Some(directory.path().join("data/NoteBoard"))
+                Some(directory.path().join("data/Loomark"))
             );
         }
         assert_eq!(
-            windows_portable_root(&directory.path().join("noteboard.exe"), true),
+            windows_portable_root(&directory.path().join("loomark.exe"), true),
             None
         );
         std::fs::write(directory.path().join("uninstall.exe"), b"installer").unwrap();
         assert_eq!(
-            windows_portable_root(&directory.path().join("NoteBoard.exe"), false),
+            windows_portable_root(&directory.path().join("Loomark.exe"), false),
             None
         );
     }
@@ -302,7 +302,7 @@ mod tests {
         let data = directory.path().join("data");
         std::fs::create_dir(&data).unwrap();
         std::fs::write(data.join("settings.json"), b"other app").unwrap();
-        let root = data.join("NoteBoard");
+        let root = data.join("Loomark");
         prepare_portable_root(&root).unwrap();
         std::fs::write(root.join("settings.json"), b"existing").unwrap();
         prepare_portable_root(&root).unwrap();
@@ -330,7 +330,7 @@ mod tests {
         std::fs::write(&settings, b"unrelated settings").unwrap();
         assert!(prepare_portable_root(directory.path()).is_err());
         assert_eq!(std::fs::read(settings).unwrap(), b"unrelated settings");
-        assert!(!directory.path().join(".noteboard-portable").exists());
+        assert!(!directory.path().join(".loomark-portable").exists());
         assert!(!directory.path().join("cache").exists());
     }
 
@@ -352,7 +352,7 @@ mod tests {
     #[test]
     fn concurrent_first_start_can_share_the_same_owned_directory() {
         let directory = tempfile::tempdir().unwrap();
-        let root = directory.path().join("data/NoteBoard");
+        let root = directory.path().join("data/Loomark");
         let barrier = std::sync::Barrier::new(8);
         std::thread::scope(|scope| {
             for _ in 0..8 {
@@ -374,12 +374,12 @@ mod tests {
         let Ok(root) = std::env::var(TEST_ROOT) else {
             let directory = tempfile::tempdir().unwrap();
             // 用隔离的安装版配置哨兵验证免安装版既不继承旧设置，也不改写旧数据。
-            let installed = directory.path().join("installed/NoteBoard");
+            let installed = directory.path().join("installed/Loomark");
             std::fs::create_dir_all(&installed).unwrap();
             std::fs::write(installed.join("settings.json"), br#"{"revision":99}"#).unwrap();
             let output = std::process::Command::new(std::env::current_exe().unwrap())
                 .args(["--exact", "app_dirs::tests::portable_profile_keeps_persistent_data_and_resources_together"])
-                .env(TEST_ROOT, directory.path().join("data/NoteBoard"))
+                .env(TEST_ROOT, directory.path().join("data/Loomark"))
                 .env("APPDATA", directory.path().join("installed"))
                 .env("LOCALAPPDATA", directory.path().join("installed-local"))
                 .output().unwrap();
@@ -449,8 +449,8 @@ mod tests {
         let first = windows_portable_root(&directory.path().join("first/v1.exe"), false).unwrap();
         let renamed = windows_portable_root(&directory.path().join("first/v2.exe"), false).unwrap();
         let second =
-            windows_portable_root(&directory.path().join("second/NoteBoard.exe"), false).unwrap();
-        let identifier = "com.crazyfigure.noteboard";
+            windows_portable_root(&directory.path().join("second/Loomark.exe"), false).unwrap();
+        let identifier = "com.starcmx.loomark";
         assert_eq!(
             portable_identifier(identifier, &first),
             portable_identifier(identifier, &renamed)
@@ -467,8 +467,8 @@ mod tests {
     #[test]
     fn portable_instance_identity_ignores_windows_path_case() {
         assert_eq!(
-            portable_identifier("noteboard", Path::new("C:\\便携\\data")),
-            portable_identifier("noteboard", Path::new("c:\\便携\\DATA")),
+            portable_identifier("loomark", Path::new("C:\\便携\\data")),
+            portable_identifier("loomark", Path::new("c:\\便携\\DATA")),
         );
     }
 

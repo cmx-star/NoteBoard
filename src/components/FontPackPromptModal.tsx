@@ -52,9 +52,9 @@ export function FontPackPromptModal({
           <h3 id="nb-font-pack-prompt-title">增强字体包未安装</h3>
           <p>
             下载 JetBrains Mono 与 Maple Mono 字体包（约 {formatBytes(status?.downloadSizeBytes)}）。
-            字体仅供 NoteBoard 使用，不会安装到 Windows；下载一次，后续版本更新可继续复用。
+            字体仅供 Loomark 使用，不会安装到 Windows；下载一次，后续版本更新可继续复用。
           </p>
-          <p className="nb-font-pack-muted">下载来自 NoteBoard 官方 GitHub Release，只有校验完整后才会启用。</p>
+          <p className="nb-font-pack-muted">下载来自 Loomark 官方 GitHub Release，只有校验完整后才会启用。</p>
         </div>
 
         {error ? <p className="nb-font-pack-error" role="alert">{error}</p> : null}

@@ -1,13 +1,13 @@
 [package]
-name = "noteboard"
-version = "0.8.3"
-description = "Windows 桌面笔记 + 画板软件"
+name = "loomark"
+version = "0.8.4"
+description = "Loomark 桌面笔记 + 画板软件（基于 NoteBoard 的开源分支）"
 authors = ["CrazyFigure"]
 license = "AGPL-3.0-only"
 edition = "2021"
 
 [lib]
-name = "noteboard_lib"
+name = "loomark_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

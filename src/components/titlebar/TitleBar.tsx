@@ -1,4 +1,4 @@
-// NoteBoard TitleBar
+// Loomark TitleBar
 // 自绘标题栏：应用图标 + tab 栏 + 拖拽区 + 窗口控制 + 设置入口
 // 详见 docs/07-UI布局与交互规范.md §2
 
@@ -212,7 +212,7 @@ export function TitleBar() {
           >
             <img
               src="/logo.ico"
-              alt="NoteBoard"
+              alt="Loomark"
               width={16}
               height={16}
               style={{ pointerEvents: 'none' }}
@@ -232,7 +232,7 @@ export function TitleBar() {
         <TitleBarDragRegion minWidth={compactMode ? 24 : 0} />
 
         {/* 检测更新按钮（主动检测更新，有新版本时标上小红点） */}
-        {!IS_WEB && !compactMode && titleBarButtons.checkUpdate && <Tooltip content={hasUpdate ? '发现新版本 NoteBoard (点击查看)' : '检测更新'} side="bottom" sideOffset={6}>
+        {!IS_WEB && !compactMode && titleBarButtons.checkUpdate && <Tooltip content={hasUpdate ? '发现新版本 Loomark (点击查看)' : '检测更新'} side="bottom" sideOffset={6}>
           <button
             type="button"
             onClick={() => checkForUpdates(false)}

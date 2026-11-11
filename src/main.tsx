@@ -72,7 +72,7 @@ if (IS_WEB) {
   // 网页先读取部署能力、订阅同步事件；连接失败给出可重试反馈，不能静默白屏。
   void import('./web/runtime').then(async (module) => { await module.initializeWebRuntime(); renderApp(); }).catch((error) => {
     const root = document.getElementById('root')!;
-    root.textContent = `连接 NoteBoard 服务失败：${String(error)}。请刷新页面重试。`;
+    root.textContent = `连接 Loomark 服务失败：${String(error)}。请刷新页面重试。`;
   });
 } else if (typeof __NB_DEV_MOCK__ !== 'undefined' && __NB_DEV_MOCK__ && new URLSearchParams(window.location.search).get('mock') === '1') {
   void import('./dev/tauriMock').then((module) => {

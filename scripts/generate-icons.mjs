@@ -15,7 +15,7 @@ try {
   // 使用项目锁定的 Tauri SVG 渲染器，不依赖额外的系统图像工具。
   const result = spawnSync(process.execPath, [
     join(repoRoot, 'node_modules', '@tauri-apps', 'cli', 'tauri.js'),
-    'icon', join(iconRoot, 'icon-source.svg'), '--output', temporaryRoot,
+    'icon', join(iconRoot, 'icon-loomark.svg'), '--output', temporaryRoot,
     ...[...icoSizes, 512].flatMap((size) => ['--png', String(size)]),
   ], { cwd: repoRoot, stdio: 'inherit' });
   if (result.error) throw result.error;

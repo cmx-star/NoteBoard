@@ -1,4 +1,4 @@
-// NoteBoard StatusBar
+// Loomark StatusBar
 // 底部状态栏：光标位置、字数/行数、编码、行尾符、类型、保存状态
 // 详见 docs/07-UI布局与交互规范.md §8
 
@@ -37,7 +37,7 @@ export function StatusBar() {
           flexShrink: 0,
         }}
       >
-        <span style={{ color: 'var(--statusbar-text)' }}>NoteBoard</span>
+        <span style={{ color: 'var(--statusbar-text)' }}>Loomark</span>
       </div>
     );
   }

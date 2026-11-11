@@ -247,7 +247,7 @@ function FilesSection({ onEntryMenu }: { onEntryMenu: (node: FileTreeNode) => vo
     if (!platform.allFilesAccess) {
       try {
         await ipc.requestAllFilesAccess();
-        showToast('请在系统设置中允许 NoteBoard 访问所有文件，返回后自动刷新', 'info', 5000);
+        showToast('请在系统设置中允许 Loomark 访问所有文件，返回后自动刷新', 'info', 5000);
       } catch (error) {
         showToast(String(error), 'error');
       }
@@ -612,7 +612,7 @@ export function MobileHome() {
         title={
           <span className="nb-m-brand">
             <img src="/logo.png" alt="" width={22} height={22} />
-            NoteBoard
+            Loomark
           </span>
         }
         actions={<IconButton icon={<Settings size={20} />} label="设置" onClick={() => setSettingsOpen(true)} />}

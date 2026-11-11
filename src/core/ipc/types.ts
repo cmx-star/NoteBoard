@@ -298,6 +298,8 @@ export interface Settings {
   system: SystemSettings;
   /** 本地文件搜索（旧设置文件与网页端可能缺失） */
   localSearch?: LocalSearchSettings;
+  /** MCP 文档编辑服务（仅桌面端；旧设置文件可能缺失） */
+  mcp?: McpSettings;
 }
 
 export interface AppearanceSettings {
@@ -512,6 +514,36 @@ export interface LocalSearchSettings {
   enabled: boolean;
   /** 索引位置：文件夹或整个磁盘的绝对路径（有序） */
   roots: string[];
+}
+
+/** MCP 文档编辑服务：默认关闭，只监听本机回环地址 */
+export interface McpSettings {
+  enabled: boolean;
+  port: number;
+  token: string;
+}
+
+/** MCP 服务运行状态（设置页提示端口占用等错误） */
+export interface McpStatus {
+  running: boolean;
+  port: number;
+  error: string | null;
+}
+
+/** 前端回包负载：data 与 error 二选一 */
+export interface McpBridgeResponse {
+  requestId: string;
+  ok: boolean;
+  data?: unknown;
+  error?: { code: string; message: string } | null;
+}
+
+/** Rust → 前端的一次 MCP 工具调用 */
+export interface McpBridgeRequest {
+  requestId: string;
+  tool: string;
+  arguments: Record<string, unknown>;
+  windowLabel: string;
 }
 
 /** 高亮片段：命中部分 hit 为 true */

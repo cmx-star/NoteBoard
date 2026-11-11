@@ -19,6 +19,19 @@ pub fn save_settings(
     settings: Settings,
 ) -> Result<u64, String> {
     let mut s = settings;
+
+    // MCP：开启时必须持有令牌；端口 0 会让系统随机分配，无法在设置中稳定展示。
+    #[cfg(desktop)]
+    {
+        if s.mcp.port == 0 {
+            s.mcp.port = 39731;
+        }
+        if s.mcp.enabled && s.mcp.token.trim().is_empty() {
+            s.mcp.token = uuid::Uuid::new_v4().to_string();
+        }
+        s.mcp.token = s.mcp.token.trim().to_string();
+    }
+
     let revision = model::save(&mut s)?;
 
     // 更新 AppState revision
@@ -34,6 +47,10 @@ pub fn save_settings(
     // 本地文件搜索的开关与索引位置即时生效（索引在后台线程调整，不阻塞保存）
     #[cfg(desktop)]
     crate::local_search::apply_settings(&app, &s.local_search);
+
+    // MCP 服务随设置即时启停（端口或令牌变化时重启）
+    #[cfg(desktop)]
+    crate::mcp::apply_settings(&app, &s.mcp);
 
     // 🔴 emit 在 v2 里是广播 —— 这里是故意的（FR-1004 所有窗口同步）
     // 不需要 emit_to(label, ...)

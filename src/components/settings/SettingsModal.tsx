@@ -42,6 +42,8 @@ import { supportsCompactMode } from '../../features/window/compactMode';
 // 本地文件搜索设置（仅桌面端展示）
 import { LocalSearchSettingsCard, WebSearchSettingsCard } from '../../features/localSearch/LocalSearchSettings';
 import { SUPPORTS_LOCAL_SEARCH } from '../../features/localSearch/localSearchStore';
+// MCP 文档编辑服务（仅桌面端展示）
+import { McpSettingsCard } from '../../features/mcp/McpSettingsCard';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -1502,6 +1504,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
                 {/* 本地文件搜索：开关与索引位置（文件夹 / 整个磁盘，可添加多个）；网页端为管理员开关的全局搜索 */}
                 {SUPPORTS_LOCAL_SEARCH && !IS_MOBILE_UI && (IS_WEB ? <WebSearchSettingsCard /> : <LocalSearchSettingsCard />)}
+
+                {/* MCP 文档编辑：本机 AI 客户端读写当前文档（仅桌面端） */}
+                {!IS_WEB && !IS_MOBILE_UI && <McpSettingsCard />}
 
                 {/* 新建入口：主页与「+」菜单中哪些格式直接展示、哪些收进更多 */}
                 <div style={{ padding: '18px 20px', background: 'var(--editor-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--editor-border)' }}>

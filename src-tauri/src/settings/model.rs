@@ -38,6 +38,9 @@ pub struct Settings {
     // 本地文件搜索：开关与索引位置（仅桌面端生效）
     #[serde(default)]
     pub local_search: LocalSearchSettings,
+    // MCP 文档编辑服务（仅桌面端生效，默认关闭）
+    #[serde(default)]
+    pub mcp: McpSettings,
 }
 
 impl Default for Settings {
@@ -52,6 +55,36 @@ impl Default for Settings {
             layout: LayoutSettings::default(),
             system: SystemSettings::default(),
             local_search: LocalSearchSettings::default(),
+            mcp: McpSettings::default(),
+        }
+    }
+}
+
+/// MCP 文档编辑服务设置
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct McpSettings {
+    // 总开关（默认关闭；开启后仅监听 127.0.0.1）
+    #[serde(default)]
+    pub enabled: bool,
+    // 监听端口（固定本机回环地址）
+    #[serde(default = "default_mcp_port")]
+    pub port: u16,
+    // Bearer 访问令牌（为空时保存设置会自动生成）
+    #[serde(default)]
+    pub token: String,
+}
+
+fn default_mcp_port() -> u16 {
+    39731
+}
+
+impl Default for McpSettings {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            port: default_mcp_port(),
+            token: String::new(),
         }
     }
 }

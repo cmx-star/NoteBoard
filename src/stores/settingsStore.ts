@@ -15,6 +15,7 @@ import type {
   TitleBarButtons,
   LocalSearchSettings,
   CustomColorKind,
+  McpSettings,
 } from '../core/ipc/types';
 import * as ipc from '../core/ipc/commands';
 import { onSettingsChanged } from '../core/ipc/events';
@@ -149,6 +150,11 @@ export const DEFAULT_SETTINGS: Settings = {
     enabled: false,
     roots: [],
   },
+  mcp: {
+    enabled: false,
+    port: 39731,
+    token: '',
+  },
 };
 
 /** 每组最多固定的自定义颜色数，避免色板无限变长 */
@@ -188,6 +194,16 @@ export function useLocalSearchSettings(): LocalSearchSettings {
   return { enabled: saved?.enabled ?? false, roots: saved?.roots ?? [] };
 }
 
+/** 读取 MCP 设置：旧配置缺字段时按默认关闭补齐 */
+export function useMcpSettings(): McpSettings {
+  const saved = useSettingsStore((s) => s.settings.mcp);
+  return {
+    enabled: saved?.enabled ?? false,
+    port: saved?.port ?? 39731,
+    token: saved?.token ?? '',
+  };
+}
+
 // ── Store 类型 ──
 
 interface SettingsStore {
@@ -223,6 +239,9 @@ interface SettingsStore {
 
   // ── 本地文件搜索 ──
   setLocalSearch: (patch: Partial<LocalSearchSettings>) => Promise<void>;
+
+  // ── MCP 文档编辑服务 ──
+  setMcp: (patch: Partial<McpSettings>) => Promise<void>;
 
   // ── 内部：从广播更新 ──
   _applyRemoteUpdate: (s: Settings) => void;
@@ -432,6 +451,26 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const updated: Settings = {
       ...current,
       localSearch: { enabled: false, roots: [], ...current.localSearch, ...patch },
+    };
+    set({ settings: updated });
+    try {
+      await ipc.saveSettings(updated);
+    } catch (e) {
+      console.error('保存设置失败:', e);
+    }
+  },
+
+  setMcp: async (patch) => {
+    const current = get().settings;
+    const updated: Settings = {
+      ...current,
+      mcp: {
+        enabled: false,
+        port: 39731,
+        token: '',
+        ...current.mcp,
+        ...patch,
+      },
     };
     set({ settings: updated });
     try {

@@ -238,7 +238,7 @@ export function FontSelect({
   }, [fonts, activeCategory, searchQuery]);
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', width: '100%' }}>
+    <div ref={containerRef} style={{ position: 'relative', width: 'var(--pct-100)' }}>
       {/* 触发输入区 */}
       <div
         onClick={handleToggle}
@@ -246,15 +246,15 @@ export function FontSelect({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '6px 10px',
-          border: isOpen ? '1px solid var(--accent-strong)' : '1px solid var(--editor-border)',
+          padding: 'var(--dim-6) var(--dim-10)',
+          border: isOpen ? 'var(--dim-1) solid var(--accent-strong)' : 'var(--dim-1) solid var(--editor-border)',
           borderRadius: 'var(--radius-sm)',
           background: 'var(--editor-surface)',
           color: value ? 'var(--editor-text)' : 'var(--editor-text-muted)',
-          fontSize: 'var(--ui-font-size, 13px)',
+          fontSize: 'var(--ui-font-size, var(--dim-13))',
           cursor: 'pointer',
           userSelect: 'none',
-          gap: 6,
+          gap: 'var(--dim-6)',
           transition: 'border-color var(--transition-fast)',
         }}
       >
@@ -283,13 +283,13 @@ export function FontSelect({
               style={{
                 border: 'none',
                 background: 'transparent',
-                padding: 2,
+                padding: 'var(--dim-2)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'var(--editor-text-muted)',
-                borderRadius: 3,
+                borderRadius: 'var(--radius-xs)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = 'var(--editor-text)';
@@ -322,15 +322,15 @@ export function FontSelect({
         <div
           style={{
             position: 'absolute',
-            top: 'calc(100% + 4px)',
+            top: 'calc(var(--pct-100) + var(--dim-4))',
             left: 0,
             right: 0,
-            zIndex: 9999,
+            zIndex: 'var(--z-9999)',
             background: 'var(--editor-bg)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             borderRadius: 'var(--radius-md)',
             boxShadow: 'var(--shadow-lg)',
-            maxHeight: 280,
+            maxHeight: 'var(--dim-280)',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden',
@@ -339,11 +339,11 @@ export function FontSelect({
           {/* 顶部搜索框 */}
           <div
             style={{
-              padding: '6px 8px',
-              borderBottom: '1px solid var(--editor-border)',
+              padding: 'var(--dim-6) var(--dim-8)',
+              borderBottom: 'var(--dim-1) solid var(--editor-border)',
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
+              gap: 'var(--dim-6)',
               background: 'var(--editor-surface)',
             }}
           >
@@ -364,7 +364,7 @@ export function FontSelect({
                 flex: 1,
                 border: 'none',
                 background: 'transparent',
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 color: 'var(--editor-text)',
                 outline: 'none',
               }}
@@ -376,11 +376,11 @@ export function FontSelect({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
-              padding: '4px 8px',
-              borderBottom: '1px solid var(--editor-border)',
+              gap: 'var(--dim-4)',
+              padding: 'var(--dim-4) var(--dim-8)',
+              borderBottom: 'var(--dim-1) solid var(--editor-border)',
               background: 'var(--editor-bg)',
-              fontSize: 11,
+              fontSize: 'var(--text-11)',
             }}
           >
             {(
@@ -399,10 +399,10 @@ export function FontSelect({
                   onClick={() => setActiveCategory(cat.key)}
                   style={{
                     border: 'none',
-                    borderRadius: 3,
-                    padding: '2px 7px',
+                    borderRadius: 'var(--radius-xs)',
+                    padding: 'var(--dim-2) var(--dim-7)',
                     cursor: 'pointer',
-                    fontSize: 11,
+                    fontSize: 'var(--text-11)',
                     background: active ? 'var(--editor-selection)' : 'transparent',
                     color: active ? 'var(--accent-strong)' : 'var(--editor-text-muted)',
                     fontWeight: active ? 600 : 400,
@@ -416,7 +416,7 @@ export function FontSelect({
           </div>
 
           {/* 字体列表 */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0' }}>
+          <div style={{ flex: 1, overflowY: 'auto', padding: 'var(--dim-4) 0' }}>
             {/* 系统默认选项 */}
             <div
               onClick={() => {
@@ -427,12 +427,12 @@ export function FontSelect({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '6px 12px',
+                padding: 'var(--dim-6) var(--dim-12)',
                 cursor: 'pointer',
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 background: !value ? 'var(--editor-selection)' : 'transparent',
                 color: !value ? 'var(--accent-strong)' : 'var(--editor-text)',
-                borderBottom: '1px dashed var(--editor-border)',
+                borderBottom: 'var(--dim-1) dashed var(--editor-border)',
               }}
               onMouseEnter={(e) => {
                 if (value) e.currentTarget.style.background = 'var(--toolbar-hover)';
@@ -441,9 +441,9 @@ export function FontSelect({
                 if (value) e.currentTarget.style.background = 'transparent';
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
                 <RotateCcw size={12} color="var(--editor-text-muted)" />
-                <span style={{ fontWeight: 500 }}>系统默认 (跟随系统)</span>
+                <span style={{ fontWeight: 'var(--weight-500)' }}>系统默认 (跟随系统)</span>
               </div>
               {!value && <Check size={14} color="var(--accent-strong)" style={{ flexShrink: 0 }} />}
             </div>
@@ -454,9 +454,9 @@ export function FontSelect({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 6,
-                  padding: '16px 0',
-                  fontSize: 12,
+                  gap: 'var(--dim-6)',
+                  padding: 'var(--dim-16) 0',
+                  fontSize: 'var(--text-12)',
                   color: 'var(--editor-text-muted)',
                 }}
               >
@@ -464,7 +464,7 @@ export function FontSelect({
                 <span>扫描系统字体中</span>
               </div>
             ) : filteredFonts.length === 0 ? (
-              <div style={{ padding: '12px 16px', fontSize: 12, color: 'var(--editor-text-muted)', textAlign: 'center' }}>
+              <div style={{ padding: 'var(--dim-12) var(--dim-16)', fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)', textAlign: 'center' }}>
                 {searchQuery ? (
                   <div>
                     <span>未找到匹配字体</span>
@@ -477,9 +477,9 @@ export function FontSelect({
                       }}
                       style={{
                         display: 'block',
-                        margin: '6px auto 0',
-                        padding: '4px 10px',
-                        fontSize: 11,
+                        margin: 'var(--dim-6) auto 0',
+                        padding: 'var(--dim-4) var(--dim-10)',
+                        fontSize: 'var(--text-11)',
                       }}
                     >
                       使用 "{searchQuery.trim()}"
@@ -503,9 +503,9 @@ export function FontSelect({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      padding: '6px 12px',
+                      padding: 'var(--dim-6) var(--dim-12)',
                       cursor: 'pointer',
-                      fontSize: 13,
+                      fontSize: 'var(--text-13)',
                       background: isSelected ? 'var(--editor-selection)' : 'transparent',
                       color: isSelected ? 'var(--accent-strong)' : 'var(--editor-text)',
                     }}
@@ -516,14 +516,14 @@ export function FontSelect({
                       if (!isSelected) e.currentTarget.style.background = 'transparent';
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, overflow: 'hidden' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', overflow: 'hidden' }}>
                       <span
                         style={{
                           fontFamily: `"${font.family}", sans-serif`,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
-                          fontSize: 13,
+                          fontSize: 'var(--text-13)',
                         }}
                       >
                         {font.family}
@@ -532,13 +532,13 @@ export function FontSelect({
                       {getApplicationFontFamilies().some((family) => family.toLowerCase() === font.family.toLowerCase()) && (
                         <span
                           style={{
-                            fontSize: 10,
-                            padding: '1px 4px',
-                            borderRadius: 2,
-                            background: 'var(--accent-muted, rgba(99, 102, 241, 0.15))',
-                            color: 'var(--accent-strong, #6366f1)',
+                            fontSize: 'var(--text-10)',
+                            padding: 'var(--dim-1) var(--dim-4)',
+                            borderRadius: 'var(--radius-xs)',
+                            background: 'var(--accent-muted)',
+                            color: 'var(--accent-strong)',
                             flexShrink: 0,
-                            fontWeight: 500,
+                            fontWeight: 'var(--weight-500)',
                           }}
                         >
                           应用字体
@@ -547,9 +547,9 @@ export function FontSelect({
                       {font.isMonospace && (
                         <span
                           style={{
-                            fontSize: 10,
-                            padding: '1px 4px',
-                            borderRadius: 2,
+                            fontSize: 'var(--text-10)',
+                            padding: 'var(--dim-1) var(--dim-4)',
+                            borderRadius: 'var(--radius-xs)',
                             background: 'var(--code-inline-bg)',
                             color: 'var(--code-inline-text)',
                             flexShrink: 0,

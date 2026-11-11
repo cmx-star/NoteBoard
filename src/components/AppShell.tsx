@@ -74,8 +74,8 @@ function ResizeHandle() {
   return (
     <Separator
       style={{
-        width: 4,
-        height: '100%',
+        width: 'var(--dim-4)',
+        height: 'var(--pct-100)',
         background: 'var(--editor-border)',
         cursor: 'col-resize',
         transition: 'background var(--transition-fast)',
@@ -369,8 +369,8 @@ export function AppShell(_props: { children?: React.ReactNode }) {
   }, []);
 
   const handleStyle: React.CSSProperties = {
-    width: '100%',
-    height: '100%',
+    width: 'var(--pct-100)',
+    height: 'var(--pct-100)',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
@@ -392,7 +392,7 @@ export function AppShell(_props: { children?: React.ReactNode }) {
         <Group
           id="nb-layout"
           orientation="horizontal"
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: 'var(--pct-100)', height: 'var(--pct-100)' }}
           onLayoutChanged={(layout) => {
             // layout 是 Map<panelId, percentage>
             // ⚠️ 不能在此调用 setExplorerWidth/setOutlineWidth，
@@ -425,7 +425,7 @@ export function AppShell(_props: { children?: React.ReactNode }) {
                 }}
                 style={{
                   background: 'var(--explorer-bg)',
-                  borderRight: '1px solid var(--explorer-border)',
+                  borderRight: 'var(--dim-1) solid var(--explorer-border)',
                   overflow: 'hidden',
                 }}
               >
@@ -450,8 +450,8 @@ export function AppShell(_props: { children?: React.ReactNode }) {
               }}
               style={{
                 position: 'relative',
-                width: '100%',
-                height: '100%',
+                width: 'var(--pct-100)',
+                height: 'var(--pct-100)',
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
@@ -552,7 +552,7 @@ export function AppShell(_props: { children?: React.ReactNode }) {
                 }}
                 style={{
                   background: 'var(--outline-bg)',
-                  borderLeft: '1px solid var(--editor-border)',
+                  borderLeft: 'var(--dim-1) solid var(--editor-border)',
                   overflow: 'hidden',
                 }}
               >

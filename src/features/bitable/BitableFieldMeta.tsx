@@ -29,32 +29,32 @@ export interface FieldTypeMeta {
 export function getFieldTypeMeta(type: BitableFieldType): FieldTypeMeta {
   switch (type) {
     case 'text':
-      return { icon: <Type size={13} color="#3b82f6" />, label: '单行文本' };
+      return { icon: <Type size={13} color="var(--nb-blue-500)" />, label: '单行文本' };
     case 'longText':
-      return { icon: <AlignLeft size={13} color="#0ea5e9" />, label: '多行文本' };
+      return { icon: <AlignLeft size={13} color="var(--nb-auto-0ea5e9)" />, label: '多行文本' };
     case 'number':
-      return { icon: <Hash size={13} color="#10b981" />, label: '数字' };
+      return { icon: <Hash size={13} color="var(--nb-emerald-500)" />, label: '数字' };
     case 'select':
-      return { icon: <Tag size={13} color="#8b5cf6" />, label: '单选' };
+      return { icon: <Tag size={13} color="var(--nb-purple-500)" />, label: '单选' };
     case 'multiSelect':
-      return { icon: <Tags size={13} color="#ec4899" />, label: '多选' };
+      return { icon: <Tags size={13} color="var(--nb-pink-500)" />, label: '多选' };
     case 'date':
-      return { icon: <Calendar size={13} color="#f59e0b" />, label: '日期' };
+      return { icon: <Calendar size={13} color="var(--nb-amber-500)" />, label: '日期' };
     case 'time':
-      return { icon: <Clock size={13} color="#14b8a6" />, label: '时间' };
+      return { icon: <Clock size={13} color="var(--nb-teal-500)" />, label: '时间' };
     case 'dateTime':
-      return { icon: <CalendarClock size={13} color="#6366f1" />, label: '日期时间' };
+      return { icon: <CalendarClock size={13} color="var(--nb-violet-500)" />, label: '日期时间' };
     case 'checkbox':
-      return { icon: <CheckSquare size={13} color="#06b6d4" />, label: '勾选' };
+      return { icon: <CheckSquare size={13} color="var(--nb-cyan-500)" />, label: '勾选' };
     case 'rating':
-      return { icon: <Star size={13} color="#eab308" />, label: '评分' };
+      return { icon: <Star size={13} color="var(--nb-yellow-500)" />, label: '评分' };
     case 'progress':
-      return { icon: <BarChart2 size={13} color="#3b82f6" />, label: '进度' };
+      return { icon: <BarChart2 size={13} color="var(--nb-blue-500)" />, label: '进度' };
     case 'link':
-      return { icon: <Link size={13} color="#6366f1" />, label: '超链接' };
+      return { icon: <Link size={13} color="var(--nb-violet-500)" />, label: '超链接' };
     default:
       // 未知类型兜底：外部数据可能携带本版本不认识的字段类型，不能让渲染崩掉
-      return { icon: <Type size={13} color="#94a3b8" />, label: '未知字段' };
+      return { icon: <Type size={13} color="var(--nb-slate-400)" />, label: '未知字段' };
   }
 }
 
@@ -101,9 +101,9 @@ export function FieldSelectButton({
         className="nb-bitable-btn-secondary"
         onClick={handleOpen}
         style={{
-          gap: 6,
-          padding: '3px 8px',
-          fontSize: 12,
+          gap: 'var(--dim-6)',
+          padding: 'var(--dim-3) var(--dim-8)',
+          fontSize: 'var(--text-12)',
           minWidth: width,
           maxWidth: width,
         }}
@@ -124,15 +124,15 @@ export function FieldSelectButton({
             </span>
           </>
         ) : (
-          <span style={{ color: 'var(--editor-text-muted, #64748b)', flex: 1, textAlign: 'left' }}>
+          <span style={{ color: 'var(--editor-text-muted)', flex: 1, textAlign: 'left' }}>
             {placeholder}
           </span>
         )}
-        <ChevronDown size={12} style={{ marginLeft: 'auto', opacity: 0.6, flexShrink: 0 }} />
+        <ChevronDown size={12} style={{ marginLeft: 'auto', opacity: 'var(--opacity-0-6)', flexShrink: 0 }} />
       </button>
       {open && anchor && trigger && (
         <FloatingPanel anchor={anchor} trigger={trigger} width={200} onClose={() => setOpen(false)}>
-          <div style={{ display: 'flex', flexDirection: 'column', padding: '4px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', padding: 'var(--dim-4)' }}>
             <button
               type="button"
               className="nb-bitable-menu-item"
@@ -141,8 +141,8 @@ export function FieldSelectButton({
                 setOpen(false);
               }}
               style={{
-                background: value === null ? 'var(--editor-bg, #f1f5f9)' : undefined,
-                color: 'var(--editor-text-muted, #64748b)',
+                background: value === null ? 'var(--editor-bg)' : undefined,
+                color: 'var(--editor-text-muted)',
               }}
             >
               <span>{placeholder}</span>
@@ -162,7 +162,7 @@ export function FieldSelectButton({
                       setOpen(false);
                     }}
                     style={{
-                      background: isSelected ? 'var(--editor-bg, #f1f5f9)' : undefined,
+                      background: isSelected ? 'var(--editor-bg)' : undefined,
                     }}
                   >
                     {colMeta.icon}

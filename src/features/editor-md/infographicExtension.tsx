@@ -21,66 +21,66 @@ const INFOGRAPHIC_STYLES = `
 /* 顶部操作小图标按钮反馈 */
 .nb-info-icon-btn {
   background: transparent;
-  border: 1px solid transparent;
+  border: var(--dim-1) solid transparent;
   cursor: pointer;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: var(--editor-text-muted, #64748b);
+  padding: var(--dim-3) var(--dim-6);
+  border-radius: var(--radius-sm);
+  color: var(--editor-text-muted);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11px;
+  gap: var(--dim-4);
+  font-size: var(--dim-11);
   transition: all 0.15s ease;
   user-select: none;
 }
 .nb-info-icon-btn:hover {
-  background: var(--toolbar-hover, #f1f5f9);
-  color: var(--editor-text, #1e293b);
-  border-color: var(--editor-border, #e2e8f0);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
+  border-color: var(--editor-border);
 }
 .nb-info-icon-btn:active {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: scale(0.95);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-95));
 }
 
 /* 预设模板触发按钮反馈 */
 .nb-info-tmpl-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--editor-border, #cbd5e1);
-  background: var(--editor-surface, #ffffff);
-  color: var(--editor-accent, #3b82f6);
-  font-size: 11px;
+  gap: var(--dim-4);
+  padding: var(--dim-2) var(--dim-8);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-surface);
+  color: var(--editor-accent);
+  font-size: var(--dim-11);
   cursor: pointer;
   transition: all 0.15s ease;
   user-select: none;
 }
 .nb-info-tmpl-trigger:hover {
-  background: rgba(59, 130, 246, 0.08);
-  border-color: var(--editor-accent, #3b82f6);
+  background: var(--nb-auto-3b82f6-a8);
+  border-color: var(--editor-accent);
 }
 .nb-info-tmpl-trigger:active {
-  background: rgba(59, 130, 246, 0.16);
-  transform: scale(0.96);
+  background: var(--nb-auto-3b82f6-a16);
+  transform: scale(var(--scale-0-96));
 }
 
 /* 下拉菜单项反馈 */
 .nb-info-dropdown-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 100%;
+  gap: var(--dim-8);
+  width: var(--pct-100);
   text-align: left;
-  padding: 6px 10px;
+  padding: var(--dim-6) var(--dim-10);
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 12px;
-  color: var(--editor-text, #1e293b);
-  border-bottom: 1px solid var(--editor-border, #f1f5f9);
+  font-size: var(--dim-12);
+  color: var(--editor-text);
+  border-bottom: var(--dim-1) solid var(--editor-border);
   transition: all 0.15s ease;
   user-select: none;
 }
@@ -88,11 +88,11 @@ const INFOGRAPHIC_STYLES = `
   border-bottom: none;
 }
 .nb-info-dropdown-item:hover {
-  background: var(--toolbar-hover, #f1f5f9);
+  background: var(--toolbar-hover);
 }
 .nb-info-dropdown-item:active {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: scale(0.985);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-985));
 }
 
 /* 主操作按钮（完成） */
@@ -100,24 +100,24 @@ const INFOGRAPHIC_STYLES = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 10px;
-  border-radius: 4px;
-  background: var(--editor-accent, #3b82f6);
-  color: #ffffff;
-  border: 1px solid transparent;
-  font-size: 12px;
+  padding: var(--dim-3) var(--dim-10);
+  border-radius: var(--radius-sm);
+  background: var(--editor-accent);
+  color: var(--nb-white);
+  border: var(--dim-1) solid transparent;
+  font-size: var(--dim-12);
   cursor: pointer;
-  font-weight: 500;
+  font-weight: var(--weight-500);
   transition: all 0.15s ease;
   user-select: none;
 }
 .nb-info-btn-primary:hover {
-  background: #2563eb;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+  background: var(--nb-blue-600);
+  box-shadow: 0 var(--dim-2) var(--dim-6) var(--nb-auto-2563eb-a30);
 }
 .nb-info-btn-primary:active {
-  background: #1d4ed8;
-  transform: scale(0.96);
+  background: var(--nb-blue-700);
+  transform: scale(var(--scale-0-96));
 }
 
 /* 次要操作按钮（取消） */
@@ -125,24 +125,24 @@ const INFOGRAPHIC_STYLES = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 8px;
-  border-radius: 4px;
+  padding: var(--dim-3) var(--dim-8);
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-muted, #64748b);
-  border: 1px solid var(--editor-border, #e2e8f0);
-  font-size: 12px;
+  color: var(--editor-text-muted);
+  border: var(--dim-1) solid var(--editor-border);
+  font-size: var(--dim-12);
   cursor: pointer;
   transition: all 0.15s ease;
   user-select: none;
 }
 .nb-info-btn-secondary:hover {
-  background: var(--toolbar-hover, #f1f5f9);
-  color: var(--editor-text, #1e293b);
-  border-color: #cbd5e1;
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
+  border-color: var(--nb-slate-300);
 }
 .nb-info-btn-secondary:active {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: scale(0.96);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-96));
 }
 `;
 
@@ -203,15 +203,15 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
 
   if (editing) {
     return (
-      <NodeViewWrapper as="div" style={{ display: 'block', margin: '14px 0' }}>
+      <NodeViewWrapper as="div" style={{ display: 'block', margin: 'var(--dim-14) 0' }}>
         <style>{INFOGRAPHIC_STYLES}</style>
         <div
           style={{
-            border: '1px solid var(--editor-accent, #3b82f6)',
-            borderRadius: 'var(--radius-md, 8px)',
-            background: 'var(--editor-surface, #ffffff)',
+            border: 'var(--dim-1) solid var(--editor-accent)',
+            borderRadius: 'var(--radius-md, var(--dim-8))',
+            background: 'var(--editor-surface)',
             overflow: 'visible',
-            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 var(--dim-6) var(--dim-16) var(--nb-black-a08)',
             position: 'relative',
           }}
         >
@@ -221,16 +221,16 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '6px 12px',
-              background: 'var(--editor-bg, #f8fafc)',
-              borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-              fontSize: 12,
-              fontWeight: 500,
-              color: 'var(--editor-text-muted, #64748b)',
+              padding: 'var(--dim-6) var(--dim-12)',
+              background: 'var(--editor-bg)',
+              borderBottom: 'var(--dim-1) solid var(--editor-border)',
+              fontSize: 'var(--text-12)',
+              fontWeight: 'var(--weight-500)',
+              color: 'var(--editor-text-muted)',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
+              <span style={{ fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
                 编辑 Infographic 信息图源码 (YAML / JSON)
               </span>
 
@@ -250,15 +250,15 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
                   <div
                     style={{
                       position: 'absolute',
-                      top: '100%',
+                      top: 'var(--pct-100)',
                       left: 0,
-                      marginTop: 4,
-                      background: 'var(--editor-surface, #ffffff)',
-                      border: '1px solid var(--editor-border, #e2e8f0)',
-                      borderRadius: 6,
-                      boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
-                      zIndex: 10000,
-                      width: 220,
+                      marginTop: 'var(--dim-4)',
+                      background: 'var(--editor-surface)',
+                      border: 'var(--dim-1) solid var(--editor-border)',
+                      borderRadius: 'var(--radius-md)',
+                      boxShadow: '0 var(--dim-8) var(--dim-20) var(--nb-black-a12)',
+                      zIndex: 'var(--z-10000)',
+                      width: 'var(--dim-220)',
                       overflow: 'hidden',
                     }}
                   >
@@ -275,9 +275,9 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
                         {/* 彩色形象图标容器 */}
                         <div
                           style={{
-                            width: 24,
-                            height: 24,
-                            borderRadius: 5,
+                            width: 'var(--dim-24)',
+                            height: 'var(--dim-24)',
+                            borderRadius: 'var(--radius-sm)',
                             background: tmpl.iconBg,
                             display: 'flex',
                             alignItems: 'center',
@@ -288,7 +288,7 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
                           <InfographicTemplateIcon iconName={tmpl.iconName} color={tmpl.iconColor} size={14} />
                         </div>
                         {/* 纯中文模板名称（无多余英文后缀） */}
-                        <span style={{ fontWeight: 600, fontSize: 12 }}>{tmpl.label}</span>
+                        <span style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-12)' }}>{tmpl.label}</span>
                       </button>
                     ))}
                   </div>
@@ -296,7 +296,7 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 6 }}>
+            <div style={{ display: 'flex', gap: 'var(--dim-6)' }}>
               <button
                 type="button"
                 className="nb-info-btn-primary"
@@ -334,17 +334,17 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
               }
             }}
             style={{
-              width: '100%',
-              minHeight: 180,
-              padding: '12px 14px',
+              width: 'var(--pct-100)',
+              minHeight: 'var(--dim-180)',
+              padding: 'var(--dim-12) var(--dim-14)',
               fontFamily: 'var(--mono-font-family, monospace)',
-              fontSize: 'var(--mono-font-size, 13px)',
+              fontSize: 'var(--mono-font-size, var(--dim-13))',
               border: 'none',
               background: 'transparent',
-              color: 'var(--editor-text, #1e293b)',
+              color: 'var(--editor-text)',
               resize: 'vertical',
               outline: 'none',
-              lineHeight: 1.5,
+              lineHeight: 'var(--leading-1-5)',
             }}
           />
         </div>
@@ -353,17 +353,17 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
   }
 
   return (
-    <NodeViewWrapper as="div" style={{ display: 'block', margin: '14px 0' }} selected={selected}>
+    <NodeViewWrapper as="div" style={{ display: 'block', margin: 'var(--dim-14) 0' }} selected={selected}>
       <style>{INFOGRAPHIC_STYLES}</style>
       <div
         ref={containerRef}
         className="nb-infographic-container"
         style={{
           position: 'relative',
-          minHeight: 60,
-          border: '1px solid var(--editor-border, #e2e8f0)',
-          borderRadius: 'var(--radius-md, 8px)',
-          background: 'var(--editor-surface, #ffffff)',
+          minHeight: 'var(--dim-60)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-md, var(--dim-8))',
+          background: 'var(--editor-surface)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
@@ -376,33 +376,33 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '4px 10px',
-            borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-            background: 'var(--editor-bg, #f8fafc)',
-            fontSize: 11,
-            color: 'var(--editor-text-muted, #64748b)',
+            padding: 'var(--dim-4) var(--dim-10)',
+            borderBottom: 'var(--dim-1) solid var(--editor-border)',
+            background: 'var(--editor-bg)',
+            fontSize: 'var(--text-11)',
+            color: 'var(--editor-text-muted)',
             userSelect: 'none',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontWeight: 600, color: 'var(--editor-accent, #3b82f6)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
+            <span style={{ fontWeight: 'var(--weight-600)', color: 'var(--editor-accent)' }}>
               Infographic 信息图
             </span>
             {data?.type && (
               <span
                 style={{
-                  fontSize: 10,
-                  padding: '1px 6px',
-                  borderRadius: 4,
-                  background: 'rgba(59, 130, 246, 0.1)',
-                  color: '#2563eb',
+                  fontSize: 'var(--text-10)',
+                  padding: 'var(--dim-1) var(--dim-6)',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--nb-auto-3b82f6-a10)',
+                  color: 'var(--nb-blue-600)',
                 }}
               >
                 {data.type}
               </span>
             )}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }}>
             <Tooltip content="编辑信息图源码" side="top" sideOffset={4}>
               <button
                 type="button"
@@ -449,29 +449,29 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
             setEditing(true);
           }}
           style={{
-            padding: '14px',
+            padding: 'var(--dim-14)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'auto',
-            minHeight: 80,
+            minHeight: 'var(--dim-80)',
             cursor: 'default',
           }}
         >
           {error && (
-            <div style={{ fontSize: 12, color: '#ef4444', textAlign: 'center', width: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 8 }}>
+            <div style={{ fontSize: 'var(--text-12)', color: 'var(--nb-red-500)', textAlign: 'center', width: 'var(--pct-100)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--dim-6)', marginBottom: 'var(--dim-8)' }}>
                 <AlertCircle size={15} />
                 <span>{error}</span>
               </div>
               <pre
                 style={{
-                  padding: 8,
-                  background: 'var(--editor-bg, #f1f5f9)',
-                  borderRadius: 4,
+                  padding: 'var(--dim-8)',
+                  background: 'var(--editor-bg)',
+                  borderRadius: 'var(--radius-sm)',
                   overflow: 'auto',
-                  fontSize: 11,
-                  color: 'var(--editor-text-muted, #64748b)',
+                  fontSize: 'var(--text-11)',
+                  color: 'var(--editor-text-muted)',
                   textAlign: 'left',
                 }}
               >
@@ -481,13 +481,13 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
           )}
 
           {!error && data && (
-            <div ref={setInlineEl} style={{ width: '100%' }}>
+            <div ref={setInlineEl} style={{ width: 'var(--pct-100)' }}>
               <InfographicRenderer data={data} />
             </div>
           )}
 
           {!code && (
-            <span style={{ color: 'var(--editor-text-muted, #64748b)', fontStyle: 'italic', fontSize: 13 }}>
+            <span style={{ color: 'var(--editor-text-muted)', fontStyle: 'italic', fontSize: 'var(--text-13)' }}>
               空信息图（双击或点击编辑输入结构化内容）
             </span>
           )}
@@ -506,11 +506,11 @@ function InfographicComponent({ node, updateAttributes, selected }: NodeViewProp
             ref={setFullscreenEl}
             style={{
               // 平移缩放容器按内容收缩，这里给定明确宽度，避免百分比宽度失去参照
-              width: 'min(900px, calc(100vw - 80px))',
-              background: 'var(--editor-surface, #ffffff)',
-              borderRadius: 12,
-              padding: 24,
-              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+              width: 'min(var(--dim-900), calc(100vw - var(--dim-80)))',
+              background: 'var(--editor-surface)',
+              borderRadius: 'var(--radius-xl)',
+              padding: 'var(--dim-24)',
+              boxShadow: '0 var(--dim-20) var(--dim-40) var(--nb-black-a20)',
             }}
           >
             <InfographicRenderer data={data} />

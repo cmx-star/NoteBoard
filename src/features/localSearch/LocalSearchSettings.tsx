@@ -86,14 +86,14 @@ export function LocalSearchSettingsCard() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '18px 20px', background: 'var(--editor-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--editor-border)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-14)', padding: 'var(--dim-18) var(--dim-20)', background: 'var(--editor-surface)', borderRadius: 'var(--radius-md)', border: 'var(--dim-1) solid var(--editor-border)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--dim-12)' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600, fontSize: 13 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', fontWeight: 'var(--weight-600)', fontSize: 'var(--text-13)' }}>
             <Search size={15} color="var(--accent-strong)" />
             <span>本地文件搜索</span>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--editor-text-muted)', marginTop: 4 }}>
+          <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', marginTop: 'var(--dim-4)' }}>
             {formatShortcut('Ctrl + Shift + F')} 搜索文件名与内容
           </div>
         </div>
@@ -107,8 +107,8 @@ export function LocalSearchSettingsCard() {
 
       {enabled && (
         <>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ fontSize: 12.5, fontWeight: 500 }}>索引位置</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)' }}>
+            <div style={{ fontSize: 'var(--text-12-5)', fontWeight: 'var(--weight-500)' }}>索引位置</div>
             <div className="nb-ls-settings-roots">
               {roots.length === 0 ? (
                 <div className="nb-ls-settings-empty">尚未添加位置</div>
@@ -117,7 +117,7 @@ export function LocalSearchSettingsCard() {
                   <div key={path} className="nb-ls-settings-root">
                     {isDriveRoot(path)
                       ? <HardDrive size={15} color="var(--editor-text-muted)" style={{ flexShrink: 0 }} />
-                      : <Folder size={15} color="#f59e0b" style={{ flexShrink: 0 }} />}
+                      : <Folder size={15} color="var(--nb-amber-500)" style={{ flexShrink: 0 }} />}
                     <Tooltip content={path} side="top" sideOffset={4}>
                       <span className="nb-ls-settings-root-path">{path}</span>
                     </Tooltip>
@@ -174,14 +174,14 @@ export function WebSearchSettingsCard() {
       : '由管理员开启或关闭';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: '18px 20px', background: 'var(--editor-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--editor-border)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)', padding: 'var(--dim-18) var(--dim-20)', background: 'var(--editor-surface)', borderRadius: 'var(--radius-md)', border: 'var(--dim-1) solid var(--editor-border)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--dim-12)' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600, fontSize: 13 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', fontWeight: 'var(--weight-600)', fontSize: 'var(--text-13)' }}>
             <Search size={15} color="var(--accent-strong)" />
             <span>全局搜索</span>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--editor-text-muted)', marginTop: 4 }}>
+          <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', marginTop: 'var(--dim-4)' }}>
             {formatShortcut('Ctrl + Shift + F')} 搜索文件名与内容 · {hint}
           </div>
         </div>
@@ -263,7 +263,7 @@ function DriveMenu({ added, onPick }: { added: string[]; onPick: (drive: LocalSe
         <ChevronDown size={13} />
       </button>
       {open && position && createPortal(
-        <div ref={menuRef} role="menu" className="nb-settings-select-menu" style={{ left: position.left, top: position.top, minWidth: 180 }}>
+        <div ref={menuRef} role="menu" className="nb-settings-select-menu" style={{ left: position.left, top: position.top, minWidth: 'var(--dim-180)' }}>
           {drives === null ? (
             <div className="nb-ls-settings-empty">读取中</div>
           ) : drives.length === 0 ? (
@@ -284,7 +284,7 @@ function DriveMenu({ added, onPick }: { added: string[]; onPick: (drive: LocalSe
                     onPick(drive);
                   }}
                 >
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     <HardDrive size={14} color="var(--editor-text-muted)" />
                     {drive.label}
                   </span>

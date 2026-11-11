@@ -121,22 +121,22 @@ export function UnsavedGuardDialog({
     left: 0,
     right: 0,
     bottom: 0,
-    background: 'rgba(0,0,0,0.45)',
+    background: 'var(--nb-black-a45)',
     // 关闭保护不使用整窗实时虚化，避免按钮悬停时连带重绘后台编辑器。
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 1000,
+    zIndex: 'var(--z-1000)',
   };
 
   const dialogStyle: React.CSSProperties = {
     background: 'var(--editor-surface)',
-    border: '1px solid var(--editor-border)',
+    border: 'var(--dim-1) solid var(--editor-border)',
     borderRadius: 'var(--radius-lg)',
-    padding: 24,
+    padding: 'var(--dim-24)',
     // 桌面保持 460px 起始宽度；窄屏（手机）按视口收缩，避免横向溢出
-    minWidth: 'min(460px, calc(100vw - 32px))',
-    maxWidth: 'min(560px, calc(100vw - 32px))',
+    minWidth: 'min(var(--dim-460), calc(100vw - var(--dim-32)))',
+    maxWidth: 'min(var(--dim-560), calc(100vw - var(--dim-32)))',
     boxSizing: 'border-box',
     boxShadow: 'var(--shadow-lg)',
     color: 'var(--editor-text)',
@@ -148,32 +148,32 @@ export function UnsavedGuardDialog({
     <div style={overlayStyle} role="dialog" aria-modal="true">
       {/* 可编程聚焦但不进入 Tab 序列，承接打开时从编辑器移出的焦点 */}
       <div ref={dialogRef} tabIndex={-1} style={dialogStyle}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          {/* 警告图标：使用 warning-500 语义变量，在亮色和墨夜深色主题下均清晰明亮 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-12)', marginBottom: 'var(--dim-16)' }}>
+          {/* 警告图标：使用 warning-500 语义变量，在亮色和墨黑深色主题下均清晰明亮 */}
           <AlertTriangle size={24} color="var(--warning-500)" />
-          <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--editor-heading)' }}>
+          <h2 style={{ margin: 0, fontSize: 'var(--text-16)', fontWeight: 'var(--weight-600)', color: 'var(--editor-heading)' }}>
             {isBatch
               ? `${dirtyTabs.length} 个文件未保存`
               : `"${dirtyTabs[0].displayName}" 未保存`}
           </h2>
         </div>
 
-        <p style={{ margin: '0 0 8px', fontSize: 14, color: 'var(--editor-text-secondary)' }}>
+        <p style={{ margin: '0 0 var(--dim-8)', fontSize: 'var(--text-14)', color: 'var(--editor-text-secondary)' }}>
           {isBatch
             ? '以下文件有未保存的修改。可保存到原位置，或另存到暂存区后关闭。'
             : '此文件有未保存的修改。可保存到原位置，或另存到暂存区后关闭。'}
         </p>
 
         {isBatch && (
-          <ul style={{ margin: '0 0 16px', paddingLeft: 20, fontSize: 13, color: 'var(--editor-text-muted)' }}>
+          <ul style={{ margin: '0 0 var(--dim-16)', paddingLeft: 'var(--dim-20)', fontSize: 'var(--text-13)', color: 'var(--editor-text-muted)' }}>
             {dirtyTabs.map((t) => (
-              <li key={t.key} style={{ padding: '2px 0' }}>{t.displayName}</li>
+              <li key={t.key} style={{ padding: 'var(--dim-2) 0' }}>{t.displayName}</li>
             ))}
           </ul>
         )}
 
         {/* 窄屏（手机）下由样式改为两行两列均衡排列 */}
-        <div className="nb-guard-actions" style={{ display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap', gap: 8, marginTop: 20 }}>
+        <div className="nb-guard-actions" style={{ display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap', gap: 'var(--dim-8)', marginTop: 'var(--dim-20)' }}>
           {/* 取消操作：取消关闭拦截并停留在当前页面 */}
           <Tooltip content="继续编辑" shortcut="Esc" side="top">
             <button
@@ -182,8 +182,8 @@ export function UnsavedGuardDialog({
               onClick={onCancel}
               disabled={saving || staging}
               style={{
-                padding: '6px 14px',
-                fontSize: 13,
+                padding: 'var(--dim-6) var(--dim-14)',
+                fontSize: 'var(--text-13)',
               }}
             >
               取消
@@ -198,8 +198,8 @@ export function UnsavedGuardDialog({
               onClick={handleDiscard}
               disabled={saving || staging}
               style={{
-                padding: '6px 14px',
-                fontSize: 13,
+                padding: 'var(--dim-6) var(--dim-14)',
+                fontSize: 'var(--text-13)',
               }}
             >
               不保存
@@ -214,11 +214,11 @@ export function UnsavedGuardDialog({
               onClick={handleStash}
               disabled={saving || staging}
               style={{
-                padding: '6px 14px',
-                fontSize: 13,
+                padding: 'var(--dim-6) var(--dim-14)',
+                fontSize: 'var(--text-13)',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
+                gap: 'var(--dim-6)',
               }}
             >
               <Archive size={14} />
@@ -234,12 +234,12 @@ export function UnsavedGuardDialog({
               onClick={handleSave}
               disabled={saving || staging}
               style={{
-                padding: '6px 16px',
-                fontSize: 13,
-                fontWeight: 500,
+                padding: 'var(--dim-6) var(--dim-16)',
+                fontSize: 'var(--text-13)',
+                fontWeight: 'var(--weight-500)',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
+                gap: 'var(--dim-6)',
               }}
             >
               <Save size={14} />

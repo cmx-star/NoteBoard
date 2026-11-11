@@ -11,7 +11,7 @@ export interface InfographicTemplateIconProps {
 }
 
 /** 根据模板 iconName 渲染对应彩色图标 */
-export function InfographicTemplateIcon({ iconName, color = 'var(--editor-accent, #3b82f6)', size = 14 }: InfographicTemplateIconProps) {
+export function InfographicTemplateIcon({ iconName, color = 'var(--editor-accent)', size = 14 }: InfographicTemplateIconProps) {
   const iconProps = { size, color };
 
   switch (iconName) {

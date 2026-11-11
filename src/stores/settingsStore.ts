@@ -27,6 +27,7 @@ import {
   startSystemThemeListener,
   stopSystemThemeListener,
 } from '../core/theme/applyTheme';
+import { normalizeThemeId } from '../core/theme/themes';
 import { useFontPackStore } from './fontPackStore';
 import { DEFAULT_CREATE_FORMATS } from '../features/welcome/createFormats';
 
@@ -68,8 +69,8 @@ export const DEFAULT_SETTINGS: Settings = {
   revision: 0,
   appearance: {
     themeMode: 'system',
-    systemLightTheme: 'chen-guang',
-    systemDarkTheme: 'mo-ye',
+    systemLightTheme: 'su-bai',
+    systemDarkTheme: 'mo-hei',
     material: 'classic',
   },
   typography: {
@@ -246,11 +247,29 @@ function resolveAndApply(s: Settings): ThemeId {
   return resolved;
 }
 
+// 旧版本只认识三套主题；加载时把旧 ID 迁移到四套新主题，避免 data-theme 无匹配 token。
+function normalizeLoadedSettings(settings: Settings): Settings {
+  const appearance = settings.appearance;
+  const themeMode =
+    appearance.themeMode === 'system'
+      ? 'system'
+      : normalizeThemeId(appearance.themeMode, 'su-bai');
+  return {
+    ...settings,
+    appearance: {
+      ...appearance,
+      themeMode,
+      systemLightTheme: normalizeThemeId(appearance.systemLightTheme, 'su-bai'),
+      systemDarkTheme: normalizeThemeId(appearance.systemDarkTheme, 'mo-hei'),
+    },
+  };
+}
+
 // ── 创建 store ──
 
 export const useSettingsStore = create<SettingsStore>((set, get) => ({
   settings: DEFAULT_SETTINGS,
-  resolvedTheme: 'chen-guang',
+  resolvedTheme: 'su-bai',
   initialized: false,
 
   init: async () => {
@@ -259,7 +278,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     try {
       // 🔴 R11：设置读取与字体服务完全解耦——不再 Promise.all 等待字体 init；
       // 字体服务由 App 独立启动（fire-and-forget），verifying/激活不阻塞设置与渲染。
-      const loaded = await ipc.loadSettings();
+      const loaded = normalizeLoadedSettings(await ipc.loadSettings());
       // 字体服务独立启动（失败不影响设置加载）
       void useFontPackStore.getState().init().catch((e) => {
         console.error('字体服务初始化失败:', e);

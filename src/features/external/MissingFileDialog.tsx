@@ -45,26 +45,26 @@ export function MissingFileDialog() {
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 1200,
+        zIndex: 'var(--z-1200)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(0, 0, 0, 0.42)',
+        background: 'var(--nb-black-a42)',
       }}
     >
-      <div style={{ width: 480, maxWidth: '90vw', padding: 22, borderRadius: 'var(--radius-lg)', border: '1px solid var(--editor-border)', background: 'var(--editor-surface)', boxShadow: 'var(--shadow-lg)', color: 'var(--editor-text)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+      <div style={{ width: 'var(--dim-480)', maxWidth: '90vw', padding: 'var(--dim-22)', borderRadius: 'var(--radius-lg)', border: 'var(--dim-1) solid var(--editor-border)', background: 'var(--editor-surface)', boxShadow: 'var(--shadow-lg)', color: 'var(--editor-text)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)', marginBottom: 'var(--dim-12)' }}>
           <FileWarning size={22} color="var(--error-500)" />
-          <span style={{ fontSize: 16, fontWeight: 600 }}>文件已被删除</span>
+          <span style={{ fontSize: 'var(--text-16)', fontWeight: 'var(--weight-600)' }}>文件已被删除</span>
         </div>
-        <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--editor-text-secondary)' }}>
+        <div style={{ fontSize: 'var(--text-13)', lineHeight: 'var(--leading-1-7)', color: 'var(--editor-text-secondary)' }}>
           “{activeTab.displayName}”在 NoteBoard 运行期间已从原位置删除。
           {canSaveAs ? ' 当前编辑内容仍保留在内存中，可以另存到新位置。' : ' 当前格式没有可另存的内存内容。'}
         </div>
-        <div style={{ marginTop: 8, fontSize: 11, color: 'var(--editor-text-muted)', wordBreak: 'break-all' }}>
+        <div style={{ marginTop: 'var(--dim-8)', fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', wordBreak: 'break-all' }}>
           原路径：{activeTab.path}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 18 }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--dim-8)', marginTop: 'var(--dim-18)' }}>
           <button type="button" className="nb-btn-secondary" onClick={handleClose} disabled={saving}>关闭标签</button>
           {canSaveAs && (
             <button type="button" className="nb-btn-primary" onClick={handleSaveAs} disabled={saving}>

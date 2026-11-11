@@ -101,20 +101,20 @@ function TimeColumn({
   }, [values, selected]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
-      <div style={{ fontSize: 10, textAlign: 'center', color: 'var(--editor-text-muted, #94a3b8)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-2)', minWidth: 0 }}>
+      <div style={{ fontSize: 'var(--text-10)', textAlign: 'center', color: 'var(--editor-text-muted)' }}>
         {label}
       </div>
       <div
         ref={listRef}
         className="nb-bitable-scroll"
         style={{
-          height: 168,
+          height: 'var(--dim-168)',
           overflowY: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          gap: 2,
-          padding: '0 2px',
+          gap: 'var(--dim-2)',
+          padding: '0 var(--dim-2)',
         }}
       >
         {values.map((v) => {
@@ -163,9 +163,9 @@ function DatePanel({ value, onPick }: DatePanelProps) {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-4)' }}>
       {/* 头部导航与年月切换入口 */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--dim-2)' }}>
         {viewMode === 'days' && (
           <>
             <Tooltip content="上一月" side="top" sideOffset={4}>
@@ -179,7 +179,7 @@ function DatePanel({ value, onPick }: DatePanelProps) {
               </button>
             </Tooltip>
             {/* 年月可点击切换到对应网格选择器 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-2)' }}>
               <Tooltip content="选择年份" side="top" sideOffset={4}>
                 <button
                   type="button"
@@ -264,7 +264,7 @@ function DatePanel({ value, onPick }: DatePanelProps) {
                 <ChevronLeft size={14} />
               </button>
             </Tooltip>
-            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+            <div style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
               {yearWindow} 年 - {yearWindow + 11} 年
             </div>
             <Tooltip content="后 12 年" side="top" sideOffset={4}>
@@ -284,15 +284,15 @@ function DatePanel({ value, onPick }: DatePanelProps) {
       {/* 日期网格视图 */}
       {viewMode === 'days' && (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 'var(--dim-2)' }}>
             {WEEK_LABELS.map((w) => (
               <div
                 key={w}
                 style={{
                   textAlign: 'center',
-                  fontSize: 10,
-                  padding: '2px 0',
-                  color: 'var(--editor-text-muted, #94a3b8)',
+                  fontSize: 'var(--text-10)',
+                  padding: 'var(--dim-2) 0',
+                  color: 'var(--editor-text-muted)',
                 }}
               >
                 {w}
@@ -300,7 +300,7 @@ function DatePanel({ value, onPick }: DatePanelProps) {
             ))}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 'var(--dim-2)' }}>
             {cells.map((cell) => {
               const isSelected = cell.date === value;
               const isToday = cell.date === today;
@@ -333,9 +333,9 @@ function DatePanel({ value, onPick }: DatePanelProps) {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 6,
-            padding: '4px 0',
-            minHeight: 182,
+            gap: 'var(--dim-6)',
+            padding: 'var(--dim-4) 0',
+            minHeight: 'var(--dim-182)',
           }}
         >
           {MONTH_NAMES.map((mName, mIdx) => {
@@ -371,9 +371,9 @@ function DatePanel({ value, onPick }: DatePanelProps) {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 6,
-            padding: '4px 0',
-            minHeight: 182,
+            gap: 'var(--dim-6)',
+            padding: 'var(--dim-4) 0',
+            minHeight: 'var(--dim-182)',
           }}
         >
           {Array.from({ length: 12 }, (_, i) => yearWindow + i).map((y) => {
@@ -425,7 +425,7 @@ function TimePanel({ value, withSeconds, onPick }: TimePanelProps) {
   };
 
   return (
-    <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
+    <div style={{ display: 'flex', gap: 'var(--dim-4)', justifyContent: 'center' }}>
       <TimeColumn label="时" values={hours} selected={parts.h} onSelect={(h) => emit({ h })} />
       <TimeColumn label="分" values={minutes} selected={parts.m} onSelect={(m) => emit({ m })} />
       {withSeconds && (
@@ -529,16 +529,16 @@ export function DateTimeFieldEditor({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 5,
-          width: '100%',
-          height: isForm ? 34 : '100%',
+          gap: 'var(--dim-5)',
+          width: 'var(--pct-100)',
+          height: isForm ? 34 : 'var(--pct-100)',
           boxSizing: 'border-box',
-          padding: isForm ? '6px 8px' : '2px 6px',
-          border: isForm ? '1px solid var(--editor-border, #cbd5e1)' : 'none',
+          padding: isForm ? 'var(--dim-6) var(--dim-8)' : 'var(--dim-2) var(--dim-6)',
+          border: isForm ? 'var(--dim-1) solid var(--editor-border)' : 'none',
           borderRadius: isForm ? 6 : 0,
-          background: isForm ? 'var(--editor-bg, #ffffff)' : 'transparent',
-          color: displayText ? 'var(--editor-text, #1e293b)' : 'var(--editor-text-muted, #94a3b8)',
-          fontSize: 12,
+          background: isForm ? 'var(--editor-bg)' : 'transparent',
+          color: displayText ? 'var(--editor-text)' : 'var(--editor-text-muted)',
+          fontSize: 'var(--text-12)',
           fontFamily: 'inherit',
           cursor: 'pointer',
           overflow: 'hidden',
@@ -572,7 +572,7 @@ export function DateTimeFieldEditor({
                 e.stopPropagation();
                 onChange(null);
               }}
-              style={{ padding: 0, display: 'inline-flex', opacity: 0.55, flexShrink: 0, marginLeft: 'auto' }}
+              style={{ padding: 0, display: 'inline-flex', opacity: 'var(--opacity-0-55)', flexShrink: 0, marginLeft: 'auto' }}
             >
               <X size={11} />
             </span>
@@ -589,15 +589,15 @@ export function DateTimeFieldEditor({
           onClose={() => setAnchor(null)}
         >
           {type === 'dateTime' ? (
-            <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+            <div style={{ display: 'flex', gap: 'var(--dim-8)', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <DatePanel value={datePart} onPick={handlePickDate} />
               </div>
               <div
                 style={{
-                  width: 1,
+                  width: 'var(--dim-1)',
                   alignSelf: 'stretch',
-                  background: 'var(--editor-border, #f1f5f9)',
+                  background: 'var(--editor-border)',
                 }}
               />
               <div style={{ flexShrink: 0 }}>
@@ -615,17 +615,17 @@ export function DateTimeFieldEditor({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              paddingTop: 6,
-              marginTop: 2,
-              borderTop: '1px solid var(--editor-border, #f1f5f9)',
+              gap: 'var(--dim-6)',
+              paddingTop: 'var(--dim-6)',
+              marginTop: 'var(--dim-2)',
+              borderTop: 'var(--dim-1) solid var(--editor-border)',
             }}
           >
             <button
               type="button"
               className="nb-bitable-btn-secondary"
               onClick={handleFillNow}
-              style={{ padding: '4px 8px', fontSize: 11 }}
+              style={{ padding: 'var(--dim-4) var(--dim-8)', fontSize: 'var(--text-11)' }}
             >
               {type === 'date' ? '今天' : type === 'time' ? '现在' : '此刻'}
             </button>
@@ -636,7 +636,7 @@ export function DateTimeFieldEditor({
                 onChange(null);
                 setAnchor(null);
               }}
-              style={{ padding: '4px 8px', fontSize: 11 }}
+              style={{ padding: 'var(--dim-4) var(--dim-8)', fontSize: 'var(--text-11)' }}
             >
               清除
             </button>
@@ -646,7 +646,7 @@ export function DateTimeFieldEditor({
                 type="button"
                 className="nb-bitable-btn-primary"
                 onClick={() => setAnchor(null)}
-                style={{ marginLeft: 'auto', padding: '4px 10px', fontSize: 11, gap: 4 }}
+                style={{ marginLeft: 'auto', padding: 'var(--dim-4) var(--dim-10)', fontSize: 'var(--text-11)', gap: 'var(--dim-4)' }}
               >
                 <Check size={12} />
                 <span>完成</span>

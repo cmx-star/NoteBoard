@@ -1143,11 +1143,11 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
       ref={editorRootRef}
       className={`nb-bitable-root${chromeCollapsed ? ' is-chrome-collapsed' : ''}`}
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -1160,21 +1160,21 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
         className="nb-bitable-toolbar"
         {...readingDragRegion}
         style={{
-          height: 38,
-          minHeight: 38,
+          height: 'var(--dim-38)',
+          minHeight: 'var(--dim-38)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           // 沉浸阅读时右侧让出窗口控件胶囊的宽度，展开时不遮挡「新建记录」
-          padding: readingWindowChrome ? '0 190px 0 12px' : '0 12px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #f8fafc)',
+          padding: readingWindowChrome ? '0 var(--dim-190) 0 var(--dim-12)' : '0 var(--dim-12)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
           userSelect: 'none',
-          fontSize: 12,
+          fontSize: 'var(--text-12)',
         }}
       >
         {/* 左侧：多视图 Tab 标签列表 */}
-        <div className="nb-bitable-views" {...readingDragRegion} style={{ display: 'flex', alignItems: 'center', gap: 4, overflowX: 'auto', flex: 1 }}>
+        <div className="nb-bitable-views" {...readingDragRegion} style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)', overflowX: 'auto', flex: 1 }}>
           {data.views.map((v, viewIdx) => {
             const isActive = v.id === activeView.id;
             const isEditingThis = editingViewId === v.id;
@@ -1194,23 +1194,23 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 6,
-                    padding: '4px 10px',
-                    borderRadius: 6,
-                    border: isActive ? '1px solid var(--control-border, #cbd5e1)' : '1px solid transparent',
-                    background: isActive ? 'var(--editor-bg, #ffffff)' : 'transparent',
-                    color: isActive ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-text-muted, #64748b)',
+                    gap: 'var(--dim-6)',
+                    padding: 'var(--dim-4) var(--dim-10)',
+                    borderRadius: 'var(--dim-6)',
+                    border: isActive ? 'var(--dim-1) solid var(--control-border)' : 'var(--dim-1) solid transparent',
+                    background: isActive ? 'var(--editor-bg)' : 'transparent',
+                    color: isActive ? 'var(--editor-accent)' : 'var(--editor-text-muted)',
                     cursor: viewDrag ? 'grabbing' : 'grab',
                     fontWeight: isActive ? 600 : 400,
-                    fontSize: 12,
+                    fontSize: 'var(--text-12)',
                     flexShrink: 0,
                     // 被拖起的 Tab 半透明，落点处绘制插入指示线
                     opacity: viewDrag?.fromIdx === viewIdx ? 0.45 : 1,
                     boxShadow:
                       viewIndicator === 'left'
-                        ? 'inset 3px 0 0 #3b82f6'
+                        ? 'inset var(--dim-3) 0 0 var(--nb-blue-500)'
                         : viewIndicator === 'right'
-                          ? 'inset -3px 0 0 #3b82f6'
+                          ? 'inset calc(var(--dim-3) * -1) 0 0 var(--nb-blue-500)'
                           : undefined,
                   }}
                   onClick={() => {
@@ -1243,11 +1243,11 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                       }}
                       onClick={(e) => e.stopPropagation()}
                       style={{
-                        width: 90,
-                        fontSize: 12,
-                        padding: '1px 4px',
-                        border: '1px solid var(--editor-accent, #3b82f6)',
-                        borderRadius: 3,
+                        width: 'var(--dim-90)',
+                        fontSize: 'var(--text-12)',
+                        padding: 'var(--dim-1) var(--dim-4)',
+                        border: 'var(--dim-1) solid var(--editor-accent)',
+                        borderRadius: 'var(--dim-3)',
                         outline: 'none',
                       }}
                     />
@@ -1281,7 +1281,7 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                       }
                     }}
                     style={{
-                      padding: 2,
+                      padding: 'var(--dim-2)',
                       color: 'inherit',
                     }}
                   >
@@ -1320,7 +1320,7 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                         <button
                           type="button"
                           className="nb-bitable-btn-danger"
-                          style={{ width: '100%', justifyContent: 'flex-start' }}
+                          style={{ width: 'var(--pct-100)', justifyContent: 'flex-start' }}
                           onClick={() => handleDeleteView(v.id)}
                         >
                           <Trash2 size={12} />
@@ -1352,10 +1352,10 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                 }}
                 style={{
                   // 宽度跟随统一控件高度，保持正方形（高度由 --nb-bitable-control-h 控制）
-                  width: 'var(--nb-bitable-control-h, 30px)',
+                  width: 'var(--nb-bitable-control-h, var(--dim-30))',
                   padding: 0,
-                  background: addViewMenu ? 'var(--editor-bg, #f1f5f9)' : undefined,
-                  color: 'var(--editor-text-muted, #64748b)',
+                  background: addViewMenu ? 'var(--editor-bg)' : undefined,
+                  color: 'var(--editor-text-muted)',
                 }}
               >
                 <Plus size={13} />
@@ -1374,7 +1374,7 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                   className="nb-bitable-menu-item"
                   onClick={() => handleCreateView('grid')}
                 >
-                  <TableIcon size={13} color="#3b82f6" />
+                  <TableIcon size={13} color="var(--nb-blue-500)" />
                   <span>新建表格视图</span>
                 </button>
                 <button
@@ -1382,7 +1382,7 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                   className="nb-bitable-menu-item"
                   onClick={() => handleCreateView('kanban')}
                 >
-                  <Kanban size={13} color="#8b5cf6" />
+                  <Kanban size={13} color="var(--nb-purple-500)" />
                   <span>新建看板视图</span>
                 </button>
                 <button
@@ -1390,7 +1390,7 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                   className="nb-bitable-menu-item"
                   onClick={() => handleCreateView('gantt')}
                 >
-                  <ChartGantt size={13} color="#0ea5e9" />
+                  <ChartGantt size={13} color="var(--nb-auto-0ea5e9)" />
                   <span>新建甘特图视图</span>
                 </button>
                 <button type="button" className="nb-bitable-menu-item" onClick={() => handleCreateView('workbench')}>
@@ -1402,22 +1402,22 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
         </div>
 
         {/* 右侧：全局搜索 + 导出 + 添加行 */}
-        <div className="nb-bitable-actions" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="nb-bitable-actions" style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
           {/* 实时搜索框 */}
           <div
             className="nb-bitable-search"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
-              padding: '3px 8px',
-              borderRadius: 5,
-              background: 'var(--editor-bg, #ffffff)',
-              border: '1px solid var(--editor-border, #cbd5e1)',
-              width: 150,
+              gap: 'var(--dim-4)',
+              padding: 'var(--dim-3) var(--dim-8)',
+              borderRadius: 'var(--dim-5)',
+              background: 'var(--editor-bg)',
+              border: 'var(--dim-1) solid var(--editor-border)',
+              width: 'var(--dim-150)',
             }}
           >
-            <Search size={12} style={{ opacity: 0.5 }} />
+            <Search size={12} style={{ opacity: 'var(--opacity-0-5)' }} />
             <input
               ref={searchInputRef}
               type="text"
@@ -1427,10 +1427,10 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
               style={{
                 border: 'none',
                 background: 'transparent',
-                fontSize: 11,
-                width: '100%',
+                fontSize: 'var(--text-11)',
+                width: 'var(--pct-100)',
                 outline: 'none',
-                color: 'var(--editor-text, #1e293b)',
+                color: 'var(--editor-text)',
               }}
             />
             {searchQuery && (
@@ -1438,7 +1438,7 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                 type="button"
                 className="nb-bitable-btn-ghost"
                 onClick={() => setSearchQuery('')}
-                style={{ padding: 1 }}
+                style={{ padding: 'var(--dim-1)' }}
               >
                 <X size={12} />
               </button>
@@ -1448,7 +1448,7 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
           {/* 沉浸阅读 / 退出阅读 */}
           {/* 只隐藏应用外壳：视图切换与搜索仍是阅读所需，工具栏保留，按钮兼作退出；
               表格内 Esc 用于关闭各类浮层，因此不以 Esc 退出 */}
-          <ReadingModeButton docKey={docKey} className="nb-bitable-btn-secondary" escHint={false} style={{ padding: '4px 6px', minWidth: 'var(--nb-bitable-control-h, 30px)' }} />
+          <ReadingModeButton docKey={docKey} className="nb-bitable-btn-secondary" escHint={false} style={{ padding: 'var(--dim-4) var(--dim-6)', minWidth: 'var(--nb-bitable-control-h, var(--dim-30))' }} />
 
           {/* 导出下拉按钮（移动端隐藏：使用频率低，且挤占窄屏工具栏空间；收纳为菜单便于后续扩展格式） */}
           <div
@@ -1468,11 +1468,11 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                   setExportMenu({ anchor, trigger: e.currentTarget as HTMLElement });
                 }
               }}
-              style={{ gap: 4, background: exportMenu ? 'var(--editor-bg, #f1f5f9)' : undefined }}
+              style={{ gap: 'var(--dim-4)', background: exportMenu ? 'var(--editor-bg)' : undefined }}
             >
               <Download size={13} />
               <span>导出</span>
-              <ChevronDown size={11} style={{ opacity: 0.8 }} />
+              <ChevronDown size={11} style={{ opacity: 'var(--opacity-0-8)' }} />
             </button>
 
             {exportMenu && (
@@ -1514,12 +1514,12 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                 }
               }}
               style={{
-                gap: 4,
+                gap: 'var(--dim-4)',
               }}
             >
               <Plus size={13} />
               <span>新建记录</span>
-              <ChevronDown size={11} style={{ opacity: 0.8 }} />
+              <ChevronDown size={11} style={{ opacity: 'var(--opacity-0-8)' }} />
             </button>
 
             {addRecordMenu && (
@@ -1545,10 +1545,10 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 6,
-                    padding: '5px 8px',
-                    fontSize: 12,
-                    color: 'var(--editor-text, #1e293b)',
+                    gap: 'var(--dim-6)',
+                    padding: 'var(--dim-5) var(--dim-8)',
+                    fontSize: 'var(--text-12)',
+                    color: 'var(--editor-text)',
                     whiteSpace: 'nowrap',
                   }}
                   onClick={(e) => e.stopPropagation()}
@@ -1572,14 +1572,14 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                       }
                     }}
                     style={{
-                      width: 44,
-                      height: 24,
-                      padding: '2px 4px',
-                      fontSize: 12,
-                      border: '1px solid var(--editor-border, #cbd5e1)',
-                      borderRadius: 4,
-                      background: 'var(--editor-bg, #ffffff)',
-                      color: 'var(--editor-text, #1e293b)',
+                      width: 'var(--dim-44)',
+                      height: 'var(--dim-24)',
+                      padding: 'var(--dim-2) var(--dim-4)',
+                      fontSize: 'var(--text-12)',
+                      border: 'var(--dim-1) solid var(--editor-border)',
+                      borderRadius: 'var(--dim-4)',
+                      background: 'var(--editor-bg)',
+                      color: 'var(--editor-text)',
                       textAlign: 'center',
                       outline: 'none',
                       boxSizing: 'border-box',
@@ -1599,12 +1599,12 @@ export function BitableEditor({ docKey }: BitableEditorProps) {
                       }
                     }}
                     style={{
-                      padding: '2px 8px',
-                      fontSize: 11,
+                      padding: 'var(--dim-2) var(--dim-8)',
+                      fontSize: 'var(--text-11)',
                       marginLeft: 'auto',
                       whiteSpace: 'nowrap',
                       flexShrink: 0,
-                      height: 24,
+                      height: 'var(--dim-24)',
                       display: 'inline-flex',
                       alignItems: 'center',
                       justifyContent: 'center',

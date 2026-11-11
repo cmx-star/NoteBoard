@@ -150,7 +150,7 @@ export function CodeEditor({ docKey }: CodeEditorProps) {
       '&': {
         fontFamily: 'var(--mono-font-family)',
         fontSize: 'var(--mono-font-size)',
-        height: '100%',
+        height: 'var(--pct-100)',
         caretColor: 'var(--cm-cursor)',
       },
       '.cm-scroller': {
@@ -165,7 +165,7 @@ export function CodeEditor({ docKey }: CodeEditorProps) {
       },
       '.cm-content': {
         // 内边距由设置「代码编辑区边距」驱动
-        padding: 'var(--mono-padding-y, 16px) var(--mono-padding-x, 24px)',
+        padding: 'var(--mono-padding-y, var(--dim-16)) var(--mono-padding-x, var(--dim-24))',
         caretColor: 'var(--cm-cursor)',
       },
     });
@@ -333,7 +333,7 @@ export function CodeEditor({ docKey }: CodeEditorProps) {
       '&': {
         fontFamily: 'var(--mono-font-family)',
         fontSize: 'var(--mono-font-size)',
-        height: '100%',
+        height: 'var(--pct-100)',
         caretColor: 'var(--cm-cursor)',
       },
       '.cm-scroller': {
@@ -349,7 +349,7 @@ export function CodeEditor({ docKey }: CodeEditorProps) {
       '.cm-content': {
         // 移除 margin: 0 auto 与 maxWidth，避免破坏 CodeMirror 虚拟选区坐标
         // 内边距由设置「代码编辑区边距」驱动
-        padding: 'var(--mono-padding-y, 16px) var(--mono-padding-x, 24px)',
+        padding: 'var(--mono-padding-y, var(--dim-16)) var(--mono-padding-x, var(--dim-24))',
         caretColor: 'var(--cm-cursor)',
       },
     });
@@ -512,8 +512,8 @@ export function CodeEditor({ docKey }: CodeEditorProps) {
       ref={rootRef}
       style={{
         position: 'relative',
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         overflow: 'hidden',
         background: 'var(--editor-bg)',
         display: 'flex',
@@ -537,9 +537,9 @@ export function CodeEditor({ docKey }: CodeEditorProps) {
       <div
         ref={containerRef}
         style={{
-          width: '100%',
-          maxWidth: 'var(--mono-max-width, 100%)',
-          height: '100%',
+          width: 'var(--pct-100)',
+          maxWidth: 'var(--mono-max-width, var(--pct-100))',
+          height: 'var(--pct-100)',
         }}
       />
       {/* 右键菜单：复制 / 粘贴；key 保证每次右键重新快照选区 */}

@@ -10,7 +10,7 @@
        local('JetBrains Mono'),
        local('JetBrainsMono-Regular'),
        url('../assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-  font-weight: 400;
+  font-weight: var(--weight-400);
   font-style: normal;
   font-display: swap;
 }
@@ -20,7 +20,7 @@
   src: local('JetBrains Mono Bold'),
        local('JetBrainsMono-Bold'),
        url('../assets/fonts/JetBrainsMono-Bold.woff2') format('woff2');
-  font-weight: 700;
+  font-weight: var(--weight-700);
   font-style: normal;
   font-display: swap;
 }
@@ -30,7 +30,7 @@
   src: local('JetBrains Mono Italic'),
        local('JetBrainsMono-Italic'),
        url('../assets/fonts/JetBrainsMono-Italic.woff2') format('woff2');
-  font-weight: 400;
+  font-weight: var(--weight-400);
   font-style: italic;
   font-display: swap;
 }
@@ -40,7 +40,7 @@
   src: local('JetBrains Mono Bold Italic'),
        local('JetBrainsMono-BoldItalic'),
        url('../assets/fonts/JetBrainsMono-BoldItalic.woff2') format('woff2');
-  font-weight: 700;
+  font-weight: var(--weight-700);
   font-style: italic;
   font-display: swap;
 }
@@ -56,7 +56,7 @@
        local('Maple Mono'),
        local('MapleMonoNormal-NF-CN-Regular'),
        url('../assets/fonts/MapleMonoNormal-NF-CN-Regular.ttf') format('truetype');
-  font-weight: 400;
+  font-weight: var(--weight-400);
   font-style: normal;
   font-display: swap;
 }
@@ -71,7 +71,7 @@
        local('Maple Mono Bold'),
        local('MapleMonoNormal-NF-CN-Bold'),
        url('../assets/fonts/MapleMonoNormal-NF-CN-Bold.ttf') format('truetype');
-  font-weight: 700;
+  font-weight: var(--weight-700);
   font-style: normal;
   font-display: swap;
 }

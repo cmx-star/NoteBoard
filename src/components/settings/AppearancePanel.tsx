@@ -3,7 +3,8 @@
 // 详见 docs/09-开发路线图.md 12.2
 
 import { useSettingsStore } from '../../stores/settingsStore';
-import type { MaterialStyle } from '../../core/ipc/types';
+import { getAllThemes } from '../../core/theme/themes';
+import type { MaterialStyle, ThemeId } from '../../core/ipc/types';
 
 export function AppearancePanel() {
   const settings = useSettingsStore((s) => s.settings);
@@ -14,38 +15,38 @@ export function AppearancePanel() {
 
   const material: MaterialStyle = settings.appearance.material ?? 'classic';
 
-  const themes: { id: string; label: string; preview: string }[] = [
-    { id: 'chen-guang', label: '晨光', preview: '#fffef7' },
-    { id: 'hu-po', label: '琥珀', preview: '#fffbf0' },
-    { id: 'mo-ye', label: '墨夜', preview: '#111113' },
-  ];
+  const themes = getAllThemes();
+  const lightThemes = themes.filter((theme) => theme.scheme === 'light');
+  const darkThemes = themes.filter((theme) => theme.scheme === 'dark');
 
   const rowStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 16,
-    fontSize: 13,
+    gap: 'var(--dim-12)',
+    marginBottom: 'var(--dim-16)',
+    fontSize: 'var(--text-13)',
   };
 
-  const labelStyle: React.CSSProperties = { width: 100, flexShrink: 0 };
+  const labelStyle: React.CSSProperties = { width: 'var(--dim-100)', flexShrink: 0 };
 
   return (
     <div>
-      <h2 style={{ fontSize: 16, marginTop: 0 }}>外观</h2>
+      <h2 style={{ fontSize: 'var(--text-16)', marginTop: 0 }}>外观</h2>
 
       {/* 主题模式 */}
       <div style={rowStyle}>
         <span style={labelStyle}>主题模式</span>
         <select
           value={settings.appearance.themeMode}
-          onChange={(e) => setThemeMode(e.target.value as 'system' | 'chen-guang' | 'hu-po' | 'mo-ye')}
+          onChange={(e) => setThemeMode(e.target.value as 'system' | ThemeId)}
           style={selectStyle}
         >
           <option value="system">跟随系统</option>
-          <option value="chen-guang">始终晨光</option>
-          <option value="hu-po">始终琥珀</option>
-          <option value="mo-ye">始终墨夜</option>
+          {themes.map((theme) => (
+            <option key={theme.id} value={theme.id}>
+              始终{theme.displayName}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -55,11 +56,14 @@ export function AppearancePanel() {
           <span style={labelStyle}>系统浅色时</span>
           <select
             value={settings.appearance.systemLightTheme}
-            onChange={(e) => setSystemLightTheme(e.target.value as 'chen-guang' | 'hu-po')}
+            onChange={(e) => setSystemLightTheme(e.target.value as ThemeId)}
             style={selectStyle}
           >
-            <option value="chen-guang">晨光</option>
-            <option value="hu-po">琥珀</option>
+            {lightThemes.map((theme) => (
+              <option key={theme.id} value={theme.id}>
+                {theme.displayName}
+              </option>
+            ))}
           </select>
         </div>
       )}
@@ -70,10 +74,14 @@ export function AppearancePanel() {
           <span style={labelStyle}>系统深色时</span>
           <select
             value={settings.appearance.systemDarkTheme}
-            onChange={(e) => setSystemDarkTheme(e.target.value as 'mo-ye')}
+            onChange={(e) => setSystemDarkTheme(e.target.value as ThemeId)}
             style={selectStyle}
           >
-            <option value="mo-ye">墨夜</option>
+            {darkThemes.map((theme) => (
+              <option key={theme.id} value={theme.id}>
+                {theme.displayName}
+              </option>
+            ))}
           </select>
         </div>
       )}
@@ -81,26 +89,30 @@ export function AppearancePanel() {
       {/* 主题预览 */}
       <div style={rowStyle}>
         <span style={labelStyle}>可用主题</span>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 'var(--dim-8)' }}>
           {themes.map((t) => (
-            <div
+            <button
               key={t.id}
+              type="button"
+              onClick={() => setThemeMode(t.id)}
+              aria-pressed={settings.appearance.themeMode === t.id}
               style={{
-                width: 48,
-                height: 48,
-                borderRadius: 6,
-                background: t.preview,
-                border: '2px solid var(--editor-border)',
+                width: 'var(--dim-48)',
+                height: 'var(--dim-48)',
+                borderRadius: 'var(--radius-md)',
+                background: t.previewBg,
+                border: `var(--dim-2) solid ${settings.appearance.themeMode === t.id ? t.previewAccent : 'var(--editor-border)'}`,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 11,
-                color: t.id === 'mo-ye' ? '#fff' : '#333',
+                fontSize: 'var(--text-11)',
+                color: t.previewCodeText,
+                padding: 0,
               }}
             >
-              {t.label}
-            </div>
+              {t.displayName}
+            </button>
           ))}
         </div>
       </div>
@@ -123,10 +135,10 @@ export function AppearancePanel() {
 }
 
 const selectStyle: React.CSSProperties = {
-  padding: '4px 8px',
-  fontSize: 13,
-  border: '1px solid var(--editor-border)',
-  borderRadius: 3,
+  padding: 'var(--dim-4) var(--dim-8)',
+  fontSize: 'var(--text-13)',
+  border: 'var(--dim-1) solid var(--editor-border)',
+  borderRadius: 'var(--radius-xs)',
   background: 'var(--editor-surface)',
   color: 'var(--editor-text)',
   outline: 'none',

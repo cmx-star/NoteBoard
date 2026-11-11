@@ -23,7 +23,7 @@ perfMark('js_entry', { htmlTs: (window as unknown as { __nbHtmlTs?: number }).__
 if (!applyCachedTheme()) {
   // 没有缓存，默认使用系统主题
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  document.documentElement.dataset.theme = prefersDark ? 'mo-ye' : 'chen-guang';
+  document.documentElement.dataset.theme = prefersDark ? 'mo-hei' : 'su-bai';
 }
 
 // 🔴 防首屏闪烁：同步注入材质

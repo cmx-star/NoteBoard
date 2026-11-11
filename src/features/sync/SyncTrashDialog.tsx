@@ -112,7 +112,7 @@ export function SyncTrashDialog() {
             回收站
             {items && items.length > 0 && <span className="nb-sync-muted">（{items.length} 项）</span>}
           </div>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 'var(--dim-8)', alignItems: 'center' }}>
             <button
               type="button"
               className="nb-btn-danger"

@@ -69,13 +69,13 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '32px 24px',
+        padding: 'var(--dim-32) var(--dim-24)',
         boxSizing: 'border-box',
         background: 'var(--editor-bg)',
         color: 'var(--editor-text)',
@@ -84,28 +84,28 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
     >
       <div
         style={{
-          maxWidth: 460,
-          width: '100%',
+          maxWidth: 'var(--dim-460)',
+          width: 'var(--pct-100)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           textAlign: 'center',
-          gap: 20,
-          padding: '32px 28px',
+          gap: 'var(--dim-20)',
+          padding: 'var(--dim-32) var(--dim-28)',
           background: 'var(--editor-surface)',
-          border: '1px solid var(--editor-border)',
-          borderRadius: 12,
-          boxShadow: 'var(--shadow-md, 0 4px 6px -1px rgba(0,0,0,0.1))',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-xl)',
+          boxShadow: 'var(--shadow-md, 0 var(--dim-4) var(--dim-6) calc(var(--dim-1) * -1) var(--nb-black-a10))',
         }}
       >
         {/* 顶部格式图标 */}
         <div
           style={{
-            width: 64,
-            height: 64,
-            borderRadius: 16,
+            width: 'var(--dim-64)',
+            height: 'var(--dim-64)',
+            borderRadius: 'var(--radius-2xl)',
             background: 'var(--editor-bg)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -115,11 +115,11 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
         </div>
 
         {/* 文件名与类型标签 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)', width: 'var(--pct-100)' }}>
           <h2
             style={{
-              fontSize: 18,
-              fontWeight: 600,
+              fontSize: 'var(--text-18)',
+              fontWeight: 'var(--weight-600)',
               color: 'var(--editor-heading)',
               margin: 0,
               wordBreak: 'break-all',
@@ -132,18 +132,18 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 8,
-              fontSize: 12,
+              gap: 'var(--dim-8)',
+              fontSize: 'var(--text-12)',
               color: 'var(--editor-text-muted)',
             }}
           >
             <span
               style={{
-                padding: '2px 8px',
-                borderRadius: 4,
+                padding: 'var(--dim-2) var(--dim-8)',
+                borderRadius: 'var(--radius-sm)',
                 background: 'var(--editor-bg)',
-                border: '1px solid var(--editor-border)',
-                fontWeight: 500,
+                border: 'var(--dim-1) solid var(--editor-border)',
+                fontWeight: 'var(--weight-500)',
               }}
             >
               {ext}
@@ -157,14 +157,14 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
         {/* 格式不支持说明 */}
         <div
           style={{
-            fontSize: 13,
-            lineHeight: 1.6,
+            fontSize: 'var(--text-13)',
+            lineHeight: 'var(--leading-1-6)',
             color: 'var(--editor-text-secondary)',
             background: 'var(--editor-bg)',
-            padding: '12px 16px',
-            borderRadius: 8,
-            border: '1px solid var(--editor-border)',
-            width: '100%',
+            padding: 'var(--dim-12) var(--dim-16)',
+            borderRadius: 'var(--radius-lg)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            width: 'var(--pct-100)',
             boxSizing: 'border-box',
           }}
         >
@@ -180,8 +180,8 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 10,
-            width: '100%',
+            gap: 'var(--dim-10)',
+            width: 'var(--pct-100)',
           }}
         >
           {/* 插件主动作：前往下载或启用对应查看插件 */}
@@ -206,14 +206,14 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 8,
-              padding: '10px 16px',
+              gap: 'var(--dim-8)',
+              padding: 'var(--dim-10) var(--dim-16)',
               border: 'none',
-              borderRadius: 6,
-              background: 'var(--editor-accent, #3b82f6)',
-              color: '#ffffff',
-              fontSize: 13,
-              fontWeight: 500,
+              borderRadius: 'var(--radius-md)',
+              background: 'var(--editor-accent)',
+              color: 'var(--nb-white)',
+              fontSize: 'var(--text-13)',
+              fontWeight: 'var(--weight-500)',
               cursor: 'pointer',
               boxShadow: 'var(--shadow-sm)',
               transition: 'all var(--transition-fast)',
@@ -222,8 +222,8 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
               // 次要按钮样式由全局类负责悬浮与按下反馈
               if (pluginAction) return;
               e.currentTarget.style.filter = 'brightness(1.08)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.25)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
+              e.currentTarget.style.boxShadow = '0 var(--dim-4) var(--dim-12) var(--nb-auto-3b82f6-a25)';
             }}
             onMouseLeave={(e) => {
               // 次要按钮样式由全局类负责悬浮与按下反馈
@@ -235,13 +235,13 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
             onMouseDown={(e) => {
               // 次要按钮样式由全局类负责悬浮与按下反馈
               if (pluginAction) return;
-              e.currentTarget.style.transform = 'translateY(0) scale(0.98)';
+              e.currentTarget.style.transform = 'translateY(0) scale(var(--scale-0-98))';
               e.currentTarget.style.filter = 'brightness(0.95)';
             }}
             onMouseUp={(e) => {
               // 次要按钮样式由全局类负责悬浮与按下反馈
               if (pluginAction) return;
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
               e.currentTarget.style.filter = 'brightness(1.08)';
             }}
           >
@@ -250,7 +250,7 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
           </button>
 
           {/* 次动作行 */}
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div style={{ display: 'flex', gap: 'var(--dim-10)' }}>
             <button
               type="button"
               className="nb-btn-secondary"
@@ -260,13 +260,13 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 6,
-                padding: '8px 12px',
-                border: '1px solid var(--control-border)',
-                borderRadius: 6,
+                gap: 'var(--dim-6)',
+                padding: 'var(--dim-8) var(--dim-12)',
+                border: 'var(--dim-1) solid var(--control-border)',
+                borderRadius: 'var(--radius-md)',
                 background: 'var(--editor-surface)',
                 color: 'var(--editor-text)',
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 cursor: 'pointer',
                 boxShadow: 'var(--shadow-sm)',
                 transition: 'all var(--transition-fast)',
@@ -274,7 +274,7 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
                 e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
                 e.currentTarget.style.boxShadow = 'var(--shadow-md)';
               }}
               onMouseLeave={(e) => {
@@ -285,11 +285,11 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
               }}
               onMouseDown={(e) => {
                 e.currentTarget.style.background = 'var(--toolbar-active)';
-                e.currentTarget.style.transform = 'translateY(0) scale(0.97)';
+                e.currentTarget.style.transform = 'translateY(0) scale(var(--scale-0-97))';
               }}
               onMouseUp={(e) => {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
               }}
             >
               <FolderOpen size={14} />
@@ -305,13 +305,13 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 6,
-                padding: '8px 12px',
-                border: '1px solid var(--control-border)',
-                borderRadius: 6,
+                gap: 'var(--dim-6)',
+                padding: 'var(--dim-8) var(--dim-12)',
+                border: 'var(--dim-1) solid var(--control-border)',
+                borderRadius: 'var(--radius-md)',
                 background: 'var(--editor-surface)',
                 color: 'var(--editor-text)',
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 cursor: 'pointer',
                 boxShadow: 'var(--shadow-sm)',
                 transition: 'all var(--transition-fast)',
@@ -319,7 +319,7 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
                 e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
                 e.currentTarget.style.boxShadow = 'var(--shadow-md)';
               }}
               onMouseLeave={(e) => {
@@ -330,11 +330,11 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
               }}
               onMouseDown={(e) => {
                 e.currentTarget.style.background = 'var(--toolbar-active)';
-                e.currentTarget.style.transform = 'translateY(0) scale(0.97)';
+                e.currentTarget.style.transform = 'translateY(0) scale(var(--scale-0-97))';
               }}
               onMouseUp={(e) => {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
               }}
             >
               {copied ? <Check size={14} color="var(--success-600)" /> : <Copy size={14} />}

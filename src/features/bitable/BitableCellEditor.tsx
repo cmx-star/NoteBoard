@@ -34,17 +34,17 @@ function openCellLink(event: React.MouseEvent<HTMLAnchorElement>): void {
 
 /** 表单形态（记录详情侧边栏）下输入控件的统一样式 */
 const FORM_INPUT_STYLE: React.CSSProperties = {
-  width: '100%',
+  width: 'var(--pct-100)',
   boxSizing: 'border-box',
-  border: '1px solid var(--editor-border, #cbd5e1)',
-  borderRadius: 6,
-  padding: '6px 8px',
-  fontSize: 13,
+  border: 'var(--dim-1) solid var(--editor-border)',
+  borderRadius: 'var(--dim-6)',
+  padding: 'var(--dim-6) var(--dim-8)',
+  fontSize: 'var(--text-13)',
   fontFamily: 'inherit',
-  lineHeight: 1.5,
+  lineHeight: 'var(--leading-1-5)',
   outline: 'none',
-  background: 'var(--editor-bg, #ffffff)',
-  color: 'var(--editor-text, #1e293b)',
+  background: 'var(--editor-bg)',
+  color: 'var(--editor-text)',
 };
 
 /**
@@ -52,15 +52,15 @@ const FORM_INPUT_STYLE: React.CSSProperties = {
  * 避免首列缩进旁多出一条内层竖线，也不遮挡外层选区；内边距与只读文本一致。
  */
 const CELL_INPUT_STYLE: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
+  width: 'var(--pct-100)',
+  height: 'var(--pct-100)',
   border: 'none',
   borderRadius: 0,
-  padding: '4px 8px',
-  fontSize: 13,
+  padding: 'var(--dim-4) var(--dim-8)',
+  fontSize: 'var(--text-13)',
   outline: 'none',
   background: 'transparent',
-  color: 'var(--editor-text, #1e293b)',
+  color: 'var(--editor-text)',
 };
 
 /** 数字输入框的类名：隐藏原生上下微调箭头（样式见 globals.css 的 .nb-bitable-num-input） */
@@ -127,10 +127,10 @@ function LongTextReadOnly({
       <div
         onDoubleClick={onOpenEditor}
         style={{
-          width: '100%',
-          padding: '4px 8px',
-          fontSize: 13,
-          color: 'var(--editor-text-muted, #94a3b8)',
+          width: 'var(--pct-100)',
+          padding: 'var(--dim-4) var(--dim-8)',
+          fontSize: 'var(--text-13)',
+          color: 'var(--editor-text-muted)',
           cursor: 'pointer',
         }}
       >
@@ -145,11 +145,11 @@ function LongTextReadOnly({
       <div
         onDoubleClick={onOpenEditor}
         style={{
-          width: '100%',
-          padding: '5px 8px',
-          fontSize: 13,
-          lineHeight: 1.6,
-          color: 'var(--editor-text, #1e293b)',
+          width: 'var(--pct-100)',
+          padding: 'var(--dim-5) var(--dim-8)',
+          fontSize: 'var(--text-13)',
+          lineHeight: 'var(--leading-1-6)',
+          color: 'var(--editor-text)',
           cursor: 'pointer',
           // 内容整体可点击展开编辑，但 Markdown 里的代码块滚动不应被误触发
           overflow: 'hidden',
@@ -169,12 +169,12 @@ function LongTextReadOnly({
     <div
       onDoubleClick={onOpenEditor}
       style={{
-        width: '100%',
+        width: 'var(--pct-100)',
         display: 'flex',
         alignItems: 'center',
-        padding: '4px 8px',
-        fontSize: 13,
-        color: 'var(--editor-text, #1e293b)',
+        padding: 'var(--dim-4) var(--dim-8)',
+        fontSize: 'var(--text-13)',
+        color: 'var(--editor-text)',
         cursor: 'pointer',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -312,13 +312,13 @@ export function BitableCellEditor({
       <div
         onDoubleClick={startEditing}
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
-          padding: '4px 8px',
-          fontSize: 13,
-          color: value ? 'var(--editor-text, #1e293b)' : 'var(--editor-text-muted, #94a3b8)',
+          padding: 'var(--dim-4) var(--dim-8)',
+          fontSize: 'var(--text-13)',
+          color: value ? 'var(--editor-text)' : 'var(--editor-text-muted)',
           cursor: 'pointer',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -343,9 +343,9 @@ export function BitableCellEditor({
             // 不裁剪溢出：顶部工具栏的插入/标题下拉需要伸出边框，圆角由编辑器首尾栏自行处理
             className="nb-bitable-rte-framed"
             style={{
-              border: '1px solid var(--editor-border, #cbd5e1)',
-              borderRadius: 6,
-              background: 'var(--editor-bg, #ffffff)',
+              border: 'var(--dim-1) solid var(--editor-border)',
+              borderRadius: 'var(--dim-6)',
+              background: 'var(--editor-bg)',
             }}
           >
             <BitableRichTextEditor
@@ -380,7 +380,7 @@ export function BitableCellEditor({
               e.currentTarget.blur();
             }
           }}
-          style={{ ...FORM_INPUT_STYLE, resize: 'vertical', lineHeight: 1.6 }}
+          style={{ ...FORM_INPUT_STYLE, resize: 'vertical', lineHeight: 'var(--leading-1-6)' }}
         />
       );
     }
@@ -477,13 +477,13 @@ export function BitableCellEditor({
       <div
         onDoubleClick={startEditing}
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
-          padding: '4px 8px',
-          fontSize: 13,
-          color: value !== null && value !== undefined ? 'var(--editor-text, #1e293b)' : 'var(--editor-text-muted, #94a3b8)',
+          padding: 'var(--dim-4) var(--dim-8)',
+          fontSize: 'var(--text-13)',
+          color: value !== null && value !== undefined ? 'var(--editor-text)' : 'var(--editor-text-muted)',
           cursor: 'pointer',
           fontVariantNumeric: 'tabular-nums',
         }}
@@ -529,17 +529,17 @@ export function BitableCellEditor({
         onDoubleClick={openSelectPanel}
         style={{
           position: 'relative',
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: 4,
-          padding: isForm ? '6px 8px' : '2px 6px',
+          gap: 'var(--dim-4)',
+          padding: isForm ? 'var(--dim-6) var(--dim-8)' : 'var(--dim-2) var(--dim-6)',
           minHeight: isForm ? 34 : undefined,
-          border: isForm ? '1px solid var(--editor-border, #cbd5e1)' : undefined,
+          border: isForm ? 'var(--dim-1) solid var(--editor-border)' : undefined,
           borderRadius: isForm ? 6 : undefined,
-          background: isForm ? 'var(--editor-bg, #ffffff)' : undefined,
+          background: isForm ? 'var(--editor-bg)' : undefined,
           cursor: 'pointer',
           overflow: 'hidden',
         }}
@@ -547,7 +547,7 @@ export function BitableCellEditor({
         {selectedOption ? (
           <OptionBadge option={selectedOption} />
         ) : (
-          <span style={{ fontSize: 12, color: 'var(--editor-text-muted, #94a3b8)', opacity: 0.6 }}>
+          <span style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)', opacity: 'var(--opacity-0-6)' }}>
             {isForm ? '点击选择标签' : EMPTY_HINT}
           </span>
         )}
@@ -613,16 +613,16 @@ export function BitableCellEditor({
         onDoubleClick={openSelectPanel}
         style={{
           position: 'relative',
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
-          gap: 4,
-          padding: isForm ? '6px 8px' : '2px 6px',
+          gap: 'var(--dim-4)',
+          padding: isForm ? 'var(--dim-6) var(--dim-8)' : 'var(--dim-2) var(--dim-6)',
           minHeight: isForm ? 34 : undefined,
-          border: isForm ? '1px solid var(--editor-border, #cbd5e1)' : undefined,
+          border: isForm ? 'var(--dim-1) solid var(--editor-border)' : undefined,
           borderRadius: isForm ? 6 : undefined,
-          background: isForm ? 'var(--editor-bg, #ffffff)' : undefined,
+          background: isForm ? 'var(--editor-bg)' : undefined,
           cursor: 'pointer',
           flexWrap: 'nowrap',
           // 注意：此处不能设置 overflow: hidden，否则 Portal 之外的内联面板会被裁剪；
@@ -634,10 +634,10 @@ export function BitableCellEditor({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 4,
+            gap: 'var(--dim-4)',
             flexWrap: isForm ? 'wrap' : 'nowrap',
             overflow: 'hidden',
-            maxWidth: '100%',
+            maxWidth: 'var(--pct-100)',
           }}
         >
           {selectedOptions.length > 0 ? (
@@ -649,7 +649,7 @@ export function BitableCellEditor({
               />
             ))
           ) : (
-            <span style={{ fontSize: 12, color: 'var(--editor-text-muted, #94a3b8)', opacity: 0.6 }}>
+            <span style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)', opacity: 'var(--opacity-0-6)' }}>
               {isForm ? '点击选择标签' : EMPTY_HINT}
             </span>
           )}
@@ -699,7 +699,7 @@ export function BitableCellEditor({
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 8,
+            gap: 'var(--dim-8)',
             cursor: 'pointer',
             userSelect: 'none',
           }}
@@ -707,10 +707,10 @@ export function BitableCellEditor({
           <div
             style={{
               position: 'relative',
-              width: 38,
-              height: 22,
-              borderRadius: 11,
-              background: isChecked ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-border, #cbd5e1)',
+              width: 'var(--dim-38)',
+              height: 'var(--dim-22)',
+              borderRadius: 'var(--dim-11)',
+              background: isChecked ? 'var(--editor-accent)' : 'var(--editor-border)',
               transition: 'background 0.18s ease',
               flexShrink: 0,
             }}
@@ -718,18 +718,18 @@ export function BitableCellEditor({
             <div
               style={{
                 position: 'absolute',
-                top: 3,
+                top: 'var(--dim-3)',
                 left: isChecked ? 19 : 3,
-                width: 16,
-                height: 16,
-                borderRadius: '50%',
-                background: '#ffffff',
+                width: 'var(--dim-16)',
+                height: 'var(--dim-16)',
+                borderRadius: 'var(--pct-50)',
+                background: 'var(--nb-white)',
                 transition: 'left 0.18s ease',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                boxShadow: '0 var(--dim-1) var(--dim-3) var(--nb-black-a20)',
               }}
             />
           </div>
-          <span style={{ fontSize: 13, color: 'var(--editor-text, #1e293b)' }}>
+          <span style={{ fontSize: 'var(--text-13)', color: 'var(--editor-text)' }}>
             {isChecked ? '已完成' : '未完成'}
           </span>
         </div>
@@ -739,8 +739,8 @@ export function BitableCellEditor({
     return (
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -750,15 +750,15 @@ export function BitableCellEditor({
       >
         <div
           style={{
-            width: 16,
-            height: 16,
-            borderRadius: 4,
-            border: isChecked ? 'none' : '1.5px solid var(--editor-border, #cbd5e1)',
-            background: isChecked ? 'var(--editor-accent, #3b82f6)' : 'transparent',
+            width: 'var(--dim-16)',
+            height: 'var(--dim-16)',
+            borderRadius: 'var(--dim-4)',
+            border: isChecked ? 'none' : 'var(--dim-1-5) solid var(--editor-border)',
+            background: isChecked ? 'var(--editor-accent)' : 'transparent',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#ffffff',
+            color: 'var(--nb-white)',
             transition: 'all 0.15s ease',
           }}
         >
@@ -774,12 +774,12 @@ export function BitableCellEditor({
     return (
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
-          gap: 2,
-          padding: '2px 6px',
+          gap: 'var(--dim-2)',
+          padding: 'var(--dim-2) var(--dim-6)',
         }}
       >
         {[1, 2, 3, 4, 5].map((star) => (
@@ -787,8 +787,8 @@ export function BitableCellEditor({
             key={star}
             size={14}
             className="nb-bitable-star"
-            fill={star <= currentRating ? '#f59e0b' : 'none'}
-            color={star <= currentRating ? '#f59e0b' : '#cbd5e1'}
+            fill={star <= currentRating ? 'var(--nb-amber-500)' : 'none'}
+            color={star <= currentRating ? 'var(--nb-amber-500)' : 'var(--nb-slate-300)'}
             onClick={() => onChange(star === currentRating ? 0 : star)}
           />
         ))}
@@ -803,14 +803,14 @@ export function BitableCellEditor({
     // 表单形态用滑块 + 数值输入，拖动即可设定
     if (variant === 'form') {
       return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
           <input
             type="range"
             min={0}
             max={100}
             value={progressVal}
             onChange={(e) => onChange(Number(e.target.value))}
-            style={{ flex: 1, accentColor: 'var(--editor-accent, #3b82f6)' }}
+            style={{ flex: 1, accentColor: 'var(--editor-accent)' }}
           />
           <input
             type="number"
@@ -821,9 +821,9 @@ export function BitableCellEditor({
             onChange={(e) => onChange(Math.min(100, Math.max(0, Number(e.target.value) || 0)))}
             onWheel={blurNumberOnWheel}
             onKeyDown={blockNumberStepKeys}
-            style={{ ...FORM_INPUT_STYLE, width: 64, textAlign: 'right' }}
+            style={{ ...FORM_INPUT_STYLE, width: 'var(--dim-64)', textAlign: 'right' }}
           />
-          <span style={{ fontSize: 12, color: 'var(--editor-text-muted, #94a3b8)' }}>%</span>
+          <span style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)' }}>%</span>
         </div>
       );
     }
@@ -831,29 +831,29 @@ export function BitableCellEditor({
     return (
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
-          gap: 8,
-          padding: '2px 8px',
+          gap: 'var(--dim-8)',
+          padding: 'var(--dim-2) var(--dim-8)',
         }}
       >
         <div
           style={{
             flex: 1,
-            height: 8,
-            borderRadius: 4,
-            background: 'var(--editor-bg, #f1f5f9)',
+            height: 'var(--dim-8)',
+            borderRadius: 'var(--dim-4)',
+            background: 'var(--editor-bg)',
             overflow: 'hidden',
           }}
         >
           <div
             style={{
               width: `${progressVal}%`,
-              height: '100%',
-              borderRadius: 4,
-              background: progressVal === 100 ? '#10b981' : '#3b82f6',
+              height: 'var(--pct-100)',
+              borderRadius: 'var(--dim-4)',
+              background: progressVal === 100 ? 'var(--nb-emerald-500)' : 'var(--nb-blue-500)',
               transition: 'width 0.2s ease',
             }}
           />
@@ -868,17 +868,17 @@ export function BitableCellEditor({
           onWheel={blurNumberOnWheel}
           onKeyDown={blockNumberStepKeys}
           style={{
-            width: 44,
+            width: 'var(--dim-44)',
             border: 'none',
             background: 'transparent',
-            fontSize: 11,
-            fontWeight: 600,
+            fontSize: 'var(--text-11)',
+            fontWeight: 'var(--weight-600)',
             textAlign: 'right',
-            color: 'var(--editor-text, #1e293b)',
+            color: 'var(--editor-text)',
             outline: 'none',
           }}
         />
-        <span style={{ fontSize: 10, color: 'var(--editor-text-muted, #94a3b8)', marginLeft: -4 }}>%</span>
+        <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-muted)', marginLeft: 'calc(var(--dim-4) * -1)' }}>%</span>
       </div>
     );
   }
@@ -887,7 +887,7 @@ export function BitableCellEditor({
   if (column.type === 'link') {
     if (variant === 'form') {
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-4)' }}>
           <input
             type="url"
             value={inputValue}
@@ -916,7 +916,7 @@ export function BitableCellEditor({
               onClick={openCellLink}
               onAuxClick={openCellLink}
               className="nb-bitable-btn"
-              style={{ fontSize: 11, color: 'var(--editor-accent, #3b82f6)', display: 'inline-flex', width: 'fit-content' }}
+              style={{ fontSize: 'var(--text-11)', color: 'var(--editor-accent)', display: 'inline-flex', width: 'fit-content' }}
             >
               打开链接
             </a>
@@ -957,19 +957,19 @@ export function BitableCellEditor({
       <div
         onDoubleClick={startEditing}
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '4px 8px',
-          fontSize: 13,
+          padding: 'var(--dim-4) var(--dim-8)',
+          fontSize: 'var(--text-13)',
           cursor: 'pointer',
         }}
       >
         <span
           style={{
-            color: value ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-text-muted, #94a3b8)',
+            color: value ? 'var(--editor-accent)' : 'var(--editor-text-muted)',
             textDecoration: value ? 'underline' : 'none',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -987,7 +987,7 @@ export function BitableCellEditor({
             onAuxClick={openCellLink}
             aria-label="打开链接"
             className="nb-bitable-btn-ghost"
-            style={{ padding: 2, color: 'var(--editor-accent, #3b82f6)' }}
+            style={{ padding: 'var(--dim-2)', color: 'var(--editor-accent)' }}
           >
             <ExternalLink size={12} />
           </a>

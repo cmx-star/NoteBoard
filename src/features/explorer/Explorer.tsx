@@ -130,8 +130,8 @@ export function Explorer() {
   };
 
   const containerStyle: React.CSSProperties = {
-    width: '100%',
-    height: '100%',
+    width: 'var(--pct-100)',
+    height: 'var(--pct-100)',
     display: 'flex',
     flexDirection: 'column',
     background: 'var(--explorer-bg)',
@@ -144,14 +144,14 @@ export function Explorer() {
       <div style={containerStyle}>
         <div
           style={{
-            padding: '36px 16px',
-            fontSize: 'var(--ui-font-size, 13px)',
+            padding: 'var(--dim-36) var(--dim-16)',
+            fontSize: 'var(--ui-font-size, var(--dim-13))',
             color: 'var(--explorer-text-muted)',
             textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 16,
+            gap: 'var(--dim-16)',
           }}
         >
           <span>打开文件夹以浏览文件</span>
@@ -164,12 +164,12 @@ export function Explorer() {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 8,
-              padding: '8px 16px',
-              fontSize: 'var(--ui-font-size, 13px)',
-              fontWeight: 500,
-              borderRadius: 8,
-              minWidth: 140,
+              gap: 'var(--dim-8)',
+              padding: 'var(--dim-8) var(--dim-16)',
+              fontSize: 'var(--ui-font-size, var(--dim-13))',
+              fontWeight: 'var(--weight-500)',
+              borderRadius: 'var(--radius-lg)',
+              minWidth: 'var(--dim-140)',
             }}
           >
             <FolderOpen size={16} color="var(--editor-accent)" />
@@ -189,13 +189,13 @@ export function Explorer() {
       {/* 标题行：仅保留操作按钮，靠右排列 */}
       <div
         style={{
-          height: 30,
+          height: 'var(--dim-30)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
-          gap: 2,
-          padding: '0 8px',
-          borderBottom: '1px solid var(--explorer-border)',
+          gap: 'var(--dim-2)',
+          padding: '0 var(--dim-8)',
+          borderBottom: 'var(--dim-1) solid var(--explorer-border)',
           flexShrink: 0,
         }}
       >
@@ -257,7 +257,7 @@ export function Explorer() {
 
       {/* 新建文件输入框 */}
       {creatingType && (
-        <div style={{ padding: '4px 8px', borderBottom: '1px solid var(--editor-border)' }}>
+        <div style={{ padding: 'var(--dim-4) var(--dim-8)', borderBottom: 'var(--dim-1) solid var(--editor-border)' }}>
           <input
             type="text"
             placeholder={creatingType === 'file' ? '文件名 (例如: note.md)' : '文件夹名'}
@@ -276,11 +276,11 @@ export function Explorer() {
               }
             }}
             style={{
-              width: '100%',
-              padding: '3px 6px',
-              fontSize: 12,
-              border: '1px solid var(--editor-accent)',
-              borderRadius: 2,
+              width: 'var(--pct-100)',
+              padding: 'var(--dim-3) var(--dim-6)',
+              fontSize: 'var(--text-12)',
+              border: 'var(--dim-1) solid var(--editor-accent)',
+              borderRadius: 'var(--radius-xs)',
               background: 'var(--editor-surface)',
               color: 'var(--editor-text)',
               outline: 'none',
@@ -303,9 +303,9 @@ export function Explorer() {
           <div
             style={{
               position: 'absolute',
-              top: 4,
-              right: 8,
-              fontSize: 11,
+              top: 'var(--dim-4)',
+              right: 'var(--dim-8)',
+              fontSize: 'var(--text-11)',
               color: 'var(--explorer-text-muted)',
             }}
           >
@@ -326,8 +326,8 @@ export function Explorer() {
         ) : (
           <div
             style={{
-              padding: '8px 12px',
-              fontSize: 12,
+              padding: 'var(--dim-8) var(--dim-12)',
+              fontSize: 'var(--text-12)',
               color: 'var(--explorer-text-muted)',
             }}
           >
@@ -341,12 +341,12 @@ export function Explorer() {
 
 // 标题栏按钮各自的色相；实际颜色在 explorer.css 中与主题文字色混合，适配明暗主题
 const ACTION_HUES = {
-  locate: '#f43f5e',
-  newFile: '#3b82f6',
-  newFolder: '#f59e0b',
-  refresh: '#10b981',
-  openFolder: '#f97316',
-  search: '#8b5cf6',
+  locate: 'var(--nb-auto-f43f5e)',
+  newFile: 'var(--nb-blue-500)',
+  newFolder: 'var(--nb-amber-500)',
+  refresh: 'var(--nb-emerald-500)',
+  openFolder: 'var(--nb-orange-500)',
+  search: 'var(--nb-purple-500)',
 } as const;
 
 interface ActionButtonProps {

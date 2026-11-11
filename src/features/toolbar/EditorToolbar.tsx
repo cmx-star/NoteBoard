@@ -60,19 +60,19 @@ export function EditorToolbar({ activeTab, activeEditor }: EditorToolbarProps) {
   return (
     <div
       style={{
-        height: 36,
-        minHeight: 36,
+        height: 'var(--dim-36)',
+        minHeight: 'var(--dim-36)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: compactMode ? '0 4px 0 6px' : '0 8px 0 10px',
+        padding: compactMode ? '0 var(--dim-4) 0 var(--dim-6)' : '0 var(--dim-8) 0 var(--dim-10)',
         background: 'var(--editor-surface, var(--editor-bg))',
-        borderBottom: '1px solid var(--editor-border)',
-        zIndex: 15,
+        borderBottom: 'var(--dim-1) solid var(--editor-border)',
+        zIndex: 'var(--z-15)',
         position: 'relative',
         userSelect: 'none',
         flexShrink: 0,
-        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.02)',
+        boxShadow: '0 var(--dim-1) var(--dim-2) var(--nb-black-a02)',
       }}
     >
       {/* 格式针对性工具集 */}
@@ -96,7 +96,7 @@ export function EditorToolbar({ activeTab, activeEditor }: EditorToolbarProps) {
       </Suspense>
 
       {/* 右侧视图操作：导出（仅 Markdown）、沉浸阅读（Markdown、代码与 Mermaid / PlantUML / 信息图）与收起按钮 */}
-      <div style={{ marginLeft: compactMode ? 2 : 8, display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+      <div style={{ marginLeft: compactMode ? 2 : 8, display: 'flex', alignItems: 'center', gap: 'var(--dim-2)', flexShrink: 0 }}>
         {!compactMode && (
           <>
             {activeTab.kind === 'markdown' && <Suspense fallback={null}><MarkdownExportMenu tab={activeTab} editor={activeEditor} /></Suspense>}

@@ -1,17 +1,20 @@
 // NoteBoard 主题 Token 名常量
 // 防拼错 + 必需 Token 清单（用于结构完整性测试）
-// 色值来源：docs/06-主题与设计规范.md §3/4/5
+// 实际色值与形状定义在 src/styles/globals.css 的主题块中
 
 import type { ThemeId } from '../ipc/types';
 
-// ── 三套主题 ID ──
+// ── 四套主题 ID ──
 
-export const THEME_IDS: readonly ThemeId[] = ['chen-guang', 'hu-po', 'mo-ye'] as const;
+export const THEME_IDS: readonly ThemeId[] = ['su-bai', 'zhi-gan', 'mo-hei', 'wu-mian'] as const;
 
 // ── 必需 Token 清单 ──
-// 三套主题的 Token 键集合必须完全一致，缺一个即 CI 失败
+// 四套主题的 Token 键集合必须完全一致，缺一个即 CI 失败
 
 export const REQUIRED_TOKENS: readonly string[] = [
+  // 形状层（四套主题各自的圆角策略）
+  '--shape-radius-xs', '--shape-radius-sm', '--shape-radius-md',
+  '--shape-radius-lg', '--shape-radius-xl', '--shape-radius-2xl', '--shape-radius-3xl',
   // 色板层（primary）
   '--primary-50', '--primary-100', '--primary-200', '--primary-300', '--primary-400',
   '--primary-500', '--primary-600', '--primary-700', '--primary-800', '--primary-900',
@@ -25,18 +28,18 @@ export const REQUIRED_TOKENS: readonly string[] = [
 
   // 语义层
   '--editor-bg', '--editor-surface', '--editor-text', '--editor-text-secondary', '--editor-text-muted',
-  '--editor-border', '--editor-border-focus', '--editor-heading', '--editor-accent',
+  '--editor-border', '--editor-border-focus', '--editor-heading', '--editor-accent', '--control-border',
   '--accent-strong', '--editor-link',
   '--editor-quote-bg', '--editor-selection', '--editor-code-bg',
   '--code-inline-bg', '--code-inline-text',
   '--code-block-bg', '--code-block-container-bg', '--code-block-text',
 
-  // 语法高亮（17 个）
+  // 语法高亮（19 个）
   '--hljs-comment', '--hljs-keyword', '--hljs-string', '--hljs-number',
-  '--hljs-title', '--hljs-function', '--hljs-params', '--hljs-variable',
+  '--hljs-literal', '--hljs-title', '--hljs-function', '--hljs-params', '--hljs-variable',
   '--hljs-class', '--hljs-meta', '--hljs-addition', '--hljs-deletion',
   '--hljs-regexp', '--hljs-selector-class', '--hljs-selector-id',
-  '--hljs-link', '--hljs-attr',
+  '--hljs-link', '--hljs-attr', '--hljs-punctuation',
 
   // 组件层
   '--titlebar-bg', '--toolbar-hover', '--toolbar-active',
@@ -85,11 +88,12 @@ export const TEXT_PAIRS: readonly [string, string][] = [
   ['--editor-link', '--editor-bg'],
   ['--code-inline-text', '--code-inline-bg'],
   ['--code-block-text', '--code-block-bg'],
-  // 17 个 hljs token on code-block-bg
+  // 19 个 hljs token on code-block-bg
   ['--hljs-comment', '--code-block-bg'],
   ['--hljs-keyword', '--code-block-bg'],
   ['--hljs-string', '--code-block-bg'],
   ['--hljs-number', '--code-block-bg'],
+  ['--hljs-literal', '--code-block-bg'],
   ['--hljs-title', '--code-block-bg'],
   ['--hljs-function', '--code-block-bg'],
   ['--hljs-params', '--code-block-bg'],
@@ -103,15 +107,18 @@ export const TEXT_PAIRS: readonly [string, string][] = [
   ['--hljs-selector-id', '--code-block-bg'],
   ['--hljs-link', '--code-block-bg'],
   ['--hljs-attr', '--code-block-bg'],
+  ['--hljs-punctuation', '--code-block-bg'],
   // 代码文件场景（on editor-bg，不是 code-block-bg）
   ['--hljs-comment', '--editor-bg'],
   ['--hljs-keyword', '--editor-bg'],
   ['--hljs-string', '--editor-bg'],
   ['--hljs-number', '--editor-bg'],
+  ['--hljs-literal', '--editor-bg'],
   ['--hljs-title', '--editor-bg'],
   ['--hljs-variable', '--editor-bg'],
   ['--hljs-function', '--editor-bg'],
   ['--hljs-meta', '--editor-bg'],
+  ['--hljs-punctuation', '--editor-bg'],
   // 历史记录差异文字（删除线 / 新增）
   ['--diff-insert-text', '--editor-bg'],
   ['--diff-delete-text', '--editor-bg'],

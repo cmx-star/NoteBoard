@@ -189,7 +189,7 @@ export function ImagePreviewOverlay({
     const img = imgRef.current;
     if (!img) return;
     img.style.transition = animateRef.current ? VIEW_TRANSITION : 'none';
-    img.style.transform = `translate(-50%, -50%) translate(${v.x}px, ${v.y}px) rotate(${v.rotate}deg) scale(${v.scale})`;
+    img.style.transform = `translate(calc(var(--pct-50) * -1), calc(var(--pct-50) * -1)) translate(${v.x}px, ${v.y}px) rotate(${v.rotate}deg) scale(${v.scale})`;
   }, []);
 
   /** 更新视图：同一帧内的多次更新合并为一次 DOM 写入；immediate 用于图片刚显示时避免闪一帧 */
@@ -640,11 +640,11 @@ export function ImagePreviewOverlay({
             <ZoomOut size={16} />
           </button>
         </Tooltip>
-        <Tooltip content="恢复 100%" side="bottom" sideOffset={6}>
+        <Tooltip content="恢复 var(--pct-100)" side="bottom" sideOffset={6}>
           <button
             type="button"
             className="nb-image-preview-btn nb-image-preview-percent"
-            aria-label="恢复 100%"
+            aria-label="恢复 var(--pct-100)"
             onClick={() => {
               fitModeRef.current = false;
               setView({ ...viewRef.current, scale: 1, x: 0, y: 0 }, { animate: true });
@@ -678,7 +678,7 @@ export function ImagePreviewOverlay({
             aria-busy={copyState === 'busy'}
             onClick={() => void copyImage()}
           >
-            {copyState === 'done' ? <Check size={16} color="var(--success-600, #10b981)" /> : <Copy size={16} />}
+            {copyState === 'done' ? <Check size={16} color="var(--success-600)" /> : <Copy size={16} />}
           </button>
         </Tooltip>
         {onOpenInTab && (

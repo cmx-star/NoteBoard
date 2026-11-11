@@ -45,10 +45,15 @@ export const SPEC: TagStyleSpec[] = [
     tag: [t.string, t.special(t.string), t.docString],
     color: cssVar('--hljs-string'),
   },
-  // number/integer/float/bool/null/atom → --hljs-number（atom 为 toml 等旧式模式的布尔/常量）
+  // number/integer/float → --hljs-number
   {
-    tag: [t.number, t.integer, t.float, t.bool, t.null, t.atom],
+    tag: [t.number, t.integer, t.float],
     color: cssVar('--hljs-number'),
+  },
+  // bool/null/atom → --hljs-literal（atom 为 toml 等旧式模式的布尔/常量）
+  {
+    tag: [t.bool, t.null, t.atom],
+    color: cssVar('--hljs-literal'),
   },
   // typeName → --hljs-number (与 hljs 的 type→number 一致)
   {
@@ -99,10 +104,10 @@ export const SPEC: TagStyleSpec[] = [
   { tag: t.inserted, color: cssVar('--hljs-addition') },
   // deleted → --hljs-deletion
   { tag: t.deleted, color: cssVar('--hljs-deletion') },
-  // operator / punctuation / separator / bracket → --editor-text-secondary
+  // operator / punctuation / separator / bracket → --hljs-punctuation
   {
     tag: [t.operator, t.punctuation, t.separator, t.bracket],
-    color: cssVar('--editor-text-secondary'),
+    color: cssVar('--hljs-punctuation'),
   },
   // heading → --editor-heading + bold (Markdown source 模式)
   {

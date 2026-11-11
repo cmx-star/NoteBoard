@@ -6,7 +6,7 @@ import { useEffect, useState, type RefObject } from 'react';
 import { IS_MOBILE_UI } from '../../core/platform';
 
 /** 横屏等矮视口的判定：高度不超过该值时启用滚动收起工具栏 */
-export const SHORT_VIEWPORT_QUERY = '(max-height: 500px)';
+export const SHORT_VIEWPORT_QUERY = '(max-height: var(--dim-500))';
 
 /** 滚动方向累计超过该距离才切换收起 / 展开，过滤手指抖动 */
 const CHROME_TOGGLE_DISTANCE = 24;

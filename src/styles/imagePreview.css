@@ -3,11 +3,11 @@
 
 .nb-image-preview {
   position: fixed;
-  inset: 0;
+  inset: var(--space-0);
   /* 需高于多维表格单元格编辑弹层（100002），低于全局输入弹窗（100010） */
-  z-index: 100006;
+  z-index: var(--z-100006);
   /* 不用 backdrop-filter：全屏毛玻璃在图片每帧移动时都要重新模糊，拖动缩放会明显掉帧 */
-  background: rgba(0, 0, 0, 0.84);
+  background: var(--nb-black-a84);
   overflow: hidden;
   outline: none;
   cursor: zoom-out;
@@ -17,7 +17,7 @@
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  animation: nbFadeIn 0.15s ease-out;
+  animation: nbFadeIn var(--duration-0-15) var(--ease-out);
 }
 
 .nb-image-preview[data-dragging] {
@@ -26,13 +26,13 @@
 
 .nb-image-preview-img {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: var(--pct-50);
+  top: var(--pct-50);
   max-width: none;
   max-height: none;
-  border-radius: 4px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-  transform: translate(-50%, -50%);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 var(--dim-12) var(--dim-36) var(--nb-black-a50);
+  transform: translate(calc(var(--pct-50) * -1), calc(var(--pct-50) * -1));
   transform-origin: center center;
   cursor: grab;
   -webkit-user-drag: none;
@@ -44,34 +44,34 @@
 
 .nb-image-preview-error {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 10px 18px;
-  border-radius: 10px;
-  background: rgba(30, 41, 59, 0.88);
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 13px;
+  left: var(--pct-50);
+  top: var(--pct-50);
+  transform: translate(calc(var(--pct-50) * -1), calc(var(--pct-50) * -1));
+  padding: var(--space-10) var(--space-18);
+  border-radius: var(--radius-lg);
+  background: var(--nb-slate-800-a88);
+  color: var(--nb-white-a86);
+  font-size: var(--text-13);
 }
 
 /* 顶部悬浮工具栏 */
 .nb-image-preview-toolbar {
   position: absolute;
-  left: 50%;
-  top: max(16px, env(safe-area-inset-top));
-  transform: translateX(-50%);
+  left: var(--pct-50);
+  top: max(var(--dim-16), env(safe-area-inset-top));
+  transform: translateX(calc(var(--pct-50) * -1));
   display: flex;
   align-items: center;
-  gap: 4px;
-  max-width: calc(100vw - 32px);
+  gap: var(--space-4);
+  max-width: calc(100vw - var(--dim-32));
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 6px 12px;
-  border-radius: 24px;
-  background: rgba(30, 41, 59, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  color: #ffffff;
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-3xl);
+  background: var(--nb-slate-800-a88);
+  border: var(--border-1) solid var(--nb-white-a08);
+  box-shadow: 0 var(--dim-8) var(--dim-24) var(--nb-black-a35);
+  color: var(--nb-white);
   cursor: default;
 }
 
@@ -84,78 +84,78 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  padding: 0 6px;
+  min-width: var(--dim-32);
+  height: var(--dim-32);
+  padding: var(--space-0) var(--space-6);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   background: transparent;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 13px;
+  color: var(--nb-white-a90);
+  font-size: var(--text-13);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
-  transition: background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background-color var(--duration-120) var(--ease-out), color var(--duration-120) var(--ease-out), transform var(--duration-120) var(--ease-out);
 }
 
 .nb-image-preview-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
+  background: var(--nb-white-a14);
+  color: var(--nb-white);
 }
 
 .nb-image-preview-btn:active {
-  background: rgba(255, 255, 255, 0.24);
-  transform: scale(0.93);
+  background: var(--nb-white-a24);
+  transform: scale(var(--scale-0-93));
 }
 
 .nb-image-preview-percent {
-  min-width: 54px;
+  min-width: var(--dim-54);
 }
 
 /* 删除 / 关闭：红色强调 */
 .nb-image-preview-btn.is-danger {
-  color: #f87171;
+  color: var(--nb-red-400);
 }
 
 .nb-image-preview-btn.is-danger:hover {
-  background: rgba(239, 68, 68, 0.24);
-  color: #fecaca;
+  background: color-mix(in srgb, var(--error-500) var(--pct-24), transparent);
+  color: var(--nb-red-200);
 }
 
 .nb-image-preview-btn.is-danger:active {
-  background: rgba(239, 68, 68, 0.38);
+  background: color-mix(in srgb, var(--error-500) var(--pct-38), transparent);
 }
 
 .nb-image-preview-divider {
   flex-shrink: 0;
-  width: 1px;
-  height: 18px;
-  margin: 0 4px;
-  background: rgba(255, 255, 255, 0.18);
+  width: var(--border-1);
+  height: var(--dim-18);
+  margin: var(--space-0) var(--space-4);
+  background: var(--nb-white-a18);
 }
 
 /* 多图预览：当前序号 / 总数 */
 .nb-image-preview-counter {
   flex-shrink: 0;
-  padding: 0 6px;
-  font-size: 13px;
+  padding: var(--space-0) var(--space-6);
+  font-size: var(--text-13);
   font-variant-numeric: tabular-nums;
-  color: rgba(255, 255, 255, 0.86);
+  color: var(--nb-white-a86);
   white-space: nowrap;
 }
 
 /* 底部图片说明 */
 .nb-image-preview-caption {
   position: absolute;
-  left: 50%;
-  bottom: max(20px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  max-width: calc(100vw - 48px);
+  left: var(--pct-50);
+  bottom: max(var(--dim-20), env(safe-area-inset-bottom));
+  transform: translateX(calc(var(--pct-50) * -1));
+  max-width: calc(100vw - var(--dim-48));
   overflow: hidden;
-  padding: 5px 14px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.55);
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 13px;
+  padding: var(--space-5) var(--space-14);
+  border-radius: var(--radius-2xl);
+  background: var(--nb-black-a55);
+  color: var(--nb-white-a80);
+  font-size: var(--text-13);
   white-space: nowrap;
   text-overflow: ellipsis;
   pointer-events: none;
@@ -164,35 +164,35 @@
 /* 多图预览左右切换按钮 */
 .nb-image-preview-nav {
   position: absolute;
-  top: 50%;
+  top: var(--pct-50);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
-  background: rgba(30, 41, 59, 0.82);
-  color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  transform: translateY(-50%);
+  width: var(--dim-44);
+  height: var(--dim-44);
+  border: var(--border-1) solid var(--nb-white-a08);
+  border-radius: var(--radius-pill);
+  background: var(--nb-slate-800-a82);
+  color: var(--nb-white-a90);
+  box-shadow: 0 var(--dim-8) var(--dim-24) var(--nb-black-a35);
+  transform: translateY(calc(var(--pct-50) * -1));
   cursor: pointer;
-  transition: background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background-color var(--duration-120) var(--ease-out), color var(--duration-120) var(--ease-out), transform var(--duration-120) var(--ease-out);
 }
 
 .nb-image-preview-nav.is-prev {
-  left: max(16px, env(safe-area-inset-left));
+  left: max(var(--dim-16), env(safe-area-inset-left));
 }
 
 .nb-image-preview-nav.is-next {
-  right: max(16px, env(safe-area-inset-right));
+  right: max(var(--dim-16), env(safe-area-inset-right));
 }
 
 .nb-image-preview-nav:hover {
-  background: rgba(51, 65, 85, 0.95);
-  color: #ffffff;
+  background: var(--nb-slate-700-a95);
+  color: var(--nb-white);
 }
 
 .nb-image-preview-nav:active {
-  transform: translateY(-50%) scale(0.92);
+  transform: translateY(calc(var(--pct-50) * -1)) scale(var(--scale-0-92));
 }

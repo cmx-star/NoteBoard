@@ -39,7 +39,7 @@ const DEFAULT_DRAWIO_XML = `<mxfile host="NoteBoard" modified="${new Date().toIS
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2" value="开始绘图" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="2" value="开始绘图" style="rounded=1;whiteSpace=wrap;html=1;fillColor=var(--nb-auto-dae8fc);strokeColor=var(--nb-auto-6c8ebf);" vertex="1" parent="1">
           <mxGeometry x="340" y="240" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
@@ -339,11 +339,11 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -352,29 +352,29 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
       <div
         className="nb-editor-topbar"
         style={{
-          height: 36,
-          minHeight: 36,
+          height: 'var(--dim-36)',
+          minHeight: 'var(--dim-36)',
           display: isReading ? 'none' : 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 12px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #f8fafc)',
-          fontSize: 12,
+          padding: '0 var(--dim-12)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
+          fontSize: 'var(--text-12)',
           userSelect: 'none',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600 }}>
-          <FileCode size={15} color="var(--editor-accent, #3b82f6)" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)', fontWeight: 'var(--weight-600)' }}>
+          <FileCode size={15} color="var(--editor-accent)" />
           <span>Draw.io 绘图编辑器</span>
           {!isLoaded && !loadError && (
-            <span style={{ fontSize: 11, color: 'var(--editor-text-muted)', fontWeight: 400 }}>
+            <span style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', fontWeight: 'var(--weight-400)' }}>
               加载引擎中
             </span>
           )}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
           {/* 导出 SVG 按钮 */}
           <Tooltip content="导出为 SVG 矢量图" side="bottom" sideOffset={4}>
             <button
@@ -384,14 +384,14 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 4,
-                padding: '3px 8px',
-                borderRadius: 4,
-                border: '1px solid var(--control-border, #e2e8f0)',
-                background: 'var(--editor-bg, #ffffff)',
-                color: 'var(--editor-text, #1e293b)',
+                gap: 'var(--dim-4)',
+                padding: 'var(--dim-3) var(--dim-8)',
+                borderRadius: 'var(--radius-sm)',
+                border: 'var(--dim-1) solid var(--control-border)',
+                background: 'var(--editor-bg)',
+                color: 'var(--editor-text)',
                 cursor: 'pointer',
-                fontSize: 11,
+                fontSize: 'var(--text-11)',
               }}
             >
               <Download size={12} />
@@ -407,14 +407,14 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 4,
-                padding: '3px 8px',
-                borderRadius: 4,
-                border: '1px solid var(--control-border, #e2e8f0)',
-                background: 'var(--editor-bg, #ffffff)',
-                color: 'var(--editor-text, #1e293b)',
+                gap: 'var(--dim-4)',
+                padding: 'var(--dim-3) var(--dim-8)',
+                borderRadius: 'var(--radius-sm)',
+                border: 'var(--dim-1) solid var(--control-border)',
+                background: 'var(--editor-bg)',
+                color: 'var(--editor-text)',
                 cursor: 'pointer',
-                fontSize: 11,
+                fontSize: 'var(--text-11)',
               }}
             >
               <Download size={12} />
@@ -427,13 +427,13 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
             className="nb-editor-toolbar-btn"
             showLabel
             iconSize={12}
-            style={{ padding: '3px 8px', fontSize: 11, borderRadius: 4 }}
+            style={{ padding: 'var(--dim-3) var(--dim-8)', fontSize: 'var(--text-11)', borderRadius: 'var(--radius-sm)' }}
           />
         </div>
       </div>
 
       {/* Draw.io iframe 嵌入容器 */}
-      <div style={{ flex: 1, position: 'relative', width: '100%', height: '100%' }}>
+      <div style={{ flex: 1, position: 'relative', width: 'var(--pct-100)', height: 'var(--pct-100)' }}>
         {/* 沉浸阅读：退出按钮（焦点在 iframe 内时 Esc 由 Draw.io 接收，需点击退出） */}
         {isReading && <ReadingModeOverlay onExit={exitReading} />}
         <iframe
@@ -441,8 +441,8 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
           src={embedUrl}
           title="Draw.io Editor"
           style={{
-            width: '100%',
-            height: '100%',
+            width: 'var(--pct-100)',
+            height: 'var(--pct-100)',
             border: 'none',
             display: 'block',
           }}
@@ -462,15 +462,15 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'var(--editor-bg, #ffffff)',
-              color: 'var(--editor-text, #1e293b)',
-              padding: 24,
-              gap: 12,
-              zIndex: 10,
+              background: 'var(--editor-bg)',
+              color: 'var(--editor-text)',
+              padding: 'var(--dim-24)',
+              gap: 'var(--dim-12)',
+              zIndex: 'var(--z-10)',
             }}
           >
-            <WifiOff size={40} color="var(--editor-text-muted, #94a3b8)" />
-            <span style={{ fontSize: 14, fontWeight: 500 }}>{loadError}</span>
+            <WifiOff size={40} color="var(--editor-text-muted)" />
+            <span style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-500)' }}>{loadError}</span>
             <button
               type="button"
               onClick={() => {
@@ -484,16 +484,16 @@ export function DrawioEditor({ docKey }: DrawioEditorProps) {
                 }
               }}
               style={{
-                padding: '6px 14px',
-                borderRadius: 6,
-                background: 'var(--editor-accent, #3b82f6)',
-                color: '#ffffff',
+                padding: 'var(--dim-6) var(--dim-14)',
+                borderRadius: 'var(--radius-md)',
+                background: 'var(--editor-accent)',
+                color: 'var(--nb-white)',
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: 13,
+                fontSize: 'var(--text-13)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
+                gap: 'var(--dim-6)',
               }}
             >
               <RefreshCw size={14} />

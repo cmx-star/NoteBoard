@@ -33,8 +33,8 @@ export function EditorStack({
       style={{
         flex: 1,
         position: 'relative',
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         overflow: 'hidden',
         // 🔴 N08：Home 可见时隐藏编辑器容器（视觉隐藏而非卸载）
         display: !hasActiveTab ? 'none' : 'block',
@@ -51,22 +51,22 @@ export function EditorStack({
             style={{
               display: 'flex',
               flexDirection: 'column',
-              width: '100%',
-              height: '100%',
+              width: 'var(--pct-100)',
+              height: 'var(--pct-100)',
               overflow: 'hidden',
               ...(isTransferring
-                ? { pointerEvents: 'none' as const, opacity: 0.55 }
+                ? { pointerEvents: 'none' as const, opacity: 'var(--opacity-0-55)' }
                 : {}),
               ...(isTabActive
                 ? { position: 'relative' }
                 : {
                     position: 'absolute',
-                    top: -99999,
-                    left: -99999,
-                    opacity: 0,
+                    top: 'calc(var(--dim-99999) * -1)',
+                    left: 'calc(var(--dim-99999) * -1)',
+                    opacity: 'var(--opacity-0)',
                     pointerEvents: 'none',
                     visibility: 'hidden',
-                    zIndex: -1,
+                    zIndex: 'calc(var(--z-1) * -1)',
                   }),
             }}
           >
@@ -83,12 +83,12 @@ export function EditorStack({
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 8,
-                  height: '100%',
+                  gap: 'var(--dim-8)',
+                  height: 'var(--pct-100)',
                   background: 'var(--editor-bg)',
-                  color: 'var(--editor-text-muted, #64748b)',
+                  color: 'var(--editor-text-muted)',
                   fontFamily: 'var(--ui-font-family, sans-serif)',
-                  fontSize: 13,
+                  fontSize: 'var(--text-13)',
                 }}
               >
                 <span>正在加载「{tab.displayName}」…</span>

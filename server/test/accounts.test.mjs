@@ -124,7 +124,7 @@ test('用户数据互相隔离，停用吊销会话，删除后数据进入回�
   const alice = await as('alice', 'alice-password');
   await admin.call('create_file', { dir: '/workspace', name: '管理员.md' });
   await alice.call('create_file', { dir: '/workspace', name: 'alice.md' });
-  await alice.call('save_settings', { settings: { appearance: { theme: 'mo-ye' } } });
+  await alice.call('save_settings', { settings: { appearance: { theme: 'mo-hei' } } });
   assert.deepEqual((await alice.call('read_dir', { path: '/workspace' })).map((node) => node.name), ['alice.md']);
   assert.deepEqual((await admin.call('read_dir', { path: '/workspace' })).map((node) => node.name), ['管理员.md']);
   assert.equal((await alice.send('read_document', { path: '/workspace/管理员.md' })).status, 404);

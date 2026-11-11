@@ -47,18 +47,18 @@ export interface CreateFormatMeta {
 }
 
 export const CREATE_FORMATS: readonly CreateFormatMeta[] = [
-  { id: 'markdown', name: 'Markdown笔记', ext: '.md', desc: '富文本与源码双模笔记', icon: FilePlus, menuIcon: FileText, color: 'var(--editor-accent, #3b82f6)' },
-  { id: 'text', name: '文本文档', ext: '.txt', desc: '轻量纯文本记录与备忘', icon: FileText, color: '#64748b' },
-  { id: 'bitable', name: '多维表格', ext: '.bitable', desc: '结构化数据与看板视图', icon: Table2, color: '#2563eb' },
-  { id: 'board', name: '手绘风白板', ext: '.excalidraw', desc: 'Excalidraw 自由手绘与白板', icon: PencilRuler, color: 'var(--accent-strong, #8b5cf6)' },
-  { id: 'mindmap', name: '思维导图', ext: '.mindmap', desc: '大纲 ⇄ 脑图双模切换', icon: Network, color: '#f97316' },
-  { id: 'textdiff', name: '文本对比', desc: '左右对照实时比对差异', icon: GitCompare, color: '#10b981' },
-  { id: 'drawio', name: '架构图', ext: '.drawio', desc: '专业系统架构与业务流程图', icon: Layout, color: '#ea580c' },
-  { id: 'infographic', name: '信息图', ext: '.infographic', desc: '指标看板、时间线与漏斗等可视化', icon: ChartColumn, color: '#14b8a6' },
-  { id: 'mermaid', name: 'Mermaid图表', ext: '.mmd', desc: '时序图、流程图与状态机脚本', icon: Workflow, color: '#00bfb2' },
-  { id: 'plantuml', name: 'PlantUML建模', ext: '.puml', desc: '类图、时序图与系统组件图', icon: GitMerge, color: '#a855f7' },
-  { id: 'json', name: 'JSON配置文件', ext: '.json', desc: 'JSON 数据、格式化与校验', icon: Braces, color: '#eab308' },
-  { id: 'sql', name: 'SQL数据库脚本', ext: '.sql', desc: 'SQL 数据库查询与 DDL 语句', icon: Database, color: '#3b82f6' },
+  { id: 'markdown', name: 'Markdown笔记', ext: '.md', desc: '富文本与源码双模笔记', icon: FilePlus, menuIcon: FileText, color: 'var(--editor-accent)' },
+  { id: 'text', name: '文本文档', ext: '.txt', desc: '轻量纯文本记录与备忘', icon: FileText, color: 'var(--nb-slate-500)' },
+  { id: 'bitable', name: '多维表格', ext: '.bitable', desc: '结构化数据与看板视图', icon: Table2, color: 'var(--nb-blue-600)' },
+  { id: 'board', name: '手绘风白板', ext: '.excalidraw', desc: 'Excalidraw 自由手绘与白板', icon: PencilRuler, color: 'var(--accent-strong)' },
+  { id: 'mindmap', name: '思维导图', ext: '.mindmap', desc: '大纲 ⇄ 脑图双模切换', icon: Network, color: 'var(--nb-orange-500)' },
+  { id: 'textdiff', name: '文本对比', desc: '左右对照实时比对差异', icon: GitCompare, color: 'var(--nb-emerald-500)' },
+  { id: 'drawio', name: '架构图', ext: '.drawio', desc: '专业系统架构与业务流程图', icon: Layout, color: 'var(--nb-orange-600)' },
+  { id: 'infographic', name: '信息图', ext: '.infographic', desc: '指标看板、时间线与漏斗等可视化', icon: ChartColumn, color: 'var(--nb-teal-500)' },
+  { id: 'mermaid', name: 'Mermaid图表', ext: '.mmd', desc: '时序图、流程图与状态机脚本', icon: Workflow, color: 'var(--nb-auto-00bfb2)' },
+  { id: 'plantuml', name: 'PlantUML建模', ext: '.puml', desc: '类图、时序图与系统组件图', icon: GitMerge, color: 'var(--nb-auto-a855f7)' },
+  { id: 'json', name: 'JSON配置文件', ext: '.json', desc: 'JSON 数据、格式化与校验', icon: Braces, color: 'var(--nb-yellow-500)' },
+  { id: 'sql', name: 'SQL数据库脚本', ext: '.sql', desc: 'SQL 数据库查询与 DDL 语句', icon: Database, color: 'var(--nb-blue-500)' },
 ];
 
 const FORMAT_MAP = new Map<string, CreateFormatMeta>(CREATE_FORMATS.map((f) => [f.id, f]));

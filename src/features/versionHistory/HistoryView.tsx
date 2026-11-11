@@ -21,7 +21,7 @@ import type { ChangeInfo, ChangeNavigator } from './viewers/viewerTypes';
 import './versionHistory.css';
 
 /** 设备标记色（按设备 id 稳定取色） */
-const DEVICE_COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#14b8a6'];
+const DEVICE_COLORS = ['var(--nb-purple-500)', 'var(--nb-blue-500)', 'var(--nb-emerald-500)', 'var(--nb-amber-500)', 'var(--nb-pink-500)', 'var(--nb-teal-500)'];
 
 function deviceColor(device: string): string {
   let h = 0;

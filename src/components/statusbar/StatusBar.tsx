@@ -23,17 +23,17 @@ export function StatusBar() {
     return (
       <div
         style={{
-          height: 24,
+          height: 'var(--dim-24)',
           display: 'flex',
           alignItems: 'center',
-          paddingLeft: 12,
-          paddingRight: 12,
+          paddingLeft: 'var(--dim-12)',
+          paddingRight: 'var(--dim-12)',
           background: 'var(--statusbar-bg)',
-          borderTop: '1px solid var(--editor-border)',
+          borderTop: 'var(--dim-1) solid var(--editor-border)',
           boxShadow: 'var(--nb-statusbar-shadow, none)',
           color: 'var(--statusbar-text)',
           fontFamily: 'var(--ui-font-family, inherit)',
-          fontSize: 'calc(var(--ui-font-size, 13px) - 1px)',
+          fontSize: 'calc(var(--ui-font-size, var(--dim-13)) - var(--dim-1))',
           flexShrink: 0,
         }}
       >
@@ -43,23 +43,23 @@ export function StatusBar() {
   }
 
   const sectionStyle: React.CSSProperties = {
-    padding: compactMode ? '0 7px' : '0 10px',
+    padding: compactMode ? '0 var(--dim-7)' : '0 var(--dim-10)',
     display: 'flex',
     alignItems: 'center',
-    gap: 4,
-    height: '100%',
+    gap: 'var(--dim-4)',
+    height: 'var(--pct-100)',
     cursor: 'pointer',
     whiteSpace: 'nowrap',
   };
 
   // 二进制查看不展示虚构的文本编码、行列和字数，状态栏明确标识只读。
-  if (doc.kind === 'preview') return <div role="status" style={{ height:24,display:'flex',alignItems:'center',gap:14,padding:'0 12px',background:'var(--statusbar-bg)',borderTop:'1px solid var(--editor-border)',boxShadow:'var(--nb-statusbar-shadow, none)',color:'var(--statusbar-text)',fontFamily:'var(--ui-font-family,inherit)',fontSize:'calc(var(--ui-font-size,13px) - 1px)',flexShrink:0 }}>
+  if (doc.kind === 'preview') return <div role="status" style={{ height:'var(--dim-24)',display:'flex',alignItems:'center',gap:'var(--dim-14)',padding:'0 var(--dim-12)',background:'var(--statusbar-bg)',borderTop:'var(--dim-1) solid var(--editor-border)',boxShadow:'var(--nb-statusbar-shadow, none)',color:'var(--statusbar-text)',fontFamily:'var(--ui-font-family,inherit)',fontSize:'calc(var(--ui-font-size,var(--dim-13)) - var(--dim-1))',flexShrink:0 }}>
     <span>{doc.displayName.split('.').pop()?.toUpperCase()} · 只读预览</span><span>{(doc.size/1024).toLocaleString('zh-CN',{maximumFractionDigits:1})} KB</span>
   </div>;
 
   const dividerStyle: React.CSSProperties = {
-    width: 1,
-    height: 14,
+    width: 'var(--dim-1)',
+    height: 'var(--dim-14)',
     background: 'var(--editor-border)',
   };
 
@@ -103,15 +103,15 @@ export function StatusBar() {
   return (
     <div
       style={{
-        height: 24,
+        height: 'var(--dim-24)',
         display: 'flex',
         alignItems: 'center',
         background: 'var(--statusbar-bg)',
-        borderTop: '1px solid var(--editor-border)',
+        borderTop: 'var(--dim-1) solid var(--editor-border)',
         boxShadow: 'var(--nb-statusbar-shadow, none)',
         color: 'var(--statusbar-text)',
         fontFamily: 'var(--ui-font-family, inherit)',
-        fontSize: 'calc(var(--ui-font-size, 13px) - 1px)',
+        fontSize: 'calc(var(--ui-font-size, var(--dim-13)) - var(--dim-1))',
         flexShrink: 0,
         overflow: 'hidden',
       }}
@@ -163,7 +163,7 @@ export function StatusBar() {
           <div
             style={{
               ...sectionStyle,
-              borderRadius: 3,
+              borderRadius: 'var(--radius-xs)',
               transition: 'all var(--transition-fast)',
             }}
             onClick={() => {
@@ -178,15 +178,15 @@ export function StatusBar() {
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = 'var(--statusbar-text)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.96)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-96))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
           >
             {activeTab?.viewMode === 'source' ? (

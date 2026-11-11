@@ -47,10 +47,10 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
   // 动态视觉透明度与位移动效（默认 0，靠近热区 0.75，悬停/聚焦 1）
   const opacity = isHighlighted ? 1 : inHotZone ? 0.75 : 0;
   const transform = isHighlighted
-    ? 'translateY(0) scale(1)'
+    ? 'translateY(0) scale(var(--scale-1))'
     : inHotZone
-    ? 'translateY(0) scale(0.98)'
-    : 'translateY(6px) scale(0.95)';
+    ? 'translateY(0) scale(var(--scale-0-98))'
+    : 'translateY(var(--dim-6)) scale(var(--scale-0-95))';
 
   return (
     <>
@@ -62,9 +62,9 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
           position: 'absolute',
           bottom: 0,
           left: 0,
-          width: 200,
-          height: 120,
-          zIndex: 24,
+          width: 'var(--dim-200)',
+          height: 'var(--dim-120)',
+          zIndex: 'var(--z-24)',
           pointerEvents: 'none',
         }}
       />
@@ -76,26 +76,26 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
         onMouseLeave={() => setIsHovered(false)}
         style={{
           position: 'absolute',
-          bottom: 14,
-          left: 18,
-          zIndex: 25,
+          bottom: 'var(--dim-14)',
+          left: 'var(--dim-18)',
+          zIndex: 'var(--z-25)',
           display: 'flex',
           alignItems: 'center',
-          gap: 2,
-          padding: 3,
-          borderRadius: 8,
+          gap: 'var(--dim-2)',
+          padding: 'var(--dim-3)',
+          borderRadius: 'var(--radius-lg)',
           background: 'var(--editor-surface)',
           border: isHighlighted
-            ? '1px solid var(--editor-border-focus)'
+            ? 'var(--dim-1) solid var(--editor-border-focus)'
             : inHotZone
-            ? '1px solid var(--editor-border)'
-            : '1px solid transparent',
+            ? 'var(--dim-1) solid var(--editor-border)'
+            : 'var(--dim-1) solid transparent',
           boxShadow: isHighlighted
-            ? '0 4px 14px rgba(0, 0, 0, 0.14)'
+            ? '0 var(--dim-4) var(--dim-14) var(--nb-black-a14)'
             : inHotZone
-            ? '0 2px 8px rgba(0, 0, 0, 0.08)'
+            ? '0 var(--dim-2) var(--dim-8) var(--nb-black-a08)'
             : 'none',
-          backdropFilter: 'blur(8px)',
+          backdropFilter: 'blur(var(--dim-8))',
           userSelect: 'none',
           opacity,
           transform,
@@ -117,11 +117,11 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
-              padding: '4px 8px',
-              borderRadius: 6,
+              gap: 'var(--dim-4)',
+              padding: 'var(--dim-4) var(--dim-8)',
+              borderRadius: 'var(--radius-md)',
               border: 'none',
-              fontSize: 12,
+              fontSize: 'var(--text-12)',
               fontFamily: 'var(--ui-font-family, inherit)',
               cursor: 'pointer',
               transition: 'all var(--transition-fast)',
@@ -133,10 +133,10 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
                 viewMode === 'visual' ? 'var(--editor-text)' : 'var(--editor-text-muted)',
               fontWeight: viewMode === 'visual' ? 500 : 400,
               boxShadow:
-                viewMode === 'visual' ? '0 1px 3px rgba(0, 0, 0, 0.08)' : 'none',
+                viewMode === 'visual' ? '0 var(--dim-1) var(--dim-3) var(--nb-black-a08)' : 'none',
               outline:
                 viewMode === 'visual'
-                  ? '1px solid var(--editor-border-focus)'
+                  ? 'var(--dim-1) solid var(--editor-border-focus)'
                   : 'none',
             }}
             onMouseEnter={(e) => {
@@ -150,18 +150,18 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
                 e.currentTarget.style.background = 'transparent';
                 e.currentTarget.style.color = 'var(--editor-text-muted)';
               }
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.94)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-94))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background =
                 viewMode === 'visual'
                   ? 'var(--tab-active-bg, var(--editor-bg))'
                   : 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
           >
             <Eye size={13} style={{ flexShrink: 0 }} />
@@ -182,11 +182,11 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
-              padding: '4px 8px',
-              borderRadius: 6,
+              gap: 'var(--dim-4)',
+              padding: 'var(--dim-4) var(--dim-8)',
+              borderRadius: 'var(--radius-md)',
               border: 'none',
-              fontSize: 12,
+              fontSize: 'var(--text-12)',
               fontFamily: 'var(--ui-font-family, inherit)',
               cursor: 'pointer',
               transition: 'all var(--transition-fast)',
@@ -198,10 +198,10 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
                 viewMode === 'source' ? 'var(--editor-text)' : 'var(--editor-text-muted)',
               fontWeight: viewMode === 'source' ? 500 : 400,
               boxShadow:
-                viewMode === 'source' ? '0 1px 3px rgba(0, 0, 0, 0.08)' : 'none',
+                viewMode === 'source' ? '0 var(--dim-1) var(--dim-3) var(--nb-black-a08)' : 'none',
               outline:
                 viewMode === 'source'
-                  ? '1px solid var(--editor-border-focus)'
+                  ? 'var(--dim-1) solid var(--editor-border-focus)'
                   : 'none',
             }}
             onMouseEnter={(e) => {
@@ -215,18 +215,18 @@ export function MarkdownModeToggle({ viewMode, onToggle }: MarkdownModeTogglePro
                 e.currentTarget.style.background = 'transparent';
                 e.currentTarget.style.color = 'var(--editor-text-muted)';
               }
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.94)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-94))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background =
                 viewMode === 'source'
                   ? 'var(--tab-active-bg, var(--editor-bg))'
                   : 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
           >
             <Code size={13} style={{ flexShrink: 0 }} />

@@ -15,8 +15,8 @@ function createDragPreview(label: string): string {
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('无法生成标签预览');
   const style = getComputedStyle(document.documentElement);
-  ctx.fillStyle = style.getPropertyValue('--editor-surface').trim() || '#f8fafc';
-  ctx.shadowColor = 'rgba(15, 23, 42, 0.24)';
+  ctx.fillStyle = style.getPropertyValue('--editor-surface').trim() || style.getPropertyValue('--nb-slate-50').trim();
+  ctx.shadowColor = style.getPropertyValue('--nb-black-a24').trim();
   ctx.shadowBlur = 10;
   ctx.shadowOffsetY = 3;
   ctx.beginPath();
@@ -26,21 +26,21 @@ function createDragPreview(label: string): string {
   ctx.fill();
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
-  ctx.strokeStyle = style.getPropertyValue('--tab-border').trim() || '#94a3b8';
+  ctx.strokeStyle = style.getPropertyValue('--tab-border').trim() || style.getPropertyValue('--nb-slate-400').trim();
   ctx.stroke();
-  ctx.fillStyle = style.getPropertyValue('--accent-strong').trim() || '#3b82f6';
-  ctx.font = '20px sans-serif';
+  ctx.fillStyle = style.getPropertyValue('--accent-strong').trim() || style.getPropertyValue('--nb-blue-500').trim();
+  ctx.font = `${style.getPropertyValue('--text-20').trim()} sans-serif`;
   ctx.textBaseline = 'middle';
   ctx.fillText('▤', 20, 26);
-  ctx.fillStyle = style.getPropertyValue('--editor-text').trim() || '#0f172a';
-  ctx.font = '13px sans-serif';
+  ctx.fillStyle = style.getPropertyValue('--editor-text').trim() || style.getPropertyValue('--nb-slate-900').trim();
+  ctx.font = `${style.getPropertyValue('--text-13').trim()} sans-serif`;
   ctx.textBaseline = 'middle';
   // 长文件名截断预览，不改变实际标签宽度与名称。
   let title = label;
   while (title.length > 1 && ctx.measureText(title).width > 208) title = title.slice(0, -1);
   ctx.fillText(title === label ? title : `${title}…`, 48, 20);
-  ctx.fillStyle = style.getPropertyValue('--editor-text-secondary').trim() || '#64748b';
-  ctx.font = '10px sans-serif';
+  ctx.fillStyle = style.getPropertyValue('--editor-text-secondary').trim() || style.getPropertyValue('--nb-slate-500').trim();
+  ctx.font = `${style.getPropertyValue('--text-10').trim()} sans-serif`;
   ctx.fillText('拖入窗口合并，拖出拆分', 48, 37);
   return canvas.toDataURL('image/png');
 }

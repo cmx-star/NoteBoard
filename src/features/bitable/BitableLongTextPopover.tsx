@@ -123,12 +123,12 @@ export function BitableLongTextPopover({
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 100002,
-        background: 'rgba(15, 23, 42, 0.28)',
+        zIndex: 'var(--z-100002)',
+        background: 'var(--nb-auto-0f172a-a28)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 24,
+        padding: 'var(--dim-24)',
       }}
     >
       <div
@@ -139,14 +139,14 @@ export function BitableLongTextPopover({
         style={{
           outline: 'none',
           width: PANEL_WIDTH,
-          maxWidth: '100%',
-          maxHeight: 'min(72vh, 640px)',
+          maxWidth: 'var(--pct-100)',
+          maxHeight: 'min(72vh, var(--dim-640))',
           display: 'flex',
           flexDirection: 'column',
-          background: 'var(--editor-surface, #ffffff)',
-          border: '1px solid var(--editor-border, #e2e8f0)',
-          borderRadius: 10,
-          boxShadow: '0 18px 48px rgba(15, 23, 42, 0.22)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--dim-10)',
+          boxShadow: '0 var(--dim-18) var(--dim-48) var(--nb-auto-0f172a-a22)',
           // 不裁剪溢出：编辑器顶部工具栏的插入菜单及其子菜单需要伸出面板边界
         }}
       >
@@ -156,17 +156,17 @@ export function BitableLongTextPopover({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: 8,
-            padding: '10px 14px',
-            borderBottom: '1px solid var(--editor-border, #e2e8f0)',
+            gap: 'var(--dim-8)',
+            padding: 'var(--dim-10) var(--dim-14)',
+            borderBottom: 'var(--dim-1) solid var(--editor-border)',
             flexShrink: 0,
           }}
         >
           <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+            <div style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
               {column.name}
             </div>
-            <div style={{ fontSize: 11, color: 'var(--editor-text-muted, #94a3b8)', marginTop: 1 }}>
+            <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', marginTop: 'var(--dim-1)' }}>
               多行文本{config.markdown ? ' · Markdown 富文本' : ''} · Esc 取消 · {formatShortcut('Ctrl+Enter')} 保存
             </div>
           </div>
@@ -177,7 +177,7 @@ export function BitableLongTextPopover({
               onClick={() => finish(false)}
               aria-label="取消编辑"
               style={{
-                padding: 3,
+                padding: 'var(--dim-3)',
                 flexShrink: 0,
               }}
             >
@@ -212,18 +212,18 @@ export function BitableLongTextPopover({
               placeholder="输入内容，回车换行"
               onChange={(e) => setDraft(e.target.value)}
               style={{
-                width: '100%',
-                height: 220,
+                width: 'var(--pct-100)',
+                height: 'var(--dim-220)',
                 boxSizing: 'border-box',
                 border: 'none',
                 outline: 'none',
                 resize: 'vertical',
-                padding: '10px 12px',
-                fontSize: 13,
-                lineHeight: 1.6,
+                padding: 'var(--dim-10) var(--dim-12)',
+                fontSize: 'var(--text-13)',
+                lineHeight: 'var(--leading-1-6)',
                 fontFamily: 'inherit',
                 background: 'transparent',
-                color: 'var(--editor-text, #1e293b)',
+                color: 'var(--editor-text)',
               }}
             />
           )}
@@ -235,24 +235,24 @@ export function BitableLongTextPopover({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            gap: 8,
-            padding: '10px 14px',
-            borderTop: '1px solid var(--editor-border, #e2e8f0)',
-            background: 'var(--editor-bg, #f8fafc)',
+            gap: 'var(--dim-8)',
+            padding: 'var(--dim-10) var(--dim-14)',
+            borderTop: 'var(--dim-1) solid var(--editor-border)',
+            background: 'var(--editor-bg)',
             // 面板不再裁剪溢出，底栏自带圆角以贴合面板外形
-            borderRadius: '0 0 10px 10px',
+            borderRadius: '0 0 var(--dim-10) var(--dim-10)',
             flexShrink: 0,
           }}
         >
-          <span style={{ fontSize: 11, color: 'var(--editor-text-muted, #94a3b8)' }}>
+          <span style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)' }}>
             {draft === initial ? '未做修改' : '有未保存的修改'}
           </span>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 'var(--dim-8)' }}>
             <button
               type="button"
               className="nb-bitable-btn-secondary"
               onClick={() => finish(false)}
-              style={{ padding: '5px 12px' }}
+              style={{ padding: 'var(--dim-5) var(--dim-12)' }}
             >
               取消
             </button>
@@ -261,9 +261,9 @@ export function BitableLongTextPopover({
               className="nb-bitable-btn-primary"
               onClick={() => finish(true)}
               style={{
-                gap: 5,
-                padding: '5px 14px',
-                fontWeight: 500,
+                gap: 'var(--dim-5)',
+                padding: 'var(--dim-5) var(--dim-14)',
+                fontWeight: 'var(--weight-500)',
               }}
             >
               <Check size={13} />

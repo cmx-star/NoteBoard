@@ -49,7 +49,7 @@ const ALIGN_OPTIONS: Array<{ align: ImageAlign; label: string; Icon: LucideIcon 
   { align: 'right', label: '居右', Icon: AlignRight },
 ];
 
-const WIDTH_OPTIONS = ['25%', '50%', '75%', '100%'];
+const WIDTH_OPTIONS = ['var(--pct-25)', 'var(--pct-50)', 'var(--pct-75)', 'var(--pct-100)'];
 
 /** 视口边缘留白 */
 const EDGE = 8;

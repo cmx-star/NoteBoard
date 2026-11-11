@@ -6,51 +6,51 @@
 .nb-ls-overlay {
   position: fixed;
   inset: 0;
-  z-index: 9985;
+  z-index: var(--z-9985);
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding-top: 10vh;
-  background: rgba(0, 0, 0, 0.32);
-  animation: nb-ls-fade-in 120ms ease-out;
+  background: var(--nb-black-a32);
+  animation: nb-ls-fade-in var(--duration-120) ease-out;
 }
 
 @keyframes nb-ls-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: var(--opacity-0); }
+  to { opacity: var(--opacity-1); }
 }
 
 @keyframes nb-ls-panel-in {
-  from { opacity: 0; transform: translateY(-6px) scale(0.99); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: var(--opacity-0); transform: translateY(calc(var(--dim-6) * -1)) scale(var(--scale-0-99)); }
+  to { opacity: var(--opacity-1); transform: translateY(0) scale(var(--scale-1)); }
 }
 
 .nb-ls-panel {
-  width: min(780px, 92vw);
+  width: min(var(--dim-780), 92vw);
   max-height: 76vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: var(--editor-bg);
   color: var(--editor-text);
-  border: 1px solid var(--editor-border);
+  border: var(--dim-1) solid var(--editor-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   font-family: var(--ui-font-family);
   font-size: var(--ui-font-size);
-  animation: nb-ls-panel-in 140ms ease-out;
+  animation: nb-ls-panel-in var(--duration-140) ease-out;
 }
 
 .nb-ls-input-row {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 12px 14px 10px 16px;
+  gap: var(--dim-10);
+  padding: var(--dim-12) var(--dim-14) var(--dim-10) var(--dim-16);
 }
 
 .nb-ls-input-icon {
   flex-shrink: 0;
-  margin-top: 3px;
+  margin-top: var(--dim-3);
   color: var(--editor-text-muted);
 }
 
@@ -63,8 +63,8 @@
   background: transparent;
   color: var(--editor-text);
   font: inherit;
-  font-size: 15px;
-  line-height: 22px;
+  font-size: var(--dim-15);
+  line-height: var(--dim-22);
   padding: 0;
   overflow-y: auto;
 }
@@ -75,7 +75,7 @@
 
 /* 等待内容结果时的细进度条（延迟出现，快速查询不闪烁） */
 .nb-ls-progress {
-  height: 2px;
+  height: var(--dim-2);
   position: relative;
   overflow: hidden;
   background: var(--editor-border);
@@ -86,9 +86,9 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 30%;
+  width: var(--pct-30);
   background: var(--accent-strong);
-  animation: nb-ls-progress 1s ease-in-out infinite;
+  animation: nb-ls-progress var(--duration-1) ease-in-out infinite;
 }
 
 @keyframes nb-ls-progress {
@@ -98,21 +98,21 @@
 
 .nb-ls-tabs {
   display: flex;
-  gap: 4px;
-  padding: 8px 12px 4px;
+  gap: var(--dim-4);
+  padding: var(--dim-8) var(--dim-12) var(--dim-4);
 }
 
 .nb-ls-tab {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
+  gap: var(--dim-6);
+  padding: var(--dim-4) var(--dim-10);
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--editor-text-secondary, var(--editor-text-muted));
   font: inherit;
-  font-size: 12px;
+  font-size: var(--dim-12);
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
@@ -124,18 +124,18 @@
 
 .nb-ls-tab:active {
   background: var(--toolbar-active);
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
 }
 
 .nb-ls-tab.is-active {
   background: var(--editor-selection);
   color: var(--accent-strong);
-  font-weight: 600;
+  font-weight: var(--weight-600);
 }
 
 .nb-ls-tab-count {
-  font-size: 11px;
-  font-weight: 400;
+  font-size: var(--dim-11);
+  font-weight: var(--weight-400);
   color: var(--editor-text-muted);
   font-variant-numeric: tabular-nums;
 }
@@ -144,55 +144,55 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 4px 6px 6px;
+  padding: var(--dim-4) var(--dim-6) var(--dim-6);
 }
 
 .nb-ls-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 36px 16px 40px;
+  gap: var(--dim-12);
+  padding: var(--dim-36) var(--dim-16) var(--dim-40);
   color: var(--editor-text-muted);
-  font-size: 13px;
+  font-size: var(--dim-13);
 }
 
 .nb-ls-empty.is-hint {
-  gap: 6px;
-  padding: 28px 16px 32px;
+  gap: var(--dim-6);
+  padding: var(--dim-28) var(--dim-16) var(--dim-32);
 }
 
 .nb-ls-empty-sub {
-  font-size: 12px;
-  opacity: 0.8;
+  font-size: var(--dim-12);
+  opacity: var(--opacity-0-8);
 }
 
 /* 分组标题（高度与 HEADER_ROW 一致） */
 .nb-ls-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 10px;
-  font-size: 11.5px;
-  font-weight: 600;
+  gap: var(--dim-8);
+  padding: 0 var(--dim-10);
+  font-size: var(--dim-11-5);
+  font-weight: var(--weight-600);
   color: var(--editor-text-muted);
   box-sizing: border-box;
 }
 
 .nb-ls-header-count {
-  font-weight: 400;
+  font-weight: var(--weight-400);
   font-variant-numeric: tabular-nums;
 }
 
 .nb-ls-more {
   margin-left: auto;
-  padding: 2px 6px;
+  padding: var(--dim-2) var(--dim-6);
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--accent-strong);
   font: inherit;
-  font-weight: 500;
+  font-weight: var(--weight-500);
   cursor: pointer;
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
@@ -202,15 +202,15 @@
 }
 
 .nb-ls-more:active {
-  transform: scale(0.95);
+  transform: scale(var(--scale-0-95));
 }
 
 /* 结果行 */
 .nb-ls-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 10px;
+  gap: var(--dim-10);
+  padding: 0 var(--dim-10);
   border-radius: var(--radius-md);
   cursor: pointer;
   box-sizing: border-box;
@@ -227,7 +227,7 @@
 
 .nb-ls-row-content {
   align-items: stretch;
-  padding-top: 4px;
+  padding-top: var(--dim-4);
 }
 
 .nb-ls-row-icon {
@@ -240,18 +240,18 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--dim-2);
 }
 
 .nb-ls-row-title {
-  font-size: 13px;
+  font-size: var(--dim-13);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .nb-ls-row-path {
-  font-size: 11.5px;
+  font-size: var(--dim-11-5);
   color: var(--editor-text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -262,9 +262,9 @@
 .nb-ls-row-meta {
   display: inline-flex;
   flex-shrink: 0;
-  gap: 10px;
+  gap: var(--dim-10);
   margin-left: auto;
-  font-size: 11.5px;
+  font-size: var(--dim-11-5);
   color: var(--editor-text-muted);
   font-variant-numeric: tabular-nums;
 }
@@ -273,12 +273,12 @@
 .nb-ls-row-actions {
   display: none;
   flex-shrink: 0;
-  gap: 2px;
+  gap: var(--dim-2);
 }
 
 .nb-ls-row-content .nb-ls-row-actions {
   align-self: flex-start;
-  margin-top: 6px;
+  margin-top: var(--dim-6);
 }
 
 .nb-ls-row:hover .nb-ls-row-actions,
@@ -295,8 +295,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: var(--dim-26);
+  height: var(--dim-26);
   flex-shrink: 0;
   padding: 0;
   border: none;
@@ -313,7 +313,7 @@
 }
 
 .nb-ls-icon-btn:active {
-  transform: scale(0.9);
+  transform: scale(var(--scale-0-9));
 }
 
 /* 内容结果：标题行（高度与 CONTENT_HEAD 对应）+ 命中片段行（SNIPPET_ROW） */
@@ -327,25 +327,25 @@
 .nb-ls-content-head {
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 34px;
+  gap: var(--dim-8);
+  height: var(--dim-34);
   min-width: 0;
 }
 
 .nb-ls-content-head .nb-ls-row-title {
   flex-shrink: 0;
-  max-width: 50%;
-  font-weight: 500;
+  max-width: var(--pct-50);
+  font-weight: var(--weight-500);
 }
 
 .nb-ls-snippet {
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 24px;
-  padding: 0 6px 0 2px;
+  gap: var(--dim-10);
+  height: var(--dim-24);
+  padding: 0 var(--dim-6) 0 var(--dim-2);
   border-radius: var(--radius-sm);
-  font-size: 12.5px;
+  font-size: var(--dim-12-5);
   min-width: 0;
   transition: background-color var(--transition-fast);
 }
@@ -356,10 +356,10 @@
 
 .nb-ls-snippet-line {
   flex-shrink: 0;
-  width: 34px;
+  width: var(--dim-34);
   text-align: right;
   font-family: var(--mono-font-family);
-  font-size: 11px;
+  font-size: var(--dim-11);
   color: var(--editor-text-muted);
   font-variant-numeric: tabular-nums;
 }
@@ -374,34 +374,34 @@
 }
 
 .nb-ls-panel mark {
-  background: var(--cm-search-match-bg, rgba(250, 204, 21, 0.35));
+  background: var(--cm-search-match-bg);
   color: inherit;
-  border-radius: 2px;
-  font-weight: 600;
+  border-radius: var(--radius-xs);
+  font-weight: var(--weight-600);
 }
 
 .nb-ls-footer {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
-  padding: 7px 14px;
-  border-top: 1px solid var(--editor-border);
+  gap: var(--dim-4) var(--dim-14);
+  padding: var(--dim-7) var(--dim-14);
+  border-top: var(--dim-1) solid var(--editor-border);
   background: var(--editor-surface);
-  font-size: 11px;
+  font-size: var(--dim-11);
   color: var(--editor-text-muted);
 }
 
 .nb-ls-footer kbd {
   display: inline-block;
-  min-width: 16px;
-  margin-right: 3px;
-  padding: 0 4px;
-  border: 1px solid var(--editor-border);
-  border-radius: 3px;
+  min-width: var(--dim-16);
+  margin-right: var(--dim-3);
+  padding: 0 var(--dim-4);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-xs);
   background: var(--editor-bg);
   font-family: var(--mono-font-family);
-  font-size: 10.5px;
-  line-height: 16px;
+  font-size: var(--dim-10-5);
+  line-height: var(--dim-16);
   text-align: center;
 }
 
@@ -410,9 +410,9 @@
 .nb-ls-settings-roots {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--editor-border);
+  gap: var(--dim-4);
+  padding: var(--dim-4);
+  border: var(--dim-1) solid var(--editor-border);
   border-radius: var(--radius-md);
   background: var(--editor-bg);
 }
@@ -420,10 +420,10 @@
 .nb-ls-settings-root {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 4px 5px 8px;
+  gap: var(--dim-8);
+  padding: var(--dim-5) var(--dim-4) var(--dim-5) var(--dim-8);
   border-radius: var(--radius-sm);
-  font-size: 12.5px;
+  font-size: var(--dim-12-5);
   transition: background-color var(--transition-fast);
 }
 
@@ -441,23 +441,23 @@
 
 .nb-ls-settings-tag {
   flex-shrink: 0;
-  padding: 1px 6px;
-  border-radius: 999px;
+  padding: var(--dim-1) var(--dim-6);
+  border-radius: var(--radius-pill);
   background: var(--editor-selection);
   color: var(--accent-strong);
-  font-size: 11px;
+  font-size: var(--dim-11);
 }
 
 .nb-ls-settings-empty {
-  padding: 10px 8px;
-  font-size: 12px;
+  padding: var(--dim-10) var(--dim-8);
+  font-size: var(--dim-12);
   color: var(--editor-text-muted);
 }
 
 .nb-ls-settings-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--dim-8);
 }
 
 .nb-ls-drive-option:hover {

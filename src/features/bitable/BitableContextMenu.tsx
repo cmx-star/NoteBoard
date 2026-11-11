@@ -74,15 +74,15 @@ function compactEntries<T extends { kind: string }>(list: Array<MaybeEntry<T>>):
 
 const panelStyle: React.CSSProperties = {
   position: 'fixed',
-  background: 'var(--editor-surface, #ffffff)',
-  border: '1px solid var(--editor-border, #cbd5e1)',
-  borderRadius: 8,
-  boxShadow: '0 10px 25px rgba(15,23,42,0.15)',
-  padding: 4,
-  fontSize: 12,
+  background: 'var(--editor-surface)',
+  border: 'var(--dim-1) solid var(--editor-border)',
+  borderRadius: 'var(--dim-8)',
+  boxShadow: '0 var(--dim-10) var(--dim-25) var(--nb-auto-0f172a-a15)',
+  padding: 'var(--dim-4)',
+  fontSize: 'var(--text-12)',
   display: 'flex',
   flexDirection: 'column',
-  gap: 2,
+  gap: 'var(--dim-2)',
   boxSizing: 'border-box',
   // 视口实在放不下时才出现滚动，保证菜单本身不越界
   maxHeight: `calc(100vh - ${VIEWPORT_PADDING * 2}px)`,
@@ -90,10 +90,10 @@ const panelStyle: React.CSSProperties = {
 };
 
 const dividerStyle: React.CSSProperties = {
-  height: 1,
+  height: 'var(--dim-1)',
   flexShrink: 0,
-  background: 'var(--editor-border, #e2e8f0)',
-  margin: '3px 0',
+  background: 'var(--editor-border)',
+  margin: 'var(--dim-3) 0',
 };
 
 export function BitableContextMenu({ x, y, entries, menuRef, onClose }: BitableContextMenuProps) {
@@ -197,7 +197,7 @@ export function BitableContextMenu({ x, y, entries, menuRef, onClose }: BitableC
       key={item.key}
       type="button"
       className="nb-bitable-menu-item"
-      style={item.danger ? { color: '#ef4444' } : undefined}
+      style={item.danger ? { color: 'var(--nb-red-500)' } : undefined}
       onMouseEnter={onMouseEnter}
       onClick={() => {
         item.onSelect();
@@ -206,7 +206,7 @@ export function BitableContextMenu({ x, y, entries, menuRef, onClose }: BitableC
     >
       {item.icon}
       <span style={{ flex: 1, whiteSpace: 'nowrap' }}>{item.label}</span>
-      {item.shortcut && <span style={{ fontSize: 10, opacity: 0.5, marginLeft: 12 }}>{item.shortcut}</span>}
+      {item.shortcut && <span style={{ fontSize: 'var(--text-10)', opacity: 'var(--opacity-0-5)', marginLeft: 'var(--dim-12)' }}>{item.shortcut}</span>}
     </button>
   );
 
@@ -231,8 +231,8 @@ export function BitableContextMenu({ x, y, entries, menuRef, onClose }: BitableC
           left: pos?.left ?? x,
           top: pos?.top ?? y,
           visibility: pos ? 'visible' : 'hidden',
-          zIndex: 9999,
-          minWidth: 160,
+          zIndex: 'var(--z-9999)',
+          minWidth: 'var(--dim-160)',
         }}
       >
         {items.map((entry) => {
@@ -251,7 +251,7 @@ export function BitableContextMenu({ x, y, entries, menuRef, onClose }: BitableC
             >
               {entry.icon}
               <span style={{ flex: 1, whiteSpace: 'nowrap' }}>{entry.label}</span>
-              <ChevronRight size={12} style={{ opacity: 0.55, flexShrink: 0 }} />
+              <ChevronRight size={12} style={{ opacity: 'var(--opacity-0-55)', flexShrink: 0 }} />
             </button>
           );
         })}
@@ -266,8 +266,8 @@ export function BitableContextMenu({ x, y, entries, menuRef, onClose }: BitableC
             left: submenuPos?.left ?? submenu!.anchor.right + SUBMENU_GAP,
             top: submenuPos?.top ?? submenu!.anchor.top,
             visibility: submenuPos ? 'visible' : 'hidden',
-            zIndex: 10000,
-            minWidth: 140,
+            zIndex: 'var(--z-10000)',
+            minWidth: 'var(--dim-140)',
           }}
         >
           {submenuItems.map((entry) =>

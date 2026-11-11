@@ -215,16 +215,16 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--outline-bg)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: 'var(--pct-100)', background: 'var(--outline-bg)' }}>
       {/* 大纲标题栏仅保留页签，不展示条目数量。 */}
       <div
         style={{
-          height: 28,
+          height: 'var(--dim-28)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 10px',
-          borderBottom: '1px solid var(--editor-border)',
+          padding: '0 var(--dim-10)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
           flexShrink: 0,
         }}
       >
@@ -260,17 +260,17 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
 
       {/* 搜索框 */}
       {tab === 'outline' && headings.length > 0 && (
-        <div style={{ padding: '6px 8px', borderBottom: '1px solid var(--editor-border)', flexShrink: 0 }}>
+        <div style={{ padding: 'var(--dim-6) var(--dim-8)', borderBottom: 'var(--dim-1) solid var(--editor-border)', flexShrink: 0 }}>
           <input
             type="text"
             placeholder="搜索大纲标题"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
-              width: '100%',
-              padding: '4px 8px',
-              fontSize: 12,
-              border: '1px solid var(--editor-border)',
+              width: 'var(--pct-100)',
+              padding: 'var(--dim-4) var(--dim-8)',
+              fontSize: 'var(--text-12)',
+              border: 'var(--dim-1) solid var(--editor-border)',
               borderRadius: 'var(--radius-sm)',
               background: 'var(--editor-surface)',
               color: 'var(--editor-text)',
@@ -285,11 +285,11 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
       {tab !== 'outline' ? null : headings.length === 0 ? (
         <div
           style={{
-            padding: '24px 16px',
-            fontSize: 12,
+            padding: 'var(--dim-24) var(--dim-16)',
+            fontSize: 'var(--text-12)',
             color: 'var(--editor-text-muted)',
             textAlign: 'center',
-            lineHeight: 1.6,
+            lineHeight: 'var(--leading-1-6)',
           }}
         >
           暂无标题节点<br />
@@ -298,7 +298,7 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
       ) : (
         <div
           ref={scrollContainerRef}
-          style={{ flex: 1, overflowY: 'auto', padding: '4px 0' }}
+          style={{ flex: 1, overflowY: 'auto', padding: 'var(--dim-4) 0' }}
         >
           <div ref={listRef}>
             {filteredHeadings.map((h) => {
@@ -325,26 +325,26 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
                       if (!isActive) {
                         e.currentTarget.style.background = 'transparent';
                       }
-                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.transform = 'scale(var(--scale-1))';
                     }}
                     onMouseDown={(e) => {
-                      e.currentTarget.style.transform = 'scale(0.985)';
+                      e.currentTarget.style.transform = 'scale(var(--scale-0-985))';
                     }}
                     onMouseUp={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.transform = 'scale(var(--scale-1))';
                     }}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      height: 24,
+                      height: 'var(--dim-24)',
                       paddingLeft: getIndent(h.level),
-                      paddingRight: 8,
+                      paddingRight: 'var(--dim-8)',
                       cursor: 'pointer',
                       fontSize: getFontSize(h.level),
                       color: isActive ? 'var(--editor-accent)' : 'var(--editor-text)',
                       fontWeight: isActive ? 600 : 400,
                       background: isActive ? 'var(--editor-selection-background)' : 'transparent',
-                      borderLeft: isActive ? '2px solid var(--editor-accent)' : '2px solid transparent',
+                      borderLeft: isActive ? 'var(--dim-2) solid var(--editor-accent)' : 'var(--dim-2) solid transparent',
                       userSelect: 'none',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
@@ -361,8 +361,8 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
                         }}
                         style={{
                           display: 'inline-flex',
-                          width: 16,
-                          height: 16,
+                          width: 'var(--dim-16)',
+                          height: 'var(--dim-16)',
                           alignItems: 'center',
                           justifyContent: 'center',
                           flexShrink: 0,
@@ -381,7 +381,7 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
                         <ChevronRight size={12} strokeWidth={2.2} />
                       </span>
                     ) : (
-                      <span style={{ width: 16, flexShrink: 0 }} />
+                      <span style={{ width: 'var(--dim-16)', flexShrink: 0 }} />
                     )}
 
                     {/* 标题文本 / 编辑输入 */}
@@ -407,10 +407,10 @@ export function OutlinePanel({ editor, docKey = null }: OutlinePanelProps) {
                         onDoubleClick={(e) => e.stopPropagation()}
                         style={{
                           flex: 1,
-                          padding: '2px 4px',
+                          padding: 'var(--dim-2) var(--dim-4)',
                           fontSize: getFontSize(h.level),
-                          border: '1px solid var(--editor-accent)',
-                          borderRadius: 2,
+                          border: 'var(--dim-1) solid var(--editor-accent)',
+                          borderRadius: 'var(--radius-xs)',
                           background: 'var(--editor-surface)',
                           color: 'var(--editor-text)',
                           outline: 'none',

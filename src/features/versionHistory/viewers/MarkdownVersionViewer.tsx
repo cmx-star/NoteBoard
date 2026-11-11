@@ -171,7 +171,7 @@ export default function MarkdownVersionViewer(props: VersionViewerProps) {
       editorProps: {
         attributes: {
           class: 'nb-prose nb-hd-prose',
-          style: 'outline: none; max-width: var(--content-max-width); margin: 0 auto; padding: 24px 24px 64px; font-size: var(--content-font-size); line-height: var(--content-line-height); font-family: var(--content-font-family); color: var(--editor-text);',
+          style: 'outline: none; max-width: var(--content-max-width); margin: 0 auto; padding: var(--dim-24) var(--dim-24) var(--dim-64); font-size: var(--content-font-size); line-height: var(--content-line-height); font-family: var(--content-font-family); color: var(--editor-text);',
         },
       },
     },

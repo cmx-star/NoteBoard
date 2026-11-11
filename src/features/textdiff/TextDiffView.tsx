@@ -61,88 +61,88 @@ const CHUNK_BAR_WIDTH = 38;
 
 /** 工具栏与中缝按钮层样式（nb-diff-* 类名均为本组件私有） */
 const TEXT_DIFF_CSS = `
-.nb-diff-root { display: flex; flex-direction: column; height: 100%; background: var(--editor-bg); }
+.nb-diff-root { display: flex; flex-direction: column; height: var(--pct-100); background: var(--editor-bg); }
 .nb-diff-toolbar {
-  display: flex; align-items: center; gap: 4px; padding: 4px 8px;
-  border-bottom: 1px solid var(--editor-border); flex-shrink: 0;
+  display: flex; align-items: center; gap: var(--dim-4); padding: var(--dim-4) var(--dim-8);
+  border-bottom: var(--dim-1) solid var(--editor-border); flex-shrink: 0;
 }
 .nb-diff-tbtn {
-  display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
-  border-radius: 4px; border: none; background: transparent;
-  color: var(--editor-text-muted, #64748b); font-size: 11px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: var(--dim-4); padding: var(--dim-3) var(--dim-8);
+  border-radius: var(--radius-sm); border: none; background: transparent;
+  color: var(--editor-text-muted); font-size: var(--dim-11); cursor: pointer;
   transition: background 0.12s ease, color 0.12s ease;
 }
-.nb-diff-tbtn:hover { background: var(--toolbar-hover, rgba(59, 130, 246, 0.12)); color: var(--editor-text, #1e293b); }
-.nb-diff-tbtn:active { background: var(--toolbar-active, rgba(59, 130, 246, 0.2)); }
+.nb-diff-tbtn:hover { background: var(--toolbar-hover); color: var(--editor-text); }
+.nb-diff-tbtn:active { background: var(--toolbar-active); }
 /* 主操作（打开文件）用强调色，避免被误认为不可点击 */
 .nb-diff-tbtn-accent, .nb-diff-tbtn-accent:hover {
-  color: var(--editor-accent, #3b82f6); font-weight: 600;
+  color: var(--editor-accent); font-weight: var(--weight-600);
 }
 .nb-diff-tbtn-on {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.12));
-  color: var(--editor-accent, #3b82f6); font-weight: 600;
+  background: var(--toolbar-active);
+  color: var(--editor-accent); font-weight: var(--weight-600);
 }
-.nb-diff-tbtn-on:hover { color: var(--editor-accent, #3b82f6); }
+.nb-diff-tbtn-on:hover { color: var(--editor-accent); }
 .nb-diff-name {
-  max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-size: 11px; color: var(--editor-text, #1e293b);
+  max-width: var(--dim-180); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: var(--dim-11); color: var(--editor-text);
 }
-.nb-diff-count { font-size: 11px; color: var(--editor-text-muted, #64748b); padding: 0 4px; white-space: nowrap; }
+.nb-diff-count { font-size: var(--dim-11); color: var(--editor-text-muted); padding: 0 var(--dim-4); white-space: nowrap; }
 .nb-diff-spacer { flex: 1 1 0; }
 .nb-diff-stage { position: relative; flex: 1 1 0; min-height: 0; }
-.nb-diff-host { height: 100%; }
+.nb-diff-host { height: var(--pct-100); }
 /* merge 视图外层滚动（merge 默认不设高度，需宿主显式给高） */
-.nb-diff-host > .cm-mergeView { height: 100%; overflow-y: auto; }
+.nb-diff-host > .cm-mergeView { height: var(--pct-100); overflow-y: auto; }
 /* 编辑区撑满整栏：使整个区域如同普通文本编辑器，行号槽与文本区垂直铺满全高，下方空白可直接点击定位 */
-.nb-diff-host .cm-mergeViewEditors { min-height: 100%; display: flex; align-items: stretch; }
-.nb-diff-host .cm-mergeViewEditor { display: flex; flex-direction: column; flex: 1 1 0; min-height: 100%; }
+.nb-diff-host .cm-mergeViewEditors { min-height: var(--pct-100); display: flex; align-items: stretch; }
+.nb-diff-host .cm-mergeViewEditor { display: flex; flex-direction: column; flex: 1 1 0; min-height: var(--pct-100); }
 .nb-diff-host .cm-mergeViewEditor > .cm-editor {
   flex: 1 1 auto; display: flex !important; flex-direction: column;
-  min-height: 100% !important; height: auto !important; cursor: text;
+  min-height: var(--pct-100) !important; height: auto !important; cursor: text;
 }
 .nb-diff-host .cm-mergeViewEditor .cm-scroller {
   flex: 1 1 auto; display: flex !important;
-  min-height: 100% !important; height: auto !important; cursor: text;
+  min-height: var(--pct-100) !important; height: auto !important; cursor: text;
 }
 .nb-diff-host .cm-mergeViewEditor .cm-gutters {
-  min-height: 100% !important; align-self: stretch !important;
+  min-height: var(--pct-100) !important; align-self: stretch !important;
 }
 .nb-diff-host .cm-mergeViewEditor .cm-content {
-  min-height: 100% !important; cursor: text;
+  min-height: var(--pct-100) !important; cursor: text;
 }
 /* 左侧编辑器宽度由变量控制（中缝拖拽调整 inline 覆盖；默认左右平分去掉中缝宽）。
    变量定义在外层舞台上，两侧搜索栏也据此定位；百分比在使用处按各自容器解析 */
-.nb-diff-stage { --nb-diff-left: calc((100% - ${CHUNK_BAR_WIDTH}px) / 2); }
+.nb-diff-stage { --nb-diff-left: calc((var(--pct-100) - ${CHUNK_BAR_WIDTH}px) / 2); }
 .nb-diff-host .cm-mergeViewEditor:first-child { flex: 0 0 var(--nb-diff-left); }
 /* 中缝列：可拖拽调整分栏（col-resize），内嵌采用按钮 */
 .nb-diff-chunkbar {
-  position: relative; flex: 0 0 auto; width: ${CHUNK_BAR_WIDTH}px; z-index: 6;
+  position: relative; flex: 0 0 auto; width: ${CHUNK_BAR_WIDTH}px; z-index: var(--z-6);
   cursor: col-resize; transition: background 0.15s ease;
 }
-.nb-diff-chunkbar:hover { background: var(--toolbar-hover, rgba(59, 130, 246, 0.10)); }
+.nb-diff-chunkbar:hover { background: var(--toolbar-hover); }
 .nb-diff-chunkbar.nb-diff-resizing {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.18));
+  background: var(--toolbar-active);
 }
 /* 中缝细中线（视觉分界，不响应指针） */
 .nb-diff-chunkbar::after {
-  content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
-  background: var(--editor-border, #e2e8f0); transform: translateX(-0.5px);
+  content: ''; position: absolute; left: var(--pct-50); top: 0; bottom: 0; width: var(--dim-1);
+  background: var(--editor-border); transform: translateX(calc(var(--dim-0-5) * -1));
   pointer-events: none;
 }
 .nb-diff-chunkbtns {
-  position: absolute; display: flex; gap: 2px; left: 50%; transform: translateX(-50%);
+  position: absolute; display: flex; gap: var(--dim-2); left: var(--pct-50); transform: translateX(calc(var(--pct-50) * -1));
 }
 .nb-diff-chunkbtns button {
-  width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid var(--editor-border, #e2e8f0); border-radius: 4px;
-  background: var(--editor-surface, #fff); color: var(--editor-text-muted, #64748b);
-  font-size: 9px; line-height: 1; cursor: pointer; padding: 0;
+  width: var(--dim-16); height: var(--dim-16); display: inline-flex; align-items: center; justify-content: center;
+  border: var(--dim-1) solid var(--editor-border); border-radius: var(--radius-sm);
+  background: var(--editor-surface); color: var(--editor-text-muted);
+  font-size: var(--dim-9); line-height: var(--leading-1); cursor: pointer; padding: 0;
   transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
 }
 .nb-diff-chunkbtns button:hover {
-  background: var(--editor-accent, #3b82f6); border-color: var(--editor-accent, #3b82f6); color: #fff;
+  background: var(--editor-accent); border-color: var(--editor-accent); color: var(--nb-white);
 }
-.nb-diff-chunkbtns button:active { transform: scale(0.92); }
+.nb-diff-chunkbtns button:active { transform: scale(var(--scale-0-92)); }
 `;
 
 /** 全量替换编辑器文本（打开文件/交换两侧时使用） */
@@ -152,14 +152,14 @@ function replaceDoc(view: EditorView, text: string): void {
 
 /** 左侧搜索栏定位：贴左栏右上角，宽度不超出左栏 */
 const LEFT_SEARCH_BAR_STYLE: React.CSSProperties = {
-  right: 'calc(100% - var(--nb-diff-left) + 12px)',
-  maxWidth: 'calc(var(--nb-diff-left) - 24px)',
+  right: 'calc(var(--pct-100) - var(--nb-diff-left) + var(--dim-12))',
+  maxWidth: 'calc(var(--nb-diff-left) - var(--dim-24))',
 };
 
 /** 右侧搜索栏定位：贴右栏右上角（右侧让出外层滚动条），宽度不超出右栏 */
 const RIGHT_SEARCH_BAR_STYLE: React.CSSProperties = {
-  right: 20,
-  maxWidth: `calc(100% - var(--nb-diff-left) - ${CHUNK_BAR_WIDTH}px - 32px)`,
+  right: 'var(--dim-20)',
+  maxWidth: `calc(var(--pct-100) - var(--nb-diff-left) - ${CHUNK_BAR_WIDTH}px - var(--dim-32))`,
 };
 
 // docKey 只用于内存迁移标识，不进入文件保存链。

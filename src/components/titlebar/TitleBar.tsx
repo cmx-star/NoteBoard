@@ -68,7 +68,7 @@ const ICON_DRAG_THRESHOLD_PX = 4;
 /** 恢复应用图标的常态样式（拖动窗口后不会收到 mouseup/mouseleave，需主动复位） */
 function resetIconStyle(el: HTMLElement) {
   el.style.background = 'transparent';
-  el.style.transform = 'scale(1)';
+  el.style.transform = 'scale(var(--scale-1))';
   el.style.cursor = 'pointer';
 }
 
@@ -98,7 +98,7 @@ export function TitleBar() {
     suppressIconClickRef.current = false;
     const el = e.currentTarget;
     el.style.background = 'var(--toolbar-active)';
-    el.style.transform = 'scale(0.92)';
+    el.style.transform = 'scale(var(--scale-0-92))';
     const press = {
       x: e.clientX,
       y: e.clientY,
@@ -142,16 +142,16 @@ export function TitleBar() {
     display: 'flex',
     flexDirection: 'column',
     background: 'var(--titlebar-bg)',
-    borderBottom: '1px solid var(--editor-border)',
+    borderBottom: 'var(--dim-1) solid var(--editor-border)',
     boxShadow: 'var(--nb-titlebar-shadow, none)',
     userSelect: 'none',
     flexShrink: 0,
     fontFamily: 'var(--ui-font-family, inherit)',
-    fontSize: 'var(--ui-font-size, 13px)',
+    fontSize: 'var(--ui-font-size, var(--dim-13))',
   };
 
   const titleBarRowStyle: React.CSSProperties = {
-    height: 36,
+    height: 'var(--dim-36)',
     display: 'flex',
     alignItems: 'center',
   };
@@ -172,8 +172,8 @@ export function TitleBar() {
         >
           <div
             style={{
-              width: 36,
-              height: 36,
+              width: 'var(--dim-36)',
+              height: 'var(--dim-36)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -184,7 +184,7 @@ export function TitleBar() {
             onClick={handleIconClick}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
             }}
             onMouseLeave={(e) => {
               // 移出图标区域时取消未完成的长按
@@ -193,13 +193,13 @@ export function TitleBar() {
             }}
             onPointerDown={IS_WEB ? (e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.92)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
             } : handleIconPointerDown}
             onPointerMove={IS_WEB ? undefined : handleIconPointerMove}
             onPointerUp={(e) => {
               endIconPress();
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
               e.currentTarget.style.cursor = 'pointer';
             }}
             onPointerCancel={(e) => {
@@ -237,8 +237,8 @@ export function TitleBar() {
             type="button"
             onClick={() => checkForUpdates(false)}
             style={{
-              width: 36,
-              height: 36,
+              width: 'var(--dim-36)',
+              height: 'var(--dim-36)',
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
@@ -254,7 +254,7 @@ export function TitleBar() {
               if (!checkingUpdate) {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
                 e.currentTarget.style.color = 'var(--editor-text)';
-                e.currentTarget.style.transform = 'scale(1.05)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
               }
             }}
             onMouseLeave={(e) => {
@@ -263,19 +263,19 @@ export function TitleBar() {
                 e.currentTarget.style.color = hasUpdate
                   ? 'var(--accent-strong)'
                   : 'var(--editor-text-secondary)';
-                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1))';
               }
             }}
             onMouseDown={(e) => {
               if (!checkingUpdate) {
                 e.currentTarget.style.background = 'var(--toolbar-active)';
-                e.currentTarget.style.transform = 'scale(0.92)';
+                e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
               }
             }}
             onMouseUp={(e) => {
               if (!checkingUpdate) {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
-                e.currentTarget.style.transform = 'scale(1.05)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
               }
             }}
             aria-label="检测更新"
@@ -290,13 +290,13 @@ export function TitleBar() {
               <span
                 style={{
                   position: 'absolute',
-                  top: 7,
-                  right: 7,
-                  width: 7,
-                  height: 7,
-                  borderRadius: '50%',
-                  background: '#ef4444',
-                  boxShadow: '0 0 0 1.5px var(--titlebar-bg)',
+                  top: 'var(--dim-7)',
+                  right: 'var(--dim-7)',
+                  width: 'var(--dim-7)',
+                  height: 'var(--dim-7)',
+                  borderRadius: 'var(--pct-50)',
+                  background: 'var(--nb-red-500)',
+                  boxShadow: '0 0 0 var(--dim-1-5) var(--titlebar-bg)',
                   pointerEvents: 'none',
                 }}
               />
@@ -321,8 +321,8 @@ export function TitleBar() {
             type="button"
             onClick={toggleSettingsModal}
             style={{
-              width: 36,
-              height: 36,
+              width: 'var(--dim-36)',
+              height: 'var(--dim-36)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -336,20 +336,20 @@ export function TitleBar() {
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
               e.currentTarget.style.color = 'var(--editor-text)';
-              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = 'var(--editor-text-secondary)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.92)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
             }}
             aria-label="打开设置"
           >

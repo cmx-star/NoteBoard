@@ -72,14 +72,14 @@ export function RailToggle({ side, visible, onToggle, show = true, ariaLabel }: 
     ? 'var(--editor-text)'
     : 'var(--rail-fg)';
   const border = isHighlighted
-    ? '1px solid var(--editor-border-focus)'
+    ? 'var(--dim-1) solid var(--editor-border-focus)'
     : inHotZone
-    ? '1px solid var(--editor-border)'
+    ? 'var(--dim-1) solid var(--editor-border)'
     : 'none';
   const boxShadow = isHighlighted
-    ? '0 3px 10px rgba(0, 0, 0, 0.16)'
+    ? '0 var(--dim-3) var(--dim-10) var(--nb-black-a16)'
     : inHotZone
-    ? '0 2px 6px rgba(0, 0, 0, 0.08)'
+    ? '0 var(--dim-2) var(--dim-6) var(--nb-black-a08)'
     : 'none';
 
   // 图标：尺寸增大至 16px，线条更清晰
@@ -91,8 +91,8 @@ export function RailToggle({ side, visible, onToggle, show = true, ariaLabel }: 
 
   // 把手位置及圆角样式
   const positionStyle: React.CSSProperties = isLeft
-    ? { left: 0, borderRadius: '0 8px 8px 0' }
-    : { right: 0, borderRadius: '8px 0 0 8px' };
+    ? { left: 0, borderRadius: '0 var(--radius-lg) var(--radius-lg) 0' }
+    : { right: 0, borderRadius: 'var(--radius-lg) 0 0 var(--radius-lg)' };
 
   return (
     <>
@@ -101,12 +101,12 @@ export function RailToggle({ side, visible, onToggle, show = true, ariaLabel }: 
         ref={hotZoneRef}
         style={{
           position: 'absolute',
-          top: '50%',
+          top: 'var(--pct-50)',
           ...(isLeft ? { left: 0 } : { right: 0 }),
-          transform: 'translateY(-50%)',
-          width: 100,
-          height: 140,
-          zIndex: 20,
+          transform: 'translateY(calc(var(--pct-50) * -1))',
+          width: 'var(--dim-100)',
+          height: 'var(--dim-140)',
+          zIndex: 'var(--z-20)',
           pointerEvents: 'none',
         }}
       />
@@ -114,10 +114,10 @@ export function RailToggle({ side, visible, onToggle, show = true, ariaLabel }: 
       <button
         style={{
           position: 'absolute',
-          top: '50%',
-          transform: `translateY(-50%) ${isPressed ? 'scale(0.92)' : isHovered ? 'scale(1.05)' : 'scale(1)'}`,
-          width: 20,
-          height: 56,
+          top: 'var(--pct-50)',
+          transform: `translateY(calc(var(--pct-50) * -1)) ${isPressed ? 'scale(var(--scale-0-92))' : isHovered ? 'scale(var(--scale-1-05))' : 'scale(var(--scale-1))'}`,
+          width: 'var(--dim-20)',
+          height: 'var(--dim-56)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -126,13 +126,13 @@ export function RailToggle({ side, visible, onToggle, show = true, ariaLabel }: 
           boxShadow,
           opacity,
           transition: 'opacity var(--transition-normal), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast)',
-          zIndex: 21,
+          zIndex: 'var(--z-21)',
           cursor: 'pointer',
           pointerEvents: 'auto',
           padding: 0,
           ...(isFocused && {
-            outline: '2px solid var(--editor-border-focus)',
-            outlineOffset: 2,
+            outline: 'var(--dim-2) solid var(--editor-border-focus)',
+            outlineOffset: 'var(--dim-2)',
           }),
           ...positionStyle,
         }}

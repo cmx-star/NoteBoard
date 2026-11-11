@@ -142,7 +142,7 @@ export function HistorySettingsPanel() {
     return (
       <div className="nb-sync-panel">
         <div className="nb-sync-muted">
-          <Loader2 size={14} className="nb-sync-spin" style={{ verticalAlign: -2, marginRight: 6 }} />
+          <Loader2 size={14} className="nb-sync-spin" style={{ verticalAlign: -2, marginRight: 'var(--dim-6)' }} />
           正在加载
         </div>
       </div>
@@ -155,7 +155,7 @@ export function HistorySettingsPanel() {
     <div className="nb-sync-panel">
       {/* 页级仅保留标题，记录方式与还原规则由具体设置项说明。 */}
       <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>历史记录</h3>
+        <h3 style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-600)', marginBottom: 'var(--dim-4)' }}>历史记录</h3>
       </div>
 
       <div className="nb-sync-card">

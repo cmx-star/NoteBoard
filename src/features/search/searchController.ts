@@ -574,12 +574,12 @@ export const codeMirrorSearchSupport: Extension = [
   EditorView.theme({
     '.cm-searchMatch': {
       backgroundColor: 'var(--cm-search-match-bg)',
-      borderRadius: '2px',
+      borderRadius: 'var(--radius-xs)',
     },
     '.cm-searchMatch.cm-searchMatch-selected, .cm-searchMatch-selected': {
-      backgroundColor: 'var(--editor-selection, rgba(59, 130, 246, 0.38)) !important',
-      outline: '1.5px solid var(--accent-strong, #3b82f6)',
-      borderRadius: '2px',
+      backgroundColor: 'var(--editor-selection) !important',
+      outline: 'var(--dim-1-5) solid var(--accent-strong)',
+      borderRadius: 'var(--radius-xs)',
     },
     '.cm-panel.cm-search': {
       display: 'none !important',

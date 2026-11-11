@@ -295,7 +295,7 @@ export default function App() {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 12,
+          gap: 'var(--dim-12)',
           height: '100vh',
           alignItems: 'center',
           justifyContent: 'center',
@@ -304,8 +304,8 @@ export default function App() {
           fontFamily: 'var(--ui-font-family, sans-serif)',
         }}
       >
-        <span style={{ fontSize: 15 }}>窗口启动失败：{bootError}</span>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <span style={{ fontSize: 'var(--text-15)' }}>窗口启动失败：{bootError}</span>
+        <div style={{ display: 'flex', gap: 'var(--dim-8)' }}>
           <button
             type="button"
             onClick={() => {
@@ -313,7 +313,7 @@ export default function App() {
               setBootError(null);
               setBootRetryAttempt((n) => n + 1);
             }}
-            style={{ padding: '6px 16px', fontSize: 13, cursor: 'pointer', borderRadius: 6 }}
+            style={{ padding: 'var(--dim-6) var(--dim-16)', fontSize: 'var(--text-13)', cursor: 'pointer', borderRadius: 'var(--radius-md)' }}
           >
             重试
           </button>
@@ -323,7 +323,7 @@ export default function App() {
               // 安全退出：关闭本窗口（已有未保存内容已受暂存保护）
               void ipc.closeWindow(getCurrentWindow().label).catch(() => {});
             }}
-            style={{ padding: '6px 16px', fontSize: 13, cursor: 'pointer', borderRadius: 6 }}
+            style={{ padding: 'var(--dim-6) var(--dim-16)', fontSize: 'var(--text-13)', cursor: 'pointer', borderRadius: 'var(--radius-md)' }}
           >
             关闭窗口
           </button>
@@ -347,7 +347,7 @@ export default function App() {
           fontFamily: 'var(--content-font-family)',
         }}
       >
-        <span style={{ color: 'var(--editor-text-muted)', fontSize: 13 }}>NoteBoard 加载中</span>
+        <span style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)' }}>NoteBoard 加载中</span>
       </div>
     );
   }

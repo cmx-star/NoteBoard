@@ -97,44 +97,44 @@ let styleInjected = false;
 const EDITOR_CSS = `
 .nb-bitable-rte { position: relative; display: flex; flex-direction: column; min-height: 0; }
 .nb-bitable-rte-toolbar {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 2px;
-  padding: 4px 6px; border-bottom: 1px solid var(--editor-border, #e5e7eb);
-  background: var(--editor-surface, #f8fafc); flex-shrink: 0;
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--dim-2);
+  padding: var(--dim-4) var(--dim-6); border-bottom: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-surface); flex-shrink: 0;
 }
 /* 编辑区需作为定位容器：块拖拽把手按滚动容器绝对定位 */
-.nb-bitable-rte-body { position: relative; flex: 1; min-height: 0; overflow-y: auto; padding: 8px 12px; cursor: text; }
+.nb-bitable-rte-body { position: relative; flex: 1; min-height: 0; overflow-y: auto; padding: var(--dim-8) var(--dim-12); cursor: text; }
 /* 左侧留出块拖拽把手的位置 */
-.nb-bitable-rte .ProseMirror { outline: none; min-height: 100%; padding-left: 18px; color: var(--editor-text, #1e293b); font-size: 13px; line-height: 1.6; }
-.nb-bitable-rte .ProseMirror > * + * { margin-top: 0.5em; }
+.nb-bitable-rte .ProseMirror { outline: none; min-height: var(--pct-100); padding-left: var(--dim-18); color: var(--editor-text); font-size: var(--dim-13); line-height: var(--leading-1-6); }
+.nb-bitable-rte .ProseMirror > * + * { margin-top: var(--em-0-5); }
 .nb-bitable-rte .ProseMirror p { margin: 0; }
 /* 覆盖笔记本正文的大标题排版：单元格内不需要分隔线与悬浮级别标签 */
-.nb-bitable-rte .ProseMirror :is(h1, h2, h3, h4, h5, h6) { margin: 0.6em 0 0.3em; padding-bottom: 0; border-bottom: none; line-height: 1.35; }
+.nb-bitable-rte .ProseMirror :is(h1, h2, h3, h4, h5, h6) { margin: var(--em-0-6) 0 var(--em-0-3); padding-bottom: 0; border-bottom: none; line-height: var(--leading-1-35); }
 .nb-bitable-rte .ProseMirror > :is(h1, h2, h3, h4, h5, h6):first-child { margin-top: 0; }
 .nb-bitable-rte .ProseMirror :is(h1, h2, h3, h4, h5, h6)::before { display: none; }
-.nb-bitable-rte .ProseMirror h1 { font-size: 1.45em; font-weight: 700; color: var(--editor-heading, #0f172a); }
-.nb-bitable-rte .ProseMirror h2 { font-size: 1.25em; font-weight: 700; color: var(--editor-heading, #0f172a); }
-.nb-bitable-rte .ProseMirror h3 { font-size: 1.1em; font-weight: 700; color: var(--editor-heading, #0f172a); }
-.nb-bitable-rte .ProseMirror :is(h4, h5, h6) { font-size: 1em; font-weight: 700; color: var(--editor-heading, #0f172a); }
+.nb-bitable-rte .ProseMirror h1 { font-size: var(--em-1-45); font-weight: var(--weight-700); color: var(--editor-heading); }
+.nb-bitable-rte .ProseMirror h2 { font-size: var(--em-1-25); font-weight: var(--weight-700); color: var(--editor-heading); }
+.nb-bitable-rte .ProseMirror h3 { font-size: var(--em-1-1); font-weight: var(--weight-700); color: var(--editor-heading); }
+.nb-bitable-rte .ProseMirror :is(h4, h5, h6) { font-size: var(--em-1); font-weight: var(--weight-700); color: var(--editor-heading); }
 /* 引用、代码块、表格、任务列表、图表等其余块沿用笔记本编辑器的全局 .ProseMirror 样式，两处观感一致；
    任务列表有自己的缩进规则，普通列表的紧凑缩进不能波及它 */
-.nb-bitable-rte .ProseMirror :is(ul:not([data-type="taskList"]), ol) { padding-left: 1.4em; }
+.nb-bitable-rte .ProseMirror :is(ul:not([data-type="taskList"]), ol) { padding-left: var(--em-1-4); }
 .nb-bitable-rte .ProseMirror li > p { margin: 0; }
 .nb-bitable-rte .ProseMirror > p.is-empty:first-child:last-child::before {
   content: attr(data-placeholder); float: left; height: 0; pointer-events: none;
-  color: var(--editor-text-muted, #94a3b8);
+  color: var(--editor-text-muted);
 }
 .nb-bitable-rte-footer {
-  display: flex; align-items: center; justify-content: flex-end; gap: 4px; padding: 4px 8px; flex-shrink: 0;
-  border-top: 1px solid var(--editor-border, #e5e7eb); background: var(--editor-surface, #f8fafc);
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--dim-4); padding: var(--dim-4) var(--dim-8); flex-shrink: 0;
+  border-top: var(--dim-1) solid var(--editor-border); background: var(--editor-surface);
 }
 /* 带圆角边框的宿主（侧栏表单）：容器不能裁剪溢出（工具栏下拉需要伸出），改由首尾栏自行圆角 */
-.nb-bitable-rte-framed .nb-bitable-rte-toolbar { border-radius: 5px 5px 0 0; }
-.nb-bitable-rte-framed .nb-bitable-rte-footer { border-radius: 0 0 5px 5px; }
+.nb-bitable-rte-framed .nb-bitable-rte-toolbar { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.nb-bitable-rte-framed .nb-bitable-rte-footer { border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
 .nb-bitable-rte-source {
-  width: 100%; min-height: 100%; box-sizing: border-box; resize: none; outline: none;
-  border: none; background: transparent; color: var(--editor-text, #1e293b);
+  width: var(--pct-100); min-height: var(--pct-100); box-sizing: border-box; resize: none; outline: none;
+  border: none; background: transparent; color: var(--editor-text);
   font-family: var(--editor-font-mono, 'Cascadia Code', Consolas, monospace);
-  font-size: 12.5px; line-height: 1.65;
+  font-size: var(--dim-12-5); line-height: var(--leading-1-65);
 }
 `;
 
@@ -498,8 +498,8 @@ export function BitableRichTextEditor({
             onClick={isRich ? handleSwitchToSource : handleSwitchToRich}
             aria-label={isRich ? '查看与编辑 Markdown 源码' : '返回可视化编辑'}
             style={{
-              padding: '3px 8px',
-              fontSize: 11,
+              padding: 'var(--dim-3) var(--dim-8)',
+              fontSize: 'var(--text-11)',
             }}
           >
             {isRich ? 'Markdown 源码' : '返回可视化'}

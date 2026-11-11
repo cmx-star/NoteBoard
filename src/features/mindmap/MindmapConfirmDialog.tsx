@@ -56,12 +56,12 @@ export function MindmapConfirmDialog({ title, message, confirmLabel, onConfirm, 
     >
       <div className="nb-mindmap-confirm-card">
         <div className="nb-mindmap-confirm-title">
-          <AlertTriangle size={16} color="var(--error-500, #ef4444)" />
+          <AlertTriangle size={16} color="var(--error-500)" />
           <span>{title}</span>
         </div>
         <div className="nb-mindmap-confirm-message">{message}</div>
         <div className="nb-mindmap-confirm-actions">
-          <button ref={cancelRef} type="button" className="nb-editor-toolbar-btn" onClick={onCancel} style={{ padding: '4px 14px' }}>
+          <button ref={cancelRef} type="button" className="nb-editor-toolbar-btn" onClick={onCancel} style={{ padding: 'var(--dim-4) var(--dim-14)' }}>
             取消
           </button>
           <button

@@ -102,18 +102,18 @@ interface CreateItem {
 
 // 卡片文案与图标为移动端精简版；顺序与「直接展示 / 收进更多」分组由设置「全局 → 新建入口」决定
 const CREATE_ITEMS: CreateItem[] = [
-  { key: 'markdown', label: 'Markdown笔记', desc: '富文本与源码双模', icon: <FilePlus size={22} color="var(--editor-accent, #3b82f6)" />, run: newMarkdown },
-  { key: 'text', label: '文本文档', desc: '轻量纯文本', icon: <FileText size={22} color="#64748b" />, run: newText },
-  { key: 'board', label: '手绘风白板', desc: 'Excalidraw 手绘', icon: <PencilRuler size={22} color="var(--accent-strong, #8b5cf6)" />, run: newBoard },
-  { key: 'mindmap', label: '思维导图', desc: '大纲 ⇄ 脑图', icon: <Network size={22} color="#f97316" />, run: newMindmap },
-  { key: 'bitable', label: '多维表格', desc: '表格 / 看板 / 甘特', icon: <Table2 size={22} color="#2563eb" />, run: newBitable },
-  { key: 'drawio', label: '架构图', desc: '架构与流程图（需联网）', icon: <Layout size={22} color="#ea580c" />, run: newDrawio },
-  { key: 'mermaid', label: 'Mermaid', desc: '时序 / 流程图脚本', icon: <Workflow size={22} color="#00bfb2" />, run: newMermaid },
-  { key: 'plantuml', label: 'PlantUML', desc: 'UML 建模（需联网）', icon: <GitMerge size={22} color="#a855f7" />, run: newPlantUml },
-  { key: 'infographic', label: '信息图', desc: '看板 / 时间线', icon: <ChartColumn size={22} color="#14b8a6" />, run: newInfographic },
-  { key: 'json', label: 'JSON', desc: '数据与配置', icon: <Braces size={22} color="#eab308" />, run: newJson },
-  { key: 'sql', label: 'SQL', desc: '数据库脚本', icon: <Database size={22} color="#3b82f6" />, run: newSql },
-  { key: 'textdiff', label: '文本对比', desc: '左右比对差异', icon: <GitCompare size={22} color="#10b981" />, run: newTextDiff },
+  { key: 'markdown', label: 'Markdown笔记', desc: '富文本与源码双模', icon: <FilePlus size={22} color="var(--editor-accent)" />, run: newMarkdown },
+  { key: 'text', label: '文本文档', desc: '轻量纯文本', icon: <FileText size={22} color="var(--nb-slate-500)" />, run: newText },
+  { key: 'board', label: '手绘风白板', desc: 'Excalidraw 手绘', icon: <PencilRuler size={22} color="var(--accent-strong)" />, run: newBoard },
+  { key: 'mindmap', label: '思维导图', desc: '大纲 ⇄ 脑图', icon: <Network size={22} color="var(--nb-orange-500)" />, run: newMindmap },
+  { key: 'bitable', label: '多维表格', desc: '表格 / 看板 / 甘特', icon: <Table2 size={22} color="var(--nb-blue-600)" />, run: newBitable },
+  { key: 'drawio', label: '架构图', desc: '架构与流程图（需联网）', icon: <Layout size={22} color="var(--nb-orange-600)" />, run: newDrawio },
+  { key: 'mermaid', label: 'Mermaid', desc: '时序 / 流程图脚本', icon: <Workflow size={22} color="var(--nb-auto-00bfb2)" />, run: newMermaid },
+  { key: 'plantuml', label: 'PlantUML', desc: 'UML 建模（需联网）', icon: <GitMerge size={22} color="var(--nb-auto-a855f7)" />, run: newPlantUml },
+  { key: 'infographic', label: '信息图', desc: '看板 / 时间线', icon: <ChartColumn size={22} color="var(--nb-teal-500)" />, run: newInfographic },
+  { key: 'json', label: 'JSON', desc: '数据与配置', icon: <Braces size={22} color="var(--nb-yellow-500)" />, run: newJson },
+  { key: 'sql', label: 'SQL', desc: '数据库脚本', icon: <Database size={22} color="var(--nb-blue-500)" />, run: newSql },
+  { key: 'textdiff', label: '文本对比', desc: '左右比对差异', icon: <GitCompare size={22} color="var(--nb-emerald-500)" />, run: newTextDiff },
 ];
 
 const CREATE_ITEM_MAP = new Map(CREATE_ITEMS.map((item) => [item.key, item]));
@@ -623,7 +623,7 @@ export function MobileHome() {
         <span
           ref={indicatorRef}
           className="nb-m-segment-indicator"
-          style={{ width: `calc((100% - 6px) / ${SECTIONS.length})` }}
+          style={{ width: `calc((var(--pct-100) - var(--dim-6)) / ${SECTIONS.length})` }}
           aria-hidden
         />
         {SECTIONS.map((section) => (

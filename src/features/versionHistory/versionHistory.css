@@ -5,7 +5,7 @@
 .nb-vh-root {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: var(--z-40);
   display: flex;
   flex-direction: column;
   background: var(--editor-bg);
@@ -16,14 +16,14 @@
 
 /* ── 顶栏 ── */
 .nb-vh-topbar {
-  height: 48px;
-  min-height: 48px;
+  height: var(--dim-48);
+  min-height: var(--dim-48);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  padding: 0 12px;
-  border-bottom: 1px solid var(--editor-border);
+  gap: var(--dim-12);
+  padding: 0 var(--dim-12);
+  border-bottom: var(--dim-1) solid var(--editor-border);
   background: var(--editor-surface);
 }
 
@@ -31,7 +31,7 @@
 .nb-vh-topbar-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--dim-8);
   min-width: 0;
 }
 
@@ -43,19 +43,19 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  line-height: 1.25;
+  line-height: var(--leading-1-25);
 }
 
 .nb-vh-title-name {
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: var(--weight-600);
+  font-size: var(--dim-13);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .nb-vh-title-sub {
-  font-size: 11px;
+  font-size: var(--dim-11);
   color: var(--editor-text-muted);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -65,14 +65,14 @@
 .nb-vh-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: 30px;
-  padding: 0 10px;
+  gap: var(--dim-6);
+  height: var(--dim-30);
+  padding: 0 var(--dim-10);
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  border: var(--dim-1) solid transparent;
   background: transparent;
   color: var(--editor-text-secondary);
-  font-size: 12px;
+  font-size: var(--dim-12);
   cursor: pointer;
   white-space: nowrap;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
@@ -85,11 +85,11 @@
 
 .nb-vh-btn:active:not(:disabled) {
   background: var(--toolbar-active);
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
 }
 
 .nb-vh-btn:disabled {
-  opacity: 0.45;
+  opacity: var(--opacity-0-45);
   cursor: not-allowed;
 }
 
@@ -99,13 +99,13 @@
 }
 
 .nb-vh-icon-btn {
-  width: 30px;
+  width: var(--dim-30);
   padding: 0;
   justify-content: center;
 }
 
 .nb-vh-counter {
-  font-size: 12px;
+  font-size: var(--dim-12);
   color: var(--editor-text-secondary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -113,7 +113,7 @@
 
 .nb-vh-counter strong {
   color: var(--accent-strong);
-  font-weight: 600;
+  font-weight: var(--weight-600);
 }
 
 /* ── 主体 ── */
@@ -136,42 +136,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--dim-8);
   color: var(--editor-text-muted);
-  font-size: 12px;
+  font-size: var(--dim-12);
   pointer-events: none;
 }
 
 .nb-vh-empty {
-  height: 100%;
+  height: var(--pct-100);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 24px;
+  gap: var(--dim-10);
+  padding: var(--dim-24);
   color: var(--editor-text-muted);
   text-align: center;
 }
 
 .nb-vh-empty-title {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--dim-14);
+  font-weight: var(--weight-600);
   color: var(--editor-text);
 }
 
 .nb-vh-banner {
   position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 12px;
+  top: var(--dim-10);
+  left: var(--pct-50);
+  transform: translateX(calc(var(--pct-50) * -1));
+  z-index: var(--z-5);
+  padding: var(--dim-4) var(--dim-12);
+  border-radius: var(--radius-pill);
+  font-size: var(--dim-12);
   color: var(--editor-text-secondary);
   background: var(--editor-surface);
-  border: 1px solid var(--editor-border);
+  border: var(--dim-1) solid var(--editor-border);
   box-shadow: var(--shadow-sm);
   pointer-events: none;
   white-space: nowrap;
@@ -179,23 +179,23 @@
 
 /* ── 版本列表 ── */
 .nb-vh-panel {
-  width: 300px;
+  width: var(--dim-300);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--editor-border);
+  border-left: var(--dim-1) solid var(--editor-border);
   background: var(--history-panel-bg);
 }
 
 .nb-vh-panel-head {
-  height: 44px;
+  height: var(--dim-44);
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 0 16px;
-  font-size: 14px;
-  font-weight: 600;
-  border-bottom: 1px solid var(--editor-border);
+  gap: var(--dim-6);
+  padding: 0 var(--dim-16);
+  font-size: var(--dim-14);
+  font-weight: var(--weight-600);
+  border-bottom: var(--dim-1) solid var(--editor-border);
 }
 
 .nb-vh-help {
@@ -208,15 +208,15 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding-bottom: 12px;
+  padding-bottom: var(--dim-12);
 }
 
 .nb-vh-month {
   position: sticky;
   top: 0;
-  z-index: 1;
-  padding: 10px 16px 6px;
-  font-size: 12px;
+  z-index: var(--z-1);
+  padding: var(--dim-10) var(--dim-16) var(--dim-6);
+  font-size: var(--dim-12);
   color: var(--history-month-text);
   background: var(--history-panel-bg);
 }
@@ -224,11 +224,11 @@
 .nb-vh-item {
   position: relative;
   display: block;
-  width: 100%;
+  width: var(--pct-100);
   text-align: left;
-  padding: 10px 16px 10px 19px;
+  padding: var(--dim-10) var(--dim-16) var(--dim-10) var(--dim-19);
   border: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--editor-border) 70%, transparent);
+  border-bottom: var(--dim-1) solid color-mix(in srgb, var(--editor-border) var(--pct-70), transparent);
   background: transparent;
   color: var(--editor-text);
   cursor: pointer;
@@ -253,21 +253,21 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 3px;
+  width: var(--dim-3);
   background: var(--editor-accent);
 }
 
 .nb-vh-item:focus-visible {
-  outline: 2px solid var(--diff-focus-ring);
-  outline-offset: -2px;
+  outline: var(--dim-2) solid var(--diff-focus-ring);
+  outline-offset: calc(var(--dim-2) * -1);
 }
 
 .nb-vh-item-time {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  gap: var(--dim-6);
+  font-size: var(--dim-13);
+  font-weight: var(--weight-500);
   color: var(--editor-text);
 }
 
@@ -276,18 +276,18 @@
 }
 
 .nb-vh-badge {
-  font-size: 10px;
-  line-height: 16px;
-  padding: 0 5px;
-  border-radius: 3px;
+  font-size: var(--dim-10);
+  line-height: var(--dim-16);
+  padding: 0 var(--dim-5);
+  border-radius: var(--radius-xs);
   color: var(--accent-strong);
-  background: color-mix(in srgb, var(--accent-strong) 12%, transparent);
-  font-weight: 500;
+  background: color-mix(in srgb, var(--accent-strong) var(--pct-12), transparent);
+  font-weight: var(--weight-500);
 }
 
 .nb-vh-item-desc {
-  margin-top: 3px;
-  font-size: 12px;
+  margin-top: var(--dim-3);
+  font-size: var(--dim-12);
   color: var(--editor-text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -303,27 +303,27 @@
 }
 
 .nb-vh-item-device {
-  margin-top: 4px;
+  margin-top: var(--dim-4);
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11px;
+  gap: var(--dim-6);
+  font-size: var(--dim-11);
   color: var(--editor-text-muted);
 }
 
 .nb-vh-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  width: var(--dim-6);
+  height: var(--dim-6);
+  border-radius: var(--pct-50);
   flex-shrink: 0;
 }
 
 .nb-vh-item-actions {
   position: absolute;
-  top: 8px;
-  right: 10px;
+  top: var(--dim-8);
+  right: var(--dim-10);
   display: none;
-  gap: 2px;
+  gap: var(--dim-2);
 }
 
 .nb-vh-item:hover .nb-vh-item-actions,
@@ -332,8 +332,8 @@
 }
 
 .nb-vh-mini-btn {
-  width: 24px;
-  height: 24px;
+  width: var(--dim-24);
+  height: var(--dim-24);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -351,7 +351,7 @@
 }
 
 .nb-vh-mini-btn:active {
-  transform: scale(0.9);
+  transform: scale(var(--scale-0-9));
   background: var(--toolbar-active);
 }
 
@@ -365,21 +365,21 @@
 }
 
 .nb-vh-panel-foot {
-  height: 48px;
+  height: var(--dim-48);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  border-top: 1px solid var(--editor-border);
-  font-size: 13px;
+  padding: 0 var(--dim-16);
+  border-top: var(--dim-1) solid var(--editor-border);
+  font-size: var(--dim-13);
 }
 
 /* 开关 */
 .nb-vh-switch {
   position: relative;
-  width: 36px;
-  height: 20px;
-  border-radius: 999px;
+  width: var(--dim-36);
+  height: var(--dim-20);
+  border-radius: var(--radius-pill);
   border: none;
   padding: 0;
   background: var(--control-border);
@@ -390,12 +390,12 @@
 .nb-vh-switch::after {
   content: '';
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #fff;
+  top: var(--dim-2);
+  left: var(--dim-2);
+  width: var(--dim-16);
+  height: var(--dim-16);
+  border-radius: var(--radius-pill);
+  background: var(--nb-white);
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-fast);
 }
@@ -405,7 +405,7 @@
 }
 
 .nb-vh-switch.is-on::after {
-  transform: translateX(16px);
+  transform: translateX(var(--dim-16));
 }
 
 .nb-vh-switch:hover {
@@ -413,12 +413,12 @@
 }
 
 .nb-vh-switch:active {
-  transform: scale(0.94);
+  transform: scale(var(--scale-0-94));
 }
 
 .nb-vh-switch:focus-visible {
-  outline: 2px solid var(--diff-focus-ring);
-  outline-offset: 2px;
+  outline: var(--dim-2) solid var(--diff-focus-ring);
+  outline-offset: var(--dim-2);
 }
 
 /* 窄屏：版本列表移到下方 */
@@ -428,9 +428,9 @@
   }
   .nb-vh-panel {
     width: auto;
-    height: 42%;
+    height: var(--pct-42);
     border-left: none;
-    border-top: 1px solid var(--editor-border);
+    border-top: var(--dim-1) solid var(--editor-border);
   }
   .nb-vh-topbar {
     grid-template-columns: minmax(0, 1fr) auto;
@@ -442,21 +442,21 @@
 
 /* ── Markdown 渲染级差异 ── */
 .nb-hd-scroller {
-  height: 100%;
+  height: var(--pct-100);
   overflow: auto;
   position: relative;
 }
 
 .nb-hd-prose .nb-hd-ins {
   background: var(--diff-insert-bg);
-  border-radius: 2px;
-  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--diff-insert-border) 55%, transparent);
+  border-radius: var(--radius-xs);
+  box-shadow: inset 0 calc(var(--dim-1) * -1) 0 color-mix(in srgb, var(--diff-insert-border) var(--pct-55), transparent);
 }
 
 .nb-hd-prose .nb-hd-del {
   background: var(--diff-delete-bg);
   color: var(--diff-delete-text);
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   text-decoration: line-through;
   text-decoration-color: var(--diff-delete-border);
 }
@@ -472,19 +472,19 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -12px;
-  width: 3px;
-  border-radius: 2px;
+  left: calc(var(--dim-12) * -1);
+  width: var(--dim-3);
+  border-radius: var(--radius-xs);
   pointer-events: none;
 }
 
 /* 列表项：色条放到项目符号左侧 */
 .nb-hd-prose li.nb-hd-block::after {
-  left: -30px;
+  left: calc(var(--dim-30) * -1);
 }
 
 .nb-hd-prose .nb-hd-block-ins {
-  background: color-mix(in srgb, var(--diff-insert-border) 8%, transparent);
+  background: color-mix(in srgb, var(--diff-insert-border) var(--pct-8), transparent);
 }
 
 .nb-hd-prose .nb-hd-block-ins::after {
@@ -492,7 +492,7 @@
 }
 
 .nb-hd-prose .nb-hd-block-del {
-  background: color-mix(in srgb, var(--diff-delete-border) 7%, transparent);
+  background: color-mix(in srgb, var(--diff-delete-border) var(--pct-7), transparent);
   color: var(--diff-delete-text);
   text-decoration: line-through;
   text-decoration-color: var(--diff-delete-border);
@@ -505,7 +505,7 @@
 .nb-hd-prose .nb-hd-block-del img,
 .nb-hd-prose .nb-hd-block-del svg,
 .nb-hd-prose .nb-hd-block-del canvas {
-  opacity: 0.55;
+  opacity: var(--opacity-0-55);
 }
 
 .nb-hd-prose .nb-hd-block-mod::after {
@@ -522,26 +522,26 @@
 .nb-hd-prose tr.nb-hd-block-ins,
 .nb-hd-prose td.nb-hd-block-ins,
 .nb-hd-prose th.nb-hd-block-ins {
-  box-shadow: inset 3px 0 0 var(--diff-insert-border);
+  box-shadow: inset var(--dim-3) 0 0 var(--diff-insert-border);
 }
 
 .nb-hd-prose tr.nb-hd-block-del,
 .nb-hd-prose td.nb-hd-block-del,
 .nb-hd-prose th.nb-hd-block-del {
-  box-shadow: inset 3px 0 0 var(--diff-delete-border);
+  box-shadow: inset var(--dim-3) 0 0 var(--diff-delete-border);
 }
 
 .nb-hd-prose tr.nb-hd-block-mod,
 .nb-hd-prose td.nb-hd-block-mod,
 .nb-hd-prose th.nb-hd-block-mod {
-  box-shadow: inset 3px 0 0 var(--diff-modify-border);
+  box-shadow: inset var(--dim-3) 0 0 var(--diff-modify-border);
 }
 
 /* 当前定位的改动 */
 .nb-hd-prose .nb-hd-current {
-  outline: 2px solid var(--diff-focus-ring);
-  outline-offset: 2px;
-  border-radius: 3px;
+  outline: var(--dim-2) solid var(--diff-focus-ring);
+  outline-offset: var(--dim-2);
+  border-radius: var(--radius-xs);
 }
 
 /* 关闭「显示更改」：隐藏删除内容，去掉新增与修改的标记 */
@@ -569,14 +569,14 @@
 
 /* ── 移动端：紧凑顶栏、版本列表全屏面板、悬浮改动跳转 ── */
 .nb-vh-root.is-mobile {
-  padding-top: var(--nb-m-safe-top, 0px);
+  padding-top: var(--nb-m-safe-top, var(--dim-0));
 }
 
 .nb-vh-root.is-mobile .nb-vh-topbar {
-  height: 52px;
-  min-height: 52px;
+  height: var(--dim-52);
+  min-height: var(--dim-52);
   grid-template-columns: minmax(0, 1fr) auto;
-  padding: 0 6px;
+  padding: 0 var(--dim-6);
 }
 
 .nb-vh-root.is-mobile .nb-vh-topbar-center {
@@ -584,8 +584,8 @@
 }
 
 .nb-vh-root.is-mobile .nb-vh-icon-btn {
-  width: 40px;
-  height: 40px;
+  width: var(--dim-40);
+  height: var(--dim-40);
 }
 
 .nb-vh-root.is-mobile .nb-vh-btn.is-on {
@@ -601,11 +601,11 @@
 .nb-vh-panel.is-sheet {
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: var(--z-6);
   width: auto;
   height: auto;
   border: none;
-  transform: translateX(100%);
+  transform: translateX(var(--pct-100));
   visibility: hidden;
   transition: transform var(--transition-normal), visibility var(--transition-normal);
 }
@@ -616,8 +616,8 @@
 }
 
 .nb-vh-root.is-mobile .nb-vh-item {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: var(--dim-12);
+  padding-bottom: var(--dim-12);
 }
 
 /* 移动端没有悬停，固定 / 删除按钮常显 */
@@ -627,42 +627,42 @@
 
 .nb-vh-float-nav {
   position: absolute;
-  right: 12px;
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  z-index: 5;
+  right: var(--dim-12);
+  bottom: calc(var(--dim-16) + env(safe-area-inset-bottom, var(--dim-0)));
+  z-index: var(--z-5);
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 4px 4px 10px;
-  border-radius: 999px;
+  gap: var(--dim-6);
+  padding: var(--dim-4) var(--dim-4) var(--dim-4) var(--dim-10);
+  border-radius: var(--radius-pill);
   background: var(--editor-surface);
-  border: 1px solid var(--editor-border);
+  border: var(--dim-1) solid var(--editor-border);
   box-shadow: var(--shadow-md);
 }
 
 .nb-vh-float-nav .nb-vh-icon-btn {
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 .nb-vh-root.is-mobile .nb-vh-panel-foot {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  height: calc(52px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, var(--dim-0));
+  height: calc(var(--dim-52) + env(safe-area-inset-bottom, var(--dim-0)));
 }
 
 /* ── 改动说明条（导图 / 画板等无行内文字的格式） ── */
 .nb-vh-caption {
   position: absolute;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  z-index: 5;
-  max-width: min(640px, 80%);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
+  left: var(--pct-50);
+  bottom: var(--dim-18);
+  transform: translateX(calc(var(--pct-50) * -1));
+  z-index: var(--z-5);
+  max-width: min(var(--dim-640), var(--pct-80));
+  padding: var(--dim-6) var(--dim-14);
+  border-radius: var(--radius-pill);
+  font-size: var(--dim-12);
   color: var(--editor-text);
   background: var(--editor-surface);
-  border: 1px solid var(--editor-border);
+  border: var(--dim-1) solid var(--editor-border);
   box-shadow: var(--shadow-md);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -679,33 +679,33 @@
 .nb-vh-mindmap .nb-mindmap-node[data-diff]::after {
   content: '';
   position: absolute;
-  inset: -5px;
-  border-radius: 11px;
-  border: 2px solid transparent;
+  inset: calc(var(--dim-5) * -1);
+  border-radius: var(--radius-xl);
+  border: var(--dim-2) solid transparent;
   pointer-events: none;
 }
 
 .nb-vh-mindmap .nb-mindmap-node[data-diff='ins']::after {
   border-color: var(--diff-insert-border);
-  background: color-mix(in srgb, var(--diff-insert-border) 10%, transparent);
+  background: color-mix(in srgb, var(--diff-insert-border) var(--pct-10), transparent);
 }
 
 .nb-vh-mindmap .nb-mindmap-node[data-diff='mod']::after {
   border-color: var(--diff-modify-border);
-  background: color-mix(in srgb, var(--diff-modify-border) 10%, transparent);
+  background: color-mix(in srgb, var(--diff-modify-border) var(--pct-10), transparent);
 }
 
 .nb-vh-mindmap .nb-mindmap-node[data-diff='moved']::after {
-  border: 2px dashed var(--diff-focus-ring);
+  border: var(--dim-2) dashed var(--diff-focus-ring);
 }
 
 .nb-vh-mindmap .nb-mindmap-node[data-diff='del'] {
-  opacity: 0.6;
+  opacity: var(--opacity-0-6);
 }
 
 .nb-vh-mindmap .nb-mindmap-node[data-diff='del']::after {
-  border: 2px dashed var(--diff-delete-border);
-  background: color-mix(in srgb, var(--diff-delete-border) 8%, transparent);
+  border: var(--dim-2) dashed var(--diff-delete-border);
+  background: color-mix(in srgb, var(--diff-delete-border) var(--pct-8), transparent);
 }
 
 .nb-vh-mindmap .nb-mindmap-node[data-diff='del'] * {
@@ -719,43 +719,43 @@
 
 /* ── 多维表格差异 ── */
 .nb-bt-viewer {
-  height: 100%;
+  height: var(--pct-100);
   overflow: auto;
-  padding: 16px 20px 48px;
+  padding: var(--dim-16) var(--dim-20) var(--dim-48);
   box-sizing: border-box;
 }
 
 .nb-bt-notes {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: var(--dim-8);
+  margin-bottom: var(--dim-12);
 }
 
 .nb-bt-notes span {
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  background: color-mix(in srgb, var(--diff-modify-border) 14%, transparent);
+  padding: var(--dim-3) var(--dim-10);
+  border-radius: var(--radius-pill);
+  font-size: var(--dim-12);
+  background: color-mix(in srgb, var(--diff-modify-border) var(--pct-14), transparent);
   color: var(--editor-text);
 }
 
 .nb-bt-table {
   border-collapse: separate;
   border-spacing: 0;
-  font-size: 13px;
-  min-width: 100%;
+  font-size: var(--dim-13);
+  min-width: var(--pct-100);
 }
 
 .nb-bt-table th,
 .nb-bt-table td {
-  border-right: 1px solid var(--editor-border);
-  border-bottom: 1px solid var(--editor-border);
-  padding: 6px 10px;
+  border-right: var(--dim-1) solid var(--editor-border);
+  border-bottom: var(--dim-1) solid var(--editor-border);
+  padding: var(--dim-6) var(--dim-10);
   text-align: left;
   vertical-align: top;
-  max-width: 320px;
-  min-width: 90px;
+  max-width: var(--dim-320);
+  min-width: var(--dim-90);
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -763,64 +763,64 @@
 .nb-bt-table th {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: var(--z-2);
   background: var(--editor-surface);
-  font-weight: 600;
-  border-top: 1px solid var(--editor-border);
+  font-weight: var(--weight-600);
+  border-top: var(--dim-1) solid var(--editor-border);
   white-space: nowrap;
 }
 
 .nb-bt-table tr > :first-child {
-  border-left: 1px solid var(--editor-border);
+  border-left: var(--dim-1) solid var(--editor-border);
 }
 
 .nb-bt-index {
-  min-width: 40px !important;
-  width: 40px;
+  min-width: var(--dim-40) !important;
+  width: var(--dim-40);
   color: var(--editor-text-muted);
   text-align: right !important;
 }
 
 .nb-bt-table th.is-ins,
 .nb-bt-table td.is-col-ins {
-  background: color-mix(in srgb, var(--diff-insert-border) 9%, var(--editor-bg));
+  background: color-mix(in srgb, var(--diff-insert-border) var(--pct-9), var(--editor-bg));
 }
 
 .nb-bt-table th.is-del,
 .nb-bt-table td.is-col-del {
-  background: color-mix(in srgb, var(--diff-delete-border) 8%, var(--editor-bg));
+  background: color-mix(in srgb, var(--diff-delete-border) var(--pct-8), var(--editor-bg));
   color: var(--diff-delete-text);
   text-decoration: line-through;
 }
 
 .nb-bt-table th.is-mod {
-  box-shadow: inset 0 -2px 0 var(--diff-modify-border);
+  box-shadow: inset 0 calc(var(--dim-2) * -1) 0 var(--diff-modify-border);
 }
 
 .nb-bt-row.is-ins td {
-  background: color-mix(in srgb, var(--diff-insert-border) 9%, var(--editor-bg));
+  background: color-mix(in srgb, var(--diff-insert-border) var(--pct-9), var(--editor-bg));
 }
 
 .nb-bt-row.is-ins td:first-child {
-  box-shadow: inset 3px 0 0 var(--diff-insert-border);
+  box-shadow: inset var(--dim-3) 0 0 var(--diff-insert-border);
 }
 
 .nb-bt-row.is-del td {
-  background: color-mix(in srgb, var(--diff-delete-border) 8%, var(--editor-bg));
+  background: color-mix(in srgb, var(--diff-delete-border) var(--pct-8), var(--editor-bg));
   color: var(--diff-delete-text);
   text-decoration: line-through;
 }
 
 .nb-bt-row.is-del td:first-child {
-  box-shadow: inset 3px 0 0 var(--diff-delete-border);
+  box-shadow: inset var(--dim-3) 0 0 var(--diff-delete-border);
 }
 
 .nb-bt-row.is-mod td:first-child {
-  box-shadow: inset 3px 0 0 var(--diff-modify-border);
+  box-shadow: inset var(--dim-3) 0 0 var(--diff-modify-border);
 }
 
 .nb-bt-row.is-moved td:first-child {
-  box-shadow: inset 3px 0 0 var(--diff-focus-ring);
+  box-shadow: inset var(--dim-3) 0 0 var(--diff-focus-ring);
 }
 
 .nb-bt-table td.is-changed {
@@ -829,14 +829,14 @@
 
 .nb-bt-row.is-current td,
 .nb-bt-table th.is-current {
-  outline: 2px solid var(--diff-focus-ring);
-  outline-offset: -2px;
+  outline: var(--dim-2) solid var(--diff-focus-ring);
+  outline-offset: calc(var(--dim-2) * -1);
 }
 
 .nb-bt-change {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--dim-2);
 }
 
 .nb-bt-old {
@@ -852,20 +852,20 @@
 .nb-bt-chips {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: var(--dim-4);
 }
 
 .nb-bt-chip {
-  padding: 0 6px;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  font-size: 12px;
-  line-height: 18px;
+  padding: 0 var(--dim-6);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid transparent;
+  font-size: var(--dim-12);
+  line-height: var(--dim-18);
 }
 
 .nb-bt-more {
-  margin-top: 10px;
-  font-size: 12px;
+  margin-top: var(--dim-10);
+  font-size: var(--dim-12);
   color: var(--editor-text-muted);
 }
 
@@ -880,64 +880,64 @@
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  z-index: 4;
+  z-index: var(--z-4);
 }
 
 .nb-vh-board-mark {
   position: absolute;
-  border-radius: 6px;
-  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  border: var(--dim-2) solid transparent;
   transition: box-shadow var(--transition-fast);
 }
 
 .nb-vh-board-mark.is-ins {
   border-color: var(--diff-insert-border);
-  background: color-mix(in srgb, var(--diff-insert-border) 6%, transparent);
+  background: color-mix(in srgb, var(--diff-insert-border) var(--pct-6), transparent);
 }
 
 .nb-vh-board-mark.is-mod {
   border-color: var(--diff-modify-border);
-  background: color-mix(in srgb, var(--diff-modify-border) 6%, transparent);
+  background: color-mix(in srgb, var(--diff-modify-border) var(--pct-6), transparent);
 }
 
 .nb-vh-board-mark.is-del {
-  border: 2px dashed var(--diff-delete-border);
-  background: color-mix(in srgb, var(--diff-delete-border) 5%, transparent);
+  border: var(--dim-2) dashed var(--diff-delete-border);
+  background: color-mix(in srgb, var(--diff-delete-border) var(--pct-5), transparent);
 }
 
 .nb-vh-board-mark.is-current {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--diff-focus-ring) 45%, transparent);
+  box-shadow: 0 0 0 var(--dim-3) color-mix(in srgb, var(--diff-focus-ring) var(--pct-45), transparent);
 }
 
 /* ── Draw.io 差异 ── */
 .nb-vh-drawio {
-  height: 100%;
+  height: var(--pct-100);
   display: flex;
   flex-direction: column;
 }
 
 .nb-vh-drawio-summary {
   flex-shrink: 0;
-  max-height: 34%;
+  max-height: var(--pct-34);
   overflow: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--editor-border);
+  gap: var(--dim-6);
+  padding: var(--dim-12) var(--dim-16);
+  border-bottom: var(--dim-1) solid var(--editor-border);
   background: var(--editor-surface);
-  font-size: 12px;
+  font-size: var(--dim-12);
 }
 
 .nb-vh-drawio-page {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 6px 12px;
+  gap: var(--dim-6) var(--dim-12);
 }
 
 .nb-vh-drawio-name {
-  font-weight: 600;
+  font-weight: var(--weight-600);
   color: var(--editor-text);
 }
 
@@ -947,7 +947,7 @@
 
 .nb-vh-drawio-page .is-mod {
   color: var(--editor-text-secondary);
-  border-bottom: 2px solid var(--diff-modify-border);
+  border-bottom: var(--dim-2) solid var(--diff-modify-border);
 }
 
 .nb-vh-drawio-page .is-del {

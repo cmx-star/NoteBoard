@@ -135,11 +135,11 @@ export function AddFavoriteModal() {
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 9996,
+        zIndex: 'var(--z-9996)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(0, 0, 0, 0.45)',
+        background: 'var(--nb-black-a45)',
         // 保留遮罩层次，取消覆盖整窗的实时背景虚化，避免悬停与表单编辑引发大面积合成。
       }}
       onMouseDown={(e) => {
@@ -154,16 +154,16 @@ export function AddFavoriteModal() {
         aria-modal="true"
         aria-labelledby={`${dialogId}-title`}
         style={{
-          width: 440,
+          width: 'var(--dim-440)',
           maxWidth: '92vw',
-          background: 'var(--editor-surface, #ffffff)',
-          border: '1px solid var(--editor-border, rgba(0, 0, 0, 0.12))',
-          borderRadius: 'var(--radius-lg, 8px)',
-          boxShadow: '0 12px 32px -4px rgba(0, 0, 0, 0.18), 0 4px 12px -2px rgba(0, 0, 0, 0.08)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-lg, var(--dim-8))',
+          boxShadow: '0 var(--dim-12) var(--dim-32) calc(var(--dim-4) * -1) var(--nb-black-a18), 0 var(--dim-4) var(--dim-12) calc(var(--dim-2) * -1) var(--nb-black-a08)',
           overflow: 'hidden',
-          color: 'var(--editor-text, #1e293b)',
+          color: 'var(--editor-text)',
           fontFamily: 'var(--ui-font-family, sans-serif)',
-          fontSize: 'var(--ui-font-size, 13px)',
+          fontSize: 'var(--ui-font-size, var(--dim-13))',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -176,21 +176,21 @@ export function AddFavoriteModal() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '12px 16px',
-            borderBottom: '1px solid var(--editor-border, rgba(0, 0, 0, 0.08))',
-            background: 'var(--editor-bg, #f8fafc)',
+            padding: 'var(--dim-12) var(--dim-16)',
+            borderBottom: 'var(--dim-1) solid var(--editor-border)',
+            background: 'var(--editor-bg)',
             userSelect: 'none',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
             <Star
               size={16}
               style={{
-                color: '#f97316',
-                fill: isFavorited ? '#f97316' : 'none',
+                color: 'var(--nb-orange-500)',
+                fill: isFavorited ? 'var(--nb-orange-500)' : 'none',
               }}
             />
-            <span id={`${dialogId}-title`} style={{ fontWeight: 600, fontSize: 14 }}>
+            <span id={`${dialogId}-title`} style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-14)' }}>
               {isFavorited ? '编辑收藏' : '添加到收藏夹'}
             </span>
           </div>
@@ -203,21 +203,21 @@ export function AddFavoriteModal() {
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                color: 'var(--editor-text-muted, #64748b)',
+                color: 'var(--editor-text-muted)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: 4,
-                borderRadius: 'var(--radius-sm, 4px)',
-                transition: 'all var(--transition-fast, 150ms ease)',
+                padding: 'var(--dim-4)',
+                borderRadius: 'var(--radius-sm, var(--dim-4))',
+                transition: 'all var(--transition-fast, var(--duration-150) ease)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--toolbar-hover, rgba(0, 0, 0, 0.06))';
-                e.currentTarget.style.color = 'var(--editor-text, #0f172a)';
+                e.currentTarget.style.background = 'var(--toolbar-hover)';
+                e.currentTarget.style.color = 'var(--editor-text)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = 'var(--editor-text-muted, #64748b)';
+                e.currentTarget.style.color = 'var(--editor-text-muted)';
               }}
             >
               <X size={15} />
@@ -226,15 +226,15 @@ export function AddFavoriteModal() {
         </div>
 
         {/* 表单输入区域 */}
-        <form className="nb-add-favorite-form" onSubmit={handleSave} style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <form className="nb-add-favorite-form" onSubmit={handleSave} style={{ padding: 'var(--dim-16)', display: 'flex', flexDirection: 'column', gap: 'var(--dim-14)' }}>
           {/* 名称输入 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)' }}>
             <label
               htmlFor={`${dialogId}-name`}
               style={{
-                fontSize: 12,
-                fontWeight: 500,
-                color: 'var(--editor-text-secondary, #475569)',
+                fontSize: 'var(--text-12)',
+                fontWeight: 'var(--weight-500)',
+                color: 'var(--editor-text-secondary)',
               }}
             >
               名称
@@ -247,36 +247,36 @@ export function AddFavoriteModal() {
               onChange={(e) => setName(e.target.value)}
               placeholder="收藏名称"
               style={{
-                height: 32,
-                padding: '0 10px',
-                borderRadius: 'var(--radius-md, 6px)',
-                border: '1px solid var(--editor-border, #cbd5e1)',
-                background: 'var(--editor-bg, #f8fafc)',
-                color: 'var(--editor-text, #0f172a)',
-                fontSize: 13,
+                height: 'var(--dim-32)',
+                padding: '0 var(--dim-10)',
+                borderRadius: 'var(--radius-md, var(--dim-6))',
+                border: 'var(--dim-1) solid var(--editor-border)',
+                background: 'var(--editor-bg)',
+                color: 'var(--editor-text)',
+                fontSize: 'var(--text-13)',
                 outline: 'none',
-                transition: 'all var(--transition-fast, 150ms ease)',
+                transition: 'all var(--transition-fast, var(--duration-150) ease)',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'var(--editor-border-focus, #3b82f6)';
-                e.currentTarget.style.background = 'var(--editor-surface, #ffffff)';
-                e.currentTarget.style.boxShadow = '0 0 0 2px var(--focus-ring, rgba(59, 130, 246, 0.2))';
+                e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
+                e.currentTarget.style.background = 'var(--editor-surface)';
+                e.currentTarget.style.boxShadow = '0 0 0 var(--dim-2) var(--focus-ring)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'var(--editor-border, #cbd5e1)';
-                e.currentTarget.style.background = 'var(--editor-bg, #f8fafc)';
+                e.currentTarget.style.borderColor = 'var(--editor-border)';
+                e.currentTarget.style.background = 'var(--editor-bg)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </div>
 
           {/* 路径展示 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)' }}>
             <label
               style={{
-                fontSize: 12,
-                fontWeight: 500,
-                color: 'var(--editor-text-secondary, #475569)',
+                fontSize: 'var(--text-12)',
+                fontWeight: 'var(--weight-500)',
+                color: 'var(--editor-text-secondary)',
               }}
             >
               路径
@@ -284,12 +284,12 @@ export function AddFavoriteModal() {
             <Tooltip content={targetPath || '未保存文件'} side="top" sideOffset={4}>
               <div
                 style={{
-                  padding: '6px 10px',
-                  borderRadius: 'var(--radius-md, 6px)',
-                  border: '1px solid var(--editor-border, #cbd5e1)',
-                  background: 'var(--editor-bg, #f8fafc)',
-                  color: 'var(--editor-text-muted, #64748b)',
-                  fontSize: 12,
+                  padding: 'var(--dim-6) var(--dim-10)',
+                  borderRadius: 'var(--radius-md, var(--dim-6))',
+                  border: 'var(--dim-1) solid var(--editor-border)',
+                  background: 'var(--editor-bg)',
+                  color: 'var(--editor-text-muted)',
+                  fontSize: 'var(--text-12)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -302,20 +302,20 @@ export function AddFavoriteModal() {
           </div>
 
           {/* 文件夹选择 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <label
                 htmlFor={`${dialogId}-folder`}
                 style={{
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: 'var(--editor-text-secondary, #475569)',
+                  fontSize: 'var(--text-12)',
+                  fontWeight: 'var(--weight-500)',
+                  color: 'var(--editor-text-secondary)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 5,
+                  gap: 'var(--dim-5)',
                 }}
               >
-                <Folder size={13} style={{ opacity: 0.8 }} />
+                <Folder size={13} style={{ opacity: 'var(--opacity-0-8)' }} />
                 <span>文件夹</span>
               </label>
 
@@ -329,18 +329,18 @@ export function AddFavoriteModal() {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 3,
+                    gap: 'var(--dim-3)',
                     background: 'transparent',
                     border: 'none',
-                    padding: '2px 6px',
-                    borderRadius: 4,
-                    fontSize: 11,
-                    color: 'var(--editor-accent, #3b82f6)',
+                    padding: 'var(--dim-2) var(--dim-6)',
+                    borderRadius: 'var(--radius-sm)',
+                    fontSize: 'var(--text-11)',
+                    color: 'var(--editor-accent)',
                     cursor: 'pointer',
                     transition: 'all var(--transition-fast)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'var(--toolbar-hover, rgba(59, 130, 246, 0.1))';
+                    e.currentTarget.style.background = 'var(--toolbar-hover)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'transparent';
@@ -354,7 +354,7 @@ export function AddFavoriteModal() {
 
             {/* 内联新建文件夹输入框 */}
             {isCreatingFolder && (
-              <div className="nb-add-favorite-create-row" style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 2 }}>
+              <div className="nb-add-favorite-create-row" style={{ display: 'flex', gap: 'var(--dim-6)', alignItems: 'center', marginBottom: 'var(--dim-2)' }}>
                 <input
                   ref={newFolderInputRef}
                   type="text"
@@ -372,13 +372,13 @@ export function AddFavoriteModal() {
                   }}
                   style={{
                     flex: 1,
-                    height: 28,
-                    padding: '0 8px',
-                    borderRadius: 4,
-                    border: '1px solid var(--editor-border-focus, #3b82f6)',
-                    background: 'var(--editor-surface, #ffffff)',
+                    height: 'var(--dim-28)',
+                    padding: '0 var(--dim-8)',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'var(--dim-1) solid var(--editor-border-focus)',
+                    background: 'var(--editor-surface)',
                     color: 'var(--editor-text)',
-                    fontSize: 12,
+                    fontSize: 'var(--text-12)',
                     outline: 'none',
                   }}
                 />
@@ -387,13 +387,13 @@ export function AddFavoriteModal() {
                   aria-label="确认新建文件夹"
                   onClick={handleCreateNewFolder}
                   style={{
-                    padding: '0 8px',
-                    height: 28,
-                    borderRadius: 4,
+                    padding: '0 var(--dim-8)',
+                    height: 'var(--dim-28)',
+                    borderRadius: 'var(--radius-sm)',
                     border: 'none',
-                    background: 'var(--accent-strong, #3b82f6)',
-                    color: '#ffffff',
-                    fontSize: 12,
+                    background: 'var(--accent-strong)',
+                    color: 'var(--nb-white)',
+                    fontSize: 'var(--text-12)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -407,13 +407,13 @@ export function AddFavoriteModal() {
                   aria-label="取消新建文件夹"
                   onClick={() => setIsCreatingFolder(false)}
                   style={{
-                    padding: '0 8px',
-                    height: 28,
-                    borderRadius: 4,
-                    border: '1px solid var(--control-border)',
+                    padding: '0 var(--dim-8)',
+                    height: 'var(--dim-28)',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'var(--dim-1) solid var(--control-border)',
                     background: 'transparent',
                     color: 'var(--editor-text-muted)',
-                    fontSize: 12,
+                    fontSize: 'var(--text-12)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -431,13 +431,13 @@ export function AddFavoriteModal() {
               value={selectedFolderId}
               onChange={(e) => setSelectedFolderId(e.target.value)}
               style={{
-                height: 32,
-                padding: '0 8px',
-                borderRadius: 'var(--radius-md, 6px)',
-                border: '1px solid var(--editor-border, #cbd5e1)',
-                background: 'var(--editor-bg, #f8fafc)',
-                color: 'var(--editor-text, #0f172a)',
-                fontSize: 13,
+                height: 'var(--dim-32)',
+                padding: '0 var(--dim-8)',
+                borderRadius: 'var(--radius-md, var(--dim-6))',
+                border: 'var(--dim-1) solid var(--editor-border)',
+                background: 'var(--editor-bg)',
+                color: 'var(--editor-text)',
+                fontSize: 'var(--text-13)',
                 outline: 'none',
                 cursor: 'pointer',
               }}
@@ -456,9 +456,9 @@ export function AddFavoriteModal() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: isFavorited ? 'space-between' : 'flex-end',
-              marginTop: 6,
-              paddingTop: 12,
-              borderTop: '1px solid var(--editor-border, rgba(0, 0, 0, 0.08))',
+              marginTop: 'var(--dim-6)',
+              paddingTop: 'var(--dim-12)',
+              borderTop: 'var(--dim-1) solid var(--editor-border)',
             }}
           >
             {isFavorited && (
@@ -468,30 +468,30 @@ export function AddFavoriteModal() {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 4,
-                  padding: '6px 12px',
-                  borderRadius: 'var(--radius-md, 6px)',
-                  border: '1px solid var(--error-border, rgba(239, 68, 68, 0.2))',
+                  gap: 'var(--dim-4)',
+                  padding: 'var(--dim-6) var(--dim-12)',
+                  borderRadius: 'var(--radius-md, var(--dim-6))',
+                  border: 'var(--dim-1) solid var(--error-border)',
                   background: 'transparent',
-                  color: 'var(--error-500, #ef4444)',
-                  fontSize: 12,
-                  fontWeight: 500,
+                  color: 'var(--error-500)',
+                  fontSize: 'var(--text-12)',
+                  fontWeight: 'var(--weight-500)',
                   cursor: 'pointer',
                   transition: 'all var(--transition-fast)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--error-surface, rgba(239, 68, 68, 0.1))';
-                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.background = 'var(--error-surface)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1-02))';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1))';
                 }}
                 onMouseDown={(e) => {
-                  e.currentTarget.style.transform = 'scale(0.96)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-0-96))';
                 }}
                 onMouseUp={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1-02))';
                 }}
               >
                 <Trash2 size={13} />
@@ -499,34 +499,34 @@ export function AddFavoriteModal() {
               </button>
             )}
 
-            <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+            <div style={{ display: 'flex', gap: 'var(--dim-8)', marginLeft: 'auto' }}>
               <button
                 type="button"
                 onClick={closeAddModal}
                 style={{
-                  padding: '6px 14px',
-                  borderRadius: 'var(--radius-md, 6px)',
-                  border: '1px solid var(--control-border, #cbd5e1)',
+                  padding: 'var(--dim-6) var(--dim-14)',
+                  borderRadius: 'var(--radius-md, var(--dim-6))',
+                  border: 'var(--dim-1) solid var(--control-border)',
                   background: 'transparent',
-                  color: 'var(--editor-text-secondary, #475569)',
-                  fontSize: 13,
-                  fontWeight: 500,
+                  color: 'var(--editor-text-secondary)',
+                  fontSize: 'var(--text-13)',
+                  fontWeight: 'var(--weight-500)',
                   cursor: 'pointer',
                   transition: 'all var(--transition-fast)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--toolbar-hover, rgba(0, 0, 0, 0.04))';
-                  e.currentTarget.style.color = 'var(--editor-text, #0f172a)';
+                  e.currentTarget.style.background = 'var(--toolbar-hover)';
+                  e.currentTarget.style.color = 'var(--editor-text)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'var(--editor-text-secondary, #475569)';
+                  e.currentTarget.style.color = 'var(--editor-text-secondary)';
                 }}
                 onMouseDown={(e) => {
-                  e.currentTarget.style.transform = 'scale(0.96)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-0-96))';
                 }}
                 onMouseUp={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1))';
                 }}
               >
                 取消
@@ -534,32 +534,32 @@ export function AddFavoriteModal() {
               <button
                 type="submit"
                 style={{
-                  padding: '6px 16px',
-                  borderRadius: 'var(--radius-md, 6px)',
+                  padding: 'var(--dim-6) var(--dim-16)',
+                  borderRadius: 'var(--radius-md, var(--dim-6))',
                   border: 'none',
-                  background: 'var(--accent-strong, #3b82f6)',
-                  color: '#ffffff',
-                  fontSize: 13,
-                  fontWeight: 500,
+                  background: 'var(--accent-strong)',
+                  color: 'var(--nb-white)',
+                  fontSize: 'var(--text-13)',
+                  fontWeight: 'var(--weight-500)',
                   cursor: 'pointer',
-                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.08)',
+                  boxShadow: '0 var(--dim-1) var(--dim-2) var(--nb-black-a08)',
                   transition: 'all var(--transition-fast)',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.filter = 'brightness(1.1)';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 3px 6px rgba(59, 130, 246, 0.25)';
+                  e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
+                  e.currentTarget.style.boxShadow = '0 var(--dim-3) var(--dim-6) var(--nb-auto-3b82f6-a25)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.filter = 'none';
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 var(--dim-1) var(--dim-2) var(--nb-black-a08)';
                 }}
                 onMouseDown={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(0.96)';
+                  e.currentTarget.style.transform = 'translateY(0) scale(var(--scale-0-96))';
                 }}
                 onMouseUp={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
                 }}
               >
                 {isFavorited ? '保存' : '完成'}

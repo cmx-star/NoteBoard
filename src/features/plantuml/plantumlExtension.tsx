@@ -113,14 +113,14 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
 
   if (editing) {
     return (
-      <NodeViewWrapper as="div" style={{ display: 'block', margin: '12px 0' }}>
+      <NodeViewWrapper as="div" style={{ display: 'block', margin: 'var(--dim-12) 0' }}>
         <div
           style={{
-            border: '1px solid var(--editor-accent, #3b82f6)',
-            borderRadius: 'var(--radius-md, 8px)',
-            background: 'var(--editor-surface, #ffffff)',
+            border: 'var(--dim-1) solid var(--editor-accent)',
+            borderRadius: 'var(--radius-md, var(--dim-8))',
+            background: 'var(--editor-surface)',
             overflow: 'hidden',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 var(--dim-4) var(--dim-12) var(--nb-black-a08)',
           }}
         >
           <div
@@ -128,16 +128,16 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '6px 12px',
-              background: 'var(--editor-bg, #f8fafc)',
-              borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-              fontSize: 12,
-              fontWeight: 500,
-              color: 'var(--editor-text-muted, #64748b)',
+              padding: 'var(--dim-6) var(--dim-12)',
+              background: 'var(--editor-bg)',
+              borderBottom: 'var(--dim-1) solid var(--editor-border)',
+              fontSize: 'var(--text-12)',
+              fontWeight: 'var(--weight-500)',
+              color: 'var(--editor-text-muted)',
             }}
           >
             <span>编辑 PlantUML / UML 图表</span>
-            <div style={{ display: 'flex', gap: 6 }}>
+            <div style={{ display: 'flex', gap: 'var(--dim-6)' }}>
               <button
                 type="button"
                 onClick={() => {
@@ -145,14 +145,14 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
                   setEditing(false);
                 }}
                 style={{
-                  padding: '3px 10px',
-                  borderRadius: 4,
-                  background: 'var(--editor-accent, #3b82f6)',
-                  color: '#ffffff',
+                  padding: 'var(--dim-3) var(--dim-10)',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--editor-accent)',
+                  color: 'var(--nb-white)',
                   border: 'none',
-                  fontSize: 12,
+                  fontSize: 'var(--text-12)',
                   cursor: 'pointer',
-                  fontWeight: 500,
+                  fontWeight: 'var(--weight-500)',
                 }}
               >
                 完成
@@ -161,12 +161,12 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
                 type="button"
                 onClick={() => setEditing(false)}
                 style={{
-                  padding: '3px 8px',
-                  borderRadius: 4,
+                  padding: 'var(--dim-3) var(--dim-8)',
+                  borderRadius: 'var(--radius-sm)',
                   background: 'transparent',
-                  color: 'var(--editor-text-muted, #64748b)',
-                  border: '1px solid var(--control-border, #e2e8f0)',
-                  fontSize: 12,
+                  color: 'var(--editor-text-muted)',
+                  border: 'var(--dim-1) solid var(--control-border)',
+                  fontSize: 'var(--text-12)',
                   cursor: 'pointer',
                 }}
               >
@@ -190,17 +190,17 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
               }
             }}
             style={{
-              width: '100%',
-              minHeight: 140,
-              padding: '10px 14px',
+              width: 'var(--pct-100)',
+              minHeight: 'var(--dim-140)',
+              padding: 'var(--dim-10) var(--dim-14)',
               fontFamily: 'var(--mono-font-family, monospace)',
-              fontSize: 'var(--mono-font-size, 13px)',
+              fontSize: 'var(--mono-font-size, var(--dim-13))',
               border: 'none',
               background: 'transparent',
-              color: 'var(--editor-text, #1e293b)',
+              color: 'var(--editor-text)',
               resize: 'vertical',
               outline: 'none',
-              lineHeight: 1.5,
+              lineHeight: 'var(--leading-1-5)',
             }}
           />
         </div>
@@ -209,16 +209,16 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
   }
 
   return (
-    <NodeViewWrapper as="div" style={{ display: 'block', margin: '12px 0' }} selected={selected}>
+    <NodeViewWrapper as="div" style={{ display: 'block', margin: 'var(--dim-12) 0' }} selected={selected}>
       <div
         ref={containerRef}
         className="nb-diagram-container"
         style={{
           position: 'relative',
-          minHeight: 60,
-          border: '1px solid var(--editor-border, #e2e8f0)',
-          borderRadius: 'var(--radius-md, 8px)',
-          background: 'var(--editor-surface, #ffffff)',
+          minHeight: 'var(--dim-60)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-md, var(--dim-8))',
+          background: 'var(--editor-surface)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
@@ -231,19 +231,19 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '4px 10px',
-            borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-            background: 'var(--editor-bg, #f8fafc)',
-            fontSize: 11,
-            color: 'var(--editor-text-muted, #64748b)',
+            padding: 'var(--dim-4) var(--dim-10)',
+            borderBottom: 'var(--dim-1) solid var(--editor-border)',
+            background: 'var(--editor-bg)',
+            fontSize: 'var(--text-11)',
+            color: 'var(--editor-text-muted)',
             userSelect: 'none',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontWeight: 600, color: 'var(--editor-accent, #3b82f6)' }}>PlantUML</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
+            <span style={{ fontWeight: 'var(--weight-600)', color: 'var(--editor-accent)' }}>PlantUML</span>
             {loading && <span>渲染中</span>}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }}>
             {/* 编辑图表源码 */}
             <Tooltip content="编辑图表源码" side="top" sideOffset={4}>
               <button
@@ -293,41 +293,41 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
             setEditing(true);
           }}
           style={{
-            padding: '16px',
+            padding: 'var(--dim-16)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'auto',
             cursor: 'pointer',
-            minHeight: 80,
+            minHeight: 'var(--dim-80)',
           }}
         >
           {!inViewport && code && (
-            <div style={{ color: 'var(--editor-text-muted, #64748b)', fontSize: 13 }}>
+            <div style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)' }}>
               <span>📐 PlantUML 图表（滚动到视口时渲染）</span>
             </div>
           )}
 
           {inViewport && loading && !svg && (
-            <div style={{ color: 'var(--editor-text-muted, #64748b)', fontSize: 13 }}>
+            <div style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)' }}>
               <span>正在获取 PlantUML 矢量图</span>
             </div>
           )}
 
           {error && (
-            <div style={{ fontSize: 12, color: '#ef4444', textAlign: 'center', width: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 8 }}>
+            <div style={{ fontSize: 'var(--text-12)', color: 'var(--nb-red-500)', textAlign: 'center', width: 'var(--pct-100)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--dim-6)', marginBottom: 'var(--dim-8)' }}>
                 <AlertCircle size={15} />
                 <span>{error}</span>
               </div>
               <pre
                 style={{
-                  padding: 8,
-                  background: 'var(--editor-bg, #f1f5f9)',
-                  borderRadius: 4,
+                  padding: 'var(--dim-8)',
+                  background: 'var(--editor-bg)',
+                  borderRadius: 'var(--radius-sm)',
                   overflow: 'auto',
-                  fontSize: 11,
-                  color: 'var(--editor-text-muted, #64748b)',
+                  fontSize: 'var(--text-11)',
+                  color: 'var(--editor-text-muted)',
                   textAlign: 'left',
                 }}
               >
@@ -342,7 +342,7 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                maxWidth: '100%',
+                maxWidth: 'var(--pct-100)',
                 overflowX: 'auto',
               }}
               dangerouslySetInnerHTML={{ __html: svg }}
@@ -350,7 +350,7 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
           )}
 
           {!code && (
-            <span style={{ color: 'var(--editor-text-muted, #64748b)', fontStyle: 'italic', fontSize: 13 }}>
+            <span style={{ color: 'var(--editor-text-muted)', fontStyle: 'italic', fontSize: 'var(--text-13)' }}>
               空 PlantUML 图表（双击或点击编辑输入内容）
             </span>
           )}
@@ -367,10 +367,10 @@ function PlantUmlComponent({ node, updateAttributes, selected, editor, getPos }:
         >
           <div
             style={{
-              background: 'var(--editor-surface, #ffffff)',
-              padding: 24,
-              borderRadius: 8,
-              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+              background: 'var(--editor-surface)',
+              padding: 'var(--dim-24)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: '0 var(--dim-20) var(--dim-40) var(--nb-black-a20)',
             }}
             dangerouslySetInnerHTML={{ __html: svg }}
           />

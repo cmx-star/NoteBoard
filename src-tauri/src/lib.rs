@@ -31,6 +31,8 @@ pub mod sync;
 pub mod history;
 // 系统剪贴板：图片位图与文件列表
 pub mod clipboard;
+// IPC 二进制正文解析（原始字节与 postMessage 回退的 JSON 数组）
+pub mod ipc_body;
 // 本地文件搜索（文件名与内容索引）
 pub mod local_search;
 // MCP 文档编辑服务（仅桌面端；默认关闭，仅监听 127.0.0.1）

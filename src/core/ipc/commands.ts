@@ -53,6 +53,8 @@ import type {
   LocalSearchNameResult,
   LocalSearchContentResult,
   LocalSearchDrive,
+  McpBridgeResponse,
+  McpStatus,
 } from './types';
 
 // ── 窗口（S04 打开队列 + 迁移协议） ──
@@ -382,6 +384,23 @@ export function loadSettings(): Promise<Settings> {
 
 export function saveSettings(settings: Settings): Promise<number> {
   return invoke<number>('save_settings', { settings });
+}
+
+// ── MCP 文档编辑服务 ──
+
+/** 读取 MCP 服务运行状态（仅桌面端） */
+export function mcpStatus(): Promise<McpStatus> {
+  return invoke<McpStatus>('mcp_status');
+}
+
+/** 回包一次 MCP 工具调用（由前端编辑器能力执行后调用） */
+export function mcpRespond(response: McpBridgeResponse): Promise<void> {
+  return invoke<void>('mcp_respond', {
+    requestId: response.requestId,
+    ok: response.ok,
+    data: response.data ?? null,
+    error: response.error ?? null,
+  });
 }
 
 // ── 暂存 ──

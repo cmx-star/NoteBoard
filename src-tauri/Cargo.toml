@@ -34,7 +34,7 @@ reqwest = { version = "0.12", default-features = false, features = ["json", "rus
 # 字体资源包使用 SHA-256 固定清单校验，拒绝被替换或损坏的远程资产。
 sha2 = "0.10"
 # 官方插件安装跨窗口串行执行，锁等待不占用界面线程。
-tokio = { version = "1", features = ["sync"] }
+tokio = { version = "1", features = ["sync", "net", "time"] }
 # 字体包安装过程使用随机临时目录，避免多窗口同时触发操作时互相覆盖。
 uuid = { version = "1", features = ["v4"] }
 # 字体资源包使用标准 ZIP 分发；只启用 Deflate 解压，避免引入无关压缩算法。
@@ -57,6 +57,8 @@ rustc-hash = "2"
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-single-instance = "2.4"
 tauri-plugin-window-state = "2"
+# MCP 文档编辑服务：本机 Streamable HTTP JSON-RPC（仅桌面端，默认关闭）
+axum = "0.8.9"
 # 全局唤起窗口快捷键（由 Rust 侧按设置注册，前端不直接调用插件）
 tauri-plugin-global-shortcut = "~2.3"
 trash = "5"

@@ -33,6 +33,9 @@ pub mod history;
 pub mod clipboard;
 // 本地文件搜索（文件名与内容索引）
 pub mod local_search;
+// MCP 文档编辑服务（仅桌面端；默认关闭，仅监听 127.0.0.1）
+#[cfg(desktop)]
+pub mod mcp;
 
 use state::AppState;
 use std::sync::Mutex;
@@ -294,6 +297,11 @@ pub fn run() {
             local_search::commands::local_search_content,
             #[cfg(desktop)]
             local_search::commands::local_search_drives,
+            // MCP 文档编辑服务（仅桌面端）
+            #[cfg(desktop)]
+            mcp::mcp_status,
+            #[cfg(desktop)]
+            mcp::mcp_respond,
         ])
         .on_window_event(|window, event| {
             #[cfg(desktop)]
@@ -328,6 +336,8 @@ pub fn run() {
             // 退出前释放剪贴板实例：Linux 借此把已复制的图片 / 文件移交给剪贴板管理器
             if let tauri::RunEvent::Exit = _event {
                 clipboard::release();
+                #[cfg(desktop)]
+                mcp::stop();
             }
         });
 }

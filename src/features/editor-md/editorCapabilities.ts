@@ -23,7 +23,7 @@ import {
   getSelectedText,
   type EditorTarget,
 } from '../search/searchController';
-import { serializeMarkdown } from './serialize';
+import { parseMarkdown, parseMarkdownToJson, serializeMarkdown } from './serialize';
 import {
   handleExpandJson,
   handleMinifyJson,
@@ -55,6 +55,33 @@ function currentTarget(docKey: string): EditorTarget {
   }
   const editor = getMdTipTapEditor(docKey);
   return editor ? { type: 'tiptap', editor } : null;
+}
+
+/** 可视化模式：把 Markdown 片段解析为节点后插入/替换当前选区 */
+function insertMarkdownNodes(editor: Parameters<typeof serializeMarkdown>[0], text: string): void {
+  if (!text) return;
+  const parsed = parseMarkdownToJson(editor, text);
+  const content = parsed && Array.isArray(parsed.content) ? parsed.content : [];
+  if (content.length === 0) {
+    throw new Error('Markdown 内容解析后为空');
+  }
+  type InsertContent = Parameters<typeof editor.commands.insertContent>[0];
+  const first = content[0];
+  // 单段落片段按行内内容插入：`**加粗**` 直接作用在光标处，而不是拆出新段落。
+  if (content.length === 1 && first?.type === 'paragraph' && Array.isArray(first.content)) {
+    editor.chain().focus().insertContent(first.content as InsertContent).run();
+    return;
+  }
+  editor.chain().focus().insertContent(content as InsertContent).run();
+}
+
+/** 替换选区：空内容表示删除选区，不能当作无操作 */
+function replaceMarkdownSelection(editor: Parameters<typeof serializeMarkdown>[0], text: string): void {
+  if (!text) {
+    editor.chain().focus().deleteSelection().run();
+    return;
+  }
+  insertMarkdownNodes(editor, text);
 }
 
 /**
@@ -206,6 +233,58 @@ export function createMarkdownEditorCapabilities(
     },
     search,
     codeOps,
+    docEditing: {
+      replaceAll: (content) => {
+        if (currentMode(docKey) === 'source') {
+          const view = getMdSourceView(docKey);
+          if (!view) throw new Error('Markdown 源码编辑器尚未挂载');
+          view.dispatch({
+            changes: { from: 0, to: view.state.doc.length, insert: content },
+            selection: { anchor: 0 },
+            scrollIntoView: true,
+          });
+          return;
+        }
+        const editor = getMdTipTapEditor(docKey);
+        if (!editor) throw new Error('Markdown 可视化编辑器尚未挂载');
+        if (!parseMarkdown(editor, content)) {
+          throw new Error('Markdown 解析失败，文档未修改');
+        }
+      },
+      insertText: (text) => {
+        if (!text) return;
+        if (currentMode(docKey) === 'source') {
+          const view = getMdSourceView(docKey);
+          if (!view) throw new Error('Markdown 源码编辑器尚未挂载');
+          const selection = view.state.selection.main;
+          view.dispatch({
+            changes: { from: selection.from, to: selection.to, insert: text },
+            selection: { anchor: selection.from + text.length },
+            scrollIntoView: true,
+          });
+          return;
+        }
+        const editor = getMdTipTapEditor(docKey);
+        if (!editor) throw new Error('Markdown 可视化编辑器尚未挂载');
+        insertMarkdownNodes(editor, text);
+      },
+      replaceSelection: (text) => {
+        if (currentMode(docKey) === 'source') {
+          const view = getMdSourceView(docKey);
+          if (!view) throw new Error('Markdown 源码编辑器尚未挂载');
+          const selection = view.state.selection.main;
+          view.dispatch({
+            changes: { from: selection.from, to: selection.to, insert: text },
+            selection: { anchor: selection.from + text.length },
+            scrollIntoView: true,
+          });
+          return;
+        }
+        const editor = getMdTipTapEditor(docKey);
+        if (!editor) throw new Error('Markdown 可视化编辑器尚未挂载');
+        replaceMarkdownSelection(editor, text);
+      },
+    },
   };
 }
 

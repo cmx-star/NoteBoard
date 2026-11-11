@@ -203,7 +203,7 @@ jobs:
     name: Submit WinGet update
     runs-on: windows-latest
     needs: build-windows
-    if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-')
+    if: github.repository == 'CrazyFigure/NoteBoard' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-')
     timeout-minutes: 15
     permissions:
       contents: read

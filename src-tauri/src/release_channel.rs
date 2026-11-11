@@ -1,13 +1,13 @@
-//! 发布渠道：GitHub 主仓库与腾讯云 CNB 镜像。
+//! 发布渠道：GitHub 当前仓库与腾讯云 CNB 镜像。
 //! 检查更新、安装包、字体包与官方插件均按设置中的渠道选择下载来源；
 //! 官方资源统一以 GitHub 下载地址登记，切换到 CNB 时只替换固定前缀，不接受任意外部地址。
 
-/// GitHub Release 附件下载前缀
+/// GitHub Release 附件下载前缀（字体包、插件等官方资源仍由上游仓库发布）
 pub const GITHUB_DOWNLOAD_BASE: &str = "https://github.com/CrazyFigure/NoteBoard/releases/download/";
 /// CNB 镜像 Release 附件下载前缀（由 GitHub Actions 同步，文件名与 tag 保持一致）
 pub const CNB_DOWNLOAD_BASE: &str = "https://cnb.cool/crazy-figure/NoteBoard/-/releases/download/";
 
-const GITHUB_REPO_URL: &str = "https://github.com/CrazyFigure/NoteBoard";
+const GITHUB_REPO_URL: &str = "https://github.com/cmx-star/NoteBoard";
 const CNB_REPO_URL: &str = "https://cnb.cool/crazy-figure/NoteBoard";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -43,7 +43,7 @@ impl ReleaseChannel {
     pub fn release_list_url(self, page_size: usize) -> String {
         match self {
             Self::Github => format!(
-                "https://api.github.com/repos/CrazyFigure/NoteBoard/releases?per_page={page_size}"
+                "https://api.github.com/repos/cmx-star/NoteBoard/releases?per_page={page_size}"
             ),
             Self::Cnb => format!("{CNB_REPO_URL}/-/releases?page=1&page_size={page_size}"),
         }
@@ -103,5 +103,17 @@ mod tests {
             "https://cnb.cool/crazy-figure/NoteBoard/-/releases/tag/v0.7.2"
         );
         assert!(ReleaseChannel::Cnb.release_list_url(30).ends_with("/-/releases?page=1&page_size=30"));
+    }
+
+    #[test]
+    fn github_release_urls_use_current_repository() {
+        assert_eq!(
+            ReleaseChannel::Github.release_page_url("v0.8.2"),
+            "https://github.com/cmx-star/NoteBoard/releases/tag/v0.8.2"
+        );
+        assert_eq!(
+            ReleaseChannel::Github.release_list_url(30),
+            "https://api.github.com/repos/cmx-star/NoteBoard/releases?per_page=30"
+        );
     }
 }

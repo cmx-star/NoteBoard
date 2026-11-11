@@ -937,7 +937,7 @@ mod tests {
     }
 
     // 模拟真实 Release 列表包含 Android 安装包，验证直连结果进入原来的版本及安装包处理流程。
-    const RELEASE_BODY: &str = r#"[{"tag_name":"v0.4.6","html_url":"https://github.com/CrazyFigure/NoteBoard/releases/tag/v0.4.6","assets":[{"name":"NoteBoard_android_arm64.apk","browser_download_url":"https://example.com/update.apk","size":123}]}]"#;
+    const RELEASE_BODY: &str = r#"[{"tag_name":"v0.4.6","html_url":"https://github.com/cmx-star/NoteBoard/releases/tag/v0.4.6","assets":[{"name":"NoteBoard_android_arm64.apk","browser_download_url":"https://example.com/update.apk","size":123}]}]"#;
 
     /// 构造仅含版本号的 Release，用于版本筛选与排序测试
     fn release(tag: &str, prerelease: bool) -> GitHubReleaseResponse {

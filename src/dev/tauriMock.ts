@@ -164,7 +164,7 @@ function mockUpdateResult() {
   const releaseNotes = list.map((note, index) => ({
     version: note.version,
     name: `v${note.version}`,
-    url: `https://github.com/CrazyFigure/NoteBoard/releases/tag/v${note.version}`,
+    url: `https://github.com/cmx-star/NoteBoard/releases/tag/v${note.version}`,
     publishedAt: new Date(now - index * day).toISOString(),
     body: note.body,
   }));

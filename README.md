@@ -8,7 +8,7 @@
   [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
   ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux%20%7C%20Android%20%7C%20Web-lightgrey.svg)
   ![Tauri](https://img.shields.io/badge/Tauri-v2-24C8DB.svg)
-  [![Release](https://img.shields.io/github/v/release/CrazyFigure/NoteBoard)](https://github.com/CrazyFigure/NoteBoard/releases/latest)
+  [![Release](https://img.shields.io/github/v/release/cmx-star/NoteBoard)](https://github.com/cmx-star/NoteBoard/releases/latest)
 </div>
 
 <p align="center">
@@ -23,25 +23,20 @@
 
 ## 下载安装
 
-| 平台 | 安装包（[最新 Release](https://github.com/CrazyFigure/NoteBoard/releases/latest)） | 说明 |
+| 平台 | 安装包（[最新 Release](https://github.com/cmx-star/NoteBoard/releases/latest)） | 说明 |
 |---|---|---|
 | **Windows** | `NoteBoard_x.y.z_windows_x64-setup.exe` | Win10 1809+，需 WebView2（Win11 已内置） |
 | **Windows 免安装** | `NoteBoard_x.y.z_windows_x64_portable.exe` | 双击即用，不注册文件关联；数据独立保存在 EXE 同目录的 `data/NoteBoard/` |
 | **安卓** | `NoteBoard_x.y.z_android_arm64.apk` | arm64 设备 |
 | **macOS** | `.dmg` | Apple Silicon / Intel 分别提供；未经 Apple 公证 |
 | **Linux** | `.deb` / `.AppImage` | x86_64；AppImage 需 `chmod +x`，可能需安装 FUSE |
-| **网页** | Docker 镜像 `crazyfigure/noteboard` | 见下方 [网页部署](#网页部署) |
+| **网页** | Docker 镜像 `starcmx/noteboard`（手动构建） | 见下方 [网页部署](#网页部署) |
 
 国内访问 GitHub 较慢时，可从腾讯云 CNB 镜像 [cnb.cool/starcmx/NoteBoard](https://cnb.cool/starcmx/NoteBoard/-/releases) 下载同名安装包；镜像由 GitHub 自动同步，只读，问题反馈与 PR 请提交到 GitHub。
 
 Windows 免安装版首次运行会自动创建 `data/NoteBoard/`，设置、会话、草稿、默认暂存、历史、同步配置、插件、字体和 WebView 数据均保存在其中；`data/` 中其他内容保持原样。同名 `NoteBoard/` 子目录若已有内容但没有应用归属标记，或目录不可写，会提示并停止，不会覆盖文件或回退到安装版目录。更新时替换 EXE，搬移时同时带上 `data/`；同目录的程序共用一份数据，不同目录的副本可以独立运行。
 
 旧版本的 `%APPDATA%\NoteBoard` 和 `%LOCALAPPDATA%\com.crazyfigure.noteboard` 数据保持原样，不会自动导入。需要迁移时先运行新免安装版生成目录并完全退出所有 NoteBoard 实例，再按需把旧设置、会话等复制到 `data/NoteBoard/`，把旧插件和字体复制到其 `plugins/`、`font-packs/` 子目录，保留新生成的 `.noteboard-portable` 标记。迁移的暂存自选路径和文档绝对路径仍需按实际位置调整；Windows 加密的同步密码/令牌换电脑后需重新填写。Windows 安装版和开发版保留原目录；macOS、Linux、Android/iOS 继续使用平台应用数据/缓存目录，网页端继续使用服务器数据卷。
-
-| 软件包管理器 | 安装 | 更新 |
-|---|---|---|
-| WinGet | `winget install --id CrazyFigure.NoteBoard --exact` | `winget upgrade --id CrazyFigure.NoteBoard --exact` |
-| Homebrew | `brew install --cask crazyfigure/tap/noteboard` | `brew update && brew upgrade --cask crazyfigure/tap/noteboard` |
 
 ## 插件与字体
 
@@ -124,9 +119,9 @@ pnpm tauri build    # 构建安装包
 [AGPL-3.0-only](LICENSE)
 
 - **开源使用**：遵循 AGPL-3.0，修改后分发或以网络服务形式提供，须公开完整源码。
-- **商业授权**：如需闭源集成或不便履行 AGPL 义务，可另行获取商业授权，请通过 [Issues](https://github.com/CrazyFigure/NoteBoard/issues) 联系作者。
+- **商业授权**：如需闭源集成或不便履行 AGPL 义务，可另行获取商业授权，请通过 [Issues](https://github.com/cmx-star/NoteBoard/issues) 联系作者。
 - **参与贡献**：提交 Pull Request 即表示同意 [贡献者许可协议（CLA）](CLA.md)。
 
 ## Star 走势
 
-[![Star 走势图](./assets/star-history.svg)](https://github.com/CrazyFigure/NoteBoard/stargazers)
+[![Star 走势图](./assets/star-history.svg)](https://github.com/cmx-star/NoteBoard/stargazers)

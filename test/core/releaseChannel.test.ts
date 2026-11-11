@@ -33,7 +33,7 @@ describe('更新渠道', () => {
     expect(alternateUpdateChannel('cnb')).toBe('github');
     expect(RELEASE_CHANNELS.github.repoUrl).toBe('https://github.com/cmx-star/NoteBoard');
     expect(RELEASE_CHANNELS.github.repoPath).toBe('cmx-star/NoteBoard');
-    expect(RELEASE_CHANNELS.cnb.repoUrl).toBe('https://cnb.cool/crazy-figure/NoteBoard');
+    expect(RELEASE_CHANNELS.cnb.repoUrl).toBe('https://cnb.cool/starcmx/NoteBoard');
   });
 
   it('错误提示使用当前渠道名称', () => {

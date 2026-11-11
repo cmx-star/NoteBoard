@@ -24,8 +24,8 @@ export const RELEASE_CHANNELS: Record<UpdateChannel, ReleaseChannelInfo> = {
   cnb: {
     id: 'cnb',
     label: '腾讯云 CNB',
-    repoUrl: 'https://cnb.cool/crazy-figure/NoteBoard',
-    repoPath: 'crazy-figure/NoteBoard',
+    repoUrl: 'https://cnb.cool/starcmx/NoteBoard',
+    repoPath: 'starcmx/NoteBoard',
   },
 };
 

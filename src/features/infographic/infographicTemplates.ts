@@ -23,28 +23,28 @@ title: 核心运营与业务指标
 data:
   - label: 日活跃用户 (DAU)
     value: "148,290"
-    change: "+var(--pct-14.8)"
+    change: "+var(--pct-14-8)"
     trend: up
     color: blue
     desc: 同比上月增长超预期
   - label: 核心功能转化率
-    value: "var(--pct-38.6)"
-    change: "+var(--pct-3.2)"
+    value: "var(--pct-38-6)"
+    change: "+var(--pct-3-2)"
     trend: up
     color: emerald
     desc: 新版本流转流程优化
   - label: 用户平均停留时长
     value: "26.5 min"
-    change: "+var(--pct-1.8)"
+    change: "+var(--pct-1-8)"
     trend: up
     color: purple
     desc: 互动与协作频次提升
   - label: 客户端崩溃与异常率
-    value: "var(--pct-0.02)"
-    change: "calc(var(--pct-0.05) * -1)"
+    value: "var(--pct-0-02)"
+    change: "calc(var(--pct-0-05) * -1)"
     trend: down
     color: green
-    desc: 稳定性达到 var(--pct-99.98)`,
+    desc: 稳定性达到 var(--pct-99-98)`,
   },
   {
     id: 'timeline',
@@ -116,15 +116,15 @@ data:
     color: blue
   - label: 完成安装注册
     value: "68,500"
-    change: "var(--pct-68.5)"
+    change: "var(--pct-68-5)"
     color: cyan
   - label: 首次创建笔记/画板
     value: "45,200"
-    change: "var(--pct-45.2)"
+    change: "var(--pct-45-2)"
     color: purple
   - label: 次周深度留存活跃
     value: "32,800"
-    change: "var(--pct-32.8)"
+    change: "var(--pct-32-8)"
     color: emerald`,
   },
   {

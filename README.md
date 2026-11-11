@@ -32,7 +32,7 @@
 | **Linux** | `.deb` / `.AppImage` | x86_64；AppImage 需 `chmod +x`，可能需安装 FUSE |
 | **网页** | Docker 镜像 `crazyfigure/noteboard` | 见下方 [网页部署](#网页部署) |
 
-国内访问 GitHub 较慢时，可从腾讯云 CNB 镜像 [cnb.cool/crazy-figure/NoteBoard](https://cnb.cool/crazy-figure/NoteBoard/-/releases) 下载同名安装包；镜像由 GitHub 自动同步，只读，问题反馈与 PR 请提交到 GitHub。
+国内访问 GitHub 较慢时，可从腾讯云 CNB 镜像 [cnb.cool/starcmx/NoteBoard](https://cnb.cool/starcmx/NoteBoard/-/releases) 下载同名安装包；镜像由 GitHub 自动同步，只读，问题反馈与 PR 请提交到 GitHub。
 
 Windows 免安装版首次运行会自动创建 `data/NoteBoard/`，设置、会话、草稿、默认暂存、历史、同步配置、插件、字体和 WebView 数据均保存在其中；`data/` 中其他内容保持原样。同名 `NoteBoard/` 子目录若已有内容但没有应用归属标记，或目录不可写，会提示并停止，不会覆盖文件或回退到安装版目录。更新时替换 EXE，搬移时同时带上 `data/`；同目录的程序共用一份数据，不同目录的副本可以独立运行。
 

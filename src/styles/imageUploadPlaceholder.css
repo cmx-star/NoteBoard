@@ -60,7 +60,7 @@
 }
 
 @keyframes nb-image-uploading-pulse {
-  var(--pct-0),
+  0%,
   100% {
     opacity: var(--opacity-0-5);
   }

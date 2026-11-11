@@ -4,11 +4,11 @@
 
 /// GitHub Release 附件下载前缀（字体包、插件等官方资源仍由上游仓库发布）
 pub const GITHUB_DOWNLOAD_BASE: &str = "https://github.com/CrazyFigure/NoteBoard/releases/download/";
-/// CNB 镜像 Release 附件下载前缀（由 GitHub Actions 同步，文件名与 tag 保持一致）
+/// 字体包与插件仍使用上游 CNB 镜像；应用安装包直接使用 Release 接口返回的附件地址。
 pub const CNB_DOWNLOAD_BASE: &str = "https://cnb.cool/crazy-figure/NoteBoard/-/releases/download/";
 
 const GITHUB_REPO_URL: &str = "https://github.com/cmx-star/NoteBoard";
-const CNB_REPO_URL: &str = "https://cnb.cool/crazy-figure/NoteBoard";
+const CNB_REPO_URL: &str = "https://cnb.cool/starcmx/NoteBoard";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ReleaseChannel {
@@ -100,7 +100,7 @@ mod tests {
     fn cnb_release_urls_follow_mirror_layout() {
         assert_eq!(
             ReleaseChannel::Cnb.release_page_url("v0.7.2"),
-            "https://cnb.cool/crazy-figure/NoteBoard/-/releases/tag/v0.7.2"
+            "https://cnb.cool/starcmx/NoteBoard/-/releases/tag/v0.7.2"
         );
         assert!(ReleaseChannel::Cnb.release_list_url(30).ends_with("/-/releases?page=1&page_size=30"));
     }

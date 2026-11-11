@@ -1,6 +1,6 @@
 // 把一个 GitHub Release 同步到腾讯云 CNB 镜像仓库：创建或更新同名 Release，并上传缺失或内容变化的附件。
 // 用法：node scripts/sync-cnb-release.mjs --release-json <gh release view 输出> --assets-dir <附件目录>
-// 环境变量：CNB_TOKEN（需 repo-code / repo-release 读写），CNB_REPOSITORY（默认 crazy-figure/NoteBoard）。
+// 环境变量：CNB_TOKEN（需 repo-code / repo-release 读写），CNB_REPOSITORY（默认 starcmx/NoteBoard）。
 // 可重复执行：CNB 上 sha256 一致的附件直接跳过，因此多个构建任务可各自在上传后调用。
 import { createHash } from 'node:crypto';
 import { createReadStream, readFileSync, readdirSync, statSync } from 'node:fs';
@@ -8,7 +8,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const API_BASE = (process.env.CNB_API_BASE || 'https://api.cnb.cool').replace(/\/+$/, '');
-const REPOSITORY = process.env.CNB_REPOSITORY || 'crazy-figure/NoteBoard';
+const REPOSITORY = process.env.CNB_REPOSITORY || 'starcmx/NoteBoard';
 const MAX_ATTEMPTS = 4;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

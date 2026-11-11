@@ -1113,11 +1113,11 @@ mod tests {
     /// CNB 镜像列表无 html_url，页面地址按渠道拼接；其限流说明位于 errmsg。
     #[test]
     fn cnb_release_list_parses_without_html_url() {
-        const CNB_BODY: &str = r#"[{"id":"1","tag_name":"v0.7.2","name":"NoteBoard v0.7.2","body":"notes","draft":false,"prerelease":false,"is_latest":true,"published_at":"2026-10-29T03:36:15Z","assets":[{"name":"NoteBoard_0.7.2_windows_x64-setup.exe","browser_download_url":"https://cnb.cool/crazy-figure/NoteBoard/-/releases/download/v0.7.2/NoteBoard_0.7.2_windows_x64-setup.exe","size":123}]}]"#;
+        const CNB_BODY: &str = r#"[{"id":"1","tag_name":"v0.7.2","name":"NoteBoard v0.7.2","body":"notes","draft":false,"prerelease":false,"is_latest":true,"published_at":"2026-10-29T03:36:15Z","assets":[{"name":"NoteBoard_0.7.2_windows_x64-setup.exe","browser_download_url":"https://cnb.cool/starcmx/NoteBoard/-/releases/download/v0.7.2/NoteBoard_0.7.2_windows_x64-setup.exe","size":123}]}]"#;
         let releases = parse_release_response(response(200, None, CNB_BODY)).unwrap();
         assert_eq!(
             release_page_url(&releases[0], ReleaseChannel::Cnb),
-            "https://cnb.cool/crazy-figure/NoteBoard/-/releases/tag/v0.7.2"
+            "https://cnb.cool/starcmx/NoteBoard/-/releases/tag/v0.7.2"
         );
         assert_eq!(releases[0].assets[0].size, Some(123));
         let limited = ReleaseHttpResponse {

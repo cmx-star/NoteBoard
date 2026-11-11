@@ -1,6 +1,6 @@
 name: Mirror to CNB
 
-# 以 GitHub 为唯一源头，把全部分支与标签镜像到腾讯云 CNB（cnb.cool/crazy-figure/NoteBoard）。
+# 以 GitHub 为唯一源头，把全部分支与标签镜像到腾讯云 CNB（cnb.cool/starcmx/NoteBoard）。
 # CNB 仓库只读：分支保护仅允许负责人推送，合并请求无法合并，问题反馈与 PR 统一走 GitHub。
 on:
   push:
@@ -20,8 +20,8 @@ concurrency:
 jobs:
   mirror:
     name: Push refs to CNB
-    # Fork 即使配置了同名 Secret 也不得覆盖官方镜像
-    if: github.repository == 'CrazyFigure/NoteBoard'
+    # 仅允许当前仓库推送，其他 Fork 即使配置了同名 Secret 也不得覆盖镜像
+    if: github.repository == 'cmx-star/NoteBoard'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -41,6 +41,6 @@ jobs:
           git remote set-head origin -d 2>/dev/null || true
           # tag 事件的 checkout 会把附注标签改写为轻量标签，推送前强制取回原标签对象
           git fetch --force --tags origin
-          git remote add cnb "https://cnb:${CNB_TOKEN}@cnb.cool/crazy-figure/NoteBoard.git"
+          git remote add cnb "https://cnb:${CNB_TOKEN}@cnb.cool/starcmx/NoteBoard.git"
           # 强制与 GitHub 一致；--prune 同步删除 GitHub 上已不存在的分支和标签
           git push cnb --prune '+refs/remotes/origin/*:refs/heads/*' '+refs/tags/*:refs/tags/*'

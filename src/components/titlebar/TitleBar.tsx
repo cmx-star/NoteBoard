@@ -143,6 +143,7 @@ export function TitleBar() {
     flexDirection: 'column',
     background: 'var(--titlebar-bg)',
     borderBottom: '1px solid var(--editor-border)',
+    boxShadow: 'var(--nb-titlebar-shadow, none)',
     userSelect: 'none',
     flexShrink: 0,
     fontFamily: 'var(--ui-font-family, inherit)',

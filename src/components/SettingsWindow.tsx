@@ -51,6 +51,7 @@ export function SettingsWindow() {
           width: 160,
           flexShrink: 0,
           borderRight: '1px solid var(--editor-border)',
+          boxShadow: 'var(--nb-nav-shadow, none)',
           padding: '8px 0',
           background: 'var(--editor-surface)',
         }}

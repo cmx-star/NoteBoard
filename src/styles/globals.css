@@ -4,6 +4,7 @@
  */
 
 @import "tailwindcss";
+@import "./materials.css";
 
 /* 导图导入画布与图片导出范围的选择列表，保持现有确认弹窗样式和操作反馈。 */
 .nb-mindmap-import-options { display: flex; flex-direction: column; gap: 6px; max-height: 45vh; overflow-y: auto; }

@@ -1,0 +1,848 @@
+/* NoteBoard 材质层
+ * 单一光源：左上。凸起面向左上受光、向右下投影；凹陷则反过来。
+ * 层级约定：0 外壳（平）/ 1 侧栏与输入凹槽 / 2 卡片与标签 / 3 浮层。
+ *
+ * 由 <html data-material="classic|borderless|candy"> 控制：
+ *   classic    保持原有边框与阴影，不进入本文件的覆盖路径
+ *   borderless 去掉界面边框与分割线，用间距、底色差和单向光影分层
+ *   candy      在无边框基础上，把按钮、分段、导航选中态换成粉彩糖果
+ *
+ * 覆盖顺序：先改语义 token（让全项目共享），再补组件级例外（标签页、输入、
+ * 菜单、对话框、数据表格）。这样新增页面只要使用主题变量就会自动跟随材质。
+ */
+
+/* ═════════════════════════════════════════════════════════
+ * 光源与层级 token
+ * ═════════════════════════════════════════════════════════ */
+
+:root {
+  --nb-hi: rgb(255 255 255 / .55);
+  --nb-hi-soft: rgb(255 255 255 / .30);
+  --nb-lo-1: rgb(0 0 0 / .06);
+  --nb-lo-2: rgb(0 0 0 / .11);
+  --nb-lo-3: rgb(0 0 0 / .17);
+
+  /* 凸起：外投影统一落在右下，顶部一道细高光收边 */
+  --nb-raise-1: 0 1px 2px var(--nb-lo-1), 1px 2px 6px var(--nb-lo-1), inset 0 1px 0 var(--nb-hi-soft);
+  --nb-raise-2: 1px 3px 8px var(--nb-lo-2), 2px 8px 20px var(--nb-lo-2), inset 0 1px 0 var(--nb-hi-soft);
+  --nb-raise-3: 2px 8px 20px var(--nb-lo-3), 4px 20px 48px var(--nb-lo-2), inset 0 1px 0 var(--nb-hi);
+
+  /* 凹陷：左上内壁压暗，右下内壁留一道亮边 */
+  --nb-sunken-1: inset 1px 2px 3px var(--nb-lo-2), inset -1px -1px 0 var(--nb-hi-soft);
+
+  /* 壳层线条与浮层：classic 下保持现状，材质模式再覆盖 */
+  --nb-titlebar-shadow: none;
+  --nb-statusbar-shadow: none;
+  --nb-nav-shadow: none;
+  --nb-nav-radius: var(--radius-sm);
+  --nb-nav-active-bg: var(--editor-selection);
+}
+
+:root[data-theme="mo-ye"] {
+  /* 纯黑底上投影几乎不可见，改由亮边承担体积感；投影只负责压住边缘 */
+  --nb-hi: rgb(255 255 255 / .22);
+  --nb-hi-soft: rgb(255 255 255 / .12);
+  --nb-lo-1: rgb(0 0 0 / .45);
+  --nb-lo-2: rgb(0 0 0 / .58);
+  --nb-lo-3: rgb(0 0 0 / .70);
+
+  --nb-raise-1: 0 1px 2px var(--nb-lo-1), 0 0 0 1px rgb(255 255 255 / .025), inset 0 1px 0 var(--nb-hi-soft);
+  --nb-raise-2: 0 2px 8px var(--nb-lo-2), 0 0 0 1px rgb(255 255 255 / .03), inset 0 1px 0 var(--nb-hi-soft);
+  --nb-raise-3: 0 12px 36px var(--nb-lo-3), inset 0 1px 0 var(--nb-hi);
+}
+
+/* ═════════════════════════════════════════════════════════
+ * 无边框：先改语义 token，让全项目一起变化
+ * ═════════════════════════════════════════════════════════ */
+
+:root[data-material="borderless"][data-theme],
+:root[data-material="candy"][data-theme] {
+  /* 内容区仍然需要表格/代码块这类语义边界，单独留一条低对比线 */
+  --nb-content-border: color-mix(in srgb, var(--editor-text) 13%, transparent);
+
+  --nb-titlebar-shadow: var(--nb-raise-1);
+  --nb-statusbar-shadow: var(--nb-sunken-1);
+  --nb-nav-shadow: var(--nb-sunken-1);
+
+  /* 描边全部退出，容器靠底色差和阴影分层 */
+  --editor-border: transparent;
+  --control-border: transparent;
+  --tab-border: transparent;
+  --explorer-border: transparent;
+  --board-panel-border: transparent;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: color-mix(in srgb, var(--editor-text) 26%, transparent);
+
+  /* 亮度阶梯：去掉描边后，层级只能靠底色差 + 光影表达。
+   * l0 外壳 → l1 侧栏/标题栏 → l2 卡片/编辑面 → l3 浮层。
+   * 每档至少差 6~8 个亮度值，否则在暗色下等于没有分层。 */
+  --nb-l0: var(--editor-bg);
+  --nb-l1: color-mix(in srgb, var(--editor-bg) 93%, var(--editor-text));
+  --nb-l2: color-mix(in srgb, var(--editor-bg) 85%, var(--editor-text));
+  --nb-l3: color-mix(in srgb, var(--editor-bg) 78%, var(--editor-text));
+
+  --editor-surface: var(--nb-l2);
+  --explorer-surface: var(--nb-l2);
+  --tab-bg: var(--nb-l0);
+  --tab-active-bg: var(--nb-l2);
+  --tab-inactive-bg: var(--nb-l1);
+  --tab-hover-bg: var(--nb-l3);
+  --titlebar-bg: var(--nb-l1);
+  --statusbar-bg: var(--nb-l1);
+  --explorer-bg: var(--nb-l1);
+  --outline-bg: var(--nb-l1);
+  --rail-bg: var(--nb-l1);
+
+  --toolbar-hover: var(--nb-l2);
+  --toolbar-active: var(--nb-l3);
+  --explorer-hover: var(--nb-l2);
+  --explorer-active: var(--nb-l3);
+  --outline-item-hover-bg: var(--nb-l2);
+  --outline-item-active-bg: color-mix(in srgb, var(--accent-strong) 12%, var(--editor-bg));
+  --history-item-hover-bg: var(--nb-l2);
+  --history-item-active-bg: color-mix(in srgb, var(--accent-strong) 12%, var(--editor-bg));
+
+  /* 圆角整体放大一档，但没有到胶囊；胶囊只留给糖果材质的小控件 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* 所有沿用旧阴影变量的组件一起切到统一光源 */
+  --shadow-sm: var(--nb-raise-1);
+  --shadow-md: var(--nb-raise-2);
+  --shadow-lg: var(--nb-raise-3);
+}
+
+/* 暗色：往上加亮。墨夜的底已经是 #111113，靠混色很容易糊成一片，直接写死五档 */
+:root[data-material][data-theme="mo-ye"] {
+  --nb-l0: #0d0d10;
+  --nb-l1: #16161b;
+  --nb-l2: #1e1e25;
+  --nb-l3: #292933;
+}
+
+/* 亮色：往上更白，外壳带灰。卡片白得靠阴影浮起来，不能再靠加深 */
+:root[data-material][data-theme="chen-guang"] {
+  --nb-l0: #ffffff;
+  --nb-l1: #f4f5f8;
+  --nb-l2: #ffffff;
+  --nb-l3: #ffffff;
+}
+
+:root[data-material][data-theme="hu-po"] {
+  --nb-l0: #faf9f5;
+  --nb-l1: #f2f0e9;
+  --nb-l2: #fffdf9;
+  --nb-l3: #fffdf9;
+}
+
+/* 极致无边框：除控件外，任何元素都不允许再用颜色画线。
+ * 单写一条通配规则，避免逐组件漏改；需要保留语义线的地方在下面单独加回来。 */
+:root[data-material] :where(*, *::before, *::after) {
+  border-color: transparent !important;
+}
+
+/* 复选框/单选框没有边框就完全消失，单独保留一个可见轮廓 */
+:root[data-material] :where(input[type="checkbox"], input[type="radio"]) {
+  border-color: color-mix(in srgb, var(--editor-text) 38%, transparent) !important;
+}
+
+/* ═════════════════════════════════════════════════════════
+ * 壳层：不画线，只分层
+ * ═════════════════════════════════════════════════════════ */
+
+:root[data-material] #nb-explorer,
+:root[data-material] #nb-outline,
+:root[data-material] .nb-explorer,
+:root[data-material] .nb-settings-nav {
+  box-shadow: var(--nb-sunken-1);
+}
+
+/* 浮层：菜单、对话框、Tooltip 统一右下投影 */
+:root[data-material] [role="menu"] {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--nb-raise-3) !important;
+}
+
+:root[data-material] .nb-tooltip-content {
+  box-shadow: var(--nb-raise-2);
+}
+
+/* 标签页：不再用下划线指示，选中项直接浮起 */
+:root[data-material] [role="tab"] {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  box-shadow: none !important;
+}
+
+:root[data-material] [role="tab"][aria-selected="true"],
+:root[data-material] [role="tab"].is-active {
+  background: var(--editor-surface) !important;
+  box-shadow: var(--nb-raise-1) !important;
+}
+
+/* 材质模式下的焦点环：保留可访问性，但不使用实心亮蓝外圈 */
+:root[data-material] :focus-visible {
+  outline-color: color-mix(in srgb, var(--accent-strong) 55%, transparent);
+  outline-offset: 3px;
+}
+
+/* 糖果按钮的焦点环画在内侧，避免主按钮出现一圈外发光 */
+:root[data-material="candy"][data-theme] :where(.nb-btn-primary, .nb-btn-danger):focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / .45),
+    var(--nb-candy-inset),
+    var(--nb-candy-shadow);
+}
+
+:root[data-material="candy"][data-theme] :where(.nb-btn-secondary, .nb-btn-soft, .nb-btn-card):focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--accent-strong) 45%, transparent),
+    var(--nb-candy-inset),
+    var(--nb-candy-shadow);
+}
+
+/* 输入框：去掉描边后必须有凹陷，否则看不出可输入 */
+:root[data-material] :where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+  textarea,
+  select
+) {
+  box-shadow: var(--nb-sunken-1) !important;
+}
+
+/* 内容区恢复语义线：表格、代码块、引用、Markdown 标题下划线 */
+:root[data-material] .ProseMirror :where(
+  table, thead, tbody, tr, th, td, pre, blockquote, hr, h1, h2,
+  .nb-wikiembed-content, .nb-callout, .nb-column, details
+) {
+  border-color: var(--nb-content-border) !important;
+}
+
+:root[data-material] .cm-editor .cm-gutters {
+  border-color: var(--nb-content-border) !important;
+}
+
+/* 多维表格是数据网格，行列线是阅读骨架，不能一起抹掉 */
+:root[data-material] .nb-bitable-root :where(div, span, td, th) {
+  border-color: var(--nb-content-border) !important;
+}
+
+/* ═════════════════════════════════════════════════════════
+ * 糖果材质：粉彩底 + 深色同色系文字 + 顶部柔光 + 底部实心投影
+ * 参考柔光糖果，不采用外发光
+ * ═════════════════════════════════════════════════════════ */
+
+:root[data-material="candy"][data-theme] {
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --nb-nav-radius: 999px;
+  --nb-nav-active-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent-100) 62%, #fff),
+    color-mix(in srgb, var(--accent-300) 52%, #fff)
+  );
+
+  --nb-candy-ink: color-mix(in srgb, var(--accent-800) 78%, #121212);
+  --nb-candy-top: color-mix(in srgb, var(--accent-300) 62%, #fff);
+  --nb-candy-mid: color-mix(in srgb, var(--accent-400) 66%, #fff);
+  --nb-candy-shadow:
+    4px 4px 10px var(--nb-lo-2),
+    8px 8px 24px var(--nb-lo-1);
+  --nb-candy-inset:
+    inset 2px 2px 2px rgb(255 255 255 / .45),
+    inset -6px -6px 10px rgb(0 0 0 / .08);
+}
+
+/* 墨夜糖果：深色果冻，不用浅色大色块；粉彩只作为低比例染色和 10% 内高光 */
+:root[data-material="candy"][data-theme="mo-ye"] {
+  --nb-nav-active-bg: linear-gradient(180deg, var(--nb-candy-top), var(--nb-candy-mid));
+  --nb-candy-ink: #e8f2ff;
+  /* 暗色下的糖果不能靠加白，只能把强调色本身提纯成“蓝莓果冻” */
+  --nb-candy-top: color-mix(in srgb, var(--accent-400) 58%, #1a1a22);
+  --nb-candy-mid: color-mix(in srgb, var(--accent-600) 52%, #16161e);
+  --nb-candy-inset:
+    inset 0 1px 0 rgb(255 255 255 / .26),
+    inset 0 -6px 12px rgb(0 0 0 / .28);
+  --nb-candy-shadow:
+    0 1px 0 rgb(0 0 0 / .55),
+    0 8px 20px -6px rgb(0 0 0 / .75);
+}
+
+/* 主按钮：实心强调色 + 柔和内高光 + 大面积低对比投影，不做硬底边和白色外圈 */
+:root[data-material="candy"][data-theme] .nb-btn-primary {
+  position: relative;
+  border: 0 !important;
+  border-radius: 999px !important;
+  white-space: nowrap;
+  color: #fff;
+  text-shadow: 0 1px 1px rgb(0 0 0 / .22);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent-400) 82%, #fff) 0%,
+    var(--accent-600) 58%,
+    var(--accent-700) 100%
+  );
+  box-shadow: var(--nb-candy-inset), var(--nb-candy-shadow);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-primary:hover:not(:disabled) {
+  filter: none;
+  transform: translateY(-2px);
+  box-shadow:
+    var(--nb-candy-inset),
+    6px 6px 14px var(--nb-lo-2),
+    12px 12px 30px var(--nb-lo-1);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-primary:active:not(:disabled) {
+  filter: none;
+  transform: translateY(1px);
+  box-shadow:
+    inset 2px 2px 5px var(--nb-lo-3),
+    inset -1px -1px 2px rgb(255 255 255 / .18),
+    2px 2px 6px var(--nb-lo-1);
+}
+
+/* 墨夜：强调色本身偏亮，压深一档保证白字对比 */
+:root[data-material="candy"][data-theme="mo-ye"] .nb-btn-primary {
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent-500) 90%, #fff) 0%,
+    var(--accent-600) 52%,
+    var(--accent-800) 100%
+  );
+}
+
+/* 次级 / 柔和按钮：真正的浅粉彩 + 深色同色系文字，暗色主题上也不发灰 */
+:root[data-material="candy"][data-theme] .nb-btn-secondary,
+:root[data-material="candy"][data-theme] .nb-btn-soft {
+  border: 0 !important;
+  border-radius: 999px !important;
+  white-space: nowrap;
+  color: var(--nb-candy-ink);
+  background-image: linear-gradient(
+    180deg,
+    var(--nb-candy-top) 0%,
+    var(--nb-candy-mid) 100%
+  );
+  box-shadow: var(--nb-candy-inset), var(--nb-candy-shadow);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-secondary:hover:not(:disabled),
+:root[data-material="candy"][data-theme] .nb-btn-soft:hover:not(:disabled) {
+
+  color: var(--nb-candy-ink);
+  transform: translateY(-2px);
+  box-shadow:
+    var(--nb-candy-inset),
+    6px 6px 14px var(--nb-lo-2),
+    12px 12px 30px var(--nb-lo-1);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-secondary:active:not(:disabled),
+:root[data-material="candy"][data-theme] .nb-btn-soft:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow:
+    inset 2px 2px 5px var(--nb-lo-3),
+    inset -1px -1px 2px rgb(255 255 255 / .22),
+    2px 2px 6px var(--nb-lo-1);
+}
+
+/* 卡片按钮：大面积用 18px 圆角，不做胶囊 */
+:root[data-material="candy"][data-theme] .nb-btn-card {
+  border: 0 !important;
+  border-radius: 18px !important;
+  background-image: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--accent-500) 10%, var(--editor-surface)),
+    color-mix(in srgb, var(--accent-500) 3%, var(--editor-surface))
+  );
+  box-shadow: var(--nb-candy-inset), var(--nb-candy-shadow);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-card:hover:not(:disabled) {
+
+  transform: translateY(-2px);
+  box-shadow:
+    var(--nb-candy-inset),
+    6px 6px 14px var(--nb-lo-2),
+    12px 12px 30px var(--nb-lo-1);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-card:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    inset 2px 2px 5px var(--nb-lo-3),
+    inset -1px -1px 2px rgb(255 255 255 / .18),
+    2px 2px 6px var(--nb-lo-1);
+}
+
+/* 危险按钮：淡玫红糖果，错误色不参与强调色混色 */
+:root[data-material="candy"][data-theme] .nb-btn-danger {
+  border: 0 !important;
+  border-radius: 999px !important;
+  white-space: nowrap;
+  color: #7f1d1d;
+  background-image: linear-gradient(180deg, #fecdd3, #fda4af);
+  box-shadow: var(--nb-candy-inset), var(--nb-candy-shadow);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-danger:hover:not(:disabled) {
+  color: #881337;
+
+  transform: translateY(-2px);
+  box-shadow:
+    var(--nb-candy-inset),
+    6px 6px 14px var(--nb-lo-2),
+    12px 12px 30px var(--nb-lo-1);
+}
+
+:root[data-material="candy"][data-theme] .nb-btn-danger:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    inset 2px 2px 5px var(--nb-lo-3),
+    inset -1px -1px 2px rgb(255 255 255 / .22),
+    2px 2px 6px var(--nb-lo-1);
+}
+
+:root[data-material="candy"][data-theme="mo-ye"] .nb-btn-danger {
+  color: #fecaca;
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, #f43f5e 24%, var(--editor-surface)),
+    color-mix(in srgb, #f43f5e 14%, var(--editor-surface))
+  );
+}
+
+:root[data-material="candy"][data-theme="mo-ye"] .nb-btn-danger:hover:not(:disabled) {
+  color: #fee2e2;
+}
+
+/* 导航选中态：浅粉彩胶囊 + 深色文字，和无边框档拉开差距 */
+:root[data-material="candy"][data-theme] .nb-nav-item[data-active="true"] {
+  color: var(--nb-candy-ink) !important;
+  box-shadow:
+    var(--nb-candy-inset),
+    2px 2px 8px var(--nb-lo-1);
+}
+
+/* ═════════════════════════════════════════════════════════
+ * 外观页：主题列表、材质分段、实时预览
+ * ═════════════════════════════════════════════════════════ */
+
+.nb-appearance-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+  align-items: start;
+}
+
+.nb-appearance-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.nb-appearance-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.nb-appearance-heading h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--editor-text);
+}
+
+.nb-appearance-heading span {
+  font-size: 11px;
+  color: var(--editor-text-muted);
+}
+
+.nb-theme-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nb-appearance-preview {
+  position: sticky;
+  top: 0;
+}
+
+/* 主题行：不画描边，选中态靠整行底色和右侧对勾 */
+.nb-theme-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--editor-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nb-theme-row:hover {
+  background: var(--toolbar-hover);
+}
+
+.nb-theme-row:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: -2px;
+}
+
+.nb-theme-row[data-selected="true"] {
+  background: color-mix(in srgb, var(--accent-strong) 8%, var(--editor-surface));
+}
+
+.nb-theme-row-text {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.nb-theme-row-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.nb-theme-row-desc {
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--editor-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nb-theme-row-palette {
+  display: flex;
+  flex-shrink: 0;
+  width: 52px;
+  height: 24px;
+  overflow: hidden;
+  border-radius: 7px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--editor-text) 10%, transparent),
+    0 1px 2px rgb(0 0 0 / .12);
+}
+
+.nb-theme-row-palette > span {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.nb-theme-row-check {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: color-mix(in srgb, var(--editor-text) 28%, transparent);
+}
+
+.nb-theme-row[data-selected="true"] .nb-theme-row-check {
+  /* 选中标记只用同色系描边和对勾，不用实心蓝圆点压住整行 */
+  background: color-mix(in srgb, var(--accent-strong) 14%, transparent);
+  color: var(--accent-strong);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--accent-strong) 58%, transparent);
+}
+
+/* 材质分段：外框凹槽，选中项浮起；糖果下选中项是浅粉彩胶囊 */
+.nb-material-segmented {
+  display: inline-flex;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--editor-text) 5%, var(--editor-bg));
+  box-shadow: var(--nb-sunken-1);
+}
+
+.nb-material-segment {
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--editor-text-muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nb-material-segment:hover {
+  color: var(--editor-text);
+}
+
+.nb-material-segment[data-selected="true"] {
+  background: var(--editor-surface);
+  color: var(--editor-text);
+  font-weight: 600;
+  box-shadow: var(--nb-raise-1);
+}
+
+.nb-material-segment:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+.nb-material-hint {
+  max-width: 430px;
+  margin-top: 9px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--editor-text-muted);
+}
+
+:root[data-material="borderless"][data-theme] .nb-theme-row[data-selected="true"],
+:root[data-material="candy"][data-theme] .nb-theme-row[data-selected="true"] {
+  box-shadow: var(--nb-raise-1);
+}
+
+:root[data-material="candy"][data-theme] .nb-theme-row[data-selected="true"] {
+  background-image: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--accent-500) 10%, var(--editor-surface)),
+    color-mix(in srgb, var(--accent-500) 4%, var(--editor-surface))
+  );
+}
+
+:root[data-material="candy"][data-theme] .nb-theme-row-palette {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .45),
+    1px 2px 6px rgb(0 0 0 / .22);
+}
+
+:root[data-material="candy"][data-theme] .nb-material-segment[data-selected="true"] {
+  color: var(--nb-candy-ink);
+  background-image: linear-gradient(180deg, var(--nb-candy-top), var(--nb-candy-mid));
+  box-shadow:
+    var(--nb-candy-inset),
+    2px 2px 8px var(--nb-lo-1);
+}
+
+/* 实时预览：用当前主题 token 画一个迷你窗口，材质切换时立即变化 */
+.nb-preview {
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--editor-bg);
+  box-shadow: var(--nb-raise-2);
+}
+
+.nb-preview-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  background: var(--titlebar-bg);
+}
+
+.nb-preview-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.nb-preview-dots > i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.nb-preview-dots > i:nth-child(1) { background: #ff5f57; }
+.nb-preview-dots > i:nth-child(2) { background: #febc2e; }
+.nb-preview-dots > i:nth-child(3) { background: #28c840; }
+
+.nb-preview-title {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--editor-text-secondary);
+}
+
+.nb-preview-body {
+  display: flex;
+  height: 200px;
+}
+
+.nb-preview-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 74px;
+  padding: 8px 6px;
+  background: var(--explorer-bg);
+  box-shadow: var(--nb-sunken-1);
+}
+
+.nb-preview-nav {
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: var(--explorer-text-muted);
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.nb-preview-nav.is-active {
+  background: var(--nb-nav-active-bg, var(--editor-selection));
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+:root[data-material="candy"][data-theme] .nb-preview-nav.is-active {
+  color: var(--nb-candy-ink);
+}
+
+.nb-preview-main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  background: var(--editor-bg);
+}
+
+.nb-preview-toolbar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1px;
+}
+
+.nb-preview-toolbar > i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--editor-text) 9%, transparent);
+  box-shadow: var(--nb-raise-1);
+}
+
+.nb-preview-heading {
+  width: 48%;
+  height: 9px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--editor-heading) 42%, transparent);
+}
+
+.nb-preview-line {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--editor-text) 15%, transparent);
+}
+
+.nb-preview-line.is-short {
+  width: 66%;
+}
+
+.nb-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 2px;
+  padding: 8px;
+  border-radius: 9px;
+  background: var(--editor-surface);
+  box-shadow: var(--nb-raise-1);
+}
+
+.nb-preview-search {
+  display: flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: var(--editor-bg);
+  box-shadow: var(--nb-sunken-1);
+}
+
+.nb-preview-search > span {
+  width: 55%;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--editor-text) 18%, transparent);
+}
+
+.nb-preview-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.nb-preview-btn {
+  padding: 4px 11px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  font-size: 9px !important;
+  line-height: 1.4;
+  /* 迷你窗口里按钮只有 20px 高，任何外投影都会糊成第二层胶囊，这里必须压平 */
+  box-shadow: none !important;
+  text-shadow: none;
+  transform: none;
+}
+
+/* 糖果只留一道内高光，不投影、不描边 */
+:root[data-material="candy"][data-theme] .nb-preview-btn {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .22) !important;
+}
+
+.nb-preview-note {
+  margin-top: 10px;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--editor-text-muted);
+}
+
+@media (max-width: 720px) {
+  .nb-appearance-page {
+    grid-template-columns: 1fr;
+  }
+
+  .nb-appearance-preview {
+    position: static;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════
+ * 降级路径：焦点与系统高对比不能为美学让路
+ * ═════════════════════════════════════════════════════════ */
+
+@media (forced-colors: active) {
+  :root[data-material] :where(button, input, select, textarea, .nb-settings-panel, [role="menu"], [role="dialog"]) {
+    border: 1px solid ButtonBorder;
+    box-shadow: none;
+    background-image: none;
+    text-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-material] :where(.nb-btn-primary, .nb-btn-card, .nb-btn-secondary, .nb-btn-soft, .nb-btn-danger, .nb-theme-row, .nb-material-segment) {
+    transition: none;
+  }
+}

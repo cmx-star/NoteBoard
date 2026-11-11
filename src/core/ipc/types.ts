@@ -12,6 +12,8 @@ export type Encoding = 'utf8' | 'utf8-bom' | 'gbk';
 export type Eol = 'crlf' | 'lf';
 export type ThemeId = 'chen-guang' | 'hu-po' | 'mo-ye';
 export type ThemeMode = ThemeId | 'system';
+// 界面材质：classic 保留现有边框；borderless 用间距与光影替代边框；candy 在无边框基础上给控件加糖果质感
+export type MaterialStyle = 'classic' | 'borderless' | 'candy';
 // 编辑区宽度：预设档位或自定义百分比字符串（如 '75%'）
 export type ContentWidth = 'narrow' | 'standard' | 'wide' | 'full' | (string & {});
 
@@ -304,6 +306,8 @@ export interface AppearanceSettings {
   themeMode: ThemeMode;
   systemLightTheme: ThemeId;
   systemDarkTheme: ThemeId;
+  /** 界面材质（旧设置文件与网页端可能缺失，缺省按 classic 处理） */
+  material?: MaterialStyle;
 }
 
 export interface TypographySettings {

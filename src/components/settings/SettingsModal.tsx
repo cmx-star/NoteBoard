@@ -22,7 +22,7 @@ import { ReleaseNotes } from './ReleaseNotes';
 import { UPDATE_CHANNEL_ORDER, UpdateChannelSelector } from './UpdateChannelSelector';
 import { RELEASE_CHANNELS } from '../../core/releaseChannel';
 import { Tooltip } from '../Tooltip';
-import type { ExplorerOpenMode, HtmlOpenMode, TitleBarButtons } from '../../core/ipc/types';
+import type { ExplorerOpenMode, HtmlOpenMode, MaterialStyle, TitleBarButtons } from '../../core/ipc/types';
 import { IS_MOBILE_UI, IS_NATIVE_MOBILE, IS_WEB } from '../../core/platform';
 import { GlobalShortcutRecorder } from './GlobalShortcutRecorder';
 import { formatShortcut } from '../../core/shortcuts';
@@ -65,6 +65,13 @@ const TITLE_BAR_BUTTON_OPTIONS: { key: keyof TitleBarButtons; label: string; ava
   { key: 'compactMode', label: '极窄模式', available: supportsCompactMode },
 ];
 
+/** 材质说明只展示当前选中项，避免三张说明卡把页面撑回"卡片商店" */
+const MATERIAL_DESCRIPTIONS: Record<MaterialStyle, string> = {
+  classic: '保留边框、分割线与常规投影，维持原有密度。',
+  borderless: '移除边框与分割线，用留白、底色差和统一方向的光影分层。',
+  candy: '在无边框基础上，把按钮与色板换成粉彩柔光的糖果质感。',
+};
+
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [activeTab, setActiveTab] = useState<TabType>('appearance');
   const settingsTarget = useLayoutStore((state) => state.settingsTarget);
@@ -76,7 +83,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   }, [isOpen, settingsTarget]);
   // 关闭后清除一次性定位，普通设置入口沿用上次查看的栏目。
   useEffect(() => { if (!isOpen && settingsTarget) useLayoutStore.setState({settingsTarget:null}); }, [isOpen, settingsTarget]);
-  const { settings, resolvedTheme, setThemeMode, setTypography, setEditor, setFile, setLayout, setSystem } = useSettingsStore();
+  const { settings, resolvedTheme, setThemeMode, setMaterial, setTypography, setEditor, setFile, setLayout, setSystem } = useSettingsStore();
   const titleBarButtons = useTitleBarButtons();
 
   // 使用全局更新状态 Store
@@ -156,6 +163,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   if (!isOpen) return null;
 
   const currentThemeMode = settings.appearance.themeMode;
+  const currentMaterial: MaterialStyle = settings.appearance.material ?? 'classic';
 
   return (
     <div
@@ -340,16 +348,18 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
           {/* 右侧设置面板 */}
           <div ref={contentRef} className="nb-settings-content" style={{ flex: 1, padding: '24px 30px', overflowY: 'auto' }}>
-            {/* 1. 外观主题：页级仅保留标题，主题卡片继续展示配色说明。 */}
+            {/* 1. 外观主题：紧凑列表，一行内看完配色与选中态。 */}
             {activeTab === 'appearance' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                <div>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>主题配色方案</h3>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+              <div className="nb-appearance-page">
+                <div className="nb-appearance-controls">
+                <section>
+                  <div className="nb-appearance-heading">
+                    <h3>主题配色方案</h3>
+                    <span>选择后立即生效</span>
+                  </div>
+                  <div className="nb-theme-list">
                   {/* 晨光 */}
-                  <ThemeCard
+                  <ThemeRow
                     title="晨光"
                     desc="清新明亮 · 晨曦蓝调"
                     bg="#ffffff"
@@ -360,7 +370,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     onClick={() => setThemeMode('chen-guang')}
                   />
                   {/* 琥珀 */}
-                  <ThemeCard
+                  <ThemeRow
                     title="琥珀"
                     desc="温暖纸质 · 琥珀赤陶"
                     bg="#FAF9F5"
@@ -371,7 +381,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     onClick={() => setThemeMode('hu-po')}
                   />
                   {/* 墨夜 */}
-                  <ThemeCard
+                  <ThemeRow
                     title="墨夜"
                     desc="墨色沉静 · 纯黑护眼"
                     bg="#111113"
@@ -382,7 +392,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     onClick={() => setThemeMode('mo-ye')}
                   />
                   {/* 跟随系统 */}
-                  <ThemeCard
+                  <ThemeRow
                     title="跟随系统"
                     desc={`当前生效: ${THEMES[resolvedTheme]?.displayName ?? resolvedTheme}`}
                     bg="linear-gradient(135deg, #ffffff 50%, #111113 50%)"
@@ -392,7 +402,42 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     selected={currentThemeMode === 'system'}
                     onClick={() => setThemeMode('system')}
                   />
+                  </div>
+                </section>
+
+                {/* 界面材质：无边框用留白与光影替代线条，糖果再给小块控件加粉彩柔光 */}
+                <section>
+                  <div className="nb-appearance-heading">
+                    <h3>界面材质</h3>
+                  </div>
+                  <div className="nb-material-segmented" role="group" aria-label="界面材质">
+                    <MaterialSegment
+                      label="经典"
+                      selected={currentMaterial === 'classic'}
+                      onClick={() => setMaterial('classic')}
+                    />
+                    <MaterialSegment
+                      label="无边框"
+                      selected={currentMaterial === 'borderless'}
+                      onClick={() => setMaterial('borderless')}
+                    />
+                    <MaterialSegment
+                      label="糖果"
+                      selected={currentMaterial === 'candy'}
+                      onClick={() => setMaterial('candy')}
+                    />
+                  </div>
+                  <p className="nb-material-hint">{MATERIAL_DESCRIPTIONS[currentMaterial]}</p>
+                </section>
                 </div>
+
+                <aside className="nb-appearance-preview">
+                  <div className="nb-appearance-heading">
+                    <h3>实时预览</h3>
+                  </div>
+                  <AppearancePreview />
+                  <p className="nb-preview-note">主题与材质会同步应用到整个界面，包括菜单、弹窗和编辑器工具栏。</p>
+                </aside>
               </div>
             )}
 
@@ -1909,14 +1954,16 @@ function NavBtn({ active, icon, label, onClick }: { active: boolean; icon: React
     <button
       type="button"
       onClick={onClick}
+      className="nb-nav-item"
+      data-active={active ? 'true' : 'false'}
       style={{
         display: 'flex',
         alignItems: 'center',
         gap: 8,
         padding: '9px 12px',
         border: 'none',
-        borderRadius: 'var(--radius-sm)',
-        background: active ? 'var(--editor-selection)' : 'transparent',
+        borderRadius: 'var(--nb-nav-radius, var(--radius-sm))',
+        background: active ? 'var(--nb-nav-active-bg, var(--editor-selection))' : 'transparent',
         color: active ? 'var(--accent-strong)' : 'var(--editor-text)',
         fontWeight: active ? 600 : 400,
         fontSize: 13,
@@ -1948,7 +1995,42 @@ function NavBtn({ active, icon, label, onClick }: { active: boolean; icon: React
   );
 }
 
-function ThemeCard({
+/** 外观页实时预览：用当前主题 token 画一个迷你窗口，主题与材质的差异直接可见 */
+function AppearancePreview() {
+  return (
+    <div className="nb-preview" aria-hidden="true">
+      <div className="nb-preview-titlebar">
+        <span className="nb-preview-dots"><i /><i /><i /></span>
+        <span className="nb-preview-title">NoteBoard</span>
+      </div>
+      <div className="nb-preview-body">
+        <div className="nb-preview-sidebar">
+          <span className="nb-preview-nav is-active">笔记</span>
+          <span className="nb-preview-nav">素材</span>
+          <span className="nb-preview-nav">白板</span>
+        </div>
+        <div className="nb-preview-main">
+          <div className="nb-preview-toolbar"><i /><i /><i /><i /></div>
+          <span className="nb-preview-heading" />
+          <span className="nb-preview-line" />
+          <span className="nb-preview-line is-short" />
+          <div className="nb-preview-card">
+            <span className="nb-preview-line is-short" />
+            <span className="nb-preview-line" />
+          </div>
+          <div className="nb-preview-search"><span /></div>
+          <div className="nb-preview-actions">
+            <span className="nb-btn-primary nb-preview-btn">新建</span>
+            <span className="nb-btn-secondary nb-preview-btn">打开</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** 主题列表行：名称与说明在左，三色色板与选中标记在右；靠底色与对勾区分，不用描边和发光 */
+function ThemeRow({
   title,
   desc,
   bg,
@@ -1968,58 +2050,49 @@ function ThemeCard({
   onClick: () => void;
 }) {
   return (
-    <div
+    <button
+      type="button"
+      className="nb-theme-row"
+      data-selected={selected ? 'true' : 'false'}
       onClick={onClick}
-      style={{
-        padding: '14px 16px',
-        borderRadius: 'var(--radius-md)',
-        border: selected ? '2px solid var(--accent-strong)' : '1px solid var(--editor-border)',
-        background: 'var(--editor-surface)',
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 10,
-        boxShadow: selected ? 'var(--shadow-sm)' : 'none',
-        transition: 'all var(--transition-fast)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = selected ? 'var(--accent-strong)' : 'var(--editor-border-focus)';
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = selected ? 'var(--accent-strong)' : 'var(--editor-border)';
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = selected ? 'var(--shadow-sm)' : 'none';
-      }}
-      onMouseDown={(e) => {
-        e.currentTarget.style.transform = 'translateY(0) scale(0.98)';
-        e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-      }}
-      onMouseUp={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-      }}
+      aria-pressed={selected}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontWeight: 600, fontSize: 13 }}>{title}</span>
-        {selected && <Check size={14} color="var(--accent-strong)" />}
-      </div>
-      <span style={{ fontSize: 11, color: 'var(--editor-text-muted)' }}>{desc}</span>
-      <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 4 }}>
-        <Tooltip content="背景色" side="top" sideOffset={4}>
-          <div style={{ width: 22, height: 22, borderRadius: '50%', background: bg, border: '1px solid var(--editor-border)', cursor: 'default' }} />
-        </Tooltip>
-        <Tooltip content="强调色" side="top" sideOffset={4}>
-          <div style={{ width: 22, height: 22, borderRadius: '50%', background: accent, border: '1px solid transparent', cursor: 'default' }} />
-        </Tooltip>
-        <Tooltip content="代码块色" side="top" sideOffset={4}>
-          <div style={{ width: 22, height: 22, borderRadius: '50%', background: codeBg, border: '1px solid var(--editor-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: codeColor, fontSize: 9, fontWeight: 'bold', cursor: 'default' }}>
-            &lt;&gt;
-          </div>
-        </Tooltip>
-      </div>
-    </div>
+      <span className="nb-theme-row-text">
+        <span className="nb-theme-row-title">{title}</span>
+        <span className="nb-theme-row-desc">{desc}</span>
+      </span>
+      <span className="nb-theme-row-palette" aria-hidden="true">
+        <span style={{ background: bg }} />
+        <span style={{ background: accent }} />
+        <span style={{ background: codeBg, color: codeColor }}>Aa</span>
+      </span>
+      <span className="nb-theme-row-check" aria-hidden="true">
+        {selected && <Check size={12} strokeWidth={3} />}
+      </span>
+    </button>
+  );
+}
+
+/** 材质分段按钮：只表达当前档位，不预览整套皮肤，避免和主题行重复 */
+function MaterialSegment({
+  label,
+  selected,
+  onClick,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="nb-material-segment"
+      data-selected={selected ? 'true' : 'false'}
+      onClick={onClick}
+      aria-pressed={selected}
+    >
+      {label}
+    </button>
   );
 }
 

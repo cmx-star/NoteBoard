@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './styles/globals.css';
 import './styles/scrollbar.css';
-import { applyCachedTheme, applyCachedTypography } from './core/theme/applyTheme';
+import { applyCachedTheme, applyCachedMaterial, applyCachedTypography } from './core/theme/applyTheme';
 import { perfMark } from './core/perf/perfMarks';
 import { IS_MOBILE_UI, IS_WEB } from './core/platform';
 import { installInputModalityTracking } from './core/inputModality';
@@ -25,6 +25,9 @@ if (!applyCachedTheme()) {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   document.documentElement.dataset.theme = prefersDark ? 'mo-ye' : 'chen-guang';
 }
+
+// 🔴 防首屏闪烁：同步注入材质
+applyCachedMaterial();
 
 // 🔴 防首屏闪烁：同步注入排版变量
 applyCachedTypography();

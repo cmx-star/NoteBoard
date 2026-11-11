@@ -77,6 +77,9 @@ pub struct AppearanceSettings {
     pub system_light_theme: String,
     #[serde(default = "default_dark_theme")]
     pub system_dark_theme: String,
+    // 界面材质：classic / borderless / candy
+    #[serde(default = "default_material")]
+    pub material: String,
 }
 
 impl Default for AppearanceSettings {
@@ -85,8 +88,13 @@ impl Default for AppearanceSettings {
             theme_mode: "system".to_string(),
             system_light_theme: "chen-guang".to_string(),
             system_dark_theme: "mo-ye".to_string(),
+            material: default_material(),
         }
     }
+}
+
+fn default_material() -> String {
+    "classic".to_string()
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

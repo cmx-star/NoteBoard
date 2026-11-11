@@ -3,12 +3,16 @@
 // 详见 docs/09-开发路线图.md 12.2
 
 import { useSettingsStore } from '../../stores/settingsStore';
+import type { MaterialStyle } from '../../core/ipc/types';
 
 export function AppearancePanel() {
   const settings = useSettingsStore((s) => s.settings);
   const setThemeMode = useSettingsStore((s) => s.setThemeMode);
   const setSystemLightTheme = useSettingsStore((s) => s.setSystemLightTheme);
   const setSystemDarkTheme = useSettingsStore((s) => s.setSystemDarkTheme);
+  const setMaterial = useSettingsStore((s) => s.setMaterial);
+
+  const material: MaterialStyle = settings.appearance.material ?? 'classic';
 
   const themes: { id: string; label: string; preview: string }[] = [
     { id: 'chen-guang', label: '晨光', preview: '#fffef7' },
@@ -99,6 +103,20 @@ export function AppearancePanel() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* 界面材质 */}
+      <div style={rowStyle}>
+        <span style={labelStyle}>界面材质</span>
+        <select
+          value={material}
+          onChange={(e) => setMaterial(e.target.value as MaterialStyle)}
+          style={selectStyle}
+        >
+          <option value="classic">经典（有边框）</option>
+          <option value="borderless">无边框（光影分层）</option>
+          <option value="candy">糖果（无边框 + 糖果按钮）</option>
+        </select>
       </div>
     </div>
   );

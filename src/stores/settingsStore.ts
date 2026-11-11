@@ -15,12 +15,14 @@ import type {
   TitleBarButtons,
   LocalSearchSettings,
   CustomColorKind,
+  MaterialStyle,
 } from '../core/ipc/types';
 import * as ipc from '../core/ipc/commands';
 import { onSettingsChanged } from '../core/ipc/events';
 import {
   resolveTheme,
   applyTheme,
+  applyMaterial,
   applyTypography,
   startSystemThemeListener,
   stopSystemThemeListener,
@@ -68,6 +70,7 @@ export const DEFAULT_SETTINGS: Settings = {
     themeMode: 'system',
     systemLightTheme: 'chen-guang',
     systemDarkTheme: 'mo-ye',
+    material: 'classic',
   },
   typography: {
     contentFontFamily: '',
@@ -205,6 +208,7 @@ interface SettingsStore {
   setThemeMode: (mode: ThemeMode) => Promise<void>;
   setSystemLightTheme: (theme: ThemeId) => Promise<void>;
   setSystemDarkTheme: (theme: ThemeId) => Promise<void>;
+  setMaterial: (material: MaterialStyle) => Promise<void>;
 
   // ── 排版 ──
   setTypography: (patch: Partial<TypographySettings>) => Promise<void>;
@@ -237,6 +241,7 @@ function resolveAndApply(s: Settings): ThemeId {
     s.appearance.systemDarkTheme,
   );
   applyTheme(resolved);
+  applyMaterial(s.appearance.material ?? 'classic');
   applyTypography(s.typography);
   return resolved;
 }
@@ -338,6 +343,21 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     };
     const resolved = resolveAndApply(updated);
     set({ settings: updated, resolvedTheme: resolved });
+    try {
+      await ipc.saveSettings(updated);
+    } catch (e) {
+      console.error('保存设置失败:', e);
+    }
+  },
+
+  setMaterial: async (material) => {
+    const current = get().settings;
+    const updated: Settings = {
+      ...current,
+      appearance: { ...current.appearance, material },
+    };
+    resolveAndApply(updated);
+    set({ settings: updated });
     try {
       await ipc.saveSettings(updated);
     } catch (e) {

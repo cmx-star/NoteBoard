@@ -41,6 +41,86 @@ use state::AppState;
 use std::sync::Mutex;
 use tauri::Manager;
 
+/// macOS 原生菜单使用中文文案，同时保留系统预定义项的快捷键与编辑行为。
+#[cfg(target_os = "macos")]
+fn build_app_menu(app: &tauri::AppHandle) -> tauri::Result<tauri::menu::Menu<tauri::Wry>> {
+    use tauri::menu::{AboutMetadata, HELP_SUBMENU_ID, Menu, PredefinedMenuItem, Submenu};
+
+    let about_metadata = AboutMetadata {
+        name: Some("NoteBoard".into()),
+        version: Some(app.package_info().version.to_string()),
+        ..Default::default()
+    };
+    let separator = || PredefinedMenuItem::separator(app);
+
+    let app_menu = Submenu::with_items(
+        app,
+        "NoteBoard",
+        true,
+        &[
+            &PredefinedMenuItem::about(app, Some("关于 NoteBoard"), Some(about_metadata))?,
+            &separator()?,
+            &PredefinedMenuItem::services(app, Some("服务"))?,
+            &separator()?,
+            &PredefinedMenuItem::hide(app, Some("隐藏 NoteBoard"))?,
+            &PredefinedMenuItem::hide_others(app, Some("隐藏其他"))?,
+            &PredefinedMenuItem::show_all(app, Some("全部显示"))?,
+            &separator()?,
+            &PredefinedMenuItem::quit(app, Some("退出 NoteBoard"))?,
+        ],
+    )?;
+    let file_menu = Submenu::with_items(
+        app,
+        "文件",
+        true,
+        &[&PredefinedMenuItem::close_window(app, Some("关闭窗口"))?],
+    )?;
+    let edit_menu = Submenu::with_items(
+        app,
+        "编辑",
+        true,
+        &[
+            &PredefinedMenuItem::undo(app, Some("撤销"))?,
+            &PredefinedMenuItem::redo(app, Some("重做"))?,
+            &separator()?,
+            &PredefinedMenuItem::cut(app, Some("剪切"))?,
+            &PredefinedMenuItem::copy(app, Some("复制"))?,
+            &PredefinedMenuItem::paste(app, Some("粘贴"))?,
+            &PredefinedMenuItem::select_all(app, Some("全选"))?,
+        ],
+    )?;
+    let view_menu = Submenu::with_items(
+        app,
+        "显示",
+        true,
+        &[&PredefinedMenuItem::fullscreen(app, Some("进入全屏幕"))?],
+    )?;
+    let window_menu = Submenu::with_items(
+        app,
+        "窗口",
+        true,
+        &[
+            &PredefinedMenuItem::minimize(app, Some("最小化"))?,
+            &PredefinedMenuItem::maximize(app, Some("缩放"))?,
+            &separator()?,
+            &PredefinedMenuItem::bring_all_to_front(app, Some("前置全部窗口"))?,
+        ],
+    )?;
+    let help_menu = Submenu::with_id_and_items(app, HELP_SUBMENU_ID, "帮助", true, &[])?;
+
+    Menu::with_items(
+        app,
+        &[
+            &app_menu,
+            &file_menu,
+            &edit_menu,
+            &view_menu,
+            &window_menu,
+            &help_menu,
+        ],
+    )
+}
+
 /// 应用入口（桌面端由 main.rs 调用；移动端由 mobile_entry_point 宏生成的原生入口调用）
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -86,6 +166,9 @@ pub fn run() {
     };
 
     let builder = tauri::Builder::default();
+
+    #[cfg(target_os = "macos")]
+    let builder = builder.menu(build_app_menu);
 
     // 🔴 single-instance 必须第一个注册（仅桌面端；Android 由系统保证单 Activity）
     #[cfg(desktop)]

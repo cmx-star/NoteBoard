@@ -6,13 +6,13 @@
  */
 .nb-explorer-action {
   --nb-action-hue: var(--editor-accent);
-  width: 24px;
-  height: 24px;
+  width: var(--dim-24);
+  height: var(--dim-24);
   border: none;
   padding: 0;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: color-mix(in srgb, var(--nb-action-hue) 78%, var(--explorer-text));
+  color: color-mix(in srgb, var(--nb-action-hue) var(--pct-78), var(--explorer-text));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,19 +22,19 @@
 
 /* 悬停：同色浅底 + 图标加深 */
 .nb-explorer-action:hover {
-  background: color-mix(in srgb, var(--nb-action-hue) 14%, transparent);
-  color: color-mix(in srgb, var(--nb-action-hue) 90%, var(--explorer-text));
-  transform: scale(1.05);
+  background: color-mix(in srgb, var(--nb-action-hue) var(--pct-14), transparent);
+  color: color-mix(in srgb, var(--nb-action-hue) var(--pct-90), var(--explorer-text));
+  transform: scale(var(--scale-1-05));
 }
 
 .nb-explorer-action:active {
-  background: color-mix(in srgb, var(--nb-action-hue) 22%, transparent);
-  transform: scale(0.92);
+  background: color-mix(in srgb, var(--nb-action-hue) var(--pct-22), transparent);
+  transform: scale(var(--scale-0-92));
 }
 
 .nb-explorer-action:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--nb-action-hue) 60%, transparent);
-  outline-offset: 1px;
+  outline: var(--dim-2) solid color-mix(in srgb, var(--nb-action-hue) var(--pct-60), transparent);
+  outline-offset: var(--dim-1);
 }
 
 @media (prefers-reduced-motion: reduce) {

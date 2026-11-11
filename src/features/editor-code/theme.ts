@@ -13,7 +13,7 @@ export const nbEditorTheme: Extension = EditorView.theme(
     '&': {
       backgroundColor: 'var(--editor-bg)',
       color: 'var(--editor-text)',
-      height: '100%',
+      height: 'var(--pct-100)',
       fontFamily: 'var(--mono-font-family)',
       fontSize: 'var(--mono-font-size)',
       caretColor: 'var(--cm-cursor)',
@@ -40,7 +40,7 @@ export const nbEditorTheme: Extension = EditorView.theme(
       backgroundColor: 'var(--cm-gutter-bg)',
       color: 'var(--cm-gutter-text)',
       border: 'none',
-      borderRight: '1px solid var(--editor-border)',
+      borderRight: 'var(--dim-1) solid var(--editor-border)',
     },
     '.cm-gutter.cm-activeGutter': {
       backgroundColor: 'var(--cm-gutter-bg)',
@@ -64,12 +64,12 @@ export const nbEditorTheme: Extension = EditorView.theme(
     // 光标与模拟光标
     '&.cm-focused .cm-cursor, .cm-cursor': {
       borderLeftColor: 'var(--cm-cursor)',
-      borderLeftWidth: '2px',
+      borderLeftWidth: 'var(--dim-2)',
     },
     // 拖拽落点光标
     '.cm-dropCursor': {
       borderLeftColor: 'var(--cm-cursor)',
-      borderLeftWidth: '2px',
+      borderLeftWidth: 'var(--dim-2)',
     },
     '&.cm-focused ::selection, &.cm-focused .cm-content ::selection, &.cm-focused .cm-line ::selection, &.cm-focused .cm-selectionBackground':
       {
@@ -79,7 +79,7 @@ export const nbEditorTheme: Extension = EditorView.theme(
     // CodeMirror 6 实际使用 cm-matchingBracket；使用正确类名覆盖默认的点状下划线样式。
     '.cm-matchingBracket': {
       backgroundColor: 'var(--cm-bracket-bg)',
-      outline: '1px solid var(--cm-bracket-outline)',
+      outline: 'var(--dim-1) solid var(--cm-bracket-outline)',
     },
     // 缩进导线
     '.cm-indent-mark': {
@@ -88,22 +88,22 @@ export const nbEditorTheme: Extension = EditorView.theme(
     // 折叠占位符
     '.cm-foldPlaceholder': {
       backgroundColor: 'var(--cm-fold-placeholder-bg)',
-      border: '1px solid var(--editor-border)',
-      borderRadius: '3px',
-      padding: '0 4px',
-      margin: '0 2px',
+      border: 'var(--dim-1) solid var(--editor-border)',
+      borderRadius: 'var(--radius-xs)',
+      padding: '0 var(--dim-4)',
+      margin: '0 var(--dim-2)',
       color: 'var(--editor-text-muted)',
-      fontSize: '11px',
+      fontSize: 'var(--dim-11)',
     },
     // 搜索高亮与当前选中匹配项高亮（当前匹配项呈深色高对比度选中态与边框）
     '.cm-searchMatch': {
       backgroundColor: 'var(--cm-search-match-bg)',
-      borderRadius: '2px',
+      borderRadius: 'var(--radius-xs)',
     },
     '.cm-searchMatch.cm-searchMatch-selected, .cm-searchMatch-selected': {
-      backgroundColor: 'var(--editor-selection, rgba(59, 130, 246, 0.38)) !important',
-      outline: '1.5px solid var(--accent-strong, #3b82f6)',
-      borderRadius: '2px',
+      backgroundColor: 'var(--editor-selection) !important',
+      outline: 'var(--dim-1-5) solid var(--accent-strong)',
+      borderRadius: 'var(--radius-xs)',
     },
     // lint 标记
     '.cm-diagnosticText-error': {
@@ -125,7 +125,7 @@ export const nbEditorTheme: Extension = EditorView.theme(
       userSelect: 'none',
       pointerEvents: 'none',
       fontFamily: 'inherit',
-      marginLeft: '2px',
+      marginLeft: 'var(--dim-2)',
     },
     // 空白字符与制表符标记
     '.cm-highlightSpace': {
@@ -144,7 +144,7 @@ export const nbEditorTheme: Extension = EditorView.theme(
     '.cm-panels': {
       backgroundColor: 'var(--editor-surface)',
       color: 'var(--editor-text)',
-      borderTop: '1px solid var(--editor-border)',
+      borderTop: 'var(--dim-1) solid var(--editor-border)',
     },
     // 焦点边框
     '&.cm-focused': {

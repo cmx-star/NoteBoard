@@ -1,5 +1,5 @@
 // NoteBoard 顶部标题栏快捷主题切换菜单组件
-// 支持快速在「跟随系统 / 晨光 / 琥珀 / 墨夜」之间切换，附带实时色块预览与选中指示
+// 支持快速在「跟随系统 / 素白 / 纸感 / 墨黑 / 雾面」之间切换，附带实时色块预览与选中指示
 
 import { useState, useRef, useEffect } from 'react';
 import { Palette, Check, Sparkles } from 'lucide-react';
@@ -7,6 +7,7 @@ import { Tooltip } from '../Tooltip';
 import { on, off } from '../../core/emitter';
 import { useLayoutStore } from '../../stores/layoutStore';
 import { useSettingsStore } from '../../stores/settingsStore';
+import { getAllThemes } from '../../core/theme/themes';
 import type { ThemeMode } from '../../core/ipc/types';
 
 // 主题快捷选项定义
@@ -23,30 +24,16 @@ const THEME_OPTIONS: ThemeOption[] = [
     id: 'system',
     label: '跟随系统',
     desc: '自动跟随系统明暗设置',
-    previewBg: 'linear-gradient(135deg, #ffffff 50%, #111113 50%)',
-    previewAccent: '#8b5cf6',
+    previewBg: 'linear-gradient(135deg, var(--nb-white) var(--pct-50), var(--editor-bg) var(--pct-50))',
+    previewAccent: 'var(--nb-purple-500)',
   },
-  {
-    id: 'chen-guang',
-    label: '晨光',
-    desc: '清新明亮 · 晨曦蓝调',
-    previewBg: '#ffffff',
-    previewAccent: '#3b82f6',
-  },
-  {
-    id: 'hu-po',
-    label: '琥珀',
-    desc: '温暖纸质 · 琥珀赤陶',
-    previewBg: '#FAF9F5',
-    previewAccent: '#D97757',
-  },
-  {
-    id: 'mo-ye',
-    label: '墨夜',
-    desc: '墨色沉静 · 纯黑护眼',
-    previewBg: '#111113',
-    previewAccent: '#60a5fa',
-  },
+  ...getAllThemes().map((theme) => ({
+    id: theme.id,
+    label: theme.displayName,
+    desc: theme.description,
+    previewBg: theme.previewBg,
+    previewAccent: theme.previewAccent,
+  })),
 ];
 
 export function ThemeMenu() {
@@ -113,8 +100,8 @@ export function ThemeMenu() {
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
           style={{
-            width: 36,
-            height: 36,
+            width: 'var(--dim-36)',
+            height: 'var(--dim-36)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -129,23 +116,23 @@ export function ThemeMenu() {
             if (!isOpen) {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
               e.currentTarget.style.color = 'var(--editor-text)';
-              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
             }
           }}
           onMouseLeave={(e) => {
             if (!isOpen) {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = 'var(--editor-text-secondary)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }
           }}
           onMouseDown={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-active)';
-            e.currentTarget.style.transform = 'scale(0.92)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
           }}
           onMouseUp={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
           }}
           aria-label="快捷切换主题"
         >
@@ -159,20 +146,20 @@ export function ThemeMenu() {
           ref={menuRef}
           style={{
             position: 'absolute',
-            top: 38,
+            top: 'var(--dim-38)',
             right: 0,
-            width: 190,
+            width: 'var(--dim-190)',
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             borderRadius: 'var(--radius-md)',
             boxShadow: 'var(--shadow-lg)',
-            padding: '6px',
+            padding: 'var(--dim-6)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 2,
-            zIndex: 1000,
+            gap: 'var(--dim-2)',
+            zIndex: 'var(--z-1000)',
             color: 'var(--editor-text)',
-            fontSize: 'var(--ui-font-size, 13px)',
+            fontSize: 'var(--ui-font-size, var(--dim-13))',
             fontFamily: 'var(--ui-font-family, inherit)',
             animation: 'fadeIn 0.15s ease',
           }}
@@ -180,12 +167,12 @@ export function ThemeMenu() {
           {/* 浮层小标题 */}
           <div
             style={{
-              padding: '6px 8px 4px',
-              fontSize: 11,
-              fontWeight: 600,
+              padding: 'var(--dim-6) var(--dim-8) var(--dim-4)',
+              fontSize: 'var(--text-11)',
+              fontWeight: 'var(--weight-600)',
               color: 'var(--editor-text-muted)',
-              borderBottom: '1px solid var(--editor-border)',
-              marginBottom: 4,
+              borderBottom: 'var(--dim-1) solid var(--editor-border)',
+              marginBottom: 'var(--dim-4)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -208,13 +195,13 @@ export function ThemeMenu() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '7px 8px',
+                  padding: 'var(--dim-7) var(--dim-8)',
                   borderRadius: 'var(--radius-sm)',
                   border: 'none',
                   background: isSelected ? 'var(--editor-selection)' : 'transparent',
                   color: isSelected ? 'var(--accent-strong)' : 'var(--editor-text)',
                   cursor: 'pointer',
-                  fontSize: 13,
+                  fontSize: 'var(--text-13)',
                   textAlign: 'left',
                   transition: 'background var(--transition-fast), color var(--transition-fast)',
                 }}
@@ -230,16 +217,16 @@ export function ThemeMenu() {
                 }}
               >
                 {/* 左侧：色块预览 + 主题名称 */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                   {/* 主题预览色块圆点 */}
                   <div
                     style={{
-                      width: 14,
-                      height: 14,
-                      borderRadius: '50%',
+                      width: 'var(--dim-14)',
+                      height: 'var(--dim-14)',
+                      borderRadius: 'var(--pct-50)',
                       background: opt.previewBg,
-                      border: '1px solid var(--editor-border)',
-                      boxShadow: `0 0 0 1.5px ${opt.previewAccent}40`,
+                      border: 'var(--dim-1) solid var(--editor-border)',
+                      boxShadow: `0 0 0 var(--dim-1-5) ${opt.previewAccent}40`,
                       flexShrink: 0,
                     }}
                   />

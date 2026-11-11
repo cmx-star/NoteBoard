@@ -119,7 +119,7 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 2, overflow: 'visible', flex: 1 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-2)', overflow: 'visible', flex: 1 }}>
       {/* ── 历史操作组 ── */}
       <ToolbarButton
         icon={<Undo2 size={15} strokeWidth={2.2} />}
@@ -154,7 +154,7 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
       >
         {/* 展开 / 格式化二级菜单 */}
         <ToolbarDropdownItem
-          icon={<Maximize2 size={14} color="#3b82f6" />}
+          icon={<Maximize2 size={14} color="var(--nb-blue-500)" />}
           label="JSON 展开 / 格式化"
           submenu={
             <>
@@ -177,7 +177,7 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
 
         {/* 压缩二级菜单 */}
         <ToolbarDropdownItem
-          icon={<Minimize2 size={14} color="#8b5cf6" />}
+          icon={<Minimize2 size={14} color="var(--nb-purple-500)" />}
           label="JSON 压缩 (Minify)"
           submenu={
             <>
@@ -196,7 +196,7 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
 
         {/* 校验二级菜单 */}
         <ToolbarDropdownItem
-          icon={<CheckCircle2 size={14} color="#10b981" />}
+          icon={<CheckCircle2 size={14} color="var(--nb-emerald-500)" />}
           label="JSON 格式校验"
           submenu={
             <>

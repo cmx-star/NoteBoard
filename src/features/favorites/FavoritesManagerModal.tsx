@@ -454,12 +454,12 @@ export function FavoritesManagerModal() {
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 9992,
+        zIndex: 'var(--z-9992)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         // 全窗口虚化会在悬停反馈和提示浮层变化时重复采样背景，所有平台统一使用原色遮罩。
-        background: 'rgba(0, 0, 0, 0.45)',
+        background: 'var(--nb-black-a45)',
       }}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) {
@@ -469,18 +469,18 @@ export function FavoritesManagerModal() {
     >
       <div
         style={{
-          width: 860,
+          width: 'var(--dim-860)',
           maxWidth: '95vw',
-          height: 600,
+          height: 'var(--dim-600)',
           maxHeight: '90vh',
-          background: 'var(--editor-surface, #ffffff)',
-          border: '1px solid var(--editor-border, rgba(0, 0, 0, 0.12))',
-          borderRadius: 'var(--radius-lg, 10px)',
-          boxShadow: '0 20px 45px -10px rgba(0, 0, 0, 0.25), 0 6px 18px -4px rgba(0, 0, 0, 0.1)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-lg, var(--dim-10))',
+          boxShadow: '0 var(--dim-20) var(--dim-45) calc(var(--dim-10) * -1) var(--nb-black-a25), 0 var(--dim-6) var(--dim-18) calc(var(--dim-4) * -1) var(--nb-black-a10)',
           overflow: 'hidden',
-          color: 'var(--editor-text, #1e293b)',
+          color: 'var(--editor-text)',
           fontFamily: 'var(--ui-font-family, sans-serif)',
-          fontSize: 'var(--ui-font-size, 13px)',
+          fontSize: 'var(--ui-font-size, var(--dim-13))',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -493,15 +493,15 @@ export function FavoritesManagerModal() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '12px 18px',
-            borderBottom: '1px solid var(--editor-border, rgba(0, 0, 0, 0.08))',
-            background: 'var(--editor-bg, #f8fafc)',
+            padding: 'var(--dim-12) var(--dim-18)',
+            borderBottom: 'var(--dim-1) solid var(--editor-border)',
+            background: 'var(--editor-bg)',
             userSelect: 'none',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Star size={17} style={{ color: '#f97316', fill: '#f97316' }} />
-            <span style={{ fontWeight: 600, fontSize: 15 }}>收藏夹</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+            <Star size={17} style={{ color: 'var(--nb-orange-500)', fill: 'var(--nb-orange-500)' }} />
+            <span style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-15)' }}>收藏夹</span>
           </div>
           <Tooltip content="关闭 (Esc)" side="bottom" sideOffset={4}>
             <button
@@ -515,8 +515,8 @@ export function FavoritesManagerModal() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: 4,
-                borderRadius: 'var(--radius-sm, 4px)',
+                padding: 'var(--dim-4)',
+                borderRadius: 'var(--radius-sm, var(--dim-4))',
                 transition: 'all var(--transition-fast)',
               }}
             >
@@ -530,14 +530,14 @@ export function FavoritesManagerModal() {
           {/* 左侧侧边栏：搜索框与层级目录树 */}
           <div
             style={{
-              width: 250,
-              minWidth: 220,
-              borderRight: '1px solid var(--editor-border, rgba(0, 0, 0, 0.08))',
-              background: 'var(--editor-bg, #f8fafc)',
+              width: 'var(--dim-250)',
+              minWidth: 'var(--dim-220)',
+              borderRight: 'var(--dim-1) solid var(--editor-border)',
+              background: 'var(--editor-bg)',
               display: 'flex',
               flexDirection: 'column',
-              padding: '12px 10px',
-              gap: 10,
+              padding: 'var(--dim-12) var(--dim-10)',
+              gap: 'var(--dim-10)',
               userSelect: 'none',
             }}
           >
@@ -546,12 +546,12 @@ export function FavoritesManagerModal() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '0 8px',
-                height: 32,
-                borderRadius: 'var(--radius-md, 6px)',
-                border: '1px solid var(--editor-border, #cbd5e1)',
-                background: 'var(--editor-surface, #ffffff)',
+                gap: 'var(--dim-6)',
+                padding: '0 var(--dim-8)',
+                height: 'var(--dim-32)',
+                borderRadius: 'var(--radius-md, var(--dim-6))',
+                border: 'var(--dim-1) solid var(--editor-border)',
+                background: 'var(--editor-surface)',
                 transition: 'all var(--transition-fast)',
               }}
             >
@@ -566,8 +566,8 @@ export function FavoritesManagerModal() {
                   outline: 'none',
                   background: 'transparent',
                   color: 'var(--editor-text)',
-                  fontSize: 12,
-                  width: '100%',
+                  fontSize: 'var(--text-12)',
+                  width: 'var(--pct-100)',
                 }}
               />
               {searchQuery && (
@@ -597,7 +597,7 @@ export function FavoritesManagerModal() {
                 overflowX: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 2,
+                gap: 'var(--dim-2)',
               }}
             >
               {/* 根目录/全部收藏节点 */}
@@ -608,9 +608,9 @@ export function FavoritesManagerModal() {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 8px',
-                  borderRadius: 6,
+                  gap: 'var(--dim-6)',
+                  padding: 'var(--dim-6) var(--dim-8)',
+                  borderRadius: 'var(--radius-md)',
                   cursor: 'pointer',
                   color: isRootActive ? 'var(--editor-accent)' : 'var(--editor-text)',
                   fontWeight: isRootActive ? 600 : 400,
@@ -626,14 +626,14 @@ export function FavoritesManagerModal() {
                 <Star
                   size={14}
                   style={{
-                    color: '#f97316',
-                    fill: isRootActive ? '#f97316' : 'none',
+                    color: 'var(--nb-orange-500)',
+                    fill: isRootActive ? 'var(--nb-orange-500)' : 'none',
                     flexShrink: 0,
                   }}
                 />
                 <span
                   style={{
-                    fontSize: 13,
+                    fontSize: 'var(--text-13)',
                     flex: 1,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -677,7 +677,7 @@ export function FavoritesManagerModal() {
               display: 'flex',
               flexDirection: 'column',
               minWidth: 0,
-              background: 'var(--editor-surface, #ffffff)',
+              background: 'var(--editor-surface)',
             }}
           >
             {/* 右侧顶部工具栏 */}
@@ -686,17 +686,17 @@ export function FavoritesManagerModal() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '12px 18px',
-                borderBottom: '1px solid var(--editor-border, rgba(0, 0, 0, 0.08))',
+                padding: 'var(--dim-12) var(--dim-18)',
+                borderBottom: 'var(--dim-1) solid var(--editor-border)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', minWidth: 0 }}>
                 {searchQuery ? (
-                  <span style={{ fontWeight: 600, fontSize: 14 }}>搜索结果</span>
+                  <span style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-14)' }}>搜索结果</span>
                 ) : isRootActive ? (
                   <>
-                    <Star size={16} style={{ color: '#f97316', fill: '#f97316' }} />
-                    <span style={{ fontWeight: 600, fontSize: 14 }}>收藏夹</span>
+                    <Star size={16} style={{ color: 'var(--nb-orange-500)', fill: 'var(--nb-orange-500)' }} />
+                    <span style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-14)' }}>收藏夹</span>
                   </>
                 ) : (
                   <>
@@ -708,23 +708,23 @@ export function FavoritesManagerModal() {
                         background: 'transparent',
                         border: 'none',
                         cursor: 'pointer',
-                        fontSize: 13,
-                        padding: '2px 4px',
-                        borderRadius: 4,
+                        fontSize: 'var(--text-13)',
+                        padding: 'var(--dim-2) var(--dim-4)',
+                        borderRadius: 'var(--radius-sm)',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 4,
+                        gap: 'var(--dim-4)',
                       }}
                     >
-                      <Star size={13} style={{ color: '#f97316', fill: '#f97316' }} />
+                      <Star size={13} style={{ color: 'var(--nb-orange-500)', fill: 'var(--nb-orange-500)' }} />
                       <span>收藏夹</span>
                     </button>
-                    <span style={{ color: 'var(--editor-text-muted)', fontSize: 12 }}>/</span>
-                    <Folder size={15} style={{ color: '#eab308' }} />
+                    <span style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-12)' }}>/</span>
+                    <Folder size={15} style={{ color: 'var(--nb-yellow-500)' }} />
                     <span
                       style={{
-                        fontWeight: 600,
-                        fontSize: 14,
+                        fontWeight: 'var(--weight-600)',
+                        fontSize: 'var(--text-14)',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
@@ -737,7 +737,7 @@ export function FavoritesManagerModal() {
               </div>
 
               {!searchQuery && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                   <button
                     type="button"
                     onClick={handlePickAndAddFavorite}
@@ -745,12 +745,12 @@ export function FavoritesManagerModal() {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 4,
-                      padding: '5px 10px',
-                      borderRadius: 'var(--radius-md, 6px)',
+                      gap: 'var(--dim-4)',
+                      padding: 'var(--dim-5) var(--dim-10)',
+                      borderRadius: 'var(--radius-md, var(--dim-6))',
                       color: 'var(--editor-text)',
-                      fontSize: 12,
-                      fontWeight: 500,
+                      fontSize: 'var(--text-12)',
+                      fontWeight: 'var(--weight-500)',
                       cursor: 'pointer',
                       transition: 'all var(--transition-fast)',
                     }}
@@ -769,17 +769,17 @@ export function FavoritesManagerModal() {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 4,
-                      padding: '5px 10px',
-                      borderRadius: 'var(--radius-md, 6px)',
+                      gap: 'var(--dim-4)',
+                      padding: 'var(--dim-5) var(--dim-10)',
+                      borderRadius: 'var(--radius-md, var(--dim-6))',
                       color: 'var(--editor-text)',
-                      fontSize: 12,
-                      fontWeight: 500,
+                      fontSize: 'var(--text-12)',
+                      fontWeight: 'var(--weight-500)',
                       cursor: 'pointer',
                       transition: 'all var(--transition-fast)',
                     }}
                   >
-                    <FolderPlus size={13} style={{ color: '#eab308' }} />
+                    <FolderPlus size={13} style={{ color: 'var(--nb-yellow-500)' }} />
                     <span>添加文件夹</span>
                   </button>
                 </div>
@@ -792,13 +792,13 @@ export function FavoritesManagerModal() {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 18px',
-                  background: 'var(--editor-bg, #f8fafc)',
-                  borderBottom: '1px solid var(--editor-border)',
+                  gap: 'var(--dim-8)',
+                  padding: 'var(--dim-10) var(--dim-18)',
+                  background: 'var(--editor-bg)',
+                  borderBottom: 'var(--dim-1) solid var(--editor-border)',
                 }}
               >
-                <Folder size={16} style={{ color: '#eab308' }} />
+                <Folder size={16} style={{ color: 'var(--nb-yellow-500)' }} />
                 <input
                   ref={newFolderInputRef}
                   type="text"
@@ -816,13 +816,13 @@ export function FavoritesManagerModal() {
                   }}
                   style={{
                     flex: 1,
-                    height: 28,
-                    padding: '0 8px',
-                    borderRadius: 4,
-                    border: '1px solid var(--editor-border-focus, #3b82f6)',
-                    background: 'var(--editor-surface, #ffffff)',
+                    height: 'var(--dim-28)',
+                    padding: '0 var(--dim-8)',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'var(--dim-1) solid var(--editor-border-focus)',
+                    background: 'var(--editor-surface)',
                     color: 'var(--editor-text)',
-                    fontSize: 12,
+                    fontSize: 'var(--text-12)',
                     outline: 'none',
                   }}
                 />
@@ -830,12 +830,12 @@ export function FavoritesManagerModal() {
                   type="button"
                   onClick={handleConfirmCreateFolder}
                   style={{
-                    padding: '4px 10px',
-                    borderRadius: 4,
+                    padding: 'var(--dim-4) var(--dim-10)',
+                    borderRadius: 'var(--radius-sm)',
                     border: 'none',
-                    background: 'var(--accent-strong, #3b82f6)',
-                    color: '#ffffff',
-                    fontSize: 12,
+                    background: 'var(--accent-strong)',
+                    color: 'var(--nb-white)',
+                    fontSize: 'var(--text-12)',
                     cursor: 'pointer',
                   }}
                 >
@@ -845,12 +845,12 @@ export function FavoritesManagerModal() {
                   type="button"
                   onClick={() => setIsCreatingFolder(false)}
                   style={{
-                    padding: '4px 10px',
-                    borderRadius: 4,
-                    border: '1px solid var(--control-border)',
+                    padding: 'var(--dim-4) var(--dim-10)',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'var(--dim-1) solid var(--control-border)',
                     background: 'transparent',
                     color: 'var(--editor-text-muted)',
-                    fontSize: 12,
+                    fontSize: 'var(--text-12)',
                     cursor: 'pointer',
                   }}
                 >
@@ -864,10 +864,10 @@ export function FavoritesManagerModal() {
               style={{
                 flex: 1,
                 overflowY: 'auto',
-                padding: '8px 12px',
+                padding: 'var(--dim-8) var(--dim-12)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 4,
+                gap: 'var(--dim-4)',
               }}
             >
               {searchQuery ? (
@@ -879,7 +879,7 @@ export function FavoritesManagerModal() {
                       flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      height: 200,
+                      height: 'var(--dim-200)',
                       color: 'var(--editor-text-muted)',
                     }}
                   >
@@ -917,9 +917,9 @@ export function FavoritesManagerModal() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: 220,
+                    height: 'var(--dim-220)',
                     color: 'var(--editor-text-muted)',
-                    gap: 12,
+                    gap: 'var(--dim-12)',
                   }}
                 >
                   <span>{isRootActive ? '暂无收藏内容' : '此文件夹为空'}</span>
@@ -929,13 +929,13 @@ export function FavoritesManagerModal() {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 4,
-                      padding: '6px 14px',
-                      borderRadius: 'var(--radius-md, 6px)',
-                      border: '1px dashed var(--control-border)',
+                      gap: 'var(--dim-4)',
+                      padding: 'var(--dim-6) var(--dim-14)',
+                      borderRadius: 'var(--radius-md, var(--dim-6))',
+                      border: 'var(--dim-1) dashed var(--control-border)',
                       background: 'transparent',
                       color: 'var(--editor-accent)',
-                      fontSize: 12,
+                      fontSize: 'var(--text-12)',
                       cursor: 'pointer',
                     }}
                   >
@@ -1005,13 +1005,13 @@ export function FavoritesManagerModal() {
               position: 'fixed',
               top: folderContextMenu.y,
               left: folderContextMenu.x,
-              zIndex: 9999,
+              zIndex: 'var(--z-9999)',
               background: 'var(--editor-surface)',
-              border: '1px solid var(--editor-border)',
+              border: 'var(--dim-1) solid var(--editor-border)',
               borderRadius: 'var(--radius-sm)',
               boxShadow: 'var(--shadow-md)',
-              padding: 4,
-              minWidth: 130,
+              padding: 'var(--dim-4)',
+              minWidth: 'var(--dim-130)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -1027,7 +1027,7 @@ export function FavoritesManagerModal() {
               }}
               className="nb-favorites-hover-button"
             >
-              <FolderPlus size={13} style={{ color: '#eab308' }} />
+              <FolderPlus size={13} style={{ color: 'var(--nb-yellow-500)' }} />
               <span>新建子文件夹</span>
             </button>
 
@@ -1094,23 +1094,23 @@ export function FavoritesManagerModal() {
               left: 0,
               top: 0,
               transform: dragPreviewTransform(dragPointRef.current),
-              zIndex: 9999,
+              zIndex: 'var(--z-9999)',
               pointerEvents: 'none',
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              maxWidth: 240,
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-md, 6px)',
-              border: '1px solid var(--editor-border)',
+              gap: 'var(--dim-6)',
+              maxWidth: 'var(--dim-240)',
+              padding: 'var(--dim-4) var(--dim-10)',
+              borderRadius: 'var(--radius-md, var(--dim-6))',
+              border: 'var(--dim-1) solid var(--editor-border)',
               background: 'var(--editor-surface)',
               boxShadow: 'var(--shadow-md)',
-              fontSize: 12,
-              opacity: 0.92,
+              fontSize: 'var(--text-12)',
+              opacity: 'var(--opacity-0-92)',
             }}
           >
             {dragVisual.isFolder
-              ? <Folder size={14} style={{ color: '#eab308', flexShrink: 0 }} />
+              ? <Folder size={14} style={{ color: 'var(--nb-yellow-500)', flexShrink: 0 }} />
               : getExplorerFileIcon(dragVisual.name, { size: 14 })}
             <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {dragVisual.name}
@@ -1162,10 +1162,10 @@ function FolderTreeNode({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 4,
-          padding: '5px 8px',
+          gap: 'var(--dim-4)',
+          padding: 'var(--dim-5) var(--dim-8)',
           paddingLeft: 8 + depth * 14,
-          borderRadius: 6,
+          borderRadius: 'var(--radius-md)',
           cursor: 'pointer',
           color: isActive ? 'var(--editor-accent)' : 'var(--editor-text)',
           fontWeight: isActive ? 600 : 400,
@@ -1185,8 +1185,8 @@ function FolderTreeNode({
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: 14,
-            height: 14,
+            width: 'var(--dim-14)',
+            height: 'var(--dim-14)',
             opacity: hasSubFolders ? 0.7 : 0,
             cursor: hasSubFolders ? 'pointer' : 'default',
           }}
@@ -1196,15 +1196,15 @@ function FolderTreeNode({
 
         {/* 文件夹图标 */}
         {isExpanded ? (
-          <FolderOpen size={14} style={{ color: '#eab308', flexShrink: 0 }} />
+          <FolderOpen size={14} style={{ color: 'var(--nb-yellow-500)', flexShrink: 0 }} />
         ) : (
-          <Folder size={14} style={{ color: '#eab308', flexShrink: 0 }} />
+          <Folder size={14} style={{ color: 'var(--nb-yellow-500)', flexShrink: 0 }} />
         )}
 
         {/* 文件夹名称 */}
         <span
           style={{
-            fontSize: 12,
+            fontSize: 'var(--text-12)',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -1287,19 +1287,19 @@ function FavoriteFolderRow({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '8px 12px',
-        borderRadius: 'var(--radius-md, 6px)',
+        padding: 'var(--dim-8) var(--dim-12)',
+        borderRadius: 'var(--radius-md, var(--dim-6))',
         cursor: 'pointer',
         transition: 'all var(--transition-fast)',
         userSelect: 'none',
       }}
     >
       <DropIndicatorLine position={dropIndicator} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
-        <Folder size={18} style={{ color: '#eab308', flexShrink: 0 }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)', flex: 1, minWidth: 0 }}>
+        <Folder size={18} style={{ color: 'var(--nb-yellow-500)', flexShrink: 0 }} />
 
         {isEditing ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', flex: 1 }} onClick={(e) => e.stopPropagation()}>
             <input
               type="text"
               autoFocus
@@ -1310,13 +1310,13 @@ function FavoriteFolderRow({
                 if (e.key === 'Escape') onCancelRename();
               }}
               style={{
-                height: 24,
-                padding: '0 6px',
-                borderRadius: 4,
-                border: '1px solid var(--editor-border-focus, #3b82f6)',
+                height: 'var(--dim-24)',
+                padding: '0 var(--dim-6)',
+                borderRadius: 'var(--radius-sm)',
+                border: 'var(--dim-1) solid var(--editor-border-focus)',
                 background: 'var(--editor-surface)',
                 color: 'var(--editor-text)',
-                fontSize: 13,
+                fontSize: 'var(--text-13)',
                 outline: 'none',
               }}
             />
@@ -1324,14 +1324,14 @@ function FavoriteFolderRow({
             <button type="button" onClick={onCancelRename} style={smallActionBtnStyle}>取消</button>
           </div>
         ) : (
-          <span style={{ fontWeight: 500, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <span style={{ fontWeight: 'var(--weight-500)', fontSize: 'var(--text-13)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {folder.name}
           </span>
         )}
       </div>
 
       {!isEditing && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }} onClick={(e) => e.stopPropagation()}>
           {revealDir && (
             <Tooltip content="在文件管理器中定位" side="top" sideOffset={4}>
               <button
@@ -1420,8 +1420,8 @@ function FavoriteFileRow({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '8px 12px',
-        borderRadius: 'var(--radius-md, 6px)',
+        padding: 'var(--dim-8) var(--dim-12)',
+        borderRadius: 'var(--radius-md, var(--dim-6))',
         cursor: 'pointer',
         transition: 'all var(--transition-fast)',
         userSelect: 'none',
@@ -1429,12 +1429,12 @@ function FavoriteFileRow({
       }}
     >
       <DropIndicatorLine position={dropIndicator} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)', flex: 1, minWidth: 0 }}>
         {/* 文件类型图标 */}
         {getExplorerFileIcon(item.path || item.name, { size: 16 })}
 
         {isEditing ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', flex: 1 }} onClick={(e) => e.stopPropagation()}>
             <input
               type="text"
               autoFocus
@@ -1445,13 +1445,13 @@ function FavoriteFileRow({
                 if (e.key === 'Escape') onCancelRename();
               }}
               style={{
-                height: 24,
-                padding: '0 6px',
-                borderRadius: 4,
-                border: '1px solid var(--editor-border-focus, #3b82f6)',
+                height: 'var(--dim-24)',
+                padding: '0 var(--dim-6)',
+                borderRadius: 'var(--radius-sm)',
+                border: 'var(--dim-1) solid var(--editor-border-focus)',
                 background: 'var(--editor-surface)',
                 color: 'var(--editor-text)',
-                fontSize: 13,
+                fontSize: 'var(--text-13)',
                 outline: 'none',
               }}
             />
@@ -1460,7 +1460,7 @@ function FavoriteFileRow({
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
               <Tooltip content={item.name} side="top" sideOffset={4}>
                 <span
                   onDoubleClick={(e) => {
@@ -1468,8 +1468,8 @@ function FavoriteFileRow({
                     onStartRename();
                   }}
                   style={{
-                    fontWeight: 500,
-                    fontSize: 13,
+                    fontWeight: 'var(--weight-500)',
+                    fontSize: 'var(--text-13)',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
@@ -1486,13 +1486,13 @@ function FavoriteFileRow({
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: 3,
-                    padding: '1px 5px',
-                    borderRadius: 4,
-                    fontSize: 10,
-                    background: 'var(--error-surface, rgba(239, 68, 68, 0.1))',
-                    color: 'var(--error-500, #ef4444)',
-                    border: '1px solid var(--error-border, rgba(239, 68, 68, 0.2))',
+                    gap: 'var(--dim-3)',
+                    padding: 'var(--dim-1) var(--dim-5)',
+                    borderRadius: 'var(--radius-sm)',
+                    fontSize: 'var(--text-10)',
+                    background: 'var(--error-surface)',
+                    color: 'var(--error-500)',
+                    border: 'var(--dim-1) solid var(--error-border)',
                   }}
                 >
                   <AlertTriangle size={10} />
@@ -1505,8 +1505,8 @@ function FavoriteFileRow({
             <Tooltip content={item.path} side="bottom" sideOffset={4}>
               <span
                 style={{
-                  fontSize: 11,
-                  color: 'var(--editor-text-muted, #64748b)',
+                  fontSize: 'var(--text-11)',
+                  color: 'var(--editor-text-muted)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -1520,7 +1520,7 @@ function FavoriteFileRow({
       </div>
 
       {!isEditing && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }} onClick={(e) => e.stopPropagation()}>
           {exists && (
             <Tooltip content="在文件管理器中定位" side="top" sideOffset={4}>
               <button
@@ -1572,13 +1572,13 @@ function DropIndicatorLine({ position }: { position: DropIndicator }) {
     <div
       style={{
         position: 'absolute',
-        left: 4,
-        right: 4,
-        height: 2,
-        borderRadius: 1,
-        background: 'var(--editor-accent, #3b82f6)',
+        left: 'var(--dim-4)',
+        right: 'var(--dim-4)',
+        height: 'var(--dim-2)',
+        borderRadius: 'var(--radius-xs)',
+        background: 'var(--editor-accent)',
         pointerEvents: 'none',
-        ...(position === 'before' ? { top: -4 } : { bottom: -4 }),
+        ...(position === 'before' ? { top: 'calc(var(--dim-4) * -1)' } : { bottom: 'calc(var(--dim-4) * -1)' }),
       }}
     />
   );
@@ -1588,10 +1588,10 @@ function DropIndicatorLine({ position }: { position: DropIndicator }) {
 
 const iconBtnStyle: React.CSSProperties = {
   border: 'none',
-  padding: 5,
-  borderRadius: 4,
+  padding: 'var(--dim-5)',
+  borderRadius: 'var(--radius-sm)',
   cursor: 'pointer',
-  color: 'var(--editor-text-muted, #64748b)',
+  color: 'var(--editor-text-muted)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -1599,26 +1599,26 @@ const iconBtnStyle: React.CSSProperties = {
 };
 
 const smallActionBtnStyle: React.CSSProperties = {
-  padding: '2px 8px',
-  borderRadius: 4,
-  border: '1px solid var(--editor-border)',
+  padding: 'var(--dim-2) var(--dim-8)',
+  borderRadius: 'var(--radius-sm)',
+  border: 'var(--dim-1) solid var(--editor-border)',
   background: 'var(--editor-bg)',
   color: 'var(--editor-text)',
-  fontSize: 11,
+  fontSize: 'var(--text-11)',
   cursor: 'pointer',
 };
 
 const menuItemStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  gap: 8,
-  width: '100%',
-  padding: '6px 10px',
+  gap: 'var(--dim-8)',
+  width: 'var(--pct-100)',
+  padding: 'var(--dim-6) var(--dim-10)',
   border: 'none',
-  borderRadius: 4,
+  borderRadius: 'var(--radius-sm)',
   textAlign: 'left',
   cursor: 'pointer',
-  fontSize: 12,
+  fontSize: 'var(--text-12)',
   color: 'var(--editor-text)',
   transition: 'all var(--transition-fast)',
 };

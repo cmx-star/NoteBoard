@@ -247,20 +247,20 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
         }),
         EditorView.theme({
           '&': {
-            height: '100%',
-            fontSize: 'var(--mono-font-size, 13px)',
+            height: 'var(--pct-100)',
+            fontSize: 'var(--mono-font-size, var(--dim-13))',
             fontFamily: 'var(--mono-font-family, monospace)',
-            background: 'var(--cm-background, var(--editor-bg, #ffffff))',
-            color: 'var(--cm-text, var(--editor-text, #1e293b))',
+            background: 'var(--cm-background, var(--editor-bg))',
+            color: 'var(--cm-text, var(--editor-text))',
           },
           '.cm-content': {
-            padding: '12px 0',
-            caretColor: 'var(--cm-cursor, var(--editor-accent, #3b82f6))',
+            padding: 'var(--dim-12) 0',
+            caretColor: 'var(--cm-cursor, var(--editor-accent))',
           },
           '.cm-gutters': {
-            background: 'var(--cm-gutter-background, var(--editor-surface, #f8fafc))',
-            color: 'var(--cm-gutter-text, var(--editor-text-muted, #94a3b8))',
-            borderRight: '1px solid var(--editor-border, #e2e8f0)',
+            background: 'var(--cm-gutter-background, var(--editor-surface))',
+            color: 'var(--cm-gutter-text, var(--editor-text-muted))',
+            borderRight: 'var(--dim-1) solid var(--editor-border)',
           },
           '&.cm-focused': {
             outline: 'none',
@@ -326,11 +326,11 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         overflow: 'hidden',
       }}
     >
@@ -338,35 +338,35 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
       <div
         className="nb-editor-topbar"
         style={{
-          height: 38,
-          minHeight: 38,
+          height: 'var(--dim-38)',
+          minHeight: 'var(--dim-38)',
           display: isReading ? 'none' : 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 12px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #f8fafc)',
+          padding: '0 var(--dim-12)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
           userSelect: 'none',
-          fontSize: 12,
-          color: 'var(--editor-text, #1e293b)',
+          fontSize: 'var(--text-12)',
+          color: 'var(--editor-text)',
         }}
       >
         {/* 左侧：格式标识与布局切换 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div className="nb-editor-topbar-title" style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600 }}>
-            <FileCode size={16} color="var(--editor-accent, #3b82f6)" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-12)' }}>
+          <div className="nb-editor-topbar-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', fontWeight: 'var(--weight-600)' }}>
+            <FileCode size={16} color="var(--editor-accent)" />
             <span>{diagramType === 'mermaid' ? 'Mermaid 图表' : 'PlantUML / UML'}</span>
-            {isRendering && <span style={{ fontSize: 11, color: 'var(--editor-text-muted)', fontWeight: 400 }}>渲染中</span>}
+            {isRendering && <span style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', fontWeight: 'var(--weight-400)' }}>渲染中</span>}
           </div>
 
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'var(--editor-bg, #ffffff)',
-              borderRadius: 6,
-              padding: 2,
-              border: '1px solid var(--editor-border, #e2e8f0)',
+              background: 'var(--editor-bg)',
+              borderRadius: 'var(--radius-md)',
+              padding: 'var(--dim-2)',
+              border: 'var(--dim-1) solid var(--editor-border)',
             }}
           >
             {/* 双栏分屏 */}
@@ -377,7 +377,7 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
                 data-active={layoutMode === 'split'}
                 onClick={() => setLayoutMode('split')}
                 aria-label="双栏分屏"
-                style={{ padding: '3px 8px', fontSize: 11 }}
+                style={{ padding: 'var(--dim-3) var(--dim-8)', fontSize: 'var(--text-11)' }}
               >
                 <Columns size={13} />
                 <span>分屏</span>
@@ -391,7 +391,7 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
                 data-active={layoutMode === 'code'}
                 onClick={() => setLayoutMode('code')}
                 aria-label="仅源码"
-                style={{ padding: '3px 8px', fontSize: 11 }}
+                style={{ padding: 'var(--dim-3) var(--dim-8)', fontSize: 'var(--text-11)' }}
               >
                 <Code2 size={13} />
                 <span>源码</span>
@@ -405,7 +405,7 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
                 data-active={layoutMode === 'preview'}
                 onClick={() => setLayoutMode('preview')}
                 aria-label="仅预览"
-                style={{ padding: '3px 8px', fontSize: 11 }}
+                style={{ padding: 'var(--dim-3) var(--dim-8)', fontSize: 'var(--text-11)' }}
               >
                 <Eye size={13} />
                 <span>预览</span>
@@ -415,28 +415,28 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
         </div>
 
         {/* 右侧：缩放控制与导出 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
           {layoutMode !== 'code' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)', marginRight: 'var(--dim-8)' }}>
               <Tooltip content="缩小" side="bottom" sideOffset={4}>
                 <button
                   type="button"
                   className="nb-editor-icon-btn"
                   onClick={() => setZoom((z) => Math.max(0.2, z - 0.15))}
                   aria-label="缩小"
-                  style={{ padding: '2px 6px' }}
+                  style={{ padding: 'var(--dim-2) var(--dim-6)' }}
                 >
                   <ZoomOut size={13} />
                 </button>
               </Tooltip>
-              <span style={{ fontSize: 11, minWidth: 40, textAlign: 'center' }}>{Math.round(zoom * 100)}%</span>
+              <span style={{ fontSize: 'var(--text-11)', minWidth: 'var(--dim-40)', textAlign: 'center' }}>{Math.round(zoom * 100)}%</span>
               <Tooltip content="放大" side="bottom" sideOffset={4}>
                 <button
                   type="button"
                   className="nb-editor-icon-btn"
                   onClick={() => setZoom((z) => Math.min(4, z + 0.15))}
                   aria-label="放大"
-                  style={{ padding: '2px 6px' }}
+                  style={{ padding: 'var(--dim-2) var(--dim-6)' }}
                 >
                   <ZoomIn size={13} />
                 </button>
@@ -450,7 +450,7 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
                     setPan({ x: 0, y: 0 });
                   }}
                   aria-label="复位视图"
-                  style={{ padding: '2px 6px' }}
+                  style={{ padding: 'var(--dim-2) var(--dim-6)' }}
                 >
                   <RotateCcw size={13} />
                 </button>
@@ -495,8 +495,8 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
           ref={editorContainerRef}
           style={{
             display: paneMode === 'preview' ? 'none' : 'block',
-            width: paneMode === 'split' && !stacked ? `calc(${splitRatio * 100}% - 4px)` : '100%',
-            height: paneMode === 'split' && stacked ? `calc(${splitRatio * 100}% - 4px)` : '100%',
+            width: paneMode === 'split' && !stacked ? `calc(${splitRatio * 100}% - var(--dim-4))` : 'var(--pct-100)',
+            height: paneMode === 'split' && stacked ? `calc(${splitRatio * 100}% - var(--dim-4))` : 'var(--pct-100)',
             overflow: 'hidden',
             flexShrink: 0,
           }}
@@ -504,26 +504,26 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
 
         {/* 分栏可拖拽分隔条 (Sash) */}
         {paneMode === 'split' && (
-          <Tooltip content="拖拽调节分栏比例，双击居中复位 (50%)" side="top" sideOffset={6}>
+          <Tooltip content="拖拽调节分栏比例，双击居中复位 (var(--pct-50))" side="top" sideOffset={6}>
             <div
               onMouseDown={handleResizerMouseDown}
               onDoubleClick={() => setSplitRatio(0.5)}
-              aria-label="拖拽调节分栏比例，双击居中复位 (50%)"
+              aria-label="拖拽调节分栏比例，双击居中复位 (var(--pct-50))"
             style={{
-              width: stacked ? '100%' : 8,
-              height: stacked ? 8 : '100%',
+              width: stacked ? 'var(--pct-100)' : 8,
+              height: stacked ? 8 : 'var(--pct-100)',
               cursor: stacked ? 'row-resize' : 'col-resize',
-              background: isResizing ? 'var(--editor-accent, #3b82f6)' : 'transparent',
+              background: isResizing ? 'var(--editor-accent)' : 'transparent',
               position: 'relative',
               flexShrink: 0,
-              zIndex: 10,
+              zIndex: 'var(--z-10)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               transition: 'background 0.15s ease',
             }}
             onMouseEnter={(e) => {
-              if (!isResizing) e.currentTarget.style.background = 'var(--toolbar-hover, rgba(59, 130, 246, 0.2))';
+              if (!isResizing) e.currentTarget.style.background = 'var(--toolbar-hover)';
             }}
             onMouseLeave={(e) => {
               if (!isResizing) e.currentTarget.style.background = 'transparent';
@@ -531,9 +531,9 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
           >
             <div
               style={{
-                width: stacked ? '100%' : 1,
-                height: stacked ? 1 : '100%',
-                background: 'var(--editor-border, #e2e8f0)',
+                width: stacked ? 'var(--pct-100)' : 1,
+                height: stacked ? 1 : 'var(--pct-100)',
+                background: 'var(--editor-border)',
               }}
             />
           </div>
@@ -544,11 +544,11 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
         <div
           style={{
             display: paneMode === 'code' ? 'none' : 'flex',
-            width: paneMode === 'split' && !stacked ? `calc(${(1 - splitRatio) * 100}% - 4px)` : '100%',
-            height: paneMode === 'split' && stacked ? `calc(${(1 - splitRatio) * 100}% - 4px)` : '100%',
+            width: paneMode === 'split' && !stacked ? `calc(${(1 - splitRatio) * 100}% - var(--dim-4))` : 'var(--pct-100)',
+            height: paneMode === 'split' && stacked ? `calc(${(1 - splitRatio) * 100}% - var(--dim-4))` : 'var(--pct-100)',
             overflow: 'hidden',
             position: 'relative',
-            background: 'var(--editor-bg, #ffffff)',
+            background: 'var(--editor-bg)',
             flexDirection: 'column',
             cursor: isDragging ? 'grabbing' : 'grab',
             flexShrink: 0,
@@ -564,19 +564,19 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
               <div
                 style={{
                   position: 'absolute',
-                  top: 12,
-                  left: 12,
-                  right: 12,
-                  zIndex: 20,
-                  padding: '8px 14px',
-                  background: 'rgba(239, 68, 68, 0.12)',
-                  border: '1px solid #ef4444',
-                  borderRadius: 6,
-                  color: '#dc2626',
-                  fontSize: 12,
+                  top: 'var(--dim-12)',
+                  left: 'var(--dim-12)',
+                  right: 'var(--dim-12)',
+                  zIndex: 'var(--z-20)',
+                  padding: 'var(--dim-8) var(--dim-14)',
+                  background: 'var(--nb-auto-ef4444-a12)',
+                  border: 'var(--dim-1) solid var(--nb-red-500)',
+                  borderRadius: 'var(--radius-md)',
+                  color: 'var(--nb-red-600)',
+                  fontSize: 'var(--text-12)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
+                  gap: 'var(--dim-8)',
                 }}
               >
                 <AlertCircle size={16} style={{ flexShrink: 0 }} />
@@ -600,17 +600,17 @@ export function DiagramSplitEditor({ docKey }: DiagramSplitEditorProps) {
               {svgContent ? (
                 <div
                   style={{
-                    maxWidth: '90%',
-                    maxHeight: '90%',
-                    padding: 24,
-                    background: 'var(--editor-surface, #ffffff)',
-                    borderRadius: 8,
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                    maxWidth: 'var(--pct-90)',
+                    maxHeight: 'var(--pct-90)',
+                    padding: 'var(--dim-24)',
+                    background: 'var(--editor-surface)',
+                    borderRadius: 'var(--radius-lg)',
+                    boxShadow: '0 var(--dim-4) var(--dim-20) var(--nb-black-a06)',
                   }}
                   dangerouslySetInnerHTML={{ __html: svgContent }}
                 />
               ) : (
-                <div style={{ color: 'var(--editor-text-muted, #94a3b8)', fontSize: 13, textAlign: 'center' }}>
+                <div style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)', textAlign: 'center' }}>
                   {renderError ? '图表语法有误，请修正代码' : '输入图表代码即可在右侧实时预览'}
                 </div>
               )}

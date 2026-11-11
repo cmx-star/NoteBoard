@@ -46,7 +46,7 @@ export function WindowControls({ compact = false, buttonWidth = 36 }: WindowCont
   // 窗口控制按钮统一样式：高度 36，宽度与左侧功能按钮保持完全一致
   const btnStyle: React.CSSProperties = {
     width: buttonWidth,
-    height: 36,
+    height: 'var(--dim-36)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -64,7 +64,7 @@ export function WindowControls({ compact = false, buttonWidth = 36 }: WindowCont
   };
 
   return (
-    <div style={{ display: 'flex', height: '100%', alignItems: 'center' }}>
+    <div style={{ display: 'flex', height: 'var(--pct-100)', alignItems: 'center' }}>
       {/* 最小化按钮 */}
       <Tooltip content="最小化" side="bottom" sideOffset={6}>
         <button
@@ -74,20 +74,20 @@ export function WindowControls({ compact = false, buttonWidth = 36 }: WindowCont
           onMouseEnter={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
             e.currentTarget.style.color = 'var(--editor-text)';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = 'transparent';
             e.currentTarget.style.color = 'var(--editor-text-secondary)';
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1))';
           }}
           onMouseDown={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-active)';
-            e.currentTarget.style.transform = 'scale(0.92)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
           }}
           onMouseUp={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
           }}
           aria-label="最小化"
         >
@@ -103,20 +103,20 @@ export function WindowControls({ compact = false, buttonWidth = 36 }: WindowCont
           onMouseEnter={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
             e.currentTarget.style.color = 'var(--editor-text)';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = 'transparent';
             e.currentTarget.style.color = 'var(--editor-text-secondary)';
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1))';
           }}
           onMouseDown={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-active)';
-            e.currentTarget.style.transform = 'scale(0.92)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
           }}
           onMouseUp={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
           }}
           aria-label={isMaximized ? '还原' : '最大化'}
         >
@@ -130,22 +130,22 @@ export function WindowControls({ compact = false, buttonWidth = 36 }: WindowCont
           onClick={handleClose}
           style={closeBtnStyle}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#e81123';
-            e.currentTarget.style.color = '#ffffff';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.background = 'var(--nb-auto-e81123)';
+            e.currentTarget.style.color = 'var(--nb-white)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = 'transparent';
             e.currentTarget.style.color = 'var(--editor-text-secondary)';
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1))';
           }}
           onMouseDown={(e) => {
-            e.currentTarget.style.background = '#c4101e';
-            e.currentTarget.style.transform = 'scale(0.92)';
+            e.currentTarget.style.background = 'var(--nb-auto-c4101e)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
           }}
           onMouseUp={(e) => {
-            e.currentTarget.style.background = '#e81123';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.background = 'var(--nb-auto-e81123)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
           }}
           aria-label="关闭"
         >

@@ -15,7 +15,7 @@ export function installWebClipboardFallback(): void {
         input.value = text;
         input.tabIndex = -1;
         input.setAttribute('aria-hidden', 'true');
-        input.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+        input.style.cssText = 'position:fixed;left:calc(var(--dim-9999) * -1);top:0;opacity:var(--opacity-0)';
         document.body.append(input);
         try {
           input.select();

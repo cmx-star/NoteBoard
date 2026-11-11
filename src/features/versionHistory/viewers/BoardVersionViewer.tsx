@@ -53,7 +53,7 @@ function parseSafe(text: string): ExcalidrawScene | null {
 
 export default function BoardVersionViewer(props: VersionViewerProps) {
   const { base, target, showChanges, onChangeInfo, navigatorRef } = props;
-  const themeMode = useSettingsStore((s) => s.settings.appearance.themeMode);
+  const resolvedTheme = useSettingsStore((s) => s.resolvedTheme);
   const parsed = useMemo(() => {
     const b = parseSafe(target);
     const a = base === null ? null : parseSafe(base);
@@ -139,7 +139,7 @@ export default function BoardVersionViewer(props: VersionViewerProps) {
         <Excalidraw
           key={sceneKey}
           initialData={initialData}
-          theme={mapTheme(themeMode)}
+          theme={mapTheme(resolvedTheme)}
           langCode="zh-CN"
           viewModeEnabled
           zenModeEnabled

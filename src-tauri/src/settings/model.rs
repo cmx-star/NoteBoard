@@ -110,16 +110,45 @@ pub struct AppearanceSettings {
     pub system_light_theme: String,
     #[serde(default = "default_dark_theme")]
     pub system_dark_theme: String,
+    // 界面材质：classic / borderless / candy
+    #[serde(default = "default_material")]
+    pub material: String,
 }
 
 impl Default for AppearanceSettings {
     fn default() -> Self {
         Self {
             theme_mode: "system".to_string(),
-            system_light_theme: "chen-guang".to_string(),
-            system_dark_theme: "mo-ye".to_string(),
+            system_light_theme: "su-bai".to_string(),
+            system_dark_theme: "mo-hei".to_string(),
+            material: default_material(),
         }
     }
+}
+
+impl AppearanceSettings {
+    /// 旧版本三套主题迁移到四套主题；未知值回退到安全默认，避免整页取不到 token。
+    fn normalize(&mut self) {
+        if self.theme_mode != "system" {
+            self.theme_mode = normalize_theme_id(&self.theme_mode, "system");
+        }
+        self.system_light_theme = normalize_theme_id(&self.system_light_theme, "su-bai");
+        self.system_dark_theme = normalize_theme_id(&self.system_dark_theme, "mo-hei");
+    }
+}
+
+fn normalize_theme_id(value: &str, fallback: &str) -> String {
+    match value {
+        "su-bai" | "zhi-gan" | "mo-hei" | "wu-mian" => value.to_string(),
+        "chen-guang" => "su-bai".to_string(),
+        "hu-po" => "zhi-gan".to_string(),
+        "mo-ye" => "mo-hei".to_string(),
+        _ => fallback.to_string(),
+    }
+}
+
+fn default_material() -> String {
+    "classic".to_string()
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -476,8 +505,8 @@ impl Default for SystemSettings {
 // 默认值函数
 fn default_schema_version() -> u32 { 1 }
 fn default_theme_mode() -> String { "system".to_string() }
-fn default_light_theme() -> String { "chen-guang".to_string() }
-fn default_dark_theme() -> String { "mo-ye".to_string() }
+fn default_light_theme() -> String { "su-bai".to_string() }
+fn default_dark_theme() -> String { "mo-hei".to_string() }
 // 默认代码西文字体：JetBrains Mono
 fn default_mono_font() -> String { "JetBrains Mono".to_string() }
 // 默认代码中文字体：Maple Mono Normal NF CN
@@ -530,7 +559,10 @@ pub fn load() -> Settings {
 
     // 尝试解析，失败则备份 + 返回默认
     match serde_json::from_str::<Settings>(&content) {
-        Ok(s) => s,
+        Ok(mut s) => {
+            s.appearance.normalize();
+            s
+        }
         Err(_) => {
             // 损坏文件备份
             let backup = path.with_extension(format!("corrupt-{}.json",
@@ -547,6 +579,7 @@ pub fn load() -> Settings {
 /// 保存设置（原子写 + revision 递增）
 pub fn save(settings: &mut Settings) -> Result<u64, String> {
     // 确保当前运行模式选择的数据目录存在，不另行推导 APPDATA。
+    settings.appearance.normalize();
     let dir = app_data_dir();
     if !dir.exists() {
         std::fs::create_dir_all(&dir).map_err(|e| format!("创建数据目录失败: {}", e))?;
@@ -671,5 +704,22 @@ mod tests {
             .expect("部分字段应能补全");
         assert!(!partial.layout.title_bar_buttons.theme);
         assert!(partial.layout.title_bar_buttons.home);
+    }
+
+    /// 旧版三套主题在加载与保存前都迁移到四套主题 ID，未知值回退到默认。
+    #[test]
+    fn legacy_theme_ids_migrate_to_four_theme_set() {
+        let mut settings: Settings = serde_json::from_str(
+            r#"{"appearance":{"themeMode":"hu-po","systemLightTheme":"chen-guang","systemDarkTheme":"mo-ye"}}"#,
+        )
+        .expect("旧版主题字段应能解析");
+        settings.appearance.normalize();
+        assert_eq!(settings.appearance.theme_mode, "zhi-gan");
+        assert_eq!(settings.appearance.system_light_theme, "su-bai");
+        assert_eq!(settings.appearance.system_dark_theme, "mo-hei");
+
+        settings.appearance.theme_mode = "unknown-theme".to_string();
+        settings.appearance.normalize();
+        assert_eq!(settings.appearance.theme_mode, "system");
     }
 }

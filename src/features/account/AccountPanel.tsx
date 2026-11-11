@@ -35,7 +35,7 @@ export function AccountPanel() {
   return (
     <div className="nb-sync-panel">
       <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>账号</h3>
+        <h3 style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-600)', marginBottom: 'var(--dim-4)' }}>账号</h3>
       </div>
 
       <div className="nb-sync-card">
@@ -186,9 +186,9 @@ function MySharesCard() {
               <div className="nb-sync-list-main">
                 <span className="nb-sync-list-name">
                   {share.path.split('/').pop()}
-                  {share.missing && <span className="nb-account-role is-warn" style={{ marginLeft: 6 }}>已失效</span>}
+                  {share.missing && <span className="nb-account-role is-warn" style={{ marginLeft: 'var(--dim-6)' }}>已失效</span>}
                 </span>
-                <Tooltip content={<span style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><span>{share.path}</span><span>{recipients(share)}</span></span>} side="top" sideOffset={4}>
+                <Tooltip content={<span style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-2)' }}><span>{share.path}</span><span>{recipients(share)}</span></span>} side="top" sideOffset={4}>
                   <span className="nb-sync-list-meta">{describeGrants(share)} · {share.path}</span>
                 </Tooltip>
               </div>

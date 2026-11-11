@@ -76,7 +76,7 @@ export function MindmapTextFormatMenu({ rect, state, onPatch }: MindmapTextForma
       style={{
         left,
         top,
-        transform: placeBelow ? 'translateX(-50%)' : 'translate(-50%, -100%)',
+        transform: placeBelow ? 'translateX(calc(var(--pct-50) * -1))' : 'translate(calc(var(--pct-50) * -1), calc(var(--pct-100) * -1))',
       }}
     >
       <div className="nb-mindmap-format-row">
@@ -104,7 +104,7 @@ export function MindmapTextFormatMenu({ rect, state, onPatch }: MindmapTextForma
             onClick={() => setPalette((p) => (p === 'color' ? null : 'color'))}
           >
             <Baseline size={14} style={{ color: state.color }} />
-            <ChevronDown size={10} style={{ opacity: 0.6 }} />
+            <ChevronDown size={10} style={{ opacity: 'var(--opacity-0-6)' }} />
           </button>
         </Tooltip>
         <Tooltip content="高亮背景" side="top" sideOffset={6}>
@@ -115,8 +115,8 @@ export function MindmapTextFormatMenu({ rect, state, onPatch }: MindmapTextForma
             aria-label="高亮背景"
             onClick={() => setPalette((p) => (p === 'highlight' ? null : 'highlight'))}
           >
-            <Highlighter size={14} style={{ background: state.highlight, borderRadius: 2 }} />
-            <ChevronDown size={10} style={{ opacity: 0.6 }} />
+            <Highlighter size={14} style={{ background: state.highlight, borderRadius: 'var(--dim-2)' }} />
+            <ChevronDown size={10} style={{ opacity: 'var(--opacity-0-6)' }} />
           </button>
         </Tooltip>
         <span className="nb-mindmap-format-divider" />
@@ -156,7 +156,7 @@ export function MindmapTextFormatMenu({ rect, state, onPatch }: MindmapTextForma
                 onClick={() => onPatch({ type: 'color', key: palette, value: preset.value })}
               >
                 {palette === 'color' ? (
-                  <span style={{ color: preset.value, fontWeight: 700, fontSize: 13 }}>A</span>
+                  <span style={{ color: preset.value, fontWeight: 'var(--weight-700)', fontSize: 'var(--text-13)' }}>A</span>
                 ) : (
                   <span className="nb-mindmap-format-chip" style={{ background: preset.value }} />
                 )}

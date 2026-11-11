@@ -2,7 +2,7 @@
 
 /* 思维导图卡片悬浮添加按钮与快捷工具栏 */
 .nb-mindmap-node:hover .nb-node-add-btn {
-  opacity: 1 !important;
+  opacity: var(--opacity-1) !important;
 }
 
 .nb-mindmap-node:hover .nb-mindmap-node-toolbar {
@@ -24,77 +24,77 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 3px;
-  border-radius: 4px;
-  color: var(--editor-text-secondary, #64748b);
-  transition: background var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  padding: var(--dim-3);
+  border-radius: var(--radius-sm);
+  color: var(--editor-text-secondary);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-toolbar-btn:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-toolbar-btn:active {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
-  transform: scale(0.92);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-92));
 }
 
 /* 多选时工具栏前的选中数量 */
 .nb-mindmap-toolbar-count {
-  padding: 0 4px;
-  font-size: 11px;
+  padding: 0 var(--dim-4);
+  font-size: var(--dim-11);
   white-space: nowrap;
-  color: var(--editor-accent, #3b82f6);
+  color: var(--editor-accent);
 }
 
 /* 节点工具栏高亮激活态（如已配置备注、已有图片或添加按钮） */
 .nb-mindmap-toolbar-btn.is-active-accent {
-  color: var(--editor-accent, #3b82f6);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-toolbar-btn.is-active-accent:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.12));
+  background: var(--toolbar-hover);
 }
 
 /* 节点工具栏删除按钮危险色反馈 */
 .nb-mindmap-toolbar-btn.is-danger {
-  color: #ef4444;
+  color: var(--error-500);
 }
 
 .nb-mindmap-toolbar-btn.is-danger:hover {
-  background: rgba(239, 68, 68, 0.12);
-  color: #dc2626;
+  background: color-mix(in srgb, var(--error-500) var(--pct-12), transparent);
+  color: var(--error-600);
 }
 
 .nb-mindmap-toolbar-btn.is-danger:active {
-  background: rgba(239, 68, 68, 0.22);
-  transform: scale(0.92);
+  background: color-mix(in srgb, var(--error-500) var(--pct-22), transparent);
+  transform: scale(var(--scale-0-92));
 }
 
 /* 节点折叠/展开徽标交互反馈 */
 .nb-mindmap-fold-btn {
-  transition: transform var(--transition-fast, 120ms ease), filter var(--transition-fast, 120ms ease), box-shadow var(--transition-fast, 120ms ease);
+  transition: transform var(--transition-fast), filter var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .nb-mindmap-fold-btn:hover {
   filter: brightness(1.12);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 var(--dim-2) var(--dim-6) var(--nb-black-a22);
 }
 
 .nb-mindmap-fold-btn:active {
-  transform: translateY(-50%) scale(0.90) !important;
+  transform: translateY(calc(var(--pct-50) * -1)) scale(var(--scale-0-9)) !important;
   filter: brightness(0.95);
 }
 
 /* 节点悬停添加按钮交互反馈 */
 .nb-node-add-btn:hover {
   filter: brightness(1.1);
-  transform: translateY(-50%) scale(1.12) !important;
+  transform: translateY(calc(var(--pct-50) * -1)) scale(var(--scale-1-12)) !important;
 }
 
 .nb-node-add-btn:active {
-  transform: translateY(-50%) scale(0.92) !important;
+  transform: translateY(calc(var(--pct-50) * -1)) scale(var(--scale-0-92)) !important;
   filter: brightness(0.9);
 }
 
@@ -102,34 +102,34 @@
 .nb-editor-pill-btn {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--dim-5);
   /* 工具栏空间不足时按钮不被压缩、文字不折行 */
   flex-shrink: 0;
   white-space: nowrap;
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: var(--dim-4) var(--dim-10);
+  border-radius: var(--radius-sm);
   border: none;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: var(--dim-12);
+  font-weight: var(--weight-400);
   background: transparent;
-  color: var(--editor-text-muted, #64748b);
-  transition: background var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  color: var(--editor-text-muted);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-editor-pill-btn:hover:not([data-active='true']) {
-  background: var(--toolbar-hover, rgba(0, 0, 0, 0.05));
-  color: var(--editor-text, #1e293b);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
 }
 
 .nb-editor-pill-btn:active {
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
 }
 
 .nb-editor-pill-btn[data-active='true'] {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.12));
-  color: var(--editor-accent, #3b82f6);
-  font-weight: 600;
+  background: var(--toolbar-active);
+  color: var(--editor-accent);
+  font-weight: var(--weight-600);
 }
 
 /* 工具栏小图标边框按钮（放大、缩小、复位等） */
@@ -138,37 +138,37 @@
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid var(--control-border);
-  border-radius: 4px;
-  padding: 3px 6px;
+  border: var(--dim-1) solid var(--control-border);
+  border-radius: var(--radius-sm);
+  padding: var(--dim-3) var(--dim-6);
   cursor: pointer;
-  color: var(--editor-text, #1e293b);
-  transition: background var(--transition-fast, 120ms ease), border-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  color: var(--editor-text);
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-editor-icon-btn:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  border-color: var(--editor-border-focus, #93c5fd);
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  border-color: var(--editor-border-focus);
+  color: var(--editor-accent);
 }
 
 .nb-editor-icon-btn:active {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.18));
-  transform: scale(0.94);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-94));
 }
 
 /* HTML 双栏编辑器分隔条：悬停浅色提示，拖动中强调色 */
 .nb-html-split-sash {
   background: transparent;
-  transition: background var(--transition-fast, 120ms ease);
+  transition: background var(--transition-fast);
 }
 
 .nb-html-split-sash:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.2));
+  background: var(--toolbar-hover);
 }
 
 .nb-html-split-sash[data-resizing='true'] {
-  background: var(--editor-accent, #3b82f6);
+  background: var(--editor-accent);
 }
 
 /* 图片查看器悬浮工具栏的无边框图标按钮 */
@@ -176,74 +176,74 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--dim-28);
+  height: var(--dim-28);
   padding: 0;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: inherit;
   cursor: pointer;
-  transition: background var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-image-toolbar-btn:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  color: var(--editor-accent);
 }
 
 .nb-image-toolbar-btn:active {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.18));
-  transform: scale(0.92);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-92));
 }
 
 /* 工具栏次级边框文本按钮（导入 XMind、导出 Markdown 等） */
 .nb-editor-toolbar-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--dim-4);
   /* 工具栏空间不足时按钮不被压缩、文字不折行 */
   flex-shrink: 0;
   white-space: nowrap;
-  padding: 4px 8px;
-  border-radius: 5px;
-  border: 1px solid var(--control-border);
-  background: var(--editor-bg, #ffffff);
-  color: var(--editor-text, #1e293b);
+  padding: var(--dim-4) var(--dim-8);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid var(--control-border);
+  background: var(--editor-bg);
+  color: var(--editor-text);
   cursor: pointer;
-  font-size: 12px;
+  font-size: var(--dim-12);
   user-select: none;
-  transition: background var(--transition-fast, 120ms ease), border-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-editor-toolbar-btn:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  border-color: var(--editor-border-focus, #93c5fd);
+  background: var(--toolbar-hover);
+  border-color: var(--editor-border-focus);
 }
 
 .nb-editor-toolbar-btn:active {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
-  transform: scale(0.96);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-96));
 }
 
 /* 工具栏主要强调按钮（导出 XMind 等） */
 .nb-editor-primary-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--dim-4);
   /* 工具栏空间不足时按钮不被压缩、文字不折行 */
   flex-shrink: 0;
   white-space: nowrap;
-  padding: 4px 10px;
-  border-radius: 5px;
-  border: 1px solid transparent;
-  background: var(--editor-accent, #3b82f6);
-  color: #ffffff;
+  padding: var(--dim-4) var(--dim-10);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid transparent;
+  background: var(--editor-accent);
+  color: var(--nb-white);
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--dim-12);
+  font-weight: var(--weight-500);
   user-select: none;
-  transition: filter var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: filter var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-editor-primary-btn:hover {
@@ -252,98 +252,98 @@
 
 .nb-editor-primary-btn:active {
   filter: brightness(0.92);
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
 }
 
 /* 图表块内操作栏按钮（编辑、全屏等） */
 .nb-diagram-action-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--dim-4);
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: var(--editor-text-muted, #64748b);
-  font-size: 11px;
-  transition: background var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  padding: var(--dim-3) var(--dim-6);
+  border-radius: var(--radius-sm);
+  color: var(--editor-text-muted);
+  font-size: var(--dim-11);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-diagram-action-btn:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.12));
-  color: var(--editor-text, #1e293b);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
 }
 
 .nb-diagram-action-btn:active {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.20));
-  transform: scale(0.95);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-95));
 }
 
 /* 思维导图样式控制触发器与下拉项交互反馈 */
 .nb-mindmap-style-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 6px;
-  border-radius: 5px;
-  border: 1px solid var(--control-border);
-  background: var(--editor-bg, #ffffff);
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  gap: var(--dim-4);
+  padding: var(--dim-4) var(--dim-6);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid var(--control-border);
+  background: var(--editor-bg);
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  transition: background var(--transition-fast, 120ms ease), border-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-style-trigger:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  border-color: var(--editor-border-focus, #93c5fd);
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  border-color: var(--editor-border-focus);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-style-trigger:active,
 .nb-mindmap-style-trigger[data-active='true']:active {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.18));
-  transform: scale(0.96);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-96));
 }
 
 .nb-mindmap-style-trigger[data-active='true'] {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.12));
-  border-color: var(--editor-accent, #3b82f6);
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-active);
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-style-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 6px 8px;
-  border-radius: 6px;
+  gap: var(--dim-8);
+  width: var(--pct-100);
+  padding: var(--dim-6) var(--dim-8);
+  border-radius: var(--radius-md);
   border: none;
   background: transparent;
-  color: var(--editor-text, #1e293b);
+  color: var(--editor-text);
   cursor: pointer;
-  font-size: 12px;
+  font-size: var(--dim-12);
   text-align: left;
-  transition: background-color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-style-item:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
+  background: var(--toolbar-hover);
 }
 
 .nb-mindmap-style-item:active {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
-  transform: scale(0.98);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-98));
 }
 
 .nb-mindmap-style-item[data-active='true'] {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.12));
-  color: var(--editor-accent, #3b82f6);
-  font-weight: 600;
+  background: var(--toolbar-active);
+  color: var(--editor-accent);
+  font-weight: var(--weight-600);
 }
 
 /* 布局面板：缩略图卡片网格 */
@@ -351,33 +351,33 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 8px 6px 7px;
-  border-radius: 8px;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  background: var(--editor-bg, #ffffff);
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  gap: var(--dim-6);
+  padding: var(--dim-8) var(--dim-6) var(--dim-7);
+  border-radius: var(--radius-lg);
+  border: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-bg);
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   cursor: pointer;
-  transition: background-color var(--transition-fast, 120ms ease), border-color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease), box-shadow var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .nb-mindmap-layout-card:hover {
-  border-color: var(--editor-border-focus, #93c5fd);
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.06));
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: var(--editor-border-focus);
+  background: var(--toolbar-hover);
+  box-shadow: 0 var(--dim-2) var(--dim-8) var(--nb-black-a06);
 }
 
 .nb-mindmap-layout-card:active {
-  transform: scale(0.97);
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.14));
+  transform: scale(var(--scale-0-97));
+  background: var(--toolbar-active);
 }
 
 .nb-mindmap-layout-card[data-active='true'] {
-  border-color: var(--editor-accent, #3b82f6);
-  box-shadow: 0 0 0 1px var(--editor-accent, #3b82f6);
-  color: var(--editor-accent, #3b82f6);
-  font-weight: 600;
+  border-color: var(--editor-accent);
+  box-shadow: 0 0 0 var(--dim-1) var(--editor-accent);
+  color: var(--editor-accent);
+  font-weight: var(--weight-600);
 }
 
 /* 布局面板：连线样式分段按钮 */
@@ -390,16 +390,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 5px 4px;
+  gap: var(--dim-4);
+  padding: var(--dim-5) var(--dim-4);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-secondary, #64748b);
-  font-size: 12px;
+  color: var(--editor-text-secondary);
+  font-size: var(--dim-12);
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-edge-option > span {
@@ -412,76 +412,76 @@
 }
 
 .nb-mindmap-edge-option:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  color: var(--editor-text, #1e293b);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
 }
 
 .nb-mindmap-edge-option:active {
-  transform: scale(0.96);
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
+  transform: scale(var(--scale-0-96));
+  background: var(--toolbar-active);
 }
 
 .nb-mindmap-edge-option[data-active='true'] {
-  background: var(--editor-surface, #ffffff);
-  color: var(--editor-accent, #3b82f6);
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--editor-surface);
+  color: var(--editor-accent);
+  font-weight: var(--weight-600);
+  box-shadow: 0 var(--dim-1) var(--dim-3) var(--nb-black-a10);
 }
 
 /* 节点宽度拉伸手柄：悬停或选中节点时显示 */
 .nb-mindmap-resize-handle {
   position: absolute;
-  top: 6px;
-  bottom: 6px;
-  width: 8px;
+  top: var(--dim-6);
+  bottom: var(--dim-6);
+  width: var(--dim-8);
   cursor: ew-resize;
-  z-index: 6;
-  opacity: 0;
-  transition: opacity var(--transition-fast, 120ms ease);
+  z-index: var(--z-6);
+  opacity: var(--opacity-0);
+  transition: opacity var(--transition-fast);
 }
 
 .nb-mindmap-resize-handle::after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 3px;
-  height: min(18px, 60%);
-  border-radius: 2px;
-  background: var(--editor-accent, #3b82f6);
-  transform: translate(-50%, -50%);
-  transition: height var(--transition-fast, 120ms ease), background-color var(--transition-fast, 120ms ease);
+  top: var(--pct-50);
+  left: var(--pct-50);
+  width: var(--dim-3);
+  height: min(var(--dim-18), var(--pct-60));
+  border-radius: var(--radius-xs);
+  background: var(--editor-accent);
+  transform: translate(calc(var(--pct-50) * -1), calc(var(--pct-50) * -1));
+  transition: height var(--transition-fast), background-color var(--transition-fast);
 }
 
 .nb-mindmap-node:hover .nb-mindmap-resize-handle,
 .nb-mindmap-resize-handle[data-visible='true'] {
-  opacity: 0.75;
+  opacity: var(--opacity-0-75);
 }
 
 .nb-mindmap-resize-handle:hover,
 .nb-mindmap-resize-handle[data-dragging='true'] {
-  opacity: 1 !important;
+  opacity: var(--opacity-1) !important;
 }
 
 .nb-mindmap-resize-handle:hover::after,
 .nb-mindmap-resize-handle[data-dragging='true']::after {
-  height: min(28px, 80%);
+  height: min(var(--dim-28), var(--pct-80));
 }
 
 /* 折叠 / 添加按钮在节点上下两侧时改为水平居中 */
 .nb-mindmap-fold-btn[data-side='top']:active,
 .nb-mindmap-fold-btn[data-side='bottom']:active {
-  transform: translateX(-50%) scale(0.90) !important;
+  transform: translateX(calc(var(--pct-50) * -1)) scale(var(--scale-0-9)) !important;
 }
 
 .nb-node-add-btn[data-side='top']:hover,
 .nb-node-add-btn[data-side='bottom']:hover {
-  transform: translateX(-50%) scale(1.12) !important;
+  transform: translateX(calc(var(--pct-50) * -1)) scale(var(--scale-1-12)) !important;
 }
 
 .nb-node-add-btn[data-side='top']:active,
 .nb-node-add-btn[data-side='bottom']:active {
-  transform: translateX(-50%) scale(0.92) !important;
+  transform: translateX(calc(var(--pct-50) * -1)) scale(var(--scale-0-92)) !important;
 }
 
 /* ── 思维导图节点多图网格 ── */
@@ -493,28 +493,28 @@
 .nb-mindmap-gallery-cell {
   position: relative;
   overflow: hidden;
-  border-radius: 5px;
-  border: 1px solid var(--editor-border, rgba(0, 0, 0, 0.08));
-  background: color-mix(in srgb, currentColor 6%, transparent);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid var(--editor-border);
+  background: color-mix(in srgb, currentColor var(--pct-6), transparent);
   box-sizing: border-box;
 }
 
 .nb-mindmap-gallery-cell img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: var(--pct-100);
+  height: var(--pct-100);
   object-fit: cover;
   cursor: zoom-in;
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition: transform var(--duration-0-2) var(--ease-default), filter var(--duration-0-2) var(--ease-default);
 }
 
 .nb-mindmap-gallery-cell:hover img {
-  transform: scale(1.04);
+  transform: scale(var(--scale-1-04));
   filter: brightness(1.04);
 }
 
 .nb-mindmap-gallery-cell:active img {
-  transform: scale(0.98);
+  transform: scale(var(--scale-0-98));
 }
 
 /* 超出展示张数时末格叠加 +N */
@@ -524,52 +524,52 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(15, 23, 42, 0.52);
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  background: var(--nb-slate-900-a52);
+  color: var(--nb-white);
+  font-size: var(--dim-15);
+  font-weight: var(--weight-600);
+  letter-spacing: var(--em-0-02);
   cursor: zoom-in;
-  transition: background-color var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast);
 }
 
 .nb-mindmap-gallery-cell:hover .nb-mindmap-gallery-more {
-  background: rgba(15, 23, 42, 0.62);
+  background: var(--nb-slate-900-a62);
 }
 
 /* 图片右上角删除按钮：悬停节点或选中节点（触屏）时出现 */
 .nb-mindmap-image-remove {
   position: absolute;
-  top: 3px;
-  right: 3px;
-  z-index: 1;
+  top: var(--dim-3);
+  right: var(--dim-3);
+  z-index: var(--z-1);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: var(--dim-16);
+  height: var(--dim-16);
   padding: 0;
   border: none;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
-  color: #ffffff;
+  border-radius: var(--radius-pill);
+  background: var(--nb-black-a60);
+  color: var(--nb-white);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity var(--transition-fast, 120ms ease), background-color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  opacity: var(--opacity-0);
+  transition: opacity var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-node:hover .nb-mindmap-image-remove,
 .nb-mindmap-node[data-selected='true'] .nb-mindmap-image-remove,
 .nb-outline-image:hover .nb-mindmap-image-remove {
-  opacity: 1;
+  opacity: var(--opacity-1);
 }
 
 .nb-mindmap-image-remove:hover {
-  background: rgba(239, 68, 68, 0.92);
+  background: color-mix(in srgb, var(--error-500) var(--pct-92), transparent);
 }
 
 .nb-mindmap-image-remove:active {
-  transform: scale(0.88);
+  transform: scale(var(--scale-0-88));
 }
 
 /* ── 思维导图节点文件链接 ── */
@@ -577,36 +577,36 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  width: 100%;
+  width: var(--pct-100);
 }
 
 .nb-mindmap-file {
   display: flex;
   align-items: center;
-  gap: 6px;
-  height: 22px;
-  padding: 0 3px 0 6px;
-  border-radius: 6px;
-  font-size: 12px;
-  line-height: 22px;
+  gap: var(--dim-6);
+  height: var(--dim-22);
+  padding: 0 var(--dim-3) 0 var(--dim-6);
+  border-radius: var(--radius-md);
+  font-size: var(--dim-12);
+  line-height: var(--dim-22);
   color: inherit;
-  background: color-mix(in srgb, currentColor 6%, transparent);
+  background: color-mix(in srgb, currentColor var(--pct-6), transparent);
   box-sizing: border-box;
   min-width: 0;
-  transition: background-color var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast);
 }
 
 .nb-mindmap-file:hover {
-  background: color-mix(in srgb, currentColor 11%, transparent);
+  background: color-mix(in srgb, currentColor var(--pct-11), transparent);
 }
 
 .nb-mindmap-file-main {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--dim-6);
   flex: 1;
   min-width: 0;
-  height: 100%;
+  height: var(--pct-100);
   cursor: default;
 }
 
@@ -621,7 +621,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-underline-offset: 2px;
+  text-underline-offset: var(--dim-2);
 }
 
 /* 按住 Ctrl / Cmd（或触屏）时文件名呈可点击链接态 */
@@ -636,7 +636,7 @@
 }
 
 [data-link-mod='true'] .nb-mindmap-file-main:active {
-  opacity: 0.7;
+  opacity: var(--opacity-0-7);
 }
 
 .nb-mindmap-file-remove {
@@ -644,107 +644,107 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: var(--dim-16);
+  height: var(--dim-16);
   padding: 0;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--pct-50);
   background: transparent;
   color: inherit;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity var(--transition-fast, 120ms ease), background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  opacity: var(--opacity-0);
+  transition: opacity var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-file:hover .nb-mindmap-file-remove,
 .nb-mindmap-node[data-selected='true'] .nb-mindmap-file-remove {
-  opacity: 0.6;
+  opacity: var(--opacity-0-6);
 }
 
 .nb-mindmap-file-remove:hover {
-  opacity: 1 !important;
-  background: rgba(239, 68, 68, 0.16);
-  color: #ef4444;
+  opacity: var(--opacity-1) !important;
+  background: color-mix(in srgb, var(--error-500) var(--pct-16), transparent);
+  color: var(--error-500);
 }
 
 .nb-mindmap-file-remove:active {
-  transform: scale(0.88);
+  transform: scale(var(--scale-0-88));
 }
 
 /* 大纲中的文件链接：可换行的胶囊 */
 .nb-mindmap-file.is-chip {
   display: inline-flex;
-  max-width: 280px;
-  height: 24px;
-  padding: 0 4px 0 8px;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  color: var(--editor-text-secondary, #475569);
-  background: var(--editor-surface, #ffffff);
+  max-width: var(--dim-280);
+  height: var(--dim-24);
+  padding: 0 var(--dim-4) 0 var(--dim-8);
+  border: var(--dim-1) solid var(--editor-border);
+  color: var(--editor-text-secondary);
+  background: var(--editor-surface);
 }
 
 .nb-mindmap-file.is-chip:hover {
-  border-color: color-mix(in srgb, var(--editor-accent, #3b82f6) 45%, var(--editor-border, #e2e8f0));
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.06));
+  border-color: color-mix(in srgb, var(--editor-accent) var(--pct-45), var(--editor-border));
+  background: var(--toolbar-hover);
 }
 
 .nb-mindmap-file.is-chip .nb-mindmap-file-remove {
-  opacity: 0.5;
+  opacity: var(--opacity-0-5);
 }
 
 /* ── 大纲：节点图片与文件链接 ── */
 .nb-outline-images {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--dim-6);
 }
 
 .nb-outline-image {
   position: relative;
   overflow: hidden;
-  max-width: 320px;
-  border-radius: 6px;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  background: var(--editor-surface, #ffffff);
-  transition: border-color var(--transition-fast, 120ms ease), box-shadow var(--transition-fast, 120ms ease);
+  max-width: var(--dim-320);
+  border-radius: var(--radius-md);
+  border: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-surface);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .nb-outline-image:hover {
-  border-color: color-mix(in srgb, var(--editor-accent, #3b82f6) 45%, var(--editor-border, #e2e8f0));
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: color-mix(in srgb, var(--editor-accent) var(--pct-45), var(--editor-border));
+  box-shadow: 0 var(--dim-4) var(--dim-12) var(--nb-black-a08);
 }
 
 .nb-outline-image img {
   display: block;
-  max-width: 100%;
-  max-height: 180px;
+  max-width: var(--pct-100);
+  max-height: var(--dim-180);
   object-fit: contain;
   cursor: zoom-in;
 }
 
 /* 多图时统一为小方格缩略图 */
 .nb-outline-images[data-multiple] .nb-outline-image img {
-  width: 88px;
-  height: 88px;
+  width: var(--dim-88);
+  height: var(--dim-88);
   object-fit: cover;
 }
 
 .nb-outline-image .nb-mindmap-image-remove {
-  width: 20px;
-  height: 20px;
-  top: 4px;
-  right: 4px;
+  width: var(--dim-20);
+  height: var(--dim-20);
+  top: var(--dim-4);
+  right: var(--dim-4);
 }
 
 .nb-outline-files {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--dim-6);
 }
 
 /* 触屏没有悬停：图片 / 文件的移除按钮常显 */
 @media (hover: none) {
   .nb-outline-image .nb-mindmap-image-remove {
-    opacity: 1;
+    opacity: var(--opacity-1);
   }
 }
 
@@ -753,110 +753,110 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 5px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  padding: var(--dim-3) var(--dim-5);
+  border: var(--dim-1) solid transparent;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-secondary, #475569);
+  color: var(--editor-text-secondary);
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition: all var(--duration-0-12) var(--ease-default);
 }
 
 .nb-outliner-action-btn.is-active {
-  color: var(--editor-accent, #3b82f6);
+  color: var(--editor-accent);
 }
 
 .nb-outliner-action-btn:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.12));
-  border-color: var(--editor-border, #cbd5e1);
-  color: var(--editor-accent, #3b82f6);
-  transform: scale(1.05);
+  background: var(--toolbar-hover);
+  border-color: var(--editor-border);
+  color: var(--editor-accent);
+  transform: scale(var(--scale-1-05));
 }
 
 .nb-outliner-action-btn:active {
-  transform: scale(0.94);
+  transform: scale(var(--scale-0-94));
 }
 
 /* 导图模式左下角撤销 / 重做按钮组 */
 .nb-mindmap-history-bar {
   position: absolute;
-  left: 12px;
-  bottom: 10px;
-  z-index: 5;
+  left: var(--dim-12);
+  bottom: var(--dim-10);
+  z-index: var(--z-5);
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding: 2px;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--editor-surface, #ffffff) 88%, transparent);
-  border: 1px solid var(--editor-border, #e2e8f0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  gap: var(--dim-2);
+  padding: var(--dim-2);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--editor-surface) var(--pct-88), transparent);
+  border: var(--dim-1) solid var(--editor-border);
+  box-shadow: 0 var(--dim-2) var(--dim-8) var(--nb-black-a06);
 }
 
 .nb-mindmap-history-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 26px;
+  width: var(--dim-28);
+  height: var(--dim-26);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-secondary, #64748b);
+  color: var(--editor-text-secondary);
   cursor: pointer;
-  transition: background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-history-btn:hover:not(:disabled) {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-history-btn:active:not(:disabled) {
-  transform: scale(0.92);
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
+  transform: scale(var(--scale-0-92));
+  background: var(--toolbar-active);
 }
 
 .nb-mindmap-history-btn:disabled {
-  opacity: 0.35;
+  opacity: var(--opacity-0-35);
   cursor: default;
 }
 
 /* 通用画布缩略图（导图 / 画板右下角） */
 .nb-minimap {
   position: absolute;
-  z-index: 6;
+  z-index: var(--z-6);
   overflow: hidden;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--editor-surface, #ffffff) 92%, transparent);
-  border: 1px solid var(--editor-border, #e2e8f0);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(6px);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--editor-surface) var(--pct-92), transparent);
+  border: var(--dim-1) solid var(--editor-border);
+  box-shadow: 0 var(--dim-4) var(--dim-14) var(--nb-black-a10);
+  backdrop-filter: blur(var(--dim-6));
   cursor: pointer;
   user-select: none;
   touch-action: none;
   transition:
-    border-color var(--transition-fast, 120ms ease),
-    box-shadow var(--transition-fast, 120ms ease),
-    opacity 160ms ease,
-    transform 160ms ease;
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--duration-160) var(--ease-default),
+    transform var(--duration-160) var(--ease-default);
 }
 
 /* 视野已能看到大部分内容时淡出，不响应指针 */
 .nb-minimap[data-idle='true'] {
-  opacity: 0;
-  transform: translateY(6px);
+  opacity: var(--opacity-0);
+  transform: translateY(var(--dim-6));
   pointer-events: none;
   visibility: hidden;
   transition:
-    opacity 160ms ease,
-    transform 160ms ease,
-    visibility 0s linear 160ms;
+    opacity var(--duration-160) var(--ease-default),
+    transform var(--duration-160) var(--ease-default),
+    visibility var(--duration-0) linear var(--duration-160);
 }
 
 .nb-minimap:hover {
-  border-color: var(--editor-border-focus, #93c5fd);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+  border-color: var(--editor-border-focus);
+  box-shadow: 0 var(--dim-6) var(--dim-18) var(--nb-black-a14);
 }
 
 .nb-minimap[data-dragging='true'] {
@@ -870,137 +870,137 @@
   top: 0;
   display: none;
   box-sizing: border-box;
-  border: 1.5px solid var(--editor-accent, #3b82f6);
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 16%, transparent);
+  border: var(--dim-1-5) solid var(--editor-accent);
+  border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-16), transparent);
   cursor: grab;
   pointer-events: none;
 }
 
 .nb-minimap[data-dragging='true'] .nb-minimap-viewport {
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 24%, transparent);
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-24), transparent);
 }
 
 .nb-minimap-close {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: var(--dim-4);
+  right: var(--dim-4);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: var(--dim-20);
+  height: var(--dim-20);
   padding: 0;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  border-radius: 5px;
-  background: var(--editor-surface, #ffffff);
-  color: var(--editor-text-secondary, #64748b);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-sm);
+  background: var(--editor-surface);
+  color: var(--editor-text-secondary);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity var(--transition-fast, 120ms ease), background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  opacity: var(--opacity-0);
+  transition: opacity var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-minimap:hover .nb-minimap-close,
 .nb-minimap-close:focus-visible {
-  opacity: 1;
+  opacity: var(--opacity-1);
 }
 
 .nb-minimap[data-dragging='true'] .nb-minimap-close {
-  opacity: 0;
+  opacity: var(--opacity-0);
 }
 
 .nb-minimap-close:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  color: var(--editor-accent);
 }
 
 .nb-minimap-close:active {
-  transform: scale(0.9);
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
+  transform: scale(var(--scale-0-9));
+  background: var(--toolbar-active);
 }
 
 /* 收起后的把手：与侧栏把手一致，默认隐藏，靠近半显，悬停全显 */
 .nb-minimap-handle {
   position: absolute;
-  z-index: 7;
+  z-index: var(--z-7);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--dim-28);
+  height: var(--dim-28);
   padding: 0;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  border-radius: 7px;
-  background: var(--rail-bg, var(--editor-surface, #ffffff));
-  color: var(--rail-fg, var(--editor-text-secondary, #64748b));
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-md);
+  background: var(--rail-bg, var(--editor-surface));
+  color: var(--rail-fg, var(--editor-text-secondary));
+  box-shadow: 0 var(--dim-2) var(--dim-6) var(--nb-black-a08);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity var(--transition-normal, 200ms ease), background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), box-shadow var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  opacity: var(--opacity-0);
+  transition: opacity var(--transition-normal), background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-minimap-handle[data-near='true'] {
-  opacity: 0.75;
+  opacity: var(--opacity-0-75);
 }
 
 .nb-minimap-handle:hover,
 .nb-minimap-handle:focus-visible {
-  opacity: 1;
-  background: var(--rail-hover-bg, var(--toolbar-hover, rgba(59, 130, 246, 0.08)));
-  color: var(--editor-text, #0f172a);
-  border-color: var(--editor-border-focus, #93c5fd);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+  opacity: var(--opacity-1);
+  background: var(--rail-hover-bg, var(--toolbar-hover));
+  color: var(--editor-text);
+  border-color: var(--editor-border-focus);
+  box-shadow: 0 var(--dim-3) var(--dim-10) var(--nb-black-a16);
 }
 
 .nb-minimap-handle:active {
-  transform: scale(0.92);
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
+  transform: scale(var(--scale-0-92));
+  background: var(--toolbar-active);
 }
 
 /* 导图“滚动回到内容”：内容全部移出视野时底部居中出现（同画板） */
 .nb-mindmap-scroll-back {
   position: absolute;
-  left: 50%;
-  bottom: 52px;
-  z-index: 7;
-  transform: translateX(-50%);
-  padding: 7px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  background: var(--editor-surface, #ffffff);
-  color: var(--editor-text, #0f172a);
-  font-size: 13px;
-  line-height: 1.4;
+  left: var(--pct-50);
+  bottom: var(--dim-52);
+  z-index: var(--z-7);
+  transform: translateX(calc(var(--pct-50) * -1));
+  padding: var(--dim-7) var(--dim-16);
+  border-radius: var(--radius-lg);
+  border: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-surface);
+  color: var(--editor-text);
+  font-size: var(--dim-13);
+  line-height: var(--leading-1-4);
   white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 var(--dim-4) var(--dim-14) var(--nb-black-a12);
   cursor: pointer;
-  animation: nb-scroll-back-in 160ms ease;
+  animation: nb-scroll-back-in var(--duration-160) var(--ease-default);
   transition:
-    background var(--transition-fast, 120ms ease),
-    border-color var(--transition-fast, 120ms ease),
-    color var(--transition-fast, 120ms ease),
-    transform var(--transition-fast, 120ms ease);
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .nb-mindmap-scroll-back:hover {
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 8%, var(--editor-surface, #ffffff));
-  border-color: var(--editor-border-focus, #93c5fd);
-  color: var(--editor-accent, #3b82f6);
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-8), var(--editor-surface));
+  border-color: var(--editor-border-focus);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-scroll-back:active {
-  transform: translateX(-50%) scale(0.96);
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 16%, var(--editor-surface, #ffffff));
+  transform: translateX(calc(var(--pct-50) * -1)) scale(var(--scale-0-96));
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-16), var(--editor-surface));
 }
 
 @keyframes nb-scroll-back-in {
   from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(6px);
+    opacity: var(--opacity-0);
+    transform: translateX(calc(var(--pct-50) * -1)) translateY(var(--dim-6));
   }
   to {
-    opacity: 1;
-    transform: translateX(-50%);
+    opacity: var(--opacity-1);
+    transform: translateX(calc(var(--pct-50) * -1));
   }
 }
 
@@ -1010,17 +1010,17 @@
 .nb-mindmap-boundary .nb-mindmap-boundary-frame,
 .nb-mindmap-relation .nb-mindmap-relation-line,
 .nb-mindmap-summary-brace path:first-child {
-  transition: stroke-width var(--transition-fast, 120ms ease), stroke-opacity var(--transition-fast, 120ms ease), opacity var(--transition-fast, 120ms ease);
+  transition: stroke-width var(--transition-fast), stroke-opacity var(--transition-fast), opacity var(--transition-fast);
 }
 
 .nb-mindmap-summary-brace:hover path:first-child {
   stroke-width: 2.6;
-  opacity: 1;
+  opacity: var(--opacity-1);
 }
 
 .nb-mindmap-boundary:hover .nb-mindmap-boundary-frame {
   stroke-width: 2.2;
-  stroke-opacity: 1;
+  stroke-opacity: var(--opacity-1);
 }
 
 .nb-mindmap-relation:hover .nb-mindmap-relation-line {
@@ -1029,7 +1029,7 @@
 
 /* 外框标题、联系线文字 */
 .nb-mindmap-structure-tag {
-  transition: box-shadow var(--transition-fast, 120ms ease), filter var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: box-shadow var(--transition-fast), filter var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-structure-tag:hover {
@@ -1037,46 +1037,46 @@
 }
 
 .nb-mindmap-structure-tag:active {
-  transform: scale(0.97);
+  transform: scale(var(--scale-0-97));
 }
 
 /* 联系线弯曲手柄 */
 .nb-mindmap-bend-handle {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+  width: var(--dim-12);
+  height: var(--dim-12);
+  border-radius: var(--pct-50);
   box-sizing: border-box;
-  border: 2px solid var(--editor-accent, #3b82f6);
-  background: var(--editor-surface, #ffffff);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  border: var(--dim-2) solid var(--editor-accent);
+  background: var(--editor-surface);
+  box-shadow: 0 var(--dim-1) var(--dim-4) var(--nb-black-a18);
   cursor: grab;
-  z-index: 21;
+  z-index: var(--z-21);
   touch-action: none;
-  transition: transform var(--transition-fast, 120ms ease), background var(--transition-fast, 120ms ease);
+  transition: transform var(--transition-fast), background var(--transition-fast);
 }
 
 .nb-mindmap-bend-handle:hover {
-  transform: scale(1.2);
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 20%, var(--editor-surface, #ffffff));
+  transform: scale(var(--scale-1-2));
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-20), var(--editor-surface));
 }
 
 .nb-mindmap-bend-handle:active {
   cursor: grabbing;
-  transform: scale(1.1);
+  transform: scale(var(--scale-1-1));
 }
 
 /* 概要 / 外框范围端点手柄：沿同级排列方向拖动 */
 .nb-mindmap-range-handle {
   position: absolute;
   box-sizing: border-box;
-  border-radius: 4px;
-  border: 1.5px solid var(--editor-accent, #3b82f6);
-  background: var(--editor-surface, #ffffff);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
-  z-index: 21;
+  border-radius: var(--radius-sm);
+  border: var(--dim-1-5) solid var(--editor-accent);
+  background: var(--editor-surface);
+  box-shadow: 0 var(--dim-1) var(--dim-4) var(--nb-black-a18);
+  z-index: var(--z-21);
   touch-action: none;
-  transition: transform var(--transition-fast, 120ms ease), background var(--transition-fast, 120ms ease);
+  transition: transform var(--transition-fast), background var(--transition-fast);
 }
 
 .nb-mindmap-range-handle[data-axis='y'] {
@@ -1088,71 +1088,71 @@
 }
 
 .nb-mindmap-range-handle:hover {
-  transform: scale(1.25);
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 20%, var(--editor-surface, #ffffff));
+  transform: scale(var(--scale-1-25));
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-20), var(--editor-surface));
 }
 
 .nb-mindmap-range-handle:active {
-  transform: scale(1.1);
-  background: var(--editor-accent, #3b82f6);
+  transform: scale(var(--scale-1-1));
+  background: var(--editor-accent);
 }
 
 /* 结构元素文字就地编辑框 */
 .nb-mindmap-structure-input {
   position: absolute;
-  height: 26px;
-  z-index: 30;
+  height: var(--dim-26);
+  z-index: var(--z-30);
   box-sizing: border-box;
-  padding: 0 8px;
-  font-size: 13px;
+  padding: 0 var(--dim-8);
+  font-size: var(--dim-13);
   font-family: inherit;
-  color: var(--editor-text, #1e293b);
-  background: var(--editor-surface, #ffffff);
-  border: 1.5px solid var(--editor-accent, #3b82f6);
-  border-radius: 6px;
+  color: var(--editor-text);
+  background: var(--editor-surface);
+  border: var(--dim-1-5) solid var(--editor-accent);
+  border-radius: var(--radius-md);
   outline: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 var(--dim-4) var(--dim-12) var(--nb-black-a14);
   user-select: text;
 }
 
 /* 联系线连接模式提示条（画布顶部居中） */
 .nb-mindmap-connect-hint {
   position: absolute;
-  left: 50%;
-  top: 12px;
-  z-index: 7;
-  transform: translateX(-50%);
+  left: var(--pct-50);
+  top: var(--dim-12);
+  z-index: var(--z-7);
+  transform: translateX(calc(var(--pct-50) * -1));
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px 6px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  background: var(--editor-surface, #ffffff);
-  color: var(--editor-accent, #3b82f6);
-  font-size: 12px;
+  gap: var(--dim-8);
+  padding: var(--dim-6) var(--dim-8) var(--dim-6) var(--dim-12);
+  border-radius: var(--radius-lg);
+  border: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-surface);
+  color: var(--editor-accent);
+  font-size: var(--dim-12);
   white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-  animation: nb-scroll-back-in 160ms ease;
+  box-shadow: 0 var(--dim-4) var(--dim-14) var(--nb-black-a12);
+  animation: nb-scroll-back-in var(--duration-160) var(--ease-default);
 }
 
 .nb-mindmap-connect-cancel {
-  padding: 2px 10px;
-  border-radius: 5px;
-  border: 1px solid var(--editor-border, #e2e8f0);
+  padding: var(--dim-2) var(--dim-10);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid var(--editor-border);
   background: transparent;
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   cursor: pointer;
-  transition: background var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-connect-cancel:hover {
-  background: var(--toolbar-hover, rgba(0, 0, 0, 0.06));
+  background: var(--toolbar-hover);
 }
 
 .nb-mindmap-connect-cancel:active {
-  transform: scale(0.95);
+  transform: scale(var(--scale-0-95));
 }
 
 /* 思维导图标题富文本编辑框 */
@@ -1168,201 +1168,201 @@
 /* 选中文字后的格式悬浮菜单 */
 .nb-mindmap-format-menu {
   position: fixed;
-  z-index: 100004;
+  z-index: var(--z-100004);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 8px;
-  background: var(--editor-surface, #ffffff);
-  border: 1px solid var(--editor-border, #e2e8f0);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  gap: var(--dim-4);
+  padding: var(--dim-4);
+  border-radius: var(--radius-lg);
+  background: var(--editor-surface);
+  border: var(--dim-1) solid var(--editor-border);
+  box-shadow: 0 var(--dim-8) var(--dim-24) var(--nb-black-a16);
   user-select: none;
 }
 
 .nb-mindmap-format-row {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--dim-2);
 }
 
 .nb-mindmap-format-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 4px;
+  gap: var(--dim-2);
+  min-width: var(--dim-28);
+  height: var(--dim-28);
+  padding: 0 var(--dim-4);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text, #1e293b);
+  color: var(--editor-text);
   cursor: pointer;
-  transition: background-color var(--transition-fast, 120ms ease), color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-format-btn.is-wide {
-  min-width: 36px;
+  min-width: var(--dim-36);
 }
 
 .nb-mindmap-format-btn:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-format-btn:active {
-  transform: scale(0.92);
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.16));
+  transform: scale(var(--scale-0-92));
+  background: var(--toolbar-active);
 }
 
 .nb-mindmap-format-btn[data-active='true'] {
-  background: var(--toolbar-active, rgba(59, 130, 246, 0.14));
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-active);
+  color: var(--editor-accent);
 }
 
 .nb-mindmap-format-divider {
-  width: 1px;
-  height: 18px;
-  margin: 0 3px;
-  background: var(--editor-border, #e2e8f0);
+  width: var(--dim-1);
+  height: var(--dim-18);
+  margin: 0 var(--dim-3);
+  background: var(--editor-border);
 }
 
 .nb-mindmap-format-palette {
   display: flex;
   flex-wrap: wrap;
-  gap: 3px;
-  padding: 4px 2px 2px;
-  border-top: 1px solid var(--editor-border, #e2e8f0);
+  gap: var(--dim-3);
+  padding: var(--dim-4) var(--dim-2) var(--dim-2);
+  border-top: var(--dim-1) solid var(--editor-border);
 }
 
 .nb-mindmap-format-swatch {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border: 1px solid transparent;
-  border-radius: 5px;
+  width: var(--dim-24);
+  height: var(--dim-24);
+  border: var(--dim-1) solid transparent;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-secondary, #64748b);
+  color: var(--editor-text-secondary);
   cursor: pointer;
-  transition: background-color var(--transition-fast, 120ms ease), border-color var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-format-swatch:hover {
-  background: var(--toolbar-hover, rgba(59, 130, 246, 0.08));
-  border-color: var(--editor-border, #e2e8f0);
+  background: var(--toolbar-hover);
+  border-color: var(--editor-border);
 }
 
 .nb-mindmap-format-swatch:active {
-  transform: scale(0.9);
+  transform: scale(var(--scale-0-9));
 }
 
 .nb-mindmap-format-swatch[data-active='true'] {
-  border-color: var(--editor-accent, #3b82f6);
+  border-color: var(--editor-accent);
 }
 
 .nb-mindmap-format-chip {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  width: var(--dim-14);
+  height: var(--dim-14);
+  border-radius: var(--radius-xs);
+  box-shadow: inset 0 0 0 var(--dim-1) var(--nb-black-a08);
 }
 
 /* 单个节点样式浮层 */
 .nb-mindmap-node-style-popover {
   position: fixed;
-  z-index: 100004;
-  width: 240px;
+  z-index: var(--z-100004);
+  width: var(--dim-240);
   box-sizing: border-box;
-  padding: 10px;
-  border-radius: 8px;
-  background: var(--editor-surface, #ffffff);
-  border: 1px solid var(--editor-border, #e2e8f0);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  padding: var(--dim-10);
+  border-radius: var(--radius-lg);
+  background: var(--editor-surface);
+  border: var(--dim-1) solid var(--editor-border);
+  box-shadow: 0 var(--dim-12) var(--dim-28) var(--nb-black-a16);
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   user-select: none;
 }
 
 .nb-mindmap-popover-title {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  margin-bottom: 6px;
+  gap: var(--dim-6);
+  font-weight: var(--weight-600);
+  margin-bottom: var(--dim-6);
 }
 
 .nb-mindmap-popover-label {
-  margin: 8px 2px 5px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--editor-text-muted, #94a3b8);
+  margin: var(--dim-8) var(--dim-2) var(--dim-5);
+  font-size: var(--dim-11);
+  font-weight: var(--weight-600);
+  color: var(--editor-text-muted);
 }
 
 .nb-mindmap-segment {
   display: flex;
-  gap: 2px;
-  padding: 2px;
-  border-radius: 7px;
-  background: var(--editor-bg, #f1f5f9);
-  border: 1px solid var(--editor-border, #e2e8f0);
+  gap: var(--dim-2);
+  padding: var(--dim-2);
+  border-radius: var(--radius-md);
+  background: var(--editor-bg);
+  border: var(--dim-1) solid var(--editor-border);
 }
 
 /* 思维导图二次确认对话框 */
 .nb-mindmap-confirm-overlay {
   position: fixed;
   inset: 0;
-  z-index: 100006;
+  z-index: var(--z-100006);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.4);
-  animation: nbFadeIn 0.15s ease-out;
+  padding: var(--dim-20);
+  background: var(--nb-black-a40);
+  animation: nbFadeIn var(--duration-0-15) ease-out;
 }
 
 .nb-mindmap-confirm-card {
-  width: min(380px, 100%);
-  padding: 16px 18px;
-  border-radius: 10px;
-  background: var(--editor-surface, #ffffff);
-  border: 1px solid var(--editor-border, #cbd5e1);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
-  color: var(--editor-text, #1e293b);
+  width: min(var(--dim-380), var(--pct-100));
+  padding: var(--dim-16) var(--dim-18);
+  border-radius: var(--radius-lg);
+  background: var(--editor-surface);
+  border: var(--dim-1) solid var(--editor-border);
+  box-shadow: 0 var(--dim-12) var(--dim-32) var(--nb-black-a20);
+  color: var(--editor-text);
 }
 
 .nb-mindmap-confirm-title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  gap: var(--dim-8);
+  font-size: var(--dim-14);
+  font-weight: var(--weight-600);
 }
 
 .nb-mindmap-confirm-message {
-  margin: 10px 0 16px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--editor-text-secondary, #64748b);
+  margin: var(--dim-10) 0 var(--dim-16);
+  font-size: var(--dim-13);
+  line-height: var(--leading-1-6);
+  color: var(--editor-text-secondary);
 }
 
 .nb-mindmap-confirm-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--dim-8);
 }
 
 .nb-mindmap-danger-btn {
-  padding: 4px 14px;
+  padding: var(--dim-4) var(--dim-14);
   border: none;
-  border-radius: 6px;
-  background: var(--error-500, #ef4444);
-  color: #ffffff;
-  font-size: 12px;
+  border-radius: var(--radius-md);
+  background: var(--error-500);
+  color: var(--nb-white);
+  font-size: var(--text-12);
   cursor: pointer;
-  transition: filter var(--transition-fast, 120ms ease), transform var(--transition-fast, 120ms ease);
+  transition: filter var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-mindmap-danger-btn:hover {
@@ -1370,13 +1370,13 @@
 }
 
 .nb-mindmap-danger-btn:active {
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
   filter: brightness(0.92);
 }
 
 .nb-mindmap-danger-btn:focus-visible {
-  outline: 2px solid var(--error-500, #ef4444);
-  outline-offset: 2px;
+  outline: var(--border-2) solid var(--error-500);
+  outline-offset: var(--border-2);
 }
 
 /* ── 多维表格 (Bitable) 按钮与交互元素状态反馈 ── */
@@ -1386,8 +1386,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  border-radius: var(--radius-sm, 4px);
+  gap: var(--dim-5);
+  border-radius: var(--radius-sm, var(--dim-4));
   cursor: pointer;
   user-select: none;
   font-family: inherit;
@@ -1396,7 +1396,7 @@
 }
 
 .nb-bitable-btn:active:not(:disabled) {
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
 }
 
 /* 主操作按钮（新建记录、保存、应用等） */
@@ -1404,14 +1404,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: 5px;
-  border: 1px solid transparent;
-  background: var(--editor-accent, #3b82f6);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 500;
+  gap: var(--dim-5);
+  padding: var(--dim-4) var(--dim-10);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid transparent;
+  background: var(--editor-accent);
+  color: var(--nb-white);
+  font-size: var(--text-12);
+  font-weight: var(--weight-500);
   cursor: pointer;
   user-select: none;
   transition: all var(--transition-fast);
@@ -1420,18 +1420,18 @@
 
 .nb-bitable-btn-primary:hover:not(:disabled) {
   filter: brightness(1.08);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.28);
+  transform: translateY(calc(var(--dim-1) * -1));
+  box-shadow: 0 var(--dim-3) var(--dim-8) var(--nb-auto-3b82f6-a28);
 }
 
 .nb-bitable-btn-primary:active:not(:disabled) {
   filter: brightness(0.95);
-  transform: translateY(0) scale(0.96);
+  transform: translateY(0) scale(var(--scale-0-96));
   box-shadow: none;
 }
 
 .nb-bitable-btn-primary:disabled {
-  opacity: 0.5;
+  opacity: var(--opacity-0-5);
   cursor: not-allowed;
 }
 
@@ -1440,13 +1440,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 4px 8px;
-  border-radius: 5px;
-  border: 1px solid var(--control-border);
-  background: var(--editor-bg, #ffffff);
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  gap: var(--dim-5);
+  padding: var(--dim-4) var(--dim-8);
+  border-radius: var(--radius-sm);
+  border: var(--dim-1) solid var(--control-border);
+  background: var(--editor-bg);
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   cursor: pointer;
   user-select: none;
   transition: all var(--transition-fast);
@@ -1454,21 +1454,21 @@
 }
 
 .nb-bitable-btn-secondary:hover:not(:disabled) {
-  background: var(--toolbar-hover, #f1f5f9);
-  border-color: var(--editor-border-focus, #94a3b8);
-  color: var(--editor-text, #0f172a);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  background: var(--toolbar-hover);
+  border-color: var(--editor-border-focus);
+  color: var(--editor-text);
+  transform: translateY(calc(var(--dim-1) * -1));
+  box-shadow: 0 var(--dim-2) var(--dim-5) var(--nb-black-a05);
 }
 
 .nb-bitable-btn-secondary:active:not(:disabled) {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: translateY(0) scale(0.96);
+  background: var(--toolbar-active);
+  transform: translateY(0) scale(var(--scale-0-96));
   box-shadow: none;
 }
 
 .nb-bitable-btn-secondary:disabled {
-  opacity: 0.45;
+  opacity: var(--opacity-0-45);
   cursor: not-allowed;
 }
 
@@ -1478,28 +1478,28 @@
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-muted, #64748b);
+  color: var(--editor-text-muted);
   cursor: pointer;
-  padding: 3px;
+  padding: var(--dim-3);
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
   box-sizing: border-box;
 }
 
 .nb-bitable-btn-ghost:hover:not(:disabled) {
-  background: var(--toolbar-hover, rgba(148, 163, 184, 0.14));
-  color: var(--editor-text, #1e293b);
-  transform: scale(1.06);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
+  transform: scale(var(--scale-1-06));
 }
 
 .nb-bitable-btn-ghost:active:not(:disabled) {
-  background: var(--toolbar-active, rgba(148, 163, 184, 0.25));
-  transform: scale(0.92);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-92));
 }
 
 .nb-bitable-btn-ghost:disabled {
-  opacity: 0.3;
+  opacity: var(--opacity-0-3);
   cursor: not-allowed;
 }
 
@@ -1507,59 +1507,59 @@
 .nb-bitable-btn-danger {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 8px;
+  gap: var(--dim-6);
+  padding: var(--dim-5) var(--dim-8);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: #ef4444;
-  font-size: 12px;
+  color: var(--nb-red-500);
+  font-size: var(--dim-12);
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
   box-sizing: border-box;
 }
 
 .nb-bitable-btn-danger:hover:not(:disabled) {
-  background: color-mix(in srgb, #ef4444 12%, var(--editor-surface, #ffffff));
-  color: #dc2626;
-  transform: scale(1.02);
+  background: color-mix(in srgb, var(--nb-red-500) var(--pct-12), var(--editor-surface));
+  color: var(--nb-red-600);
+  transform: scale(var(--scale-1-02));
 }
 
 .nb-bitable-btn-danger:active:not(:disabled) {
-  background: color-mix(in srgb, #ef4444 22%, var(--editor-surface, #ffffff));
-  transform: scale(0.97);
+  background: color-mix(in srgb, var(--nb-red-500) var(--pct-22), var(--editor-surface));
+  transform: scale(var(--scale-0-97));
 }
 
 /* 浮动菜单项按钮 */
 .nb-bitable-menu-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  width: 100%;
-  padding: 5px 8px;
+  gap: var(--dim-6);
+  width: var(--pct-100);
+  padding: var(--dim-5) var(--dim-8);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
   cursor: pointer;
-  font-size: 12px;
-  color: var(--editor-text, #1e293b);
+  font-size: var(--dim-12);
+  color: var(--editor-text);
   text-align: left;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
   box-sizing: border-box;
 }
 
 .nb-bitable-menu-item:hover:not(:disabled) {
-  background: var(--toolbar-hover, #f1f5f9);
-  color: var(--editor-text, #0f172a);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
 }
 
 .nb-bitable-menu-item:active:not(:disabled) {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: scale(0.98);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-98));
 }
 
 .nb-bitable-menu-item:disabled {
-  opacity: 0.4;
+  opacity: var(--opacity-0-4);
   cursor: not-allowed;
 }
 
@@ -1569,7 +1569,7 @@
 }
 
 .nb-bitable-tab:hover {
-  background: var(--toolbar-hover, rgba(148, 163, 184, 0.12)) !important;
+  background: var(--toolbar-hover) !important;
 }
 
 /* 未激活 Tab 默认无边框，悬浮时补出控件轮廓，让可点击范围更明确（内联样式需 !important 覆盖） */
@@ -1578,16 +1578,16 @@
 }
 
 .nb-bitable-tab.is-active:hover {
-  background: var(--editor-bg, #ffffff) !important;
+  background: var(--editor-bg) !important;
 }
 
 .nb-bitable-tab:active {
-  transform: scale(0.98);
+  transform: scale(var(--scale-0-98));
 }
 
 /* 视图下拉按钮仿导航标签：默认隐藏但保留占位，仅当前视图、悬浮或菜单展开时显示 */
 .nb-bitable-tab-more {
-  opacity: 0;
+  opacity: var(--opacity-0);
   pointer-events: none;
   transition: opacity var(--transition-fast), background var(--transition-fast);
 }
@@ -1596,24 +1596,24 @@
 .nb-bitable-tab.is-active .nb-bitable-tab-more,
 .nb-bitable-tab-more.is-open,
 .nb-bitable-tab-more:focus-visible {
-  opacity: 0.75;
+  opacity: var(--opacity-0-75);
   pointer-events: auto;
 }
 
 .nb-bitable-tab .nb-bitable-tab-more:hover,
 .nb-bitable-tab-more.is-open {
-  opacity: 1;
+  opacity: var(--opacity-1);
 }
 
 /* 顶栏与工具条控件统一高度：视图 Tab、搜索框、轮廓/主按钮、字段选择、刻度切换对齐到同一条基线；
    顶栏（38px 行高）按钮略高于工具条，上下只留 4px 边距，形成主次层级。
    移动端在 mobile.css 中改写变量以保证触控尺寸。浮层经 Portal 渲染，不受此规则影响 */
 .nb-bitable-toolbar {
-  --nb-bitable-control-h: 30px;
+  --nb-bitable-control-h: var(--dim-30);
 }
 
 .nb-bitable-subbar {
-  --nb-bitable-control-h: 28px;
+  --nb-bitable-control-h: var(--dim-28);
 }
 
 .nb-bitable-toolbar :is(.nb-bitable-tab, .nb-bitable-search, .nb-bitable-btn-secondary, .nb-bitable-btn-primary),
@@ -1626,7 +1626,7 @@
 .nb-bitable-gantt-zoom-group > .nb-bitable-gantt-zoom {
   display: inline-flex;
   align-items: center;
-  height: 100%;
+  height: var(--pct-100);
 }
 
 /* 看板卡片悬浮与点击反馈 */
@@ -1635,14 +1635,14 @@
 }
 
 .nb-bitable-kanban-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--editor-border-focus, #cbd5e1) !important;
-  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.07) !important;
+  transform: translateY(calc(var(--dim-2) * -1));
+  border-color: var(--editor-border-focus) !important;
+  box-shadow: 0 var(--dim-5) var(--dim-14) var(--nb-auto-0f172a-a7) !important;
 }
 
 .nb-bitable-kanban-card:active {
-  transform: translateY(0) scale(0.985);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+  transform: translateY(0) scale(var(--scale-0-985));
+  box-shadow: 0 var(--dim-2) var(--dim-6) var(--nb-auto-0f172a-a4) !important;
 }
 
 /* 拾色器色块交互（圆点 / 预览式方块共用） */
@@ -1651,13 +1651,13 @@
 }
 
 .nb-bitable-color-swatch:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
-  z-index: 2;
+  transform: scale(var(--scale-1-15));
+  box-shadow: 0 0 var(--dim-6) var(--nb-black-a25);
+  z-index: var(--z-2);
 }
 
 .nb-bitable-color-swatch:active {
-  transform: scale(1.02);
+  transform: scale(var(--scale-1-02));
 }
 
 /* 星级评分星星动效 */
@@ -1666,11 +1666,11 @@
 }
 
 .nb-bitable-star:hover {
-  transform: scale(1.3);
+  transform: scale(var(--scale-1-3));
 }
 
 .nb-bitable-star:active {
-  transform: scale(1.05);
+  transform: scale(var(--scale-1-05));
 }
 
 /* 标签徽章动效 */
@@ -1680,11 +1680,11 @@
 
 .nb-bitable-badge:hover {
   filter: brightness(0.96);
-  transform: scale(1.03);
+  transform: scale(var(--scale-1-03));
 }
 
 .nb-bitable-badge:active {
-  transform: scale(0.97);
+  transform: scale(var(--scale-0-97));
 }
 
 /* 行快捷操作栏按钮 */
@@ -1695,25 +1695,25 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  padding: 5px 6px;
-  min-width: 28px;
-  height: 28px;
-  border-radius: 5px;
+  padding: var(--dim-5) var(--dim-6);
+  min-width: var(--dim-28);
+  height: var(--dim-28);
+  border-radius: var(--radius-sm);
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-bitable-row-action-btn:hover:not(:disabled) {
-  background: var(--toolbar-hover, #f1f5f9);
-  transform: scale(1.1);
+  background: var(--toolbar-hover);
+  transform: scale(var(--scale-1-1));
 }
 
 .nb-bitable-row-action-btn:active:not(:disabled) {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: scale(0.92);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-92));
 }
 
 .nb-bitable-row-action-btn:disabled {
-  opacity: 0.3;
+  opacity: var(--opacity-0-3);
   cursor: not-allowed;
 }
 
@@ -1723,14 +1723,14 @@
 }
 
 .nb-bitable-fill-handle:hover {
-  transform: scale(1.35);
-  box-shadow: 0 0 6px rgba(59, 130, 246, 0.7) !important;
-  background: var(--editor-accent-hover, #2563eb) !important;
+  transform: scale(var(--scale-1-35));
+  box-shadow: 0 0 var(--dim-6) var(--nb-auto-3b82f6-a70) !important;
+  background: var(--editor-accent-hover) !important;
 }
 
 .nb-bitable-fill-handle:active {
-  transform: scale(1.1);
-  background: var(--editor-accent-active, #1d4ed8) !important;
+  transform: scale(var(--scale-1-1));
+  background: var(--editor-accent-active) !important;
 }
 
 /* ── 多维表格甘特图视图 ──
@@ -1738,59 +1738,59 @@
    否则横向滚动时被它遮住的单元格会透出来，出现文字重影。 */
 
 .nb-bitable-gantt-row {
-  background: var(--editor-surface, #ffffff);
+  background: var(--editor-surface);
   transition: background var(--transition-fast);
 }
 
 .nb-bitable-gantt-row:hover {
-  background: #f8fafc;
+  background: var(--nb-slate-50);
 }
 
 .nb-bitable-gantt-left-cell,
 .nb-bitable-gantt-num-cell {
-  background: var(--editor-surface, #ffffff);
+  background: var(--editor-surface);
   transition: background var(--transition-fast);
 }
 
 .nb-bitable-gantt-th-left,
 .nb-bitable-gantt-corner {
-  background: var(--editor-surface, #f8fafc);
+  background: var(--editor-surface);
 }
 
 /* 分组标题行：整行可点，hover 给出可折叠的暗示 */
 .nb-bitable-gantt-group-cell {
-  background: var(--editor-surface, #f8fafc);
+  background: var(--editor-surface);
   transition: background var(--transition-fast);
 }
 
 .nb-bitable-gantt-group-cell:hover {
-  background: #eef2f7;
+  background: var(--nb-slate-75);
 }
 
 .nb-bitable-gantt-row:hover .nb-bitable-gantt-left-cell,
 .nb-bitable-gantt-row:hover .nb-bitable-gantt-num-cell {
-  background: #f8fafc;
+  background: var(--nb-slate-50);
 }
 
-/* 墨夜主题：上方悬浮色为浅色写死值，深色下会闪出白行，改为基于 surface 的轻度提亮 */
-:root[data-theme="mo-ye"] .nb-bitable-gantt-row:hover,
-:root[data-theme="mo-ye"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-left-cell,
-:root[data-theme="mo-ye"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-num-cell {
-  background: #222226;
+/* 墨黑主题：上方悬浮色为浅色写死值，深色下会闪出白行，改为基于 surface 的轻度提亮 */
+:root[data-theme="mo-hei"] .nb-bitable-gantt-row:hover,
+:root[data-theme="mo-hei"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-left-cell,
+:root[data-theme="mo-hei"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-num-cell {
+  background: var(--nb-ink-850);
 }
 
-:root[data-theme="mo-ye"] .nb-bitable-gantt-group-cell:hover {
+:root[data-theme="mo-hei"] .nb-bitable-gantt-group-cell:hover {
   background: var(--toolbar-hover);
 }
 
-/* 琥珀主题：冷灰悬浮色在暖纸底上发青，改为暖灰 */
-:root[data-theme="hu-po"] .nb-bitable-gantt-row:hover,
-:root[data-theme="hu-po"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-left-cell,
-:root[data-theme="hu-po"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-num-cell {
-  background: #EFEDE5;
+/* 纸感主题：冷灰悬浮色在暖纸底上发青，改为暖灰 */
+:root[data-theme="zhi-gan"] .nb-bitable-gantt-row:hover,
+:root[data-theme="zhi-gan"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-left-cell,
+:root[data-theme="zhi-gan"] .nb-bitable-gantt-row:hover .nb-bitable-gantt-num-cell {
+  background: var(--nb-paper-200);
 }
 
-:root[data-theme="hu-po"] .nb-bitable-gantt-group-cell:hover {
+:root[data-theme="zhi-gan"] .nb-bitable-gantt-group-cell:hover {
   background: var(--toolbar-hover);
 }
 
@@ -1801,37 +1801,37 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 6px;
+  width: var(--dim-6);
   cursor: col-resize;
   /* 把手内的触摸用于调宽，不能交给浏览器滚动而触发 pointercancel。 */
   touch-action: none;
   user-select: none;
-  z-index: 2;
+  z-index: var(--z-2);
   transition: background var(--transition-fast);
 }
 
 .nb-bitable-grid-col-resizer {
-  right: -8px;
-  top: -4px;
-  bottom: -4px;
-  z-index: 10;
+  right: calc(var(--dim-8) * -1);
+  top: calc(var(--dim-4) * -1);
+  bottom: calc(var(--dim-4) * -1);
+  z-index: var(--z-10);
 }
 
 .nb-bitable-gantt-col-resizer:hover,
 .nb-bitable-grid-col-resizer:hover {
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 45%, transparent);
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-45), transparent);
 }
 
 .nb-bitable-gantt-col-resizer:active,
 .nb-bitable-grid-col-resizer:active {
-  background: var(--editor-accent, #3b82f6);
+  background: var(--editor-accent);
 }
 
 /* 手指命中区加宽但仍贴住表头右缘，不改变字段列与时间轴的布局。 */
 @media (pointer: coarse) {
   .nb-bitable-gantt-col-resizer,
   .nb-bitable-grid-col-resizer {
-    width: 14px;
+    width: var(--dim-14);
   }
 }
 
@@ -1841,36 +1841,36 @@
 }
 
 .nb-bitable-gantt-switch:active {
-  transform: scale(0.95);
+  transform: scale(var(--scale-0-95));
 }
 
 .nb-bitable-gantt-weekday {
-  width: 24px;
-  height: 24px;
+  width: var(--dim-24);
+  height: var(--dim-24);
   padding: 0;
-  border: 1px solid var(--editor-border, #e2e8f0);
-  border-radius: 6px;
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-md);
   background: transparent;
-  color: var(--editor-text-muted, #64748b);
-  font-size: 12px;
+  color: var(--editor-text-muted);
+  font-size: var(--dim-12);
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-bitable-gantt-weekday:hover:not(.is-active) {
-  background: var(--toolbar-hover, #f1f5f9);
-  color: var(--editor-text, #1e293b);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
 }
 
 .nb-bitable-gantt-weekday:active {
-  transform: scale(0.92);
+  transform: scale(var(--scale-0-92));
 }
 
 .nb-bitable-gantt-weekday.is-active {
-  background: var(--editor-accent, #3b82f6);
-  border-color: var(--editor-accent, #3b82f6);
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--editor-accent);
+  border-color: var(--editor-accent);
+  color: var(--nb-white);
+  font-weight: var(--weight-600);
 }
 
 .nb-bitable-gantt-weekday.is-active:hover {
@@ -1880,23 +1880,23 @@
 /* 时间轴刻度切换（周 / 月 / 季 / 年） */
 .nb-bitable-gantt-zoom {
   background: transparent;
-  color: var(--editor-text-muted, #64748b);
+  color: var(--editor-text-muted);
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-bitable-gantt-zoom:hover:not(.is-active) {
-  background: var(--toolbar-hover, #f1f5f9);
-  color: var(--editor-text, #1e293b);
+  background: var(--toolbar-hover);
+  color: var(--editor-text);
 }
 
 .nb-bitable-gantt-zoom:active {
-  transform: scale(0.95);
+  transform: scale(var(--scale-0-95));
 }
 
 .nb-bitable-gantt-zoom.is-active {
-  background: var(--editor-accent, #3b82f6);
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--editor-accent);
+  color: var(--nb-white);
+  font-weight: var(--weight-600);
 }
 
 .nb-bitable-gantt-zoom.is-active:hover {
@@ -1910,7 +1910,7 @@
 
 .nb-bitable-gantt-bar:hover {
   filter: brightness(1.08);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.22) !important;
+  box-shadow: 0 var(--dim-4) var(--dim-12) var(--nb-auto-0f172a-a22) !important;
 }
 
 .nb-bitable-gantt-bar:active {
@@ -1918,13 +1918,13 @@
 }
 
 .nb-bitable-gantt-bar-handle {
-  opacity: 0;
+  opacity: var(--opacity-0);
   transition: opacity var(--transition-fast);
 }
 
 .nb-bitable-gantt-bar:hover .nb-bitable-gantt-bar-handle {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.38);
+  opacity: var(--opacity-1);
+  background: var(--nb-white-a38);
 }
 
 /* 空行悬浮时的快速排期入口 */
@@ -1933,14 +1933,14 @@
 }
 
 .nb-bitable-gantt-add:hover {
-  background: var(--toolbar-hover, #f1f5f9) !important;
-  border-color: var(--editor-accent, #3b82f6) !important;
-  color: var(--editor-accent, #3b82f6) !important;
-  transform: scale(1.08);
+  background: var(--toolbar-hover) !important;
+  border-color: var(--editor-accent) !important;
+  color: var(--editor-accent) !important;
+  transform: scale(var(--scale-1-08));
 }
 
 .nb-bitable-gantt-add:active {
-  transform: scale(0.94);
+  transform: scale(var(--scale-0-94));
 }
 
 /* ── 数字输入：全局禁用原生上下微调箭头（滚轮调整由 core/numberInputGuard 统一屏蔽） ──
@@ -1965,38 +1965,38 @@ input[type='number'] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 6px;
+  padding: var(--dim-2) var(--dim-6);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
-  font-weight: 600;
+  color: var(--editor-text);
+  font-size: var(--dim-12);
+  font-weight: var(--weight-600);
   font-family: inherit;
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-bitable-cal-title-btn:hover {
-  background: var(--toolbar-hover, #f1f5f9);
-  color: var(--editor-accent, #3b82f6);
+  background: var(--toolbar-hover);
+  color: var(--editor-accent);
 }
 
 .nb-bitable-cal-title-btn:active {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: scale(0.96);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-96));
 }
 
 /* 月份 / 年份选择格 */
 .nb-bitable-month-cell,
 .nb-bitable-year-cell {
-  height: 38px;
+  height: var(--dim-38);
   padding: 0;
-  border: 1px solid transparent;
-  border-radius: 6px;
+  border: var(--dim-1) solid transparent;
+  border-radius: var(--radius-md);
   background: transparent;
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   font-family: inherit;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
@@ -2008,31 +2008,31 @@ input[type='number'] {
 
 .nb-bitable-month-cell:hover,
 .nb-bitable-year-cell:hover {
-  background: var(--toolbar-hover, #f1f5f9);
-  transform: scale(1.04);
+  background: var(--toolbar-hover);
+  transform: scale(var(--scale-1-04));
 }
 
 .nb-bitable-month-cell:active,
 .nb-bitable-year-cell:active {
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
 }
 
 .nb-bitable-month-cell.is-selected,
 .nb-bitable-month-cell.is-selected:hover,
 .nb-bitable-year-cell.is-selected,
 .nb-bitable-year-cell.is-selected:hover {
-  background: var(--editor-accent, #3b82f6);
-  border-color: var(--editor-accent, #3b82f6);
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--editor-accent);
+  border-color: var(--editor-accent);
+  color: var(--nb-white);
+  font-weight: var(--weight-600);
   transform: none;
 }
 
 .nb-bitable-month-cell.is-current:not(.is-selected),
 .nb-bitable-year-cell.is-current:not(.is-selected) {
-  border-color: var(--editor-accent, #3b82f6);
-  color: var(--editor-accent, #3b82f6);
-  font-weight: 600;
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
+  font-weight: var(--weight-600);
 }
 
 /* 单元格与表单中的日期触发器：悬停浮现底色，按下轻微收缩 */
@@ -2042,24 +2042,24 @@ input[type='number'] {
 
 /* 仅在表单形态下的日期触发器显示输入框悬停边框与按下收缩效果，避免在表格单元格中 hover 时多出一个内层边框 */
 .nb-bitable-date-trigger.is-form:hover {
-  background: var(--toolbar-hover, #f1f5f9) !important;
-  border-color: var(--editor-border-focus, #cbd5e1) !important;
+  background: var(--toolbar-hover) !important;
+  border-color: var(--editor-border-focus) !important;
 }
 
 .nb-bitable-date-trigger.is-form:active {
-  background: var(--toolbar-active, #e2e8f0) !important;
-  transform: scale(0.985);
+  background: var(--toolbar-active) !important;
+  transform: scale(var(--scale-0-985));
 }
 
 /* 日历格：6×7 网格，选中态用强调色实心，今日态用细描边区分 */
 .nb-bitable-date-cell {
-  height: 26px;
+  height: var(--dim-26);
   padding: 0;
-  border: 1px solid transparent;
-  border-radius: 6px;
+  border: var(--dim-1) solid transparent;
+  border-radius: var(--radius-md);
   background: transparent;
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   font-family: inherit;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
@@ -2067,45 +2067,45 @@ input[type='number'] {
 }
 
 .nb-bitable-date-cell:hover {
-  background: var(--toolbar-hover, #f1f5f9);
-  transform: scale(1.06);
+  background: var(--toolbar-hover);
+  transform: scale(var(--scale-1-06));
 }
 
 .nb-bitable-date-cell:active {
-  transform: scale(0.94);
+  transform: scale(var(--scale-0-94));
 }
 
 /* 前后补齐的相邻月日期淡化，避免误以为是本月的有效日期 */
 .nb-bitable-date-cell.is-outside {
-  color: var(--editor-text-muted, #94a3b8);
-  opacity: 0.55;
+  color: var(--editor-text-muted);
+  opacity: var(--opacity-0-55);
 }
 
 .nb-bitable-date-cell.is-today:not(.is-selected) {
-  border-color: var(--editor-accent, #3b82f6);
-  color: var(--editor-accent, #3b82f6);
-  font-weight: 600;
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
+  font-weight: var(--weight-600);
 }
 
 .nb-bitable-date-cell.is-selected,
 .nb-bitable-date-cell.is-selected:hover {
-  background: var(--editor-accent, #3b82f6);
-  border-color: var(--editor-accent, #3b82f6);
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--editor-accent);
+  border-color: var(--editor-accent);
+  color: var(--nb-white);
+  font-weight: var(--weight-600);
   transform: none;
 }
 
 /* 时间列项：时 / 分 / 秒 */
 .nb-bitable-time-item {
   flex-shrink: 0;
-  height: 28px;
-  padding: 0 8px;
+  height: var(--dim-28);
+  padding: 0 var(--dim-8);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   background: transparent;
-  color: var(--editor-text, #1e293b);
-  font-size: 12px;
+  color: var(--editor-text);
+  font-size: var(--dim-12);
   font-family: inherit;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
@@ -2113,25 +2113,25 @@ input[type='number'] {
 }
 
 .nb-bitable-time-item:hover {
-  background: var(--toolbar-hover, #f1f5f9);
+  background: var(--toolbar-hover);
 }
 
 .nb-bitable-time-item:active {
-  background: var(--toolbar-active, #e2e8f0);
-  transform: scale(0.94);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-94));
 }
 
 .nb-bitable-time-item.is-selected,
 .nb-bitable-time-item.is-selected:hover {
-  background: var(--editor-accent, #3b82f6);
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--editor-accent);
+  color: var(--nb-white);
+  font-weight: var(--weight-600);
 }
 
 /* 日历月份翻页箭头 */
 .nb-bitable-cal-nav {
-  padding: 3px;
-  border-radius: 4px;
+  padding: var(--dim-3);
+  border-radius: var(--radius-sm);
 }
 
 /* 时间列滚动区：细滚动条，避免抢视觉焦点 */
@@ -2145,5 +2145,5 @@ input[type='number'] {
 }
 
 .nb-bitable-menu-item.is-submenu-open {
-  background: var(--toolbar-hover, #f1f5f9);
+  background: var(--toolbar-hover);
 }

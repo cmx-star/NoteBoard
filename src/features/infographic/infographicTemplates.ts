@@ -16,43 +16,43 @@ export const INFOGRAPHIC_TEMPLATES: InfographicTemplate[] = [
     label: '核心指标看板',
     description: '展示关键运营指标、数值量级与增减趋势',
     iconName: 'Activity',
-    iconColor: '#3b82f6',
-    iconBg: 'rgba(59, 130, 246, 0.12)',
+    iconColor: 'var(--nb-blue-500)',
+    iconBg: 'var(--nb-auto-3b82f6-a12)',
     code: `type: metric-cards
 title: 核心运营与业务指标
 data:
   - label: 日活跃用户 (DAU)
     value: "148,290"
-    change: "+14.8%"
+    change: "+var(--pct-14.8)"
     trend: up
     color: blue
     desc: 同比上月增长超预期
   - label: 核心功能转化率
-    value: "38.6%"
-    change: "+3.2%"
+    value: "var(--pct-38.6)"
+    change: "+var(--pct-3.2)"
     trend: up
     color: emerald
     desc: 新版本流转流程优化
   - label: 用户平均停留时长
     value: "26.5 min"
-    change: "+1.8%"
+    change: "+var(--pct-1.8)"
     trend: up
     color: purple
     desc: 互动与协作频次提升
   - label: 客户端崩溃与异常率
-    value: "0.02%"
-    change: "-0.05%"
+    value: "var(--pct-0.02)"
+    change: "calc(var(--pct-0.05) * -1)"
     trend: down
     color: green
-    desc: 稳定性达到 99.98%`,
+    desc: 稳定性达到 var(--pct-99.98)`,
   },
   {
     id: 'timeline',
     label: '项目里程碑时间线',
     description: '直观展示项目演进阶段、时间节点与达成状态',
     iconName: 'Milestone',
-    iconColor: '#10b981',
-    iconBg: 'rgba(16, 185, 129, 0.12)',
+    iconColor: 'var(--nb-emerald-500)',
+    iconBg: 'var(--nb-auto-10b981-a12)',
     code: `type: timeline
 title: NoteBoard 产品演进路线图
 data:
@@ -82,8 +82,8 @@ data:
     label: '业务流转与步骤图',
     description: '清晰呈现业务全流程各步骤与衔接关系',
     iconName: 'Route',
-    iconColor: '#8b5cf6',
-    iconBg: 'rgba(139, 92, 246, 0.12)',
+    iconColor: 'var(--nb-purple-500)',
+    iconBg: 'var(--nb-auto-8b5cf6-a12)',
     code: `type: process
 title: 需求研发与交付标准化全流程
 data:
@@ -105,26 +105,26 @@ data:
     label: '用户转化与流转漏斗',
     description: '展示用户在关键链路各阶段的留存与转化',
     iconName: 'Filter',
-    iconColor: '#ec4899',
-    iconBg: 'rgba(236, 72, 153, 0.12)',
+    iconColor: 'var(--nb-pink-500)',
+    iconBg: 'var(--nb-auto-ec4899-a12)',
     code: `type: funnel
 title: 新用户激活与转化漏斗分析
 data:
   - label: 访问落地页
     value: "100,000"
-    change: "100%"
+    change: "var(--pct-100)"
     color: blue
   - label: 完成安装注册
     value: "68,500"
-    change: "68.5%"
+    change: "var(--pct-68.5)"
     color: cyan
   - label: 首次创建笔记/画板
     value: "45,200"
-    change: "45.2%"
+    change: "var(--pct-45.2)"
     color: purple
   - label: 次周深度留存活跃
     value: "32,800"
-    change: "32.8%"
+    change: "var(--pct-32.8)"
     color: emerald`,
   },
   {
@@ -132,8 +132,8 @@ data:
     label: '方案与特性对比表',
     description: '横向对比不同技术方案、产品版本或优劣势',
     iconName: 'Columns3',
-    iconColor: '#06b6d4',
-    iconBg: 'rgba(6, 182, 212, 0.12)',
+    iconColor: 'var(--nb-cyan-500)',
+    iconBg: 'var(--nb-auto-06b6d4-a12)',
     code: `type: comparison
 title: 架构方案与技术特性对比
 groups:
@@ -143,10 +143,10 @@ groups:
     color: blue
     features:
       - name: 本地数据私有存储
-        value: 100% 本地明文掌控
+        value: var(--pct-100) 本地明文掌控
         included: true
       - name: 启动速度与资源占用
-        value: < 200ms 秒级启动
+        value: < var(--duration-200) 秒级启动
         included: true
       - name: 多维表格支持
         value: 完整支持双向切换
@@ -175,8 +175,8 @@ groups:
     label: '四象限优先级矩阵',
     description: '按价值与紧急/难度等维度科学划分事务优先级',
     iconName: 'LayoutGrid',
-    iconColor: '#f59e0b',
-    iconBg: 'rgba(245, 158, 11, 0.12)',
+    iconColor: 'var(--nb-amber-500)',
+    iconBg: 'var(--nb-auto-f59e0b-a12)',
     code: `type: quadrant
 title: 产品功能规划四象限分析
 quadrantXLabel: 实现难度 (从低到高)
@@ -221,8 +221,8 @@ points:
     label: '轻量统计图表',
     description: '柱状图、环形饼图与多系列数据直观呈现',
     iconName: 'BarChart3',
-    iconColor: '#6366f1',
-    iconBg: 'rgba(99, 102, 241, 0.12)',
+    iconColor: 'var(--nb-violet-500)',
+    iconBg: 'var(--nb-auto-6366f1-a12)',
     code: `type: chart
 title: 各模块使用频次与活跃度分布
 chart:

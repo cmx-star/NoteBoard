@@ -1,5 +1,5 @@
 // NoteBoard 统一 Tooltip 悬浮提示组件
-// 基于 @radix-ui/react-tooltip 封装，自适应晨光/琥珀/墨夜主题，支持自定义延迟与微动效
+// 基于 @radix-ui/react-tooltip 封装，自适应四套主题，支持自定义延迟与微动效
 // 详见 docs/07-UI布局与交互规范.md
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';

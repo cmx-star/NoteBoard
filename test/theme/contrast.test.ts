@@ -1,10 +1,11 @@
 // NoteBoard 主题对比度测试
 // 详见 docs/06-主题与设计规范.md §11
-// 遍历三套主题的全部 Token 组合，断言正文类 ≥ 4.5:1，指示类 ≥ 3:1
+// 遍历四套主题的全部 Token 组合，断言正文类 ≥ 4.5:1，指示类 ≥ 3:1
 
 import { describe, test, expect } from 'vitest';
 import {
   REQUIRED_TOKENS,
+  THEME_IDS,
   TEXT_PAIRS,
   UI_PAIRS,
 } from '@/core/theme/tokens';
@@ -13,10 +14,10 @@ import {
   TEXT_CONTRAST_THRESHOLD,
   UI_CONTRAST_THRESHOLD,
 } from '@/core/theme/contrast';
-import { THEME_TOKENS } from './tokens.fixture';
+import { THEME_TOKENS } from './cssTokens';
 import type { ThemeId } from '@/core/ipc/types';
 
-const THEMES: ThemeId[] = ['chen-guang', 'hu-po', 'mo-ye'];
+const THEMES: readonly ThemeId[] = THEME_IDS;
 
 describe('主题对比度基线', () => {
   // ── 结构完整性 ──
@@ -33,7 +34,7 @@ describe('主题对比度基线', () => {
     expect(missing).toEqual([]);
   });
 
-  test('三套主题的 Token 键集合完全一致', () => {
+  test('四套主题的 Token 键集合完全一致', () => {
     const keys = THEMES.map((theme) => new Set(Object.keys(THEME_TOKENS[theme])));
     const first = keys[0]!;
     for (let i = 1; i < keys.length; i++) {

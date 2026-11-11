@@ -48,10 +48,11 @@ export function SettingsWindow() {
       {/* 侧边栏 */}
       <div
         style={{
-          width: 160,
+          width: 'var(--dim-160)',
           flexShrink: 0,
-          borderRight: '1px solid var(--editor-border)',
-          padding: '8px 0',
+          borderRight: 'var(--dim-1) solid var(--editor-border)',
+          boxShadow: 'var(--nb-nav-shadow, none)',
+          padding: 'var(--dim-8) 0',
           background: 'var(--editor-surface)',
         }}
       >
@@ -63,15 +64,15 @@ export function SettingsWindow() {
               onClick={() => setActivePanel(p.key)}
               style={{
                 display: 'block',
-                width: '100%',
-                padding: '8px 16px',
+                width: 'var(--pct-100)',
+                padding: 'var(--dim-8) var(--dim-16)',
                 textAlign: 'left',
                 border: 'none',
                 background: isActive ? 'var(--editor-selection)' : 'transparent',
                 color: isActive ? 'var(--accent-strong)' : 'var(--editor-text)',
                 fontWeight: isActive ? 600 : 400,
                 cursor: 'pointer',
-                fontSize: 13,
+                fontSize: 'var(--text-13)',
                 transition: 'all var(--transition-fast)',
               }}
               onMouseEnter={(e) => {
@@ -83,13 +84,13 @@ export function SettingsWindow() {
                 if (!isActive) {
                   e.currentTarget.style.background = 'transparent';
                 }
-                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1))';
               }}
               onMouseDown={(e) => {
-                e.currentTarget.style.transform = 'scale(0.97)';
+                e.currentTarget.style.transform = 'scale(var(--scale-0-97))';
               }}
               onMouseUp={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1))';
               }}
             >
               {p.label}
@@ -99,7 +100,7 @@ export function SettingsWindow() {
       </div>
 
       {/* 主内容区 */}
-      <div ref={contentRef} style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
+      <div ref={contentRef} style={{ flex: 1, overflow: 'auto', padding: 'var(--dim-16) var(--dim-24)' }}>
         {activePanel === 'appearance' && <AppearancePanel />}
         {activePanel === 'typography' && <TypographyPanel onOpenFonts={() => setActivePanel('plugins')} />}
         {activePanel === 'editor' && <EditorPanel />}

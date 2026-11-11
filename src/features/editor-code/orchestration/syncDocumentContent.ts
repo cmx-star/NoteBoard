@@ -16,7 +16,7 @@ export const DEFAULT_DRAWIO_XML = `<mxfile host="NoteBoard" modified="${new Date
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2" value="开始绘图" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="2" value="开始绘图" style="rounded=1;whiteSpace=wrap;html=1;fillColor=var(--nb-auto-dae8fc);strokeColor=var(--nb-auto-6c8ebf);" vertex="1" parent="1">
           <mxGeometry x="340" y="240" width="120" height="60" as="geometry" />
         </mxCell>
       </root>

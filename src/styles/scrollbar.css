@@ -5,8 +5,8 @@
 
 /* WebKit / WebView2 */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: var(--dim-10);
+  height: var(--dim-10);
 }
 
 ::-webkit-scrollbar-track {
@@ -16,14 +16,14 @@
 
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border-radius: 5px;
-  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  border: var(--dim-2) solid transparent;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb);
-  border: 1px solid transparent;
+  border: var(--dim-1) solid transparent;
   background-clip: padding-box;
   filter: brightness(1.15);
 }
@@ -38,8 +38,8 @@
 
 /* 隐藏的水平滚动条，仅在 tab 栏需要时显示 */
 .scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: var(--dim-6);
+  height: var(--dim-6);
 }
 
 .scrollbar-none::-webkit-scrollbar {

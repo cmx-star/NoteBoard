@@ -1,8 +1,7 @@
-// NoteBoard 文件格式优雅图标体系
-// 集中管理资源管理器树、标签页及其他视图中的文件图标与精致色彩
-// 支持常见/特殊图片、画板、Markdown、代码、数据文件及各类配置等
+// 文件格式图标：形状表达类型，颜色跟随主题。
+// 不使用文件类型品牌色，避免侧栏与标签栏出现和主题强调色互相冲突的彩色噪点。
 
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import {
   FileText,
   File,
@@ -30,6 +29,7 @@ import {
   Layout,
   ChartColumn,
   BookOpen,
+  type LucideIcon,
 } from 'lucide-react';
 import { extFromPath } from '../../core/docKind';
 
@@ -38,97 +38,58 @@ export interface FileIconOptions {
   isDir?: boolean;
   isOpen?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
-/**
- * 根据文件路径与状态获取优雅的文件/文件夹图标
- */
-export function getExplorerFileIcon(
-  fileNameOrPath: string,
-  options: FileIconOptions = {},
-): ReactNode {
-  const { size = 14, isDir = false, isOpen = false, className, style } = options;
-  const iconProps = {
-    size,
-    className,
-    style: { flexShrink: 0, ...style },
-  };
+/** 文件夹用主题强调色作为唯一色相，文件统一继承所在行的文本色。 */
+const FOLDER_COLOR = 'var(--editor-accent)';
 
-  // 1. 文件夹图标渲染（温暖琥珀金黄色线条 + 30% 浅黄填充）
-  if (isDir) {
-    if (isOpen) {
-      return <FolderOpen {...iconProps} color="#f59e0b" fill="#f59e0b" fillOpacity={0.3} />;
-    }
-    return <Folder {...iconProps} color="#f59e0b" fill="#f59e0b" fillOpacity={0.3} />;
-  }
-
-  const ext = extFromPath(fileNameOrPath);
-
-  // 2. 根据文件扩展名返回专属图标与调优配色
+function iconForExtension(ext: string): LucideIcon {
   switch (ext) {
-    // 官方查看插件沿用应用文件图标，主题色由现有语义变量提供。
     case 'doc':
     case 'docx':
     case 'pdf':
     case 'dwg':
     case 'dxf':
-      return <FileText {...iconProps} color="var(--editor-accent)" />;
+      return FileText;
     case 'epub':
     case 'note':
     case 'goodnotes':
-      return <BookOpen {...iconProps} color="var(--editor-accent)" />;
+      return BookOpen;
     case 'xls':
     case 'xlsx':
-      return <Table {...iconProps} color="var(--success-500)" />;
+      return Table;
     case 'ppt':
     case 'pptx':
-      return <Layout {...iconProps} color="var(--warning-500)" />;
-    // ── Markdown 笔记（NoteBoard 核心，品牌蓝）──
+      return Layout;
     case 'md':
     case 'markdown':
-      return <FileText {...iconProps} color="var(--editor-accent, #3b82f6)" />;
-
-    // ── 思维导图与大纲（XMind / MindMap，活力珊瑚橙）──
+      return FileText;
     case 'mindmap':
     case 'xmind':
     case 'mm':
-      return <Network {...iconProps} color="#f97316" />;
-
-    // ── Draw.io / 架构流程图（经典科技橙红）──
+      return Network;
     case 'drawio':
     case 'dio':
-      return <Layout {...iconProps} color="#ea580c" />;
-
-    // ── 多维表格（多维表格风格蓝色）──
+      return Layout;
     case 'bitable':
     case 'table':
-      return <Table {...iconProps} color="#2563eb" />;
-
-    // ── Mermaid 流程与时序图表（现代青绿）──
+      return Table;
     case 'mmd':
     case 'mermaid':
-      return <Workflow {...iconProps} color="#00bfb2" />;
-
-    // ── 信息图脚本（.infographic，青碧绿区别于 Mermaid 与 PlantUML）──
+      return Workflow;
     case 'infographic':
     case 'ig':
-      return <ChartColumn {...iconProps} color="#14b8a6" />;
-
-    // ── UML / PlantUML 建模图（优雅洋紫）──
+      return ChartColumn;
     case 'puml':
     case 'plantuml':
     case 'iuml':
     case 'uml':
-      return <GitMerge {...iconProps} color="#a855f7" />;
-
-    // ── 自由画板 / 白板（艺术品红与紫）──
+      return GitMerge;
     case 'board':
     case 'canvas':
     case 'excalidraw':
-      return <PencilRuler {...iconProps} color="var(--accent-strong, #8b5cf6)" />;
-
-    // ── 常见位图图片格式（翡翠绿）──
+      return PencilRuler;
     case 'png':
     case 'jpg':
     case 'jpeg':
@@ -137,147 +98,127 @@ export function getExplorerFileIcon(
     case 'bmp':
     case 'dib':
     case 'avif':
-      return <ImageIcon {...iconProps} color="#10b981" />;
-
-    // ── 动态图片格式 GIF / APNG（动态玫粉）──
+    case 'webp':
+      return ImageIcon;
     case 'gif':
     case 'apng':
-      return <Film {...iconProps} color="#f43f5e" />;
-
-    // ── 现代 Web 图片格式 WEBP（科技青蓝）──
-    case 'webp':
-      return <ImageIcon {...iconProps} color="#06b6d4" />;
-
-    // ── 应用/系统图标格式 ICO / CUR（琥珀金黄）──
+      return Film;
     case 'ico':
     case 'cur':
-      return <AppWindow {...iconProps} color="#f59e0b" />;
-
-    // ── 矢量图形格式 SVG（优雅橙）──
+      return AppWindow;
     case 'svg':
-      return <Shapes {...iconProps} color="#f97316" />;
-
-    // ── 数据库与 SQL（钴蓝）──
+      return Shapes;
     case 'sql':
     case 'sqlite':
     case 'db':
-      return <Database {...iconProps} color="#0284c7" />;
-
-    // ── JSON 数据契约（暖金黄）──
+      return Database;
     case 'json':
     case 'jsonc':
     case 'json5':
-      return <Braces {...iconProps} color="#eab308" />;
-
-    // ── YAML 配置（森林翠绿）──
+      return Braces;
     case 'yaml':
     case 'yml':
-      return <FileCode {...iconProps} color="#16a34a" />;
-
-    // ── XML 与标记语言（珊瑚橙红）──
-    case 'xml':
-    case 'xsd':
-    case 'rss':
-    case 'atom':
-    case 'html':
-    case 'htm':
-      return <CodeXml {...iconProps} color="#ea580c" />;
-
-    // ── 样式表（CSS 蓝/紫）──
     case 'css':
     case 'scss':
     case 'sass':
     case 'less':
-      return <FileCode {...iconProps} color="#2563eb" />;
-
-    // ── JavaScript / TypeScript 前端代码 ──
     case 'js':
     case 'mjs':
     case 'cjs':
-      return <FileCode {...iconProps} color="#eab308" />;
     case 'ts':
     case 'mts':
     case 'cts':
-      return <FileCode {...iconProps} color="#3178c6" />;
     case 'jsx':
     case 'tsx':
-      return <FileCode {...iconProps} color="#06b6d4" />;
-
-    // ── 后端与系统级编程语言 ──
     case 'rs':
-      return <FileCode {...iconProps} color="#ea580c" />;
     case 'py':
     case 'pyw':
-      return <FileCode {...iconProps} color="#3b82f6" />;
     case 'go':
-      return <FileCode {...iconProps} color="#00add8" />;
     case 'java':
     case 'kt':
-      return <FileCode {...iconProps} color="#f97316" />;
     case 'c':
     case 'cpp':
     case 'cc':
     case 'cxx':
     case 'h':
     case 'hpp':
-      return <FileCode {...iconProps} color="#6366f1" />;
-
-    // ── 脚本与终端指令 ──
+      return FileCode;
+    case 'xml':
+    case 'xsd':
+    case 'rss':
+    case 'atom':
+    case 'html':
+    case 'htm':
+      return CodeXml;
     case 'sh':
     case 'bash':
     case 'zsh':
     case 'bat':
     case 'cmd':
     case 'ps1':
-      return <Terminal {...iconProps} color="#10b981" />;
-
-    // ── 表格与数据表 ──
+      return Terminal;
     case 'csv':
     case 'tsv':
-      return <Table {...iconProps} color="#10b981" />;
-
-    // ── 配置文件与系统环境（控制滑块，石板灰）──
+      return Table;
     case 'ini':
     case 'conf':
     case 'cfg':
     case 'env':
     case 'properties':
     case 'toml':
-      return <SlidersHorizontal {...iconProps} color="#64748b" />;
-
-    // ── 纯文本与运行日志（极简中性灰）──
+      return SlidersHorizontal;
     case 'txt':
     case 'log':
     case 'text':
-      return <FileText {...iconProps} color="#64748b" />;
-
-    // ── 压缩包文件 ──
+      return FileText;
     case 'zip':
     case 'tar':
     case 'gz':
     case '7z':
     case 'rar':
-      return <Archive {...iconProps} color="#a855f7" />;
-
-    // ── 音频与视频媒体 ──
+      return Archive;
     case 'mp3':
     case 'wav':
     case 'flac':
     case 'aac':
     case 'ogg':
-      return <Music {...iconProps} color="#ec4899" />;
+      return Music;
     case 'mp4':
     case 'mkv':
     case 'avi':
     case 'mov':
     case 'webm':
-      return <Video {...iconProps} color="#8b5cf6" />;
-
-    // ── 默认与未知文件 ──
+      return Video;
     default:
-      if (!ext) {
-        return <File {...iconProps} color="var(--explorer-text-muted, #94a3b8)" />;
-      }
-      return <FileQuestion {...iconProps} color="var(--explorer-text-muted, #94a3b8)" />;
+      return ext ? FileQuestion : File;
   }
+}
+
+/** 根据文件路径与状态获取文件/文件夹图标。 */
+export function getExplorerFileIcon(
+  fileNameOrPath: string,
+  options: FileIconOptions = {},
+): ReactNode {
+  const { size = 14, isDir = false, isOpen = false, className, style } = options;
+  const iconProps = {
+    size,
+    className,
+    color: 'currentColor',
+    style: { flexShrink: 0, ...style },
+  };
+
+  if (isDir) {
+    const FolderIcon = isOpen ? FolderOpen : Folder;
+    return (
+      <FolderIcon
+        {...iconProps}
+        color={FOLDER_COLOR}
+        fill={FOLDER_COLOR}
+        fillOpacity={0.16}
+      />
+    );
+  }
+
+  const Icon = iconForExtension(extFromPath(fileNameOrPath));
+  return <Icon {...iconProps} />;
 }

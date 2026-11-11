@@ -200,7 +200,7 @@ function countSubtreeDescendants(node: MindNode): number {
 const SEARCH_MARK_STYLE: React.CSSProperties = {
   background: 'var(--cm-search-match-bg)',
   color: 'inherit',
-  borderRadius: 2,
+  borderRadius: 'var(--dim-2)',
   padding: 0,
 };
 
@@ -246,13 +246,13 @@ function sliceRangesForLine(
 function sideButtonStyle(side: NodeSide, offset: number): React.CSSProperties {
   switch (side) {
     case 'left':
-      return { left: offset, top: '50%', transform: 'translateY(-50%)' };
+      return { left: offset, top: 'var(--pct-50)', transform: 'translateY(calc(var(--pct-50) * -1))' };
     case 'top':
-      return { top: offset, left: '50%', transform: 'translateX(-50%)' };
+      return { top: offset, left: 'var(--pct-50)', transform: 'translateX(calc(var(--pct-50) * -1))' };
     case 'bottom':
-      return { bottom: offset, left: '50%', transform: 'translateX(-50%)' };
+      return { bottom: offset, left: 'var(--pct-50)', transform: 'translateX(calc(var(--pct-50) * -1))' };
     default:
-      return { right: offset, top: '50%', transform: 'translateY(-50%)' };
+      return { right: offset, top: 'var(--pct-50)', transform: 'translateY(calc(var(--pct-50) * -1))' };
   }
 }
 
@@ -362,8 +362,8 @@ const MINIMAP_MIN_NODE_PX = 1.5;
 const INITIAL_ROOT_MARGIN = 24;
 
 /** 联系线颜色：未选中为次级文字色，选中为强调色 */
-const RELATION_COLOR = 'var(--editor-text-secondary, #64748b)';
-const ACCENT_COLOR = 'var(--editor-accent, #3b82f6)';
+const RELATION_COLOR = 'var(--editor-text-secondary)';
+const ACCENT_COLOR = 'var(--editor-accent)';
 
 /** 外框图形：有阶梯形轮廓时画 path，否则画圆角矩形；其余 SVG 属性原样透传 */
 function BoundaryShape({ boundary, ...props }: { boundary: LayoutBoundary } & React.SVGProps<SVGPathElement> & React.SVGProps<SVGRectElement>) {
@@ -842,7 +842,7 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
         }
         // 根节点用强调色单独绘制，便于快速定位中心
         ctx.globalAlpha = 1;
-        ctx.fillStyle = style.getPropertyValue('--editor-accent').trim() || '#3b82f6';
+        ctx.fillStyle = style.getPropertyValue('--editor-accent').trim() || style.getPropertyValue('--nb-blue-500').trim();
         for (const n of nodes) {
           if (n.level === 0) ctx.fillRect(n.x, n.y, Math.max(minSize, n.width), Math.max(minSize, n.height));
         }
@@ -1799,7 +1799,7 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
     dragPointRef.current = point;
     const preview = dragPreviewElementRef.current;
     if (preview) {
-      preview.style.transform = `translate3d(${point.x + 14}px, ${point.y + 14}px, 0) scale(1.04)`;
+      preview.style.transform = `translate3d(${point.x + 14}px, ${point.y + 14}px, 0) scale(var(--scale-1-04))`;
     } else {
       // 卡片内容在同一次拖动中不变，首次挂载后只移动合成层。
       setDragPreview({ node: session.sourceNode, descendantCount: session.descendantIds.size - sourceIds.length, count: sourceIds.length });
@@ -2180,12 +2180,12 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
         }
       }}
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         overflow: 'hidden',
         position: 'relative',
         cursor: isDraggingNode ? 'grabbing' : isPanning ? 'grabbing' : connectFrom ? 'crosshair' : 'default',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         userSelect: 'none',
         // 触屏手势（平移 / 双指缩放）全部由画布自行处理，禁止浏览器默认滚动与页面缩放
         touchAction: 'none',
@@ -2257,8 +2257,8 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
             <path
               key={`deco-${idx}`}
               d={deco.path}
-              fill={deco.filled ? 'var(--editor-text-secondary, #64748b)' : 'none'}
-              stroke="var(--editor-text-secondary, #64748b)"
+              fill={deco.filled ? 'var(--editor-text-secondary)' : 'none'}
+              stroke="var(--editor-text-secondary)"
               strokeWidth={deco.strokeWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -2351,12 +2351,12 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 height: b.titleBox.height,
                 lineHeight: `${BOUNDARY_TITLE_HEIGHT}px`,
                 fontSize: BOUNDARY_TITLE_FONT_SIZE,
-                fontWeight: 500,
-                padding: '0 7px',
+                fontWeight: 'var(--weight-500)',
+                padding: '0 var(--dim-7)',
                 boxSizing: 'border-box',
                 borderRadius: BOUNDARY_TITLE_HEIGHT / 2,
                 background: selected ? ACCENT_COLOR : color,
-                color: '#ffffff',
+                color: 'var(--nb-white)',
                 whiteSpace: 'pre',
                 overflow: 'hidden',
                 cursor: 'pointer',
@@ -2379,10 +2379,10 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 top: rect.top,
                 width: rect.width,
                 height: rect.height,
-                background: 'var(--editor-accent, #3b82f6)',
-                borderRadius: 2,
-                boxShadow: '0 0 8px rgba(59, 130, 246, 0.85), 0 0 2px #3b82f6',
-                zIndex: 60,
+                background: 'var(--editor-accent)',
+                borderRadius: 'var(--dim-2)',
+                boxShadow: '0 0 var(--dim-8) var(--nb-auto-3b82f6-a85), 0 0 var(--dim-2) var(--nb-blue-500)',
+                zIndex: 'var(--z-60)',
                 pointerEvents: 'none',
               }}
             >
@@ -2391,11 +2391,11 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                   position: 'absolute',
                   left: rect.vertical ? -3.5 : -4,
                   top: rect.vertical ? -4 : -3.5,
-                  width: 10,
-                  height: 10,
-                  borderRadius: '50%',
-                  background: 'var(--editor-accent, #3b82f6)',
-                  boxShadow: '0 0 6px rgba(59, 130, 246, 0.9)',
+                  width: 'var(--dim-10)',
+                  height: 'var(--dim-10)',
+                  borderRadius: 'var(--pct-50)',
+                  background: 'var(--editor-accent)',
+                  boxShadow: '0 0 var(--dim-6) var(--nb-auto-3b82f6-a90)',
                 }}
               />
             </div>
@@ -2420,8 +2420,8 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
             theme.branchColors[n.branchIndex % theme.branchColors.length] ?? theme.branchColors[0];
           // 非根节点卡片背景：按主题比例混入所属分支色，自动适配浅色/深色全局主题
           const nodeSurface = theme.nodeTint
-            ? `color-mix(in srgb, ${nodeColor} ${theme.nodeTint}%, var(--editor-surface, #ffffff))`
-            : 'var(--editor-surface, #ffffff)';
+            ? `color-mix(in srgb, ${nodeColor} ${theme.nodeTint}%, var(--editor-surface))`
+            : 'var(--editor-surface)';
           const hasIcon = Boolean(n.node.icon);
           const hasNote = Boolean(n.node.note);
           const nodeImages = getNodeImages(n.node);
@@ -2495,42 +2495,42 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 background: isDropTargetInside
                   ? isRoot
                     ? theme.rootBackground
-                    : 'rgba(59, 130, 246, 0.12)'
+                    : 'var(--nb-auto-3b82f6-a12)'
                   : isRoot
                     ? theme.rootBackground
                     : nodeSurface,
                 color: isRoot
                   ? theme.rootText
-                  : 'var(--editor-text, #1e293b)',
+                  : 'var(--editor-text)',
                 border: isRoot
                   ? isSelected || isDropTargetInside
-                    ? `2px solid ${theme.rootText}`
+                    ? `var(--dim-2) solid ${theme.rootText}`
                     : 'none'
                   : isDropTargetInside
-                    ? '2px solid var(--editor-accent, #3b82f6)'
+                    ? 'var(--dim-2) solid var(--editor-accent)'
                     : isSourceOrDescendant
-                      ? '1.5px dashed var(--editor-border, #94a3b8)'
-                      : `1.5px solid ${isSelected ? 'var(--editor-accent, #3b82f6)' : isLevel1 || isSummaryTopic ? nodeColor : 'var(--editor-border, #cbd5e1)'}`,
+                      ? 'var(--dim-1-5) dashed var(--editor-border)'
+                      : `var(--dim-1-5) solid ${isSelected ? 'var(--editor-accent)' : isLevel1 || isSummaryTopic ? nodeColor : 'var(--editor-border)'}`,
                 borderRadius: isRoot ? 10 : 8,
                 boxShadow: isDropTargetInside
-                  ? '0 0 0 2.5px var(--editor-accent, #3b82f6), 0 0 20px rgba(59, 130, 246, 0.45)'
+                  ? '0 0 0 var(--dim-2-5) var(--editor-accent), 0 0 var(--dim-20) var(--nb-auto-3b82f6-a45)'
                   : isSelected
-                    ? '0 0 0 2px var(--editor-accent, #3b82f6), 0 8px 20px rgba(0, 0, 0, 0.12)'
+                    ? '0 0 0 var(--dim-2) var(--editor-accent), 0 var(--dim-8) var(--dim-20) var(--nb-black-a12)'
                     : isRoot
                       ? theme.rootShadow
-                      : '0 2px 6px rgba(0, 0, 0, 0.05)',
+                      : '0 var(--dim-2) var(--dim-6) var(--nb-black-a05)',
                 padding: `${textStyle.paddingY}px ${textStyle.paddingX}px`,
                 cursor: connectFrom ? 'crosshair' : isEditing ? 'text' : isDraggingNode ? 'grabbing' : isRoot || isSummaryTopic ? 'default' : 'grab',
                 opacity: isSourceOrDescendant ? 0.35 : 1,
-                transform: isSourceOrDescendant ? 'scale(0.97)' : isDropTargetInside ? 'scale(1.02)' : 'none',
+                transform: isSourceOrDescendant ? 'scale(var(--scale-0-97))' : isDropTargetInside ? 'scale(var(--scale-1-02))' : 'none',
                 boxSizing: 'border-box',
                 // 搜索命中：外描边标出命中节点，当前项用强调色加粗
                 outline: isSearchCurrent
-                  ? '2.5px solid var(--cm-search-active-bg)'
+                  ? 'var(--dim-2-5) solid var(--cm-search-active-bg)'
                   : searchRanges
-                    ? '2px solid var(--cm-search-match-bg)'
+                    ? 'var(--dim-2) solid var(--cm-search-match-bg)'
                     : undefined,
-                outlineOffset: 2,
+                outlineOffset: 'var(--dim-2)',
                 transition: 'border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.2s ease, transform 0.15s ease',
               }}
             >
@@ -2540,18 +2540,18 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                   style={{
                     position: 'absolute',
                     ...sideButtonStyle(n.childSide, -8),
-                    width: 16,
-                    height: 16,
-                    borderRadius: '50%',
-                    background: 'var(--editor-accent, #3b82f6)',
-                    color: '#ffffff',
+                    width: 'var(--dim-16)',
+                    height: 'var(--dim-16)',
+                    borderRadius: 'var(--pct-50)',
+                    background: 'var(--editor-accent)',
+                    color: 'var(--nb-white)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: 12,
-                    fontWeight: 700,
-                    boxShadow: '0 0 8px rgba(59, 130, 246, 0.9)',
-                    zIndex: 65,
+                    fontSize: 'var(--text-12)',
+                    fontWeight: 'var(--weight-700)',
+                    boxShadow: '0 0 var(--dim-8) var(--nb-auto-3b82f6-a90)',
+                    zIndex: 'var(--z-65)',
                     pointerEvents: 'none',
                   }}
                 >
@@ -2563,7 +2563,7 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  width: '100%',
+                  width: 'var(--pct-100)',
                   height: titleHeight,
                   flexShrink: 0,
                 }}
@@ -2589,18 +2589,18 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                         border: 'none',
                         cursor: 'pointer',
                         fontSize: textStyle.iconSize,
-                        lineHeight: 1,
+                        lineHeight: 'var(--leading-1)',
                         width: textStyle.iconWidth - 4,
                         boxSizing: 'border-box',
                         display: 'flex',
                         justifyContent: 'center',
-                        padding: '0 2px',
-                        marginRight: 4,
+                        padding: '0 var(--dim-2)',
+                        marginRight: 'var(--dim-4)',
                         flexShrink: 0,
                         transition: 'transform 0.12s ease',
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.2)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(var(--scale-1-2))')}
+                      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(var(--scale-1))')}
                     >
                       {n.node.icon}
                     </button>
@@ -2669,15 +2669,15 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                       setEditNoteText(n.node.note || '');
                     }}
                     style={{
-                      fontSize: 11,
+                      fontSize: 'var(--text-11)',
                       lineHeight: `${NOTE_LINE_HEIGHT}px`,
-                      color: isRoot ? 'rgba(255, 255, 255, 0.85)' : 'var(--editor-text-secondary, #64748b)',
+                      color: isRoot ? 'var(--nb-white-a85)' : 'var(--editor-text-secondary)',
                       textAlign: 'left',
-                      width: '100%',
-                      marginTop: 3,
-                      paddingTop: 3,
-                      borderTop: isRoot ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid var(--editor-border, #f1f5f9)',
-                      opacity: 0.9,
+                      width: 'var(--pct-100)',
+                      marginTop: 'var(--dim-3)',
+                      paddingTop: 'var(--dim-3)',
+                      borderTop: isRoot ? 'var(--dim-1) solid var(--nb-white-a20)' : 'var(--dim-1) solid var(--editor-border)',
+                      opacity: 'var(--opacity-0-9)',
                       cursor: 'pointer',
                       flexShrink: 0,
                     }}
@@ -2757,8 +2757,8 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
               {hasImage && !n.gallery && n.imageBox && (
                 <div
                   style={{
-                    marginTop: 4,
-                    borderRadius: 4,
+                    marginTop: 'var(--dim-4)',
+                    borderRadius: 'var(--dim-4)',
                     overflow: 'hidden',
                     width: n.imageBox.width + 2,
                     height: n.imageBox.height + 2,
@@ -2766,7 +2766,7 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                     boxSizing: 'border-box',
                     alignSelf: textAlign === 'center' ? 'center' : 'flex-start',
                     position: 'relative',
-                    border: '1px solid var(--editor-border, rgba(0,0,0,0.08))',
+                    border: 'var(--dim-1) solid var(--editor-border)',
                   }}
                 >
                   <Tooltip content="点击放大查看大图" side="top" sideOffset={4}>
@@ -2798,22 +2798,22 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                       aria-label="删除图片"
                       style={{
                         position: 'absolute',
-                        top: 3,
-                        right: 3,
-                        background: 'rgba(0, 0, 0, 0.65)',
-                        color: '#ffffff',
+                        top: 'var(--dim-3)',
+                        right: 'var(--dim-3)',
+                        background: 'var(--nb-black-a65)',
+                        color: 'var(--nb-white)',
                         border: 'none',
-                        borderRadius: '50%',
-                        width: 16,
-                        height: 16,
+                        borderRadius: 'var(--pct-50)',
+                        width: 'var(--dim-16)',
+                        height: 'var(--dim-16)',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: 0,
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.9)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(0, 0, 0, 0.65)')}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-auto-ef4444-a90)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--nb-black-a65)')}
                     >
                       <X size={10} />
                     </button>
@@ -2844,18 +2844,18 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 style={{
                   position: 'absolute',
                   // 子节点向上展开时工具栏移到下方，避免与折叠按钮重叠
-                  ...(n.childSide === 'top' ? { bottom: -28 } : { top: -28 }),
-                  left: '50%',
-                  transform: 'translateX(-50%)',
+                  ...(n.childSide === 'top' ? { bottom: 'calc(var(--dim-28) * -1)' } : { top: 'calc(var(--dim-28) * -1)' }),
+                  left: 'var(--pct-50)',
+                  transform: 'translateX(calc(var(--pct-50) * -1))',
                   display: isPrimarySelected ? 'flex' : 'none',
                   alignItems: 'center',
-                  gap: 3,
-                  padding: '2px 5px',
-                  background: 'var(--editor-surface, #ffffff)',
-                  border: '1px solid var(--editor-border, #cbd5e1)',
-                  borderRadius: 6,
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
-                  zIndex: 20,
+                  gap: 'var(--dim-3)',
+                  padding: 'var(--dim-2) var(--dim-5)',
+                  background: 'var(--editor-surface)',
+                  border: 'var(--dim-1) solid var(--editor-border)',
+                  borderRadius: 'var(--dim-6)',
+                  boxShadow: '0 var(--dim-4) var(--dim-12) var(--nb-black-a12)',
+                  zIndex: 'var(--z-20)',
                 }}
               >
                 {/* 多选时只保留可批量的操作（图标、样式、删除），并提示选中数量 */}
@@ -3044,22 +3044,22 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                       position: 'absolute',
                       // 折叠按钮位于子节点展开的一侧
                       ...sideButtonStyle(n.childSide, -9),
-                      width: 16,
-                      height: 16,
-                      borderRadius: '50%',
-                      background: isRoot ? '#ffffff' : nodeColor,
-                      color: isRoot ? 'var(--editor-accent, #3b82f6)' : '#ffffff',
+                      width: 'var(--dim-16)',
+                      height: 'var(--dim-16)',
+                      borderRadius: 'var(--pct-50)',
+                      background: isRoot ? 'var(--nb-white)' : nodeColor,
+                      color: isRoot ? 'var(--editor-accent)' : 'var(--nb-white)',
                       border: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: 10,
-                      fontWeight: 700,
+                      fontSize: 'var(--text-10)',
+                      fontWeight: 'var(--weight-700)',
                       cursor: 'pointer',
-                      boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+                      boxShadow: '0 var(--dim-1) var(--dim-4) var(--nb-black-a15)',
                       padding: 0,
                       // 高于拉伸手柄（z-index 6），重叠处点击始终命中按钮
-                      zIndex: 7,
+                      zIndex: 'var(--z-7)',
                     }}
                   >
                     {isExpanded ? '-' : n.node.children.length}
@@ -3081,20 +3081,20 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                   style={{
                     position: 'absolute',
                     ...sideButtonStyle(n.childSide, hasChildren ? -28 : -14),
-                    width: 16,
-                    height: 16,
-                    borderRadius: '50%',
-                    background: 'var(--editor-accent, #3b82f6)',
-                    color: '#ffffff',
+                    width: 'var(--dim-16)',
+                    height: 'var(--dim-16)',
+                    borderRadius: 'var(--pct-50)',
+                    background: 'var(--editor-accent)',
+                    color: 'var(--nb-white)',
                     border: 'none',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: 12,
+                    fontSize: 'var(--text-12)',
                     cursor: 'pointer',
                     opacity: 0,
                     transition: 'opacity 0.15s ease',
-                    zIndex: 5,
+                    zIndex: 'var(--z-5)',
                   }}
                 >
                   +
@@ -3118,7 +3118,7 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                       e.stopPropagation();
                       if (hasCustomWidth) setNodeWidth(n.node.id, undefined);
                     }}
-                    style={n.freeEdge === 'right' ? { right: -5 } : { left: -5 }}
+                    style={n.freeEdge === 'right' ? { right: 'calc(var(--dim-5) * -1)' } : { left: 'calc(var(--dim-5) * -1)' }}
                   />
                 </Tooltip>
               )}
@@ -3210,14 +3210,14 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 top: r.labelBox.y,
                 width: r.labelBox.width,
                 height: r.labelBox.height,
-                padding: '2px 6px',
+                padding: 'var(--dim-2) var(--dim-6)',
                 boxSizing: 'border-box',
                 fontSize: RELATION_FONT_SIZE,
                 lineHeight: `${RELATION_LINE_HEIGHT}px`,
                 textAlign: 'center',
-                borderRadius: 4,
-                background: 'var(--editor-bg, #ffffff)',
-                color: selected ? ACCENT_COLOR : 'var(--editor-text-secondary, #64748b)',
+                borderRadius: 'var(--dim-4)',
+                background: 'var(--editor-bg)',
+                color: selected ? ACCENT_COLOR : 'var(--editor-text-secondary)',
                 cursor: 'pointer',
               }}
             >
@@ -3286,8 +3286,8 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => e.stopPropagation()}
                 style={vertical
-                  ? { left: point.x - 8, top: point.y - 4, width: 16, height: 8 }
-                  : { left: point.x - 4, top: point.y - 8, width: 8, height: 16 }}
+                  ? { left: point.x - 8, top: point.y - 4, width: 'var(--dim-16)', height: 'var(--dim-8)' }
+                  : { left: point.x - 4, top: point.y - 8, width: 'var(--dim-8)', height: 'var(--dim-16)' }}
               />
             </Tooltip>
           ));
@@ -3308,16 +3308,16 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 position: 'absolute',
                 left: anchor.x,
                 top: anchor.y,
-                transform: 'translate(-50%, calc(-100% - 8px))',
+                transform: 'translate(calc(var(--pct-50) * -1), calc(calc(var(--pct-100) * -1) - var(--dim-8)))',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 3,
-                padding: '2px 5px',
-                background: 'var(--editor-surface, #ffffff)',
-                border: '1px solid var(--editor-border, #cbd5e1)',
-                borderRadius: 6,
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
-                zIndex: 20,
+                gap: 'var(--dim-3)',
+                padding: 'var(--dim-2) var(--dim-5)',
+                background: 'var(--editor-surface)',
+                border: 'var(--dim-1) solid var(--editor-border)',
+                borderRadius: 'var(--dim-6)',
+                boxShadow: '0 var(--dim-4) var(--dim-12) var(--nb-black-a12)',
+                zIndex: 'var(--z-20)',
               }}
             >
               <Tooltip content={editLabel} shortcut="Enter" side="top" sideOffset={4}>
@@ -3432,24 +3432,24 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0, 0, 0, 0.4)',
-            zIndex: 100000,
+            background: 'var(--nb-black-a40)',
+            zIndex: 'var(--z-100000)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 20,
+            padding: 'var(--dim-20)',
           }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: 440,
-              background: 'var(--editor-surface, #ffffff)',
-              border: '1px solid var(--editor-border, #cbd5e1)',
-              borderRadius: 8,
-              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.2)',
-              padding: '16px 18px',
-              color: 'var(--editor-text, #1e293b)',
+              width: 'var(--dim-440)',
+              background: 'var(--editor-surface)',
+              border: 'var(--dim-1) solid var(--editor-border)',
+              borderRadius: 'var(--dim-8)',
+              boxShadow: '0 var(--dim-12) var(--dim-32) var(--nb-black-a20)',
+              padding: 'var(--dim-16) var(--dim-18)',
+              color: 'var(--editor-text)',
             }}
           >
             <div
@@ -3457,16 +3457,16 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: 10,
+                marginBottom: 'var(--dim-10)',
               }}
             >
-              <span style={{ fontSize: 13, fontWeight: 600 }}>编辑节点备注</span>
+              <span style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)' }}>编辑节点备注</span>
               <button
                 type="button"
                 className="nb-diagram-action-btn"
                 onClick={() => handleFinishNoteEdit()}
                 aria-label="关闭对话框"
-                style={{ padding: 4 }}
+                style={{ padding: 'var(--dim-4)' }}
               >
                 <X size={14} />
               </button>
@@ -3483,14 +3483,14 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 }
               }}
               style={{
-                width: '100%',
-                fontSize: 12,
-                lineHeight: 1.6,
-                color: 'var(--editor-text-secondary, #64748b)',
-                background: 'var(--editor-bg, #ffffff)',
-                border: '1px solid var(--editor-border, #cbd5e1)',
-                borderRadius: 6,
-                padding: '8px 10px',
+                width: 'var(--pct-100)',
+                fontSize: 'var(--text-12)',
+                lineHeight: 'var(--leading-1-6)',
+                color: 'var(--editor-text-secondary)',
+                background: 'var(--editor-bg)',
+                border: 'var(--dim-1) solid var(--editor-border)',
+                borderRadius: 'var(--dim-6)',
+                padding: 'var(--dim-8) var(--dim-10)',
                 outline: 'none',
                 resize: 'vertical',
                 fontFamily: 'inherit',
@@ -3501,8 +3501,8 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
               style={{
                 display: 'flex',
                 justifyContent: 'flex-end',
-                gap: 8,
-                marginTop: 12,
+                gap: 'var(--dim-8)',
+                marginTop: 'var(--dim-12)',
               }}
             >
               <button
@@ -3512,7 +3512,7 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                   setEditingNoteNodeId(null);
                   setEditNoteText('');
                 }}
-                style={{ padding: '4px 12px' }}
+                style={{ padding: 'var(--dim-4) var(--dim-12)' }}
               >
                 取消
               </button>
@@ -3520,7 +3520,7 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
                 type="button"
                 className="nb-editor-primary-btn"
                 onClick={() => handleFinishNoteEdit()}
-                style={{ padding: '4px 14px' }}
+                style={{ padding: 'var(--dim-4) var(--dim-14)' }}
               >
                 保存备注
               </button>
@@ -3614,32 +3614,32 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
             position: 'fixed',
             left: 0,
             top: 0,
-            minWidth: 100,
-            maxWidth: 280,
-            padding: '7px 12px',
-            background: 'var(--editor-surface, #ffffff)',
-            color: 'var(--editor-text, #1e293b)',
-            border: '1.5px solid var(--editor-accent, #3b82f6)',
-            borderRadius: 8,
-            boxShadow: '0 14px 30px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(59, 130, 246, 0.25)',
+            minWidth: 'var(--dim-100)',
+            maxWidth: 'var(--dim-280)',
+            padding: 'var(--dim-7) var(--dim-12)',
+            background: 'var(--editor-surface)',
+            color: 'var(--editor-text)',
+            border: 'var(--dim-1-5) solid var(--editor-accent)',
+            borderRadius: 'var(--dim-8)',
+            boxShadow: '0 var(--dim-14) var(--dim-30) var(--nb-black-a18), 0 var(--dim-4) var(--dim-12) var(--nb-auto-3b82f6-a25)',
             pointerEvents: 'none',
-            zIndex: 100001,
+            zIndex: 'var(--z-100001)',
             display: 'flex',
             alignItems: 'center',
-            gap: 6,
+            gap: 'var(--dim-6)',
             // 实色预览不需要背景模糊；只变换位置，避免移动中重排和重复采样背景。
-            transform: `translate3d(${dragPointRef.current.x + 14}px, ${dragPointRef.current.y + 14}px, 0) scale(1.04)`,
+            transform: `translate3d(${dragPointRef.current.x + 14}px, ${dragPointRef.current.y + 14}px, 0) scale(var(--scale-1-04))`,
             willChange: 'transform',
           }}
         >
-          <GripVertical size={13} style={{ color: 'var(--editor-accent, #3b82f6)', flexShrink: 0, opacity: 0.8 }} />
+          <GripVertical size={13} style={{ color: 'var(--editor-accent)', flexShrink: 0, opacity: 'var(--opacity-0-8)' }} />
           {dragPreview.count <= 1 && dragPreview.node.icon && (
-            <span style={{ fontSize: 14, flexShrink: 0 }}>{dragPreview.node.icon}</span>
+            <span style={{ fontSize: 'var(--text-14)', flexShrink: 0 }}>{dragPreview.node.icon}</span>
           )}
           <span
             style={{
-              fontSize: 12,
-              fontWeight: 500,
+              fontSize: 'var(--text-12)',
+              fontWeight: 'var(--weight-500)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -3652,12 +3652,12 @@ export const MindmapRenderer = forwardRef<MindmapRendererHandle, MindmapRenderer
           {dragPreview.descendantCount > 0 && (
             <span
               style={{
-                fontSize: 10,
-                fontWeight: 600,
-                background: 'rgba(59, 130, 246, 0.14)',
-                color: 'var(--editor-accent, #3b82f6)',
-                padding: '1px 6px',
-                borderRadius: 10,
+                fontSize: 'var(--text-10)',
+                fontWeight: 'var(--weight-600)',
+                background: 'var(--nb-auto-3b82f6-a14)',
+                color: 'var(--editor-accent)',
+                padding: 'var(--dim-1) var(--dim-6)',
+                borderRadius: 'var(--dim-10)',
                 flexShrink: 0,
               }}
             >

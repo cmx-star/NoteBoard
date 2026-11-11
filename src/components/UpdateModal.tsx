@@ -203,11 +203,11 @@ export function UpdateModal({
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 9999,
+        zIndex: 'var(--z-9999)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(0, 0, 0, 0.45)',
+        background: 'var(--nb-black-a45)',
         // 下载进度和鼠标反馈只绘制弹窗本身，不重复虚化整窗背景。
       }}
       onClick={downloading ? undefined : onClose}
@@ -217,11 +217,11 @@ export function UpdateModal({
         role="dialog"
         aria-modal="true"
         style={{
-          width: 540,
+          width: 'var(--dim-540)',
           maxWidth: '92vw',
           maxHeight: '85vh',
           background: 'var(--editor-bg)',
-          border: '1px solid var(--editor-border)',
+          border: 'var(--dim-1) solid var(--editor-border)',
           borderRadius: 'var(--radius-lg)',
           boxShadow: 'var(--shadow-lg)',
           display: 'flex',
@@ -239,14 +239,14 @@ export function UpdateModal({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '14px 18px',
-            borderBottom: '1px solid var(--editor-border)',
+            padding: 'var(--dim-14) var(--dim-18)',
+            borderBottom: 'var(--dim-1) solid var(--editor-border)',
             background: 'var(--editor-surface)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
             <Sparkles size={18} color="var(--accent-strong)" />
-            <span style={{ fontWeight: 600, fontSize: 14 }}>
+            <span style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-14)' }}>
               {checking
                 ? '检查更新'
                 : showDetail
@@ -267,7 +267,7 @@ export function UpdateModal({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: 4,
+                padding: 'var(--dim-4)',
                 borderRadius: 'var(--radius-sm)',
                 opacity: downloading ? 0.5 : 1,
                 transition: 'all var(--transition-fast)',
@@ -276,26 +276,26 @@ export function UpdateModal({
                 if (!downloading) {
                   e.currentTarget.style.background = 'var(--toolbar-hover)';
                   e.currentTarget.style.color = 'var(--editor-text)';
-                  e.currentTarget.style.transform = 'scale(1.08)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!downloading) {
                   e.currentTarget.style.background = 'transparent';
                   e.currentTarget.style.color = 'var(--editor-text-muted)';
-                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1))';
                 }
               }}
               onMouseDown={(e) => {
                 if (!downloading) {
                   e.currentTarget.style.background = 'var(--toolbar-active)';
-                  e.currentTarget.style.transform = 'scale(0.92)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
                 }
               }}
               onMouseUp={(e) => {
                 if (!downloading) {
                   e.currentTarget.style.background = 'var(--toolbar-hover)';
-                  e.currentTarget.style.transform = 'scale(1.08)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
                 }
               }}
               aria-label="关闭更新弹窗"
@@ -308,11 +308,11 @@ export function UpdateModal({
         {/* 主体内容 */}
         <div
           style={{
-            padding: '18px 20px',
+            padding: 'var(--dim-18) var(--dim-20)',
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            gap: 14,
+            gap: 'var(--dim-14)',
           }}
         >
           {/* 1. 正在检查中 */}
@@ -323,8 +323,8 @@ export function UpdateModal({
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '30px 0',
-                gap: 12,
+                padding: 'var(--dim-30) 0',
+                gap: 'var(--dim-12)',
               }}
             >
               <RefreshCw
@@ -333,7 +333,7 @@ export function UpdateModal({
                 style={{ animation: 'spin 1s linear infinite' }}
                 color="var(--accent-strong)"
               />
-              <span style={{ fontSize: 13, color: 'var(--editor-text-secondary)' }}>
+              <span style={{ fontSize: 'var(--text-13)', color: 'var(--editor-text-secondary)' }}>
                 正在检查最新版本，优先 {channelLabel}，不通时尝试 {RELEASE_CHANNELS[alternateUpdateChannel(channel)].label}
               </span>
             </div>
@@ -341,22 +341,22 @@ export function UpdateModal({
 
           {/* 2. 检查失败提示 */}
           {!checking && checkError && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-12)' }}>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'flex-start',
-                  gap: 10,
-                  padding: '12px 14px',
-                  background: 'rgba(239, 68, 68, 0.08)',
-                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  gap: 'var(--dim-10)',
+                  padding: 'var(--dim-12) var(--dim-14)',
+                  background: 'var(--nb-auto-ef4444-a8)',
+                  border: 'var(--dim-1) solid var(--nb-auto-ef4444-a25)',
                   borderRadius: 'var(--radius-md)',
                   color: 'var(--editor-text)',
-                  fontSize: 13,
-                  lineHeight: 1.6,
+                  fontSize: 'var(--text-13)',
+                  lineHeight: 'var(--leading-1-6)',
                 }}
               >
-                <AlertCircle size={18} color="#ef4444" style={{ flexShrink: 0, marginTop: 2 }} />
+                <AlertCircle size={18} color="var(--nb-red-500)" style={{ flexShrink: 0, marginTop: 'var(--dim-2)' }} />
                 <div style={{ whiteSpace: 'pre-wrap' }}>{checkError}</div>
               </div>
             </div>
@@ -370,13 +370,13 @@ export function UpdateModal({
                 flexDirection: 'column',
                 alignItems: 'center',
                 textAlign: 'center',
-                padding: '24px 10px',
-                gap: 10,
+                padding: 'var(--dim-24) var(--dim-10)',
+                gap: 'var(--dim-10)',
               }}
             >
-              <CheckCircle2 size={36} color="#10b981" />
-              <div style={{ fontWeight: 600, fontSize: 15 }}>已是最新版本</div>
-              <div style={{ fontSize: 13, color: 'var(--editor-text-secondary)' }}>
+              <CheckCircle2 size={36} color="var(--nb-emerald-500)" />
+              <div style={{ fontWeight: 'var(--weight-600)', fontSize: 'var(--text-15)' }}>已是最新版本</div>
+              <div style={{ fontSize: 'var(--text-13)', color: 'var(--editor-text-secondary)' }}>
                 NoteBoard 当前版本 (v{result.currentVersion}) 已经是最新版本，无需更新。
               </div>
             </div>
@@ -431,12 +431,12 @@ export function UpdateModal({
               {installError && (
                 <div
                   style={{
-                    padding: '8px 12px',
-                    background: 'rgba(239, 68, 68, 0.08)',
-                    border: '1px solid rgba(239, 68, 68, 0.25)',
+                    padding: 'var(--dim-8) var(--dim-12)',
+                    background: 'var(--nb-auto-ef4444-a8)',
+                    border: 'var(--dim-1) solid var(--nb-auto-ef4444-a25)',
                     borderRadius: 'var(--radius-sm)',
-                    color: '#ef4444',
-                    fontSize: 12,
+                    color: 'var(--nb-red-500)',
+                    fontSize: 'var(--text-12)',
                   }}
                 >
                   {installError}
@@ -445,12 +445,12 @@ export function UpdateModal({
 
               {/* 下载进度条 */}
               {downloading && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)', marginTop: 'var(--dim-4)' }}>
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      fontSize: 12,
+                      fontSize: 'var(--text-12)',
                       color: 'var(--editor-text-muted)',
                     }}
                   >
@@ -479,9 +479,9 @@ export function UpdateModal({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            gap: 10,
-            padding: '12px 18px',
-            borderTop: '1px solid var(--editor-border)',
+            gap: 'var(--dim-10)',
+            padding: 'var(--dim-12) var(--dim-18)',
+            borderTop: 'var(--dim-1) solid var(--editor-border)',
             background: 'var(--editor-surface)',
           }}
         >
@@ -492,8 +492,8 @@ export function UpdateModal({
             disabled={downloading}
             onClick={onClose}
             style={{
-              padding: '6px 14px',
-              fontSize: 12,
+              padding: 'var(--dim-6) var(--dim-14)',
+              fontSize: 'var(--text-12)',
               cursor: downloading ? 'not-allowed' : 'pointer',
               opacity: downloading ? 0.5 : 1,
             }}
@@ -511,9 +511,9 @@ export function UpdateModal({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '6px 14px',
-                fontSize: 12,
+                gap: 'var(--dim-6)',
+                padding: 'var(--dim-6) var(--dim-14)',
+                fontSize: 'var(--text-12)',
                 cursor: downloading ? 'not-allowed' : 'pointer',
               }}
             >
@@ -531,10 +531,10 @@ export function UpdateModal({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '6px 14px',
-                fontSize: 12,
-                fontWeight: 500,
+                gap: 'var(--dim-6)',
+                padding: 'var(--dim-6) var(--dim-14)',
+                fontSize: 'var(--text-12)',
+                fontWeight: 'var(--weight-500)',
               }}
             >
               <RefreshCw size={14} />
@@ -551,10 +551,10 @@ export function UpdateModal({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '6px 16px',
-                fontSize: 12,
-                fontWeight: 500,
+                gap: 'var(--dim-6)',
+                padding: 'var(--dim-6) var(--dim-16)',
+                fontSize: 'var(--text-12)',
+                fontWeight: 'var(--weight-500)',
               }}
             >
               <ExternalLink size={14} />
@@ -572,11 +572,11 @@ export function UpdateModal({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '6px 16px',
-                fontSize: 12,
+                gap: 'var(--dim-6)',
+                padding: 'var(--dim-6) var(--dim-16)',
+                fontSize: 'var(--text-12)',
                 cursor: downloading || !result?.installerDownloadUrl ? 'not-allowed' : 'pointer',
-                fontWeight: 500,
+                fontWeight: 'var(--weight-500)',
                 opacity: downloading ? 0.7 : 1,
               }}
             >

@@ -51,7 +51,7 @@ export function TitleBarDragRegion({ width, minWidth = 0, className, children }:
       style={{
         flex: width === undefined ? 1 : 'none',
         width,
-        height: '100%',
+        height: 'var(--pct-100)',
         minWidth,
       }}
       onMouseDown={(e) => {

@@ -38,7 +38,7 @@ export function PluginPreview({ docKey }: { docKey: string }) {
     if (!id || !current?.enabled || !ref.current) return;
     const controller = new AbortController();
     // 版本切换为独立容器，旧异步渲染的清理不会覆盖新文档。
-    const target = document.createElement('div');target.style.height='100%';ref.current.replaceChildren(target);
+    const target = document.createElement('div');target.style.height='var(--pct-100)';ref.current.replaceChildren(target);
     let dispose: (() => void) | void;
     // 阅读状态订阅随本次挂载一并清理，插件未取消订阅也不会泄漏
     const readingListeners = new Set<() => void>();
@@ -106,7 +106,7 @@ export function PluginPreview({ docKey }: { docKey: string }) {
         : current ? `「${pluginName}」插件未启用，启用后即可直接阅读。`
         : `安装「${pluginName}」插件后即可直接阅读此文件。`} />}
     {loading && !error && <div className="nb-plugin-loading" role="status"><ProgressRing percent={null} size={22} />正在打开文档…</div>}
-    <div ref={ref} hidden={!current?.enabled || !!error} style={{ height:'100%', minHeight:0 }} />
+    <div ref={ref} hidden={!current?.enabled || !!error} style={{ height:'var(--pct-100)', minHeight:0 }} />
     {/* 窗口控件层级低于插件工具栏：工具栏展开时其末尾按钮仍可点击；移动端由插件工具栏提供退出 */}
     {isReading && !IS_MOBILE_UI && <ReadingWindowControls onExit={exitPluginReading} belowToolbar />}
   </div>;

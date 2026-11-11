@@ -295,25 +295,25 @@ export function styleToCss(style: MindTextStyle, baseWeight: number): CSSPropert
 
 /** 文字颜色预设 */
 export const TEXT_COLOR_PRESETS = [
-  { value: '#ef4444', name: '红色' },
-  { value: '#f97316', name: '橙色' },
-  { value: '#ca8a04', name: '黄色' },
-  { value: '#16a34a', name: '绿色' },
-  { value: '#0891b2', name: '青色' },
-  { value: '#2563eb', name: '蓝色' },
-  { value: '#7c3aed', name: '紫色' },
-  { value: '#db2777', name: '粉色' },
-  { value: '#6b7280', name: '灰色' },
+  { value: 'var(--nb-red-500)', name: '红色' },
+  { value: 'var(--nb-orange-500)', name: '橙色' },
+  { value: 'var(--nb-yellow-600)', name: '黄色' },
+  { value: 'var(--nb-green-600)', name: '绿色' },
+  { value: 'var(--nb-cyan-600)', name: '青色' },
+  { value: 'var(--nb-blue-600)', name: '蓝色' },
+  { value: 'var(--nb-purple-600)', name: '紫色' },
+  { value: 'var(--nb-pink-600)', name: '粉色' },
+  { value: 'var(--nb-auto-6b7280)', name: '灰色' },
 ];
 
 /** 高亮背景预设（半透明，浅色 / 深色主题下都可读） */
 export const HIGHLIGHT_PRESETS = [
-  { value: 'rgba(250, 204, 21, 0.45)', name: '黄色' },
-  { value: 'rgba(251, 146, 60, 0.4)', name: '橙色' },
-  { value: 'rgba(248, 113, 113, 0.4)', name: '红色' },
-  { value: 'rgba(74, 222, 128, 0.4)', name: '绿色' },
-  { value: 'rgba(96, 165, 250, 0.4)', name: '蓝色' },
-  { value: 'rgba(167, 139, 250, 0.4)', name: '紫色' },
-  { value: 'rgba(244, 114, 182, 0.4)', name: '粉色' },
-  { value: 'rgba(148, 163, 184, 0.45)', name: '灰色' },
+  { value: 'var(--nb-auto-facc15-a45)', name: '黄色' },
+  { value: 'var(--nb-auto-fb923c-a40)', name: '橙色' },
+  { value: 'var(--nb-auto-f87171-a40)', name: '红色' },
+  { value: 'var(--nb-auto-4ade80-a40)', name: '绿色' },
+  { value: 'var(--nb-auto-60a5fa-a40)', name: '蓝色' },
+  { value: 'var(--nb-auto-a78bfa-a40)', name: '紫色' },
+  { value: 'var(--nb-auto-f472b6-a40)', name: '粉色' },
+  { value: 'var(--nb-auto-94a3b8-a45)', name: '灰色' },
 ];

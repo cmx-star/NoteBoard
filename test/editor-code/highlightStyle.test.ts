@@ -78,22 +78,31 @@ describe('highlightStyle', () => {
     expect(linkSpec?.textDecoration).toContain('underline');
   });
 
-  it('SPEC 包含 operator → --editor-text-secondary', () => {
+  it('SPEC 包含 operator → --hljs-punctuation', () => {
     const opSpec = SPEC.find((s) => {
       const tags = Array.isArray(s.tag) ? s.tag : [s.tag];
       return tags.includes(t.operator);
     });
     expect(opSpec).toBeDefined();
-    expect(opSpec?.color).toBe('var(--editor-text-secondary)');
+    expect(opSpec?.color).toBe('var(--hljs-punctuation)');
   });
 
-  it('SPEC 包含 punctuation → --editor-text-secondary', () => {
+  it('SPEC 包含 punctuation → --hljs-punctuation', () => {
     const punctSpec = SPEC.find((s) => {
       const tags = Array.isArray(s.tag) ? s.tag : [s.tag];
       return tags.includes(t.punctuation);
     });
     expect(punctSpec).toBeDefined();
-    expect(punctSpec?.color).toBe('var(--editor-text-secondary)');
+    expect(punctSpec?.color).toBe('var(--hljs-punctuation)');
+  });
+
+  it('SPEC 包含 bool/null → --hljs-literal', () => {
+    const literalSpec = SPEC.find((s) => {
+      const tags = Array.isArray(s.tag) ? s.tag : [s.tag];
+      return tags.includes(t.bool) && tags.includes(t.null);
+    });
+    expect(literalSpec).toBeDefined();
+    expect(literalSpec?.color).toBe('var(--hljs-literal)');
   });
 
   it('SPEC 总条目数 > 15', () => {

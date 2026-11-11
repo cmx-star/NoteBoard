@@ -304,29 +304,29 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
       case 'grid':
         return {
           backgroundImage: `
-            linear-gradient(45deg, rgba(128,128,128,0.12) 25%, transparent 25%),
-            linear-gradient(-45deg, rgba(128,128,128,0.12) 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, rgba(128,128,128,0.12) 75%),
-            linear-gradient(-45deg, transparent 75%, rgba(128,128,128,0.12) 75%)
+            linear-gradient(var(--rotate-45), var(--nb-auto-808080-a12) var(--pct-25), transparent var(--pct-25)),
+            linear-gradient(calc(var(--rotate-45) * -1), var(--nb-auto-808080-a12) var(--pct-25), transparent var(--pct-25)),
+            linear-gradient(var(--rotate-45), transparent var(--pct-75), var(--nb-auto-808080-a12) var(--pct-75)),
+            linear-gradient(calc(var(--rotate-45) * -1), transparent var(--pct-75), var(--nb-auto-808080-a12) var(--pct-75))
           `,
-          backgroundSize: '16px 16px',
-          backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
+          backgroundSize: 'var(--dim-16) var(--dim-16)',
+          backgroundPosition: '0 0, 0 var(--dim-8), var(--dim-8) calc(var(--dim-8) * -1), calc(var(--dim-8) * -1) var(--dim-0)',
           backgroundColor: 'var(--editor-bg)',
         };
       case 'dark':
-        return { backgroundColor: '#18181b' };
+        return { backgroundColor: 'var(--nb-auto-18181b)' };
       case 'light':
-        return { backgroundColor: '#f4f4f5' };
+        return { backgroundColor: 'var(--nb-auto-f4f4f5)' };
       case 'black':
-        return { backgroundColor: '#000000' };
+        return { backgroundColor: 'var(--nb-black)' };
     }
   };
 
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -344,19 +344,19 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
       <div
         style={{
           position: 'absolute',
-          top: 14,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 20,
+          top: 'var(--dim-14)',
+          left: 'var(--pct-50)',
+          transform: 'translateX(calc(var(--pct-50) * -1))',
+          zIndex: 'var(--z-20)',
           display: isReading ? 'none' : 'flex',
           alignItems: 'center',
-          gap: 4,
-          padding: '4px 8px',
-          background: 'var(--editor-surface, rgba(255, 255, 255, 0.85))',
-          backdropFilter: 'blur(8px)',
-          border: '1px solid var(--editor-border)',
-          borderRadius: 8,
-          boxShadow: 'var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1))',
+          gap: 'var(--dim-4)',
+          padding: 'var(--dim-4) var(--dim-8)',
+          background: 'var(--editor-surface)',
+          backdropFilter: 'blur(var(--dim-8))',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-md, 0 var(--dim-4) var(--dim-6) calc(var(--dim-1) * -1) var(--nb-black-a10))',
           color: 'var(--editor-text)',
         }}
       >
@@ -373,19 +373,19 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
         </Tooltip>
 
         {/* 缩放百分比 / 1:1 快捷切换 */}
-        <Tooltip content="点击重置为 100% 实际大小" side="bottom" sideOffset={6}>
+        <Tooltip content="点击重置为 var(--pct-100) 实际大小" side="bottom" sideOffset={6}>
           <button
             type="button"
             onClick={resetToActual}
             className="nb-image-toolbar-btn"
             style={{
               width: 'auto',
-              minWidth: 48,
-              fontSize: 12,
-              fontWeight: 500,
+              minWidth: 'var(--dim-48)',
+              fontSize: 'var(--text-12)',
+              fontWeight: 'var(--weight-500)',
               fontFamily: 'var(--mono-font-family, monospace)',
             }}
-            aria-label="重置为 100%"
+            aria-label="重置为 var(--pct-100)"
           >
             {Math.round(scale * 100)}%
           </button>
@@ -415,7 +415,7 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
           </button>
         </Tooltip>
 
-        <div style={{ width: 1, height: 16, background: 'var(--editor-border)', margin: '0 4px' }} />
+        <div style={{ width: 'var(--dim-1)', height: 'var(--dim-16)', background: 'var(--editor-border)', margin: '0 var(--dim-4)' }} />
 
         {/* 逆时针旋转 */}
         <Tooltip content="逆时针旋转 90°" side="bottom" sideOffset={6}>
@@ -456,7 +456,7 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
           </button>
         </Tooltip>
 
-        <div style={{ width: 1, height: 16, background: 'var(--editor-border)', margin: '0 4px' }} />
+        <div style={{ width: 'var(--dim-1)', height: 'var(--dim-16)', background: 'var(--editor-border)', margin: '0 var(--dim-4)' }} />
 
         {/* 棋盘/纯色背景切换 */}
         <Tooltip content={`切换查看背景 (当前: ${bgMode})`} side="bottom" sideOffset={6}>
@@ -478,7 +478,7 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
           </button>
         </Tooltip>
 
-        <div style={{ width: 1, height: 16, background: 'var(--editor-border)', margin: '0 4px' }} />
+        <div style={{ width: 'var(--dim-1)', height: 'var(--dim-16)', background: 'var(--editor-border)', margin: '0 var(--dim-4)' }} />
 
         {/* 复制图片 */}
         <Tooltip content="复制图片到剪贴板" side="bottom" sideOffset={6}>
@@ -535,7 +535,7 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
           </button>
         </Tooltip>
 
-        <div style={{ width: 1, height: 16, background: 'var(--editor-border)', margin: '0 4px' }} />
+        <div style={{ width: 'var(--dim-1)', height: 'var(--dim-16)', background: 'var(--editor-border)', margin: '0 var(--dim-4)' }} />
 
         {/* 沉浸阅读 */}
         <ReadingModeButton docKey={docKey} className="nb-image-toolbar-btn" iconSize={15} />
@@ -546,8 +546,8 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
         ref={containerRef}
         style={{
           flex: 1,
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -566,7 +566,7 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: 12,
+              gap: 'var(--dim-12)',
               color: 'var(--editor-text-muted)',
               textAlign: 'center',
             }}
@@ -579,14 +579,14 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '6px 12px',
-                borderRadius: 6,
-                border: '1px solid var(--control-border)',
+                gap: 'var(--dim-6)',
+                padding: 'var(--dim-6) var(--dim-12)',
+                borderRadius: 'var(--radius-md)',
+                border: 'var(--dim-1) solid var(--control-border)',
                 background: 'var(--editor-surface)',
                 color: 'var(--editor-text)',
                 cursor: 'pointer',
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
               }}
             >
               <ExternalLink size={13} />
@@ -609,8 +609,8 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
               transition: isDragging ? 'none' : 'transform 0.08s ease-out',
               maxWidth: 'none',
               maxHeight: 'none',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-              borderRadius: 2,
+              boxShadow: '0 var(--dim-4) var(--dim-20) var(--nb-black-a15)',
+              borderRadius: 'var(--radius-xs)',
               pointerEvents: 'none', // 确保鼠标事件穿透由容器捕获处理
               // 动图、ico 与位图渲染优化
               imageRendering: ext === 'ICO' ? 'auto' : 'auto',
@@ -622,30 +622,30 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
       {/* 底部优雅信息条 */}
       <div
         style={{
-          height: 28,
+          height: 'var(--dim-28)',
           background: 'var(--statusbar-bg, var(--editor-surface))',
-          borderTop: '1px solid var(--editor-border)',
+          borderTop: 'var(--dim-1) solid var(--editor-border)',
           display: isReading ? 'none' : 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 12px',
-          fontSize: 11,
+          padding: '0 var(--dim-12)',
+          fontSize: 'var(--text-11)',
           color: 'var(--editor-text-secondary)',
-          zIndex: 10,
+          zIndex: 'var(--z-10)',
           fontFamily: 'var(--mono-font-family, monospace)',
         }}
       >
         {/* 左侧：格式标签与文件名 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
           <span
             style={{
-              padding: '1px 6px',
-              borderRadius: 4,
-              background: 'var(--editor-accent, #3b82f6)',
-              color: '#ffffff',
-              fontWeight: 600,
-              fontSize: 10,
-              letterSpacing: '0.5px',
+              padding: 'var(--dim-1) var(--dim-6)',
+              borderRadius: 'var(--radius-sm)',
+              background: 'var(--editor-accent)',
+              color: 'var(--nb-white)',
+              fontWeight: 'var(--weight-600)',
+              fontSize: 'var(--text-10)',
+              letterSpacing: 'var(--dim-0-5)',
             }}
           >
             {ext}
@@ -653,7 +653,7 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
           <Tooltip content={name} side="top" sideOffset={4}>
             <span
               style={{
-                maxWidth: 240,
+                maxWidth: 'var(--dim-240)',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
@@ -665,7 +665,7 @@ export function ImageViewer({ docKey, filePath, fileName, fileSize }: ImageViewe
         </div>
 
         {/* 右侧：分辨率、宽高比、大小与缩放率 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-14)' }}>
           {naturalSize && (
             <>
               <span>

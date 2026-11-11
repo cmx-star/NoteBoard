@@ -51,25 +51,25 @@ export function SortRulesPanel({ columns, sortRules, onChange, onClose }: SortRu
     // 撑出浮层可视宽度从而出现横向滚动条。
     <div
       style={{
-        padding: '10px 12px',
+        padding: 'var(--dim-10) var(--dim-12)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 10,
-        width: '100%',
+        gap: 'var(--dim-10)',
+        width: 'var(--pct-100)',
         boxSizing: 'border-box',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>排序</span>
+        <span style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>排序</span>
         {sortRules.length > 0 && (
-          <button type="button" onClick={clearAll} className="nb-bitable-btn-ghost" style={{ fontSize: 11, padding: '2px 6px' }}>
+          <button type="button" onClick={clearAll} className="nb-bitable-btn-ghost" style={{ fontSize: 'var(--text-11)', padding: 'var(--dim-2) var(--dim-6)' }}>
             清除全部
           </button>
         )}
       </div>
 
       {localRules.length === 0 && (
-        <div style={{ fontSize: 12, color: 'var(--editor-text-muted, #94a3b8)', padding: '6px 0' }}>未设置排序字段</div>
+        <div style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)', padding: 'var(--dim-6) 0' }}>未设置排序字段</div>
       )}
 
       {localRules.map((rule, index) => {
@@ -78,8 +78,8 @@ export function SortRulesPanel({ columns, sortRules, onChange, onClose }: SortRu
         const labels = getSortDirectionLabels(col.type);
         const usedColIds = localRules.map((r) => r.columnId);
         return (
-          <div key={`${rule.columnId}-${index}`} style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
-            <span style={{ fontSize: 11, color: 'var(--editor-text-muted, #94a3b8)', width: 18, flexShrink: 0 }}>{index + 1}</span>
+          <div key={`${rule.columnId}-${index}`} style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', minWidth: 0 }}>
+            <span style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', width: 'var(--dim-18)', flexShrink: 0 }}>{index + 1}</span>
             <FieldSelectButton
               columns={columns}
               value={rule.columnId}
@@ -94,8 +94,8 @@ export function SortRulesPanel({ columns, sortRules, onChange, onClose }: SortRu
               style={{
                 flex: 1,
                 minWidth: 0,
-                padding: '3px 6px',
-                fontSize: 11,
+                padding: 'var(--dim-3) var(--dim-6)',
+                fontSize: 'var(--text-11)',
               }}
             >
               {rule.direction === 'asc' ? labels.asc : labels.desc}
@@ -106,7 +106,7 @@ export function SortRulesPanel({ columns, sortRules, onChange, onClose }: SortRu
                 className="nb-bitable-btn-ghost"
                 onClick={() => removeRule(index)}
                 aria-label="移除该排序字段"
-                style={{ padding: 4, flexShrink: 0 }}
+                style={{ padding: 'var(--dim-4)', flexShrink: 0 }}
               >
                 <X size={13} />
               </button>
@@ -122,8 +122,8 @@ export function SortRulesPanel({ columns, sortRules, onChange, onClose }: SortRu
           onClick={addRule}
           style={{
             borderStyle: 'dashed',
-            padding: '5px 10px',
-            color: 'var(--editor-text-muted, #64748b)',
+            padding: 'var(--dim-5) var(--dim-10)',
+            color: 'var(--editor-text-muted)',
           }}
         >
           <Plus size={13} />
@@ -131,11 +131,11 @@ export function SortRulesPanel({ columns, sortRules, onChange, onClose }: SortRu
         </button>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 4 }}>
-        <button type="button" onClick={onClose} className="nb-bitable-btn-secondary" style={{ padding: '4px 10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--dim-8)', marginTop: 'var(--dim-4)' }}>
+        <button type="button" onClick={onClose} className="nb-bitable-btn-secondary" style={{ padding: 'var(--dim-4) var(--dim-10)' }}>
           取消
         </button>
-        <button type="button" onClick={apply} className="nb-bitable-btn-primary" style={{ padding: '4px 12px' }}>
+        <button type="button" onClick={apply} className="nb-bitable-btn-primary" style={{ padding: 'var(--dim-4) var(--dim-12)' }}>
           应用
         </button>
       </div>

@@ -67,7 +67,7 @@ export function UserManagementPanel() {
   return (
     <div className="nb-sync-panel">
       <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>用户管理</h3>
+        <h3 style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-600)', marginBottom: 'var(--dim-4)' }}>用户管理</h3>
       </div>
 
       <div className="nb-sync-card">
@@ -278,7 +278,7 @@ function PasswordDialog({
               </Tooltip>
               <Tooltip content={copied ? '已复制' : withUsername ? '复制账号和密码' : '复制密码'} side="top" sideOffset={4}>
                 <button type="button" className="nb-sync-icon-btn" aria-label="复制" disabled={!password} onClick={() => void copy()}>
-                  {copied ? <Check size={15} color="var(--success-600, #16a34a)" /> : <Copy size={15} />}
+                  {copied ? <Check size={15} color="var(--success-600)" /> : <Copy size={15} />}
                 </button>
               </Tooltip>
             </div>

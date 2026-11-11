@@ -176,7 +176,7 @@ export function VisualKernel({
     editorProps: {
       attributes: {
         class: 'nb-prose',
-        style: 'outline: none; max-width: var(--content-max-width); margin: 0 auto; padding: 16px 24px; min-height: 100%; font-size: var(--content-font-size); line-height: var(--content-line-height); font-family: var(--content-font-family); color: var(--editor-text);',
+        style: 'outline: none; max-width: var(--content-max-width); margin: 0 auto; padding: var(--dim-16) var(--dim-24); min-height: var(--pct-100); font-size: var(--content-font-size); line-height: var(--content-line-height); font-family: var(--content-font-family); color: var(--editor-text);',
       },
       handlePaste: (view, event, slice) => {
         // Excel 复制单元格时可同时携带图片、HTML 表格和文本；表格内优先交给表格插件及默认文本粘贴。
@@ -410,7 +410,7 @@ export function VisualKernel({
     <div
       className={readOnly ? 'nb-md-visual-scroller' : 'nb-md-visual-scroller nb-text-editor-surface'}
       style={{
-        height: '100%',
+        height: 'var(--pct-100)',
         overflow: 'auto',
         position: 'relative',
         display: visible ? 'block' : 'none',
@@ -458,7 +458,7 @@ export function VisualKernel({
           onRemove={handleRemoveLink}
         />
       )}
-      <EditorContent editor={editor} style={{ height: '100%' }} />
+      <EditorContent editor={editor} style={{ height: 'var(--pct-100)' }} />
     </div>
   );
 }

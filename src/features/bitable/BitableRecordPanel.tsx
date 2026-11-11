@@ -171,11 +171,11 @@ export function BitableRecordPanel({
         width,
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-surface, #ffffff)',
-        borderLeft: '1px solid var(--editor-border, #e2e8f0)',
-        boxShadow: '-8px 0 24px rgba(15, 23, 42, 0.08)',
-        zIndex: 40,
-        fontSize: 13,
+        background: 'var(--editor-surface)',
+        borderLeft: 'var(--dim-1) solid var(--editor-border)',
+        boxShadow: 'calc(var(--dim-8) * -1) 0 var(--dim-24) var(--nb-auto-0f172a-a8)',
+        zIndex: 'var(--z-40)',
+        fontSize: 'var(--text-13)',
       }}
     >
       {/* 左侧拖拽手柄：5px 透明区，hover 与拖拽中显示蓝色高亮条 */}
@@ -188,13 +188,13 @@ export function BitableRecordPanel({
             top: 0,
             bottom: 0,
             left: 0,
-            width: 5,
+            width: 'var(--dim-5)',
             cursor: 'col-resize',
-            background: resizing ? 'var(--editor-accent, #3b82f6)' : 'transparent',
-            zIndex: 1,
+            background: resizing ? 'var(--editor-accent)' : 'transparent',
+            zIndex: 'var(--z-1)',
           }}
           onMouseEnter={(e) => {
-            if (!resizing) e.currentTarget.style.background = 'var(--editor-accent, #3b82f6)';
+            if (!resizing) e.currentTarget.style.background = 'var(--editor-accent)';
           }}
           onMouseLeave={(e) => {
             if (!resizing) e.currentTarget.style.background = 'transparent';
@@ -208,23 +208,23 @@ export function BitableRecordPanel({
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
-          gap: 8,
-          padding: '12px 14px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
+          gap: 'var(--dim-8)',
+          padding: 'var(--dim-12) var(--dim-14)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
           flexShrink: 0,
         }}
       >
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontSize: 11, color: 'var(--editor-text-muted, #94a3b8)', marginBottom: 2 }}>
+          <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', marginBottom: 'var(--dim-2)' }}>
             记录详情
           </div>
           <Tooltip content={title} side="bottom" sideOffset={4}>
             <div
               style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: 'var(--editor-text, #1e293b)',
-                lineHeight: 1.4,
+                fontSize: 'var(--text-14)',
+                fontWeight: 'var(--weight-600)',
+                color: 'var(--editor-text)',
+                lineHeight: 'var(--leading-1-4)',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
@@ -234,7 +234,7 @@ export function BitableRecordPanel({
             </div>
           </Tooltip>
           {parentTitle && (
-            <div style={{ fontSize: 11, color: 'var(--editor-text-muted, #94a3b8)', marginTop: 2 }}>
+            <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', marginTop: 'var(--dim-2)' }}>
               子任务 · 上级：{parentTitle}
             </div>
           )}
@@ -246,7 +246,7 @@ export function BitableRecordPanel({
             onClick={onClose}
             aria-label="关闭详情"
             style={{
-              padding: 3,
+              padding: 'var(--dim-3)',
               flexShrink: 0,
             }}
           >
@@ -256,7 +256,7 @@ export function BitableRecordPanel({
       </div>
 
       {/* 字段表单：逐字段纵向排列的收集单 */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '6px 14px 16px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: 'var(--dim-6) var(--dim-14) var(--dim-16)' }}>
         {columns.map((col) => {
           const meta = getFieldTypeMeta(col.type);
           // 多行文本在侧边栏标出当前列的显示配置，便于就地理解为何某格只显示一行
@@ -265,32 +265,32 @@ export function BitableRecordPanel({
             <div
               key={col.id}
               style={{
-                padding: '10px 0',
-                borderBottom: '1px solid var(--editor-border, #f1f5f9)',
+                padding: 'var(--dim-10) 0',
+                borderBottom: 'var(--dim-1) solid var(--editor-border)',
               }}
             >
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 6,
-                  marginBottom: 6,
-                  color: 'var(--editor-text-muted, #64748b)',
+                  gap: 'var(--dim-6)',
+                  marginBottom: 'var(--dim-6)',
+                  color: 'var(--editor-text-muted)',
                 }}
               >
                 {meta.icon}
-                <span style={{ fontSize: 12, fontWeight: 600 }}>{col.name}</span>
-                <span style={{ fontSize: 10, opacity: 0.75 }}>{meta.label}</span>
+                <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-600)' }}>{col.name}</span>
+                <span style={{ fontSize: 'var(--text-10)', opacity: 'var(--opacity-0-75)' }}>{meta.label}</span>
                 {ltConfig && (
                   <Tooltip content="该列的显示模式，可在表格列头菜单中修改" side="top" sideOffset={4}>
                     <span
                       style={{
                         marginLeft: 'auto',
-                        fontSize: 10,
-                        padding: '1px 6px',
-                        borderRadius: 4,
-                        background: 'var(--editor-bg, #f1f5f9)',
-                        color: 'var(--editor-text-muted, #64748b)',
+                        fontSize: 'var(--text-10)',
+                        padding: 'var(--dim-1) var(--dim-6)',
+                        borderRadius: 'var(--dim-4)',
+                        background: 'var(--editor-bg)',
+                        color: 'var(--editor-text-muted)',
                         flexShrink: 0,
                       }}
                     >
@@ -313,7 +313,7 @@ export function BitableRecordPanel({
         })}
 
         {columns.length === 0 && (
-          <div style={{ padding: '20px 0', fontSize: 12, color: 'var(--editor-text-muted, #94a3b8)' }}>
+          <div style={{ padding: 'var(--dim-20) 0', fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)' }}>
             该表格还没有任何字段
           </div>
         )}
@@ -323,8 +323,8 @@ export function BitableRecordPanel({
       {onDeleteRow && (
         <div
           style={{
-            padding: '10px 14px',
-            borderTop: '1px solid var(--editor-border, #e2e8f0)',
+            padding: 'var(--dim-10) var(--dim-14)',
+            borderTop: 'var(--dim-1) solid var(--editor-border)',
             display: 'flex',
             justifyContent: 'flex-end',
             flexShrink: 0,
@@ -338,9 +338,9 @@ export function BitableRecordPanel({
               onClose();
             }}
             style={{
-              gap: 5,
-              padding: '5px 10px',
-              fontSize: 12,
+              gap: 'var(--dim-5)',
+              padding: 'var(--dim-5) var(--dim-10)',
+              fontSize: 'var(--text-12)',
             }}
           >
             <Trash2 size={13} />

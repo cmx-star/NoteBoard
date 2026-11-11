@@ -30,14 +30,14 @@ export function ExternalChangeBanner({ docKey }: ExternalChangeBannerProps) {
     return (
       <div
         style={{
-          padding: '8px 12px',
+          padding: 'var(--dim-8) var(--dim-12)',
           background: 'var(--warning-50)',
-          borderBottom: '1px solid var(--warning-200)',
-          fontSize: 13,
+          borderBottom: 'var(--dim-1) solid var(--warning-200)',
+          fontSize: 'var(--text-13)',
           color: 'var(--editor-text)',
           display: 'flex',
           alignItems: 'center',
-          gap: 8,
+          gap: 'var(--dim-8)',
           flexShrink: 0,
         }}
       >

@@ -288,15 +288,15 @@ export function Dropdown({
           role="menu"
           style={{
             position: 'absolute',
-            top: 'calc(100% + 6px)',
+            top: 'calc(var(--pct-100) + var(--dim-6))',
             right: 0,
-            minWidth: 160,
-            padding: 4,
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, #e2e8f0)',
-            borderRadius: 8,
-            boxShadow: '0 12px 28px rgba(0, 0, 0, 0.16)',
-            zIndex: 100002,
+            minWidth: 'var(--dim-160)',
+            padding: 'var(--dim-4)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: '0 var(--dim-12) var(--dim-28) var(--nb-black-a16)',
+            zIndex: 'var(--z-100002)',
             ...menuStyle,
           }}
         >
@@ -334,10 +334,10 @@ export function DropdownItem({
 
 /** 面板分组小标题 */
 const PANEL_LABEL_STYLE: React.CSSProperties = {
-  fontSize: 11,
-  fontWeight: 600,
-  color: 'var(--editor-text-muted, #94a3b8)',
-  padding: '2px 4px 6px',
+  fontSize: 'var(--text-11)',
+  fontWeight: 'var(--weight-600)',
+  color: 'var(--editor-text-muted)',
+  padding: 'var(--dim-2) var(--dim-4) var(--dim-6)',
 };
 
 export function MindmapStyleControls({
@@ -355,12 +355,12 @@ export function MindmapStyleControls({
   const activeTheme = MINDMAP_THEMES.find((t) => t.id === themeId) ?? MINDMAP_THEMES[0];
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginRight: 4 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', marginRight: 'var(--dim-4)' }}>
       {/* 布局切换：缩略图卡片网格 + 连线样式 */}
       <Dropdown
         open={layoutOpen}
         onOpenChange={setLayoutOpen}
-        menuStyle={{ width: 320, padding: 8 }}
+        menuStyle={{ width: 'var(--dim-320)', padding: 'var(--dim-8)' }}
         trigger={
           <Tooltip content={`布局：${activeLayout.name}`} side="bottom" sideOffset={4}>
             <span
@@ -368,13 +368,13 @@ export function MindmapStyleControls({
               data-active={layoutOpen}
             >
               <MindmapLayoutDiagram layout={activeLayout.id} width={22} />
-              <ChevronDown size={11} style={{ opacity: 0.6 }} />
+              <ChevronDown size={11} style={{ opacity: 'var(--opacity-0-6)' }} />
             </span>
           </Tooltip>
         }
       >
         <div style={PANEL_LABEL_STYLE}>结构</div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--dim-6)' }}>
           {MINDMAP_LAYOUTS.map((item) => (
             <Tooltip key={item.id} content={item.description} side="bottom" sideOffset={4}>
               <button
@@ -400,17 +400,17 @@ export function MindmapStyleControls({
           ))}
         </div>
 
-        <div style={{ ...PANEL_LABEL_STYLE, paddingTop: 12 }}>连线</div>
+        <div style={{ ...PANEL_LABEL_STYLE, paddingTop: 'var(--dim-12)' }}>连线</div>
         <div
           role="radiogroup"
           aria-label="连线样式"
           style={{
             display: 'flex',
-            gap: 2,
-            padding: 2,
-            borderRadius: 7,
-            background: 'var(--editor-bg, #f1f5f9)',
-            border: '1px solid var(--editor-border, #e2e8f0)',
+            gap: 'var(--dim-2)',
+            padding: 'var(--dim-2)',
+            borderRadius: 'var(--radius-md)',
+            background: 'var(--editor-bg)',
+            border: 'var(--dim-1) solid var(--editor-border)',
           }}
         >
           <button
@@ -451,22 +451,22 @@ export function MindmapStyleControls({
               className="nb-mindmap-style-trigger"
               data-active={themeOpen}
             >
-              <span style={{ display: 'flex', gap: 2.5, alignItems: 'center' }}>
+              <span style={{ display: 'flex', gap: 'var(--dim-2-5)', alignItems: 'center' }}>
                 {activeTheme.branchColors.slice(0, 3).map((color, idx) => (
                   <span
                     key={idx}
                     style={{
-                      width: 8,
-                      height: 11,
-                      borderRadius: 2,
+                      width: 'var(--dim-8)',
+                      height: 'var(--dim-11)',
+                      borderRadius: 'var(--radius-xs)',
                       background: color,
                       display: 'inline-block',
-                      boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.08)',
+                      boxShadow: '0 0 0 var(--dim-1) var(--nb-black-a08)',
                     }}
                   />
                 ))}
               </span>
-              <ChevronDown size={11} style={{ opacity: 0.6 }} />
+              <ChevronDown size={11} style={{ opacity: 'var(--opacity-0-6)' }} />
             </span>
           </Tooltip>
         }
@@ -480,17 +480,17 @@ export function MindmapStyleControls({
               setThemeOpen(false);
             }}
           >
-            <span style={{ display: 'flex', gap: 2.5, flexShrink: 0 }}>
+            <span style={{ display: 'flex', gap: 'var(--dim-2-5)', flexShrink: 0 }}>
               {item.branchColors.slice(0, 5).map((color, idx) => (
                 <span
                   key={idx}
                   style={{
-                    width: 8,
-                    height: 11,
-                    borderRadius: 2,
+                    width: 'var(--dim-8)',
+                    height: 'var(--dim-11)',
+                    borderRadius: 'var(--dim-2)',
                     background: color,
                     display: 'inline-block',
-                    boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.08)',
+                    boxShadow: '0 0 0 var(--dim-1) var(--nb-black-a08)',
                   }}
                 />
               ))}

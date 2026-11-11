@@ -428,7 +428,7 @@ export const CanvasMinimap = forwardRef<CanvasMinimapHandle, CanvasMinimapProps>
         {/* 右下角不可见热区，鼠标靠近即唤出展开把手 */}
         <div
           ref={hotZoneRef}
-          style={{ position: 'absolute', right: 0, bottom: 0, width: 160, height: 110, pointerEvents: 'none', zIndex: 6 }}
+          style={{ position: 'absolute', right: 0, bottom: 0, width: 'var(--dim-160)', height: 'var(--dim-110)', pointerEvents: 'none', zIndex: 'var(--z-6)' }}
         />
         <Tooltip content="显示缩略图" side="left" sideOffset={6}>
           <button

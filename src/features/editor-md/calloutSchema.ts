@@ -8,15 +8,15 @@ export interface CalloutColorPreset {
 
 /** 颜色预设（顺序即面板中的排列顺序） */
 export const CALLOUT_COLORS: CalloutColorPreset[] = [
-  { id: 'blue', label: '蓝色', hex: '#3b82f6' },
-  { id: 'green', label: '绿色', hex: '#22c55e' },
-  { id: 'yellow', label: '黄色', hex: '#eab308' },
-  { id: 'orange', label: '橙色', hex: '#f97316' },
-  { id: 'red', label: '红色', hex: '#ef4444' },
-  { id: 'pink', label: '粉色', hex: '#ec4899' },
-  { id: 'purple', label: '紫色', hex: '#8b5cf6' },
-  { id: 'teal', label: '青色', hex: '#14b8a6' },
-  { id: 'gray', label: '灰色', hex: '#64748b' },
+  { id: 'blue', label: '蓝色', hex: 'var(--nb-blue-500)' },
+  { id: 'green', label: '绿色', hex: 'var(--nb-green-500)' },
+  { id: 'yellow', label: '黄色', hex: 'var(--nb-yellow-500)' },
+  { id: 'orange', label: '橙色', hex: 'var(--nb-orange-500)' },
+  { id: 'red', label: '红色', hex: 'var(--nb-red-500)' },
+  { id: 'pink', label: '粉色', hex: 'var(--nb-pink-500)' },
+  { id: 'purple', label: '紫色', hex: 'var(--nb-purple-500)' },
+  { id: 'teal', label: '青色', hex: 'var(--nb-teal-500)' },
+  { id: 'gray', label: '灰色', hex: 'var(--nb-slate-500)' },
 ];
 
 const COLOR_PRESET_MAP = new Map(CALLOUT_COLORS.map((preset) => [preset.id, preset]));

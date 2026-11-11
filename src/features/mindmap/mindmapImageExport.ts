@@ -346,14 +346,14 @@ function drawNode(
 ) {
   const isRoot = n.level === 0;
   const style = getNodeTextStyle(n.level);
-  const branchColor = theme.branchColors[n.branchIndex % theme.branchColors.length] ?? theme.branchColors[0];
-  const surface = resolveCssVars('var(--editor-surface, #ffffff)');
+  const branchColor = resolveCssVars(theme.branchColors[n.branchIndex % theme.branchColors.length] ?? theme.branchColors[0]);
+  const surface = resolveCssVars('var(--editor-surface)');
   const radius = isRoot ? 10 : 8;
   const rect = { x: n.x, y: n.y, w: n.width, h: n.height };
 
   // 1. 背景与投影
   ctx.save();
-  const shadow = parseBoxShadow(isRoot ? theme.rootShadow : '0 2px 6px rgba(0, 0, 0, 0.05)');
+  const shadow = parseBoxShadow(resolveCssVars(isRoot ? theme.rootShadow : '0 var(--dim-2) var(--dim-6) var(--nb-black-a05)'));
   if (shadow) {
     ctx.shadowColor = shadow.color;
     ctx.shadowOffsetX = shadow.x;
@@ -374,11 +374,11 @@ function drawNode(
     const bw = NODE_BORDER_WIDTH;
     roundRectPath(ctx, rect.x + bw / 2, rect.y + bw / 2, rect.w - bw, rect.h - bw, radius - bw / 2);
     ctx.lineWidth = bw;
-    ctx.strokeStyle = n.level === 1 ? branchColor : resolveCssVars('var(--editor-border, #cbd5e1)');
+    ctx.strokeStyle = n.level === 1 ? branchColor : resolveCssVars('var(--editor-border)');
     ctx.stroke();
   }
 
-  const textColor = isRoot ? theme.rootText : resolveCssVars('var(--editor-text, #1e293b)');
+  const textColor = isRoot ? resolveCssVars(theme.rootText) : resolveCssVars('var(--editor-text)');
   const hasNote = n.noteLines.length > 0;
   const nodeImages = n.node.images ?? [];
   const hasImage = nodeImages.length > 0;
@@ -446,13 +446,13 @@ function drawNode(
   // 5. 备注：分隔线 + 浅色小字
   if (hasNote) {
     const dividerY = cursorY + 3;
-    ctx.fillStyle = isRoot ? 'rgba(255, 255, 255, 0.2)' : resolveCssVars('var(--editor-border, #f1f5f9)');
+    ctx.fillStyle = isRoot ? 'var(--nb-white-a20)' : resolveCssVars('var(--editor-border)');
     ctx.fillRect(contentLeft, dividerY, contentWidth, 1);
     ctx.save();
     ctx.globalAlpha = 0.9;
     ctx.font = buildFont(NOTE_FONT_SIZE, 400, fontFamily);
     ctx.textAlign = 'left';
-    ctx.fillStyle = isRoot ? 'rgba(255, 255, 255, 0.85)' : resolveCssVars('var(--editor-text-secondary, #64748b)');
+    ctx.fillStyle = isRoot ? 'var(--nb-white-a85)' : resolveCssVars('var(--editor-text-secondary)');
     const notesTop = dividerY + 1 + 3;
     n.noteLines.forEach((line, idx) => {
       if (line) ctx.fillText(line, contentLeft, notesTop + idx * NOTE_LINE_HEIGHT + NOTE_LINE_HEIGHT / 2);
@@ -465,7 +465,7 @@ function drawNode(
   if (n.gallery) {
     const g = n.gallery;
     const top = cursorY + GALLERY_TOP_GAP;
-    const borderColor = resolveCssVars('var(--editor-border, rgba(0,0,0,0.08))');
+    const borderColor = resolveCssVars('var(--editor-border)');
     for (let index = 0; index < g.visibleCount; index += 1) {
       const x = contentLeft + (index % g.columns) * (g.cellWidth + g.gap);
       const y = top + Math.floor(index / g.columns) * (g.cellHeight + g.gap);
@@ -476,11 +476,11 @@ function drawNode(
       if (img) drawImageCover(ctx, img, x, y, g.cellWidth, g.cellHeight);
       const hidden = index === g.visibleCount - 1 ? nodeImages.length - g.visibleCount : 0;
       if (hidden > 0) {
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.52)';
+        ctx.fillStyle = resolveCssVars('var(--nb-slate-900-a52)');
         ctx.fillRect(x, y, g.cellWidth, g.cellHeight);
         ctx.font = buildFont(15, 600, fontFamily);
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = resolveCssVars('var(--nb-white)');
         ctx.fillText(`+${hidden}`, x + g.cellWidth / 2, y + g.cellHeight / 2);
       }
       ctx.restore();
@@ -512,7 +512,7 @@ function drawNode(
     ctx.restore();
     roundRectPath(ctx, boxLeft + 0.5, boxTop + 0.5, boxWidth - 1, boxHeight - 1, 4);
     ctx.lineWidth = 1;
-    ctx.strokeStyle = resolveCssVars('var(--editor-border, rgba(0,0,0,0.08))');
+    ctx.strokeStyle = resolveCssVars('var(--editor-border)');
     ctx.stroke();
     cursorY = boxTop + boxHeight;
   }
@@ -532,7 +532,7 @@ function drawNode(
       roundRectPath(ctx, contentLeft, rowTop, rowWidth, FILE_ROW_HEIGHT, 6);
       ctx.fill();
       ctx.restore();
-      drawFileGlyph(ctx, contentLeft + 6, rowTop + (FILE_ROW_HEIGHT - 13) / 2, isRoot ? textColor : resolveCssVars('var(--editor-accent, #3b82f6)'));
+      drawFileGlyph(ctx, contentLeft + 6, rowTop + (FILE_ROW_HEIGHT - 13) / 2, isRoot ? textColor : resolveCssVars('var(--editor-accent)'));
       const nameLeft = contentLeft + 6 + 13 + 6;
       const maxNameWidth = rowWidth - FILE_ROW_CHROME;
       const name = fileLinkName(path);
@@ -588,7 +588,7 @@ function drawStructures(
   if (phase === 'below') {
     // 外框：浅色底 + 虚线边
     for (const b of structures.boundaries) {
-      const color = branchColor(b.branchIndex);
+      const color = resolveCssVars(branchColor(b.branchIndex));
       // 跨父范围为阶梯形轮廓，同父范围为圆角矩形
       const shape = b.path ? new Path2D(b.path) : null;
       if (!shape) roundRectPath(ctx, b.rect.x, b.rect.y, b.rect.width, b.rect.height, 12);
@@ -611,25 +611,25 @@ function drawStructures(
       if (!b.titleBox || !b.titleText) continue;
       const box = b.titleBox;
       roundRectPath(ctx, box.x, box.y, box.width, box.height, BOUNDARY_TITLE_HEIGHT / 2);
-      ctx.fillStyle = branchColor(b.branchIndex);
+      ctx.fillStyle = resolveCssVars(branchColor(b.branchIndex));
       ctx.fill();
       ctx.font = buildFont(BOUNDARY_TITLE_FONT_SIZE, 500, fontFamily);
       ctx.textAlign = 'left';
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = resolveCssVars('var(--nb-white)');
       ctx.fillText(b.titleText, box.x + 7, box.y + box.height / 2);
     }
     // 概要大括号（概要主题作为普通节点随节点卡片一起绘制）
     for (const s of structures.summaries) {
       ctx.globalAlpha = theme.edgeOpacity;
       ctx.lineWidth = 1.8;
-      ctx.strokeStyle = branchColor(s.branchIndex);
+      ctx.strokeStyle = resolveCssVars(branchColor(s.branchIndex));
       ctx.stroke(new Path2D(s.bracePath));
       ctx.globalAlpha = 1;
     }
   } else {
     // 联系线：虚线曲线 + 实心箭头 + 底色文字
-    const color = resolveCssVars('var(--editor-text-secondary, #64748b)');
-    const background = resolveCssVars('var(--editor-bg, #ffffff)');
+    const color = resolveCssVars('var(--editor-text-secondary)');
+    const background = resolveCssVars('var(--editor-bg)');
     for (const r of structures.relations) {
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 1.6;
@@ -711,7 +711,7 @@ export async function exportMindmapImageBlob(options: MindmapImageExportOptions)
   if (!ctx) throw new Error('无法创建 2D 绘图上下文');
 
   // 背景跟随编辑器底色（深色主题下导出深色图）
-  ctx.fillStyle = resolveCssVars('var(--editor-bg, #ffffff)');
+  ctx.fillStyle = resolveCssVars('var(--editor-bg)');
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.scale(scale, scale);
   ctx.translate(frame.offsetX, frame.offsetY);
@@ -720,7 +720,7 @@ export async function exportMindmapImageBlob(options: MindmapImageExportOptions)
   drawStructures(ctx, structures, theme, fontFamily, 'below');
 
   // 装饰线（主轴 / 脊柱）
-  const decoColor = resolveCssVars('var(--editor-text-secondary, #64748b)');
+  const decoColor = resolveCssVars('var(--editor-text-secondary)');
   ctx.save();
   ctx.globalAlpha = 0.55;
   ctx.lineCap = 'round';
@@ -743,8 +743,9 @@ export async function exportMindmapImageBlob(options: MindmapImageExportOptions)
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   for (const link of links) {
-    ctx.strokeStyle =
-      theme.branchColors[link.to.branchIndex % theme.branchColors.length] ?? theme.branchColors[0];
+    ctx.strokeStyle = resolveCssVars(
+      theme.branchColors[link.to.branchIndex % theme.branchColors.length] ?? theme.branchColors[0],
+    );
     ctx.lineWidth = link.from.level === 0 ? 2.5 : 1.8;
     ctx.stroke(new Path2D(link.path));
   }

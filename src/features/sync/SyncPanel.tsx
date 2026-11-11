@@ -100,7 +100,7 @@ export function SyncPanel() {
     return (
       <div className="nb-sync-panel">
         <div className="nb-sync-muted">
-          <Loader2 size={14} className="nb-sync-spin" style={{ verticalAlign: -2, marginRight: 6 }} />
+          <Loader2 size={14} className="nb-sync-spin" style={{ verticalAlign: -2, marginRight: 'var(--dim-6)' }} />
           正在加载同步设置
         </div>
       </div>
@@ -111,7 +111,7 @@ export function SyncPanel() {
     <div className="nb-sync-panel">
       {/* 页级仅保留标题，同步与备份的具体规则由设置项说明。 */}
       <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>同步与备份</h3>
+        <h3 style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-600)', marginBottom: 'var(--dim-4)' }}>同步与备份</h3>
       </div>
       <SyncSection draft={draft} update={update} flush={flush} />
       <ProviderSection draft={draft} update={update} />
@@ -627,7 +627,7 @@ function BackupSection({ draft, update, flush }: { draft: SyncConfigFile; update
       ) : (
         <div className="nb-sync-field">
           <div className="nb-sync-card-head">
-            <span style={{ fontSize: 12, fontWeight: 500 }}>云端备份服务</span>
+            <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-500)' }}>云端备份服务</span>
             <button
               type="button"
               className="nb-btn-secondary"
@@ -645,7 +645,7 @@ function BackupSection({ draft, update, flush }: { draft: SyncConfigFile; update
 
       <div className="nb-sync-field">
         <div className="nb-sync-card-head">
-          <span style={{ fontSize: 12, fontWeight: 500 }}>备份列表</span>
+          <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-500)' }}>备份列表</span>
           <button type="button" className="nb-btn-secondary" disabled={loadingList} onClick={() => void refresh()}>
             <RefreshCw size={13} className={loadingList ? 'nb-sync-spin' : ''} />
             {list ? '刷新' : '查看备份'}
@@ -704,7 +704,7 @@ function BackupSection({ draft, update, flush }: { draft: SyncConfigFile; update
         <div>
           将同步文件夹恢复为 <strong>{confirm ? formatDateTime(confirm.item.createdAt) : ''}</strong> 的备份状态：
         </div>
-        <ul style={{ margin: 0, paddingLeft: 18 }}>
+        <ul style={{ margin: 0, paddingLeft: 'var(--dim-18)' }}>
           <li>备份中的文件会覆盖当前内容；</li>
           <li>
             备份之外的现有文件会

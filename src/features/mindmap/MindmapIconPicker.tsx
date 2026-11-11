@@ -67,9 +67,9 @@ export function MindmapIconPicker({
       }
     : {
         position: 'absolute',
-        top: '100%',
+        top: 'var(--pct-100)',
         left: 0,
-        marginTop: 4,
+        marginTop: 'var(--dim-4)',
       };
 
   return (
@@ -77,15 +77,15 @@ export function MindmapIconPicker({
       ref={containerRef}
       style={{
         ...stylePosition,
-        width: 220,
-        background: 'var(--editor-surface, #ffffff)',
-        border: '1px solid var(--editor-border, #e2e8f0)',
-        borderRadius: 8,
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-        padding: '10px 12px',
-        zIndex: 99999,
-        fontSize: 12,
-        color: 'var(--editor-text, #1e293b)',
+        width: 'var(--dim-220)',
+        background: 'var(--editor-surface)',
+        border: 'var(--dim-1) solid var(--editor-border)',
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: '0 var(--dim-8) var(--dim-24) var(--nb-black-a15)',
+        padding: 'var(--dim-10) var(--dim-12)',
+        zIndex: 'var(--z-99999)',
+        fontSize: 'var(--text-12)',
+        color: 'var(--editor-text)',
         userSelect: 'none',
         animation: 'nbFadeIn 0.12s ease-out',
       }}
@@ -97,12 +97,12 @@ export function MindmapIconPicker({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: 8,
-          paddingBottom: 6,
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
+          marginBottom: 'var(--dim-8)',
+          paddingBottom: 'var(--dim-6)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
         }}
       >
-        <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--editor-text-secondary, #64748b)' }}>
+        <span style={{ fontSize: 'var(--text-11)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-secondary)' }}>
           设置节点图标
         </span>
         {currentIcon && (
@@ -117,18 +117,18 @@ export function MindmapIconPicker({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 3,
+                gap: 'var(--dim-3)',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: 11,
-                color: 'var(--editor-text-muted, #94a3b8)',
-                padding: '2px 4px',
-                borderRadius: 4,
+                fontSize: 'var(--text-11)',
+                color: 'var(--editor-text-muted)',
+                padding: 'var(--dim-2) var(--dim-4)',
+                borderRadius: 'var(--radius-sm)',
                 transition: 'color 0.15s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--editor-text-muted, #94a3b8)')}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--nb-red-500)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--editor-text-muted)')}
             >
               <X size={11} />
               <span>清除</span>
@@ -139,17 +139,17 @@ export function MindmapIconPicker({
 
       {/* 分组渲染图标 */}
       {ICON_GROUPS.map((group) => (
-        <div key={group.name} style={{ marginBottom: 8 }}>
+        <div key={group.name} style={{ marginBottom: 'var(--dim-8)' }}>
           <div
             style={{
-              fontSize: 10,
-              color: 'var(--editor-text-muted, #94a3b8)',
-              marginBottom: 4,
+              fontSize: 'var(--text-10)',
+              color: 'var(--editor-text-muted)',
+              marginBottom: 'var(--dim-4)',
             }}
           >
             {group.name}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${group.columns ?? 6}, 1fr)`, gap: 4 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${group.columns ?? 6}, 1fr)`, gap: 'var(--dim-4)' }}>
             {group.icons.map((icon) => {
               const isSelected = currentIcon === icon;
               return (
@@ -164,35 +164,35 @@ export function MindmapIconPicker({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: 28,
-                    fontSize: 15,
+                    height: 'var(--dim-28)',
+                    fontSize: 'var(--text-15)',
                     border: isSelected
-                      ? '1.5px solid var(--editor-accent, #3b82f6)'
-                      : '1px solid transparent',
-                    borderRadius: 4,
+                      ? 'var(--dim-1-5) solid var(--editor-accent)'
+                      : 'var(--dim-1) solid transparent',
+                    borderRadius: 'var(--radius-sm)',
                     background: isSelected
-                      ? 'var(--toolbar-active, rgba(59, 130, 246, 0.12))'
+                      ? 'var(--toolbar-active)'
                       : 'transparent',
                     cursor: 'pointer',
                     transition: 'all 0.12s ease',
                   }}
                   onMouseEnter={(e) => {
                     if (!isSelected) {
-                      e.currentTarget.style.background = 'var(--toolbar-hover, rgba(0, 0, 0, 0.05))';
-                      e.currentTarget.style.transform = 'scale(1.15)';
+                      e.currentTarget.style.background = 'var(--toolbar-hover)';
+                      e.currentTarget.style.transform = 'scale(var(--scale-1-15))';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isSelected) {
                       e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.transform = 'scale(var(--scale-1))';
                     }
                   }}
                   onMouseDown={(e) => {
-                    e.currentTarget.style.transform = 'scale(0.95)';
+                    e.currentTarget.style.transform = 'scale(var(--scale-0-95))';
                   }}
                   onMouseUp={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.15)';
+                    e.currentTarget.style.transform = 'scale(var(--scale-1-15))';
                   }}
                 >
                   {icon}

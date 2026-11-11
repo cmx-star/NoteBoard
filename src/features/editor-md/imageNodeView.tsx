@@ -161,7 +161,7 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
     display: 'flex',
     justifyContent:
       align === 'left' ? 'flex-start' : align === 'right' ? 'flex-end' : 'center',
-    margin: '16px 0',
+    margin: 'var(--dim-16) 0',
     width: '100%',
     position: 'relative',
     userSelect: 'none',
@@ -379,7 +379,7 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
   const menuMeta = [format, naturalSize && `${naturalSize.width} × ${naturalSize.height}`].filter(Boolean).join(' · ');
   // 菜单打开期间以强调色描边标明作用对象（替代整块选中底板）
   const contextOutline: React.CSSProperties = contextMenu
-    ? { outline: '2px solid var(--accent-500, #3b82f6)', outlineOffset: 2 }
+    ? { outline: 'var(--dim-2) solid var(--accent-500)', outlineOffset: 'var(--dim-2)' }
     : {};
 
   return (
@@ -390,8 +390,8 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
           display: 'inline-block',
           width: width === '100%' ? '100%' : width,
           maxWidth: '100%',
-          borderRadius: 8,
-          transition: 'width 150ms ease',
+          borderRadius: 'var(--radius-lg)',
+          transition: 'width var(--duration-150) ease',
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -401,18 +401,18 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
           <div
             style={{
               position: 'absolute',
-              top: 8,
-              right: 8,
-              zIndex: 30,
-              background: 'var(--editor-surface, rgba(255, 255, 255, 0.95))',
-              border: '1px solid var(--editor-border)',
-              borderRadius: 8,
-              padding: '3px 6px',
+              top: 'var(--dim-8)',
+              right: 'var(--dim-8)',
+              zIndex: 'var(--z-30)',
+              background: 'var(--editor-surface)',
+              border: 'var(--dim-1) solid var(--editor-border)',
+              borderRadius: 'var(--radius-lg)',
+              padding: 'var(--dim-3) var(--dim-6)',
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 'var(--dim-4)',
               boxShadow: 'var(--shadow-md)',
-              backdropFilter: 'blur(8px)',
+              backdropFilter: 'blur(var(--dim-8))',
             }}
             onMouseDown={(e) => e.stopPropagation()}
           >
@@ -444,7 +444,7 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
               </Tooltip>
             )}
 
-            <div style={{ width: 1, height: 14, background: 'var(--editor-border)' }} />
+            <div style={{ width: 'var(--dim-1)', height: 'var(--dim-14)', background: 'var(--editor-border)' }} />
 
             {/* 对齐方式 */}
             <Tooltip content="居左对齐" side="top" sideOffset={4}>
@@ -487,7 +487,7 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
               </button>
             </Tooltip>
 
-            <div style={{ width: 1, height: 14, background: 'var(--editor-border)' }} />
+            <div style={{ width: 'var(--dim-1)', height: 'var(--dim-14)', background: 'var(--editor-border)' }} />
 
             {/* 快速缩放预设 */}
             <Tooltip content="缩放为 50%" side="top" sideOffset={4}>
@@ -497,8 +497,8 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
                 onClick={() => updateAttributes({ width: '50%' })}
                 style={{
                   ...actionBtnStyle,
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 'var(--text-11)',
+                  fontWeight: 'var(--weight-600)',
                   color: width === '50%' ? 'var(--accent-strong)' : 'inherit',
                   background: width === '50%' ? 'var(--toolbar-active)' : 'transparent',
                 }}
@@ -513,8 +513,8 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
                 onClick={() => updateAttributes({ width: '75%' })}
                 style={{
                   ...actionBtnStyle,
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 'var(--text-11)',
+                  fontWeight: 'var(--weight-600)',
                   color: width === '75%' ? 'var(--accent-strong)' : 'inherit',
                   background: width === '75%' ? 'var(--toolbar-active)' : 'transparent',
                 }}
@@ -529,8 +529,8 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
                 onClick={() => updateAttributes({ width: '100%' })}
                 style={{
                   ...actionBtnStyle,
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 'var(--text-11)',
+                  fontWeight: 'var(--weight-600)',
                   color: width === '100%' ? 'var(--accent-strong)' : 'inherit',
                   background: width === '100%' ? 'var(--toolbar-active)' : 'transparent',
                 }}
@@ -539,7 +539,7 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
               </button>
             </Tooltip>
 
-            <div style={{ width: 1, height: 14, background: 'var(--editor-border)' }} />
+            <div style={{ width: 'var(--dim-1)', height: 'var(--dim-14)', background: 'var(--editor-border)' }} />
 
             {/* 删除图片 */}
             <Tooltip content="删除图片" side="top" sideOffset={4}>
@@ -547,7 +547,7 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
                 type="button"
                 aria-label="删除图片"
                 onClick={deleteNode}
-                style={{ ...actionBtnStyle, color: '#ef4444' }}
+                style={{ ...actionBtnStyle, color: 'var(--nb-red-500)' }}
               >
                 <Trash2 size={14} />
               </button>
@@ -559,23 +559,23 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
         {loadError ? (
           <div
             style={{
-              padding: '24px 16px',
-              border: '1px dashed var(--error-500, #ef4444)',
-              borderRadius: 8,
-              background: 'rgba(239, 68, 68, 0.05)',
+              padding: 'var(--dim-24) var(--dim-16)',
+              border: 'var(--dim-1) dashed var(--error-500)',
+              borderRadius: 'var(--radius-lg)',
+              background: 'var(--nb-auto-ef4444-a5)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 8,
+              gap: 'var(--dim-8)',
               color: 'var(--editor-text)',
-              fontSize: 13,
+              fontSize: 'var(--text-13)',
               ...contextOutline,
             }}
           >
-            <AlertCircle size={24} color="#ef4444" />
-            <div style={{ fontWeight: 500 }}>图片加载失败</div>
-            <div style={{ fontSize: 11, color: 'var(--editor-text-muted)', wordBreak: 'break-all' }}>
+            <AlertCircle size={24} color="var(--nb-red-500)" />
+            <div style={{ fontWeight: 'var(--weight-500)' }}>图片加载失败</div>
+            <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', wordBreak: 'break-all' }}>
               {rawSrc}
             </div>
             <button
@@ -587,12 +587,12 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 4,
-                padding: '4px 10px',
-                border: '1px solid var(--control-border)',
-                borderRadius: 4,
+                gap: 'var(--dim-4)',
+                padding: 'var(--dim-4) var(--dim-10)',
+                border: 'var(--dim-1) solid var(--control-border)',
+                borderRadius: 'var(--radius-sm)',
                 background: 'var(--editor-surface)',
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 cursor: 'pointer',
               }}
             >
@@ -616,15 +616,15 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
               width: '100%',
               height: 'auto',
               display: 'block',
-              borderRadius: 8,
+              borderRadius: 'var(--radius-lg)',
               cursor: 'zoom-in',
               boxShadow: hovered
-                ? '0 4px 16px rgba(0, 0, 0, 0.12)'
-                : '0 1px 3px rgba(0, 0, 0, 0.05)',
+                ? '0 var(--dim-4) var(--dim-16) var(--nb-black-a12)'
+                : '0 var(--dim-1) var(--dim-3) var(--nb-black-a05)',
               border: hovered
-                ? '1px solid var(--editor-border-focus)'
-                : '1px solid var(--editor-border)',
-              transition: 'box-shadow 150ms ease, border-color 150ms ease',
+                ? 'var(--dim-1) solid var(--editor-border-focus)'
+                : 'var(--dim-1) solid var(--editor-border)',
+              transition: 'box-shadow var(--duration-150) ease, border-color var(--duration-150) ease',
               ...contextOutline,
             }}
           />
@@ -638,16 +638,16 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
               aria-label="拖拽拉伸调节图片尺寸"
               style={{
                 position: 'absolute',
-                bottom: 4,
-                right: 4,
-                width: 14,
-                height: 14,
-                background: 'var(--accent-strong, #3b82f6)',
+                bottom: 'var(--dim-4)',
+                right: 'var(--dim-4)',
+                width: 'var(--dim-14)',
+                height: 'var(--dim-14)',
+                background: 'var(--accent-strong)',
                 borderRadius: '50%',
                 cursor: 'ew-resize',
-                border: '2px solid #ffffff',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
-                zIndex: 20,
+                border: 'var(--dim-2) solid var(--nb-white)',
+                boxShadow: '0 var(--dim-2) var(--dim-4) var(--nb-black-a25)',
+                zIndex: 'var(--z-20)',
               }}
             />
           </Tooltip>
@@ -658,9 +658,9 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
           <div
             style={{
               textAlign: align,
-              fontSize: 12,
+              fontSize: 'var(--text-12)',
               color: 'var(--editor-text-muted)',
-              marginTop: 4,
+              marginTop: 'var(--dim-4)',
               fontStyle: 'italic',
             }}
           >
@@ -700,8 +700,8 @@ export function ImageComponent({ node, editor, updateAttributes, deleteNode }: N
 const actionBtnStyle: React.CSSProperties = {
   background: 'transparent',
   border: 'none',
-  padding: '4px 6px',
-  borderRadius: 4,
+  padding: 'var(--dim-4) var(--dim-6)',
+  borderRadius: 'var(--radius-sm)',
   cursor: 'pointer',
   color: 'var(--editor-text)',
   display: 'inline-flex',

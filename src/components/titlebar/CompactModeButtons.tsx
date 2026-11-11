@@ -28,7 +28,7 @@ function TitleBarIconButton({ label, width, active = false, onClick, children }:
         aria-pressed={active}
         style={{
           width,
-          height: 36,
+          height: 'var(--dim-36)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -42,20 +42,20 @@ function TitleBarIconButton({ label, width, active = false, onClick, children }:
         onMouseEnter={(e) => {
           e.currentTarget.style.background = 'var(--toolbar-hover)';
           e.currentTarget.style.color = hoverColor;
-          e.currentTarget.style.transform = 'scale(1.05)';
+          e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background = 'transparent';
           e.currentTarget.style.color = restColor;
-          e.currentTarget.style.transform = 'scale(1)';
+          e.currentTarget.style.transform = 'scale(var(--scale-1))';
         }}
         onMouseDown={(e) => {
           e.currentTarget.style.background = 'var(--toolbar-active)';
-          e.currentTarget.style.transform = 'scale(0.92)';
+          e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
         }}
         onMouseUp={(e) => {
           e.currentTarget.style.background = 'var(--toolbar-hover)';
-          e.currentTarget.style.transform = 'scale(1.05)';
+          e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
         }}
       >
         {children}

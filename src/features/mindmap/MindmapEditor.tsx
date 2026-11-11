@@ -521,11 +521,11 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
     <div
       ref={rootElRef}
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         overflow: 'hidden',
       }}
     >
@@ -533,29 +533,29 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
       <div
         className="nb-editor-topbar"
         style={{
-          height: 40,
-          minHeight: 40,
+          height: 'var(--dim-40)',
+          minHeight: 'var(--dim-40)',
           display: isReading ? 'none' : 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 14px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #f8fafc)',
+          padding: '0 var(--dim-14)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
           userSelect: 'none',
-          fontSize: 12,
+          fontSize: 'var(--text-12)',
         }}
       >
         {/* 左侧：导图 / 大纲双模切换胶囊 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'var(--editor-bg, #ffffff)',
-              borderRadius: 6,
-              padding: 2,
-              border: '1px solid var(--editor-border, #e2e8f0)',
-              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
+              background: 'var(--editor-bg)',
+              borderRadius: 'var(--radius-md)',
+              padding: 'var(--dim-2)',
+              border: 'var(--dim-1) solid var(--editor-border)',
+              boxShadow: '0 var(--dim-1) var(--dim-2) var(--nb-black-a03)',
             }}
           >
             {/* 导图模式：以图形化思维导图查看与编辑 */}
@@ -586,9 +586,9 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
         </div>
 
         {/* 右侧：缩放控制与 XMind 导入导出 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
           {viewMode === 'mindmap' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)', marginRight: 'var(--dim-6)' }}>
               <Tooltip content="缩小画布" side="bottom" sideOffset={4}>
                 <button
                   type="button"
@@ -599,7 +599,7 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
                   <ZoomOut size={13} />
                 </button>
               </Tooltip>
-              <span style={{ fontSize: 11, minWidth: 42, textAlign: 'center' }}>
+              <span style={{ fontSize: 'var(--text-11)', minWidth: 'var(--dim-42)', textAlign: 'center' }}>
                 {Math.round(zoom * 100)}%
               </span>
               <Tooltip content="放大画布" side="bottom" sideOffset={4}>
@@ -612,12 +612,12 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
                   <ZoomIn size={13} />
                 </button>
               </Tooltip>
-              <Tooltip content="复位 100%" side="bottom" sideOffset={4}>
+              <Tooltip content="复位 var(--pct-100)" side="bottom" sideOffset={4}>
                 <button
                   type="button"
                   className="nb-editor-icon-btn"
                   onClick={() => setZoom(1)}
-                  aria-label="复位 100%"
+                  aria-label="复位 var(--pct-100)"
                 >
                   <RotateCcw size={13} />
                 </button>
@@ -644,7 +644,7 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
 
           {/* 插入概要 / 外框 / 联系线（仅导图模式，作用于选中的节点） */}
           {viewMode === 'mindmap' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }}>
               <Tooltip content="为选中节点添加概要（Shift / Ctrl 多选同层节点，可跨父节点）" side="bottom" sideOffset={4}>
                 <button
                   type="button"
@@ -723,7 +723,7 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
                 <span className="nb-editor-primary-btn" role="button" aria-haspopup="menu" aria-expanded={exportOpen}>
                   <Download size={13} />
                   <span>导出</span>
-                  <ChevronDown size={12} style={{ opacity: 0.85 }} />
+                  <ChevronDown size={12} style={{ opacity: 'var(--opacity-0-85)' }} />
                 </span>
               </Tooltip>
             }
@@ -736,7 +736,7 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
             >
               <Network size={14} />
               <span style={{ flex: 1 }}>XMind</span>
-              <span style={{ fontSize: 11, opacity: 0.55 }}>.xmind</span>
+              <span style={{ fontSize: 'var(--text-11)', opacity: 'var(--opacity-0-55)' }}>.xmind</span>
             </DropdownItem>
             <DropdownItem
               onClick={() => {
@@ -746,9 +746,9 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
             >
               <FileText size={14} />
               <span style={{ flex: 1 }}>Markdown</span>
-              <span style={{ fontSize: 11, opacity: 0.55 }}>.md</span>
+              <span style={{ fontSize: 'var(--text-11)', opacity: 'var(--opacity-0-55)' }}>.md</span>
             </DropdownItem>
-            <div style={{ height: 1, margin: '4px 6px', background: 'var(--editor-border, #e2e8f0)' }} />
+            <div style={{ height: 'var(--dim-1)', margin: 'var(--dim-4) var(--dim-6)', background: 'var(--editor-border)' }} />
             <DropdownItem
               onClick={() => {
                 setExportOpen(false);
@@ -757,7 +757,7 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
             >
               <ImageIcon size={14} />
               <span style={{ flex: 1 }}>PNG 图片</span>
-              <span style={{ fontSize: 11, opacity: 0.55 }}>.png</span>
+              <span style={{ fontSize: 'var(--text-11)', opacity: 'var(--opacity-0-55)' }}>.png</span>
             </DropdownItem>
             <DropdownItem
               onClick={() => {
@@ -767,7 +767,7 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
             >
               <ImageIcon size={14} />
               <span style={{ flex: 1 }}>JPG 图片</span>
-              <span style={{ fontSize: 11, opacity: 0.55 }}>.jpg</span>
+              <span style={{ fontSize: 'var(--text-11)', opacity: 'var(--opacity-0-55)' }}>.jpg</span>
             </DropdownItem>
           </Dropdown>
         </div>

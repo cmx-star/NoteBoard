@@ -76,18 +76,18 @@ function SyncTrashNode({ depth, path }: { depth: number; path: string }) {
         <div
           tabIndex={0}
           style={{
-            height: 'var(--explorer-item-height, 24px)',
-            minHeight: 'var(--explorer-item-height, 24px)',
+            height: 'var(--explorer-item-height, var(--dim-24))',
+            minHeight: 'var(--explorer-item-height, var(--dim-24))',
             display: 'flex',
             alignItems: 'center',
-            gap: 4,
+            gap: 'var(--dim-4)',
             paddingLeft: depth * 12 + 8,
-            paddingRight: 8,
+            paddingRight: 'var(--dim-8)',
             cursor: 'pointer',
             userSelect: 'none',
-            borderLeft: '2px solid transparent',
+            borderLeft: 'var(--dim-2) solid transparent',
             color: 'var(--explorer-text-muted, var(--explorer-text))',
-            fontSize: 'var(--explorer-font-size, 13px)',
+            fontSize: 'var(--explorer-font-size, var(--dim-13))',
             fontFamily: 'var(--explorer-font-family, inherit)',
             whiteSpace: 'nowrap',
             outline: 'none',
@@ -123,7 +123,7 @@ function SyncTrashNode({ depth, path }: { depth: number; path: string }) {
             setMenuPos({ x, y });
           }}
         >
-          <span style={{ width: 12, flexShrink: 0 }} />
+          <span style={{ width: 'var(--dim-12)', flexShrink: 0 }} />
           <Trash2 size={14} style={{ flexShrink: 0 }} />
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>回收站</span>
         </div>
@@ -135,13 +135,13 @@ function SyncTrashNode({ depth, path }: { depth: number; path: string }) {
             position: 'fixed',
             top: menuPos.y,
             left: menuPos.x,
-            zIndex: 9999,
+            zIndex: 'var(--z-9999)',
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             borderRadius: 'var(--radius-sm)',
             boxShadow: 'var(--shadow-md)',
-            padding: '4px',
-            minWidth: 175,
+            padding: 'var(--dim-4)',
+            minWidth: 'var(--dim-175)',
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -269,19 +269,19 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
 
   // 树节点行样式（通过 CSS 变量动态响应排版设置与 Ctrl+滚轮缩放）
   const rowStyle: React.CSSProperties = {
-    height: 'var(--explorer-item-height, 24px)',
-    minHeight: 'var(--explorer-item-height, 24px)',
+    height: 'var(--explorer-item-height, var(--dim-24))',
+    minHeight: 'var(--explorer-item-height, var(--dim-24))',
     display: 'flex',
     alignItems: 'center',
-    gap: 4,
+    gap: 'var(--dim-4)',
     paddingLeft,
-    paddingRight: 8,
+    paddingRight: 'var(--dim-8)',
     cursor: 'pointer',
     userSelect: 'none',
     background: isRevealed ? 'var(--explorer-active)' : 'transparent',
-    borderLeft: isRevealed ? '2px solid var(--accent-strong)' : '2px solid transparent',
+    borderLeft: isRevealed ? 'var(--dim-2) solid var(--accent-strong)' : 'var(--dim-2) solid transparent',
     color: 'var(--explorer-text)',
-    fontSize: 'var(--explorer-font-size, 13px)',
+    fontSize: 'var(--explorer-font-size, var(--dim-13))',
     fontFamily: 'var(--explorer-font-family, inherit)',
     whiteSpace: 'nowrap',
     outline: 'none',
@@ -460,7 +460,7 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
 
   return (
     <div role="treeitem" aria-expanded={node.isDir ? expanded : undefined} aria-level={depth + 1}>
-      <Tooltip content={share ? <span style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><span>{node.path}</span><span>{describeGrants(share)}</span></span> : node.path} disabled={Boolean(menuPos) || isRenaming} side="right" sideOffset={6}>
+      <Tooltip content={share ? <span style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-2)' }}><span>{node.path}</span><span>{describeGrants(share)}</span></span> : node.path} disabled={Boolean(menuPos) || isRenaming} side="right" sideOffset={6}>
         <div
           ref={rowRef}
           style={rowStyle}
@@ -477,8 +477,8 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
             <span
               onClick={handleArrowClick}
               style={{
-                width: 12,
-                height: 12,
+                width: 'var(--dim-12)',
+                height: 'var(--dim-12)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -490,7 +490,7 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
               <ChevronRight size={12} color="var(--explorer-text-muted)" />
             </span>
           ) : (
-            <span style={{ width: 12, flexShrink: 0 }} />
+            <span style={{ width: 'var(--dim-12)', flexShrink: 0 }} />
           )}
 
           {/* 文件/目录优雅图标 */}
@@ -524,16 +524,16 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
               }}
               style={{
                 flex: 1,
-                padding: '1px 4px',
+                padding: 'var(--dim-1) var(--dim-4)',
                 fontSize: 'inherit',
                 fontFamily: 'inherit',
-                border: '1px solid var(--editor-accent)',
-                borderRadius: 2,
+                border: 'var(--dim-1) solid var(--editor-accent)',
+                borderRadius: 'var(--radius-xs)',
                 background: 'var(--editor-surface)',
                 color: 'var(--editor-text)',
                 outline: 'none',
-                height: 'calc(var(--explorer-item-height, 24px) - 6px)',
-                minWidth: 60,
+                height: 'calc(var(--explorer-item-height, var(--dim-24)) - var(--dim-6))',
+                minWidth: 'var(--dim-60)',
                 boxSizing: 'border-box',
               }}
             />
@@ -565,13 +565,13 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
             position: 'fixed',
             top: menuPos.y,
             left: menuPos.x,
-            zIndex: 9999,
+            zIndex: 'var(--z-9999)',
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             borderRadius: 'var(--radius-sm)',
             boxShadow: 'var(--shadow-md)',
-            padding: '4px',
-            minWidth: 175,
+            padding: 'var(--dim-4)',
+            minWidth: 'var(--dim-175)',
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -633,7 +633,7 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
                   setCreatingSubName('');
                 }}
               />
-              <div style={{ height: 1, background: 'var(--editor-border)', margin: '4px 0' }} />
+              <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)', margin: 'var(--dim-4) 0' }} />
             </>
           )}
 
@@ -683,7 +683,7 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
           />
 
           {canRenameOrDelete && <>
-            <div style={{ height: 1, background: 'var(--editor-border)', margin: '4px 0' }} />
+            <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)', margin: 'var(--dim-4) 0' }} />
 
             {/* 移至回收站 */}
             <ContextMenuItem
@@ -714,9 +714,9 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
         <div
           style={{
             paddingLeft: paddingLeft + 16,
-            paddingRight: 8,
-            paddingTop: 2,
-            paddingBottom: 2,
+            paddingRight: 'var(--dim-8)',
+            paddingTop: 'var(--dim-2)',
+            paddingBottom: 'var(--dim-2)',
           }}
         >
           <input
@@ -737,11 +737,11 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
               }
             }}
             style={{
-              width: '100%',
-              padding: '2px 4px',
-              fontSize: 12,
-              border: '1px solid var(--editor-accent)',
-              borderRadius: 2,
+              width: 'var(--pct-100)',
+              padding: 'var(--dim-2) var(--dim-4)',
+              fontSize: 'var(--text-12)',
+              border: 'var(--dim-1) solid var(--editor-accent)',
+              borderRadius: 'var(--radius-xs)',
               background: 'var(--editor-surface)',
               color: 'var(--editor-text)',
               outline: 'none',
@@ -790,37 +790,37 @@ function ContextMenuItem({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '100%',
-        padding: '6px 10px',
+        width: 'var(--pct-100)',
+        padding: 'var(--dim-6) var(--dim-10)',
         background: 'transparent',
         border: 'none',
         textAlign: 'left',
         cursor: 'pointer',
-        fontSize: 12,
-        color: danger ? 'var(--error-500, #ef4444)' : 'var(--editor-text)',
-        borderRadius: 'var(--radius-xs, 3px)',
+        fontSize: 'var(--text-12)',
+        color: danger ? 'var(--error-500)' : 'var(--editor-text)',
+        borderRadius: 'var(--radius-xs, var(--dim-3))',
         transition: 'background var(--transition-fast), transform var(--transition-fast)',
       }}
       onClick={onClick}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = 'var(--toolbar-hover, rgba(125, 125, 125, 0.12))';
+        e.currentTarget.style.background = 'var(--toolbar-hover)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.background = 'transparent';
       }}
       onMouseDown={(e) => {
-        e.currentTarget.style.background = 'var(--toolbar-active, rgba(125, 125, 125, 0.2))';
+        e.currentTarget.style.background = 'var(--toolbar-active)';
       }}
       onMouseUp={(e) => {
-        e.currentTarget.style.background = 'var(--toolbar-hover, rgba(125, 125, 125, 0.12))';
+        e.currentTarget.style.background = 'var(--toolbar-hover)';
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
         <Icon size={13} style={{ flexShrink: 0 }} />
         <span>{label}</span>
       </div>
       {shortcut && (
-        <span style={{ fontSize: 10, color: 'var(--editor-text-muted)', marginLeft: 16 }}>
+        <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-muted)', marginLeft: 'var(--dim-16)' }}>
           {shortcut}
         </span>
       )}

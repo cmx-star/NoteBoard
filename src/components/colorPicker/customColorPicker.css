@@ -3,7 +3,7 @@
 .nb-cc {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-6);
   min-width: 0;
 }
 
@@ -11,7 +11,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-6);
 }
 
 /* 已固定的自定义色块；右上角删除徽标在悬停时出现 */
@@ -23,44 +23,44 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  line-height: 1;
+  font-weight: var(--weight-700);
+  line-height: var(--leading-1);
   background: transparent;
-  transition: transform 100ms ease, box-shadow 100ms ease, background-color 100ms ease;
+  transition: transform var(--duration-100) var(--ease-out), box-shadow var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out);
 }
 
 .nb-cc-swatch:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
-  z-index: 2;
+  transform: scale(var(--scale-1-1));
+  box-shadow: 0 var(--dim-2) var(--dim-6) var(--nb-black-a18);
+  z-index: var(--z-2);
 }
 
 .nb-cc-swatch:active {
-  transform: scale(0.94);
+  transform: scale(var(--scale-0-94));
 }
 
 .nb-cc-swatch.is-active {
-  outline: 2px solid var(--editor-accent, #3b82f6);
-  outline-offset: 1px;
+  outline: var(--border-2) solid var(--editor-accent);
+  outline-offset: var(--border-1);
 }
 
 .nb-cc-remove {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 14px;
-  height: 14px;
+  top: calc(var(--dim-6) * -1);
+  right: calc(var(--dim-6) * -1);
+  width: var(--dim-14);
+  height: var(--dim-14);
   padding: 0;
   border: none;
-  border-radius: 50%;
-  background: #ef4444;
-  color: #ffffff;
+  border-radius: var(--radius-pill);
+  background: var(--error-500);
+  color: var(--nb-white);
   display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transition: transform 100ms ease, background-color 100ms ease;
+  box-shadow: 0 var(--dim-1) var(--dim-3) var(--nb-black-a25);
+  transition: transform var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out);
 }
 
 .nb-cc-swatch:hover .nb-cc-remove,
@@ -69,164 +69,164 @@
 }
 
 .nb-cc-remove:hover {
-  background: #dc2626;
-  transform: scale(1.15);
+  background: var(--error-600);
+  transform: scale(var(--scale-1-15));
 }
 
 .nb-cc-remove:active {
-  transform: scale(0.9);
+  transform: scale(var(--scale-0-9));
 }
 
 /* 打开取色盘的按钮：彩虹描边 + 加号 */
 .nb-cc-add {
   box-sizing: border-box;
   padding: 0;
-  border: 1px dashed var(--control-border, rgba(0, 0, 0, 0.2));
-  border-radius: 4px;
+  border: var(--border-1) dashed var(--control-border);
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-secondary, #64748b);
+  color: var(--editor-text-secondary);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 100ms ease, background-color 100ms ease, border-color 100ms ease, color 100ms ease;
+  transition: transform var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out), border-color var(--duration-100) var(--ease-out), color var(--duration-100) var(--ease-out);
 }
 
 .nb-cc-add:hover {
-  background: var(--editor-hover-background, rgba(0, 0, 0, 0.06));
-  border-color: var(--editor-accent, #3b82f6);
-  color: var(--editor-accent, #3b82f6);
+  background: var(--editor-hover-background);
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
 }
 
 .nb-cc-add:active {
-  transform: scale(0.92);
+  transform: scale(var(--scale-0-92));
 }
 
 .nb-cc-add.is-open {
   border-style: solid;
-  border-color: var(--editor-accent, #3b82f6);
-  color: var(--editor-accent, #3b82f6);
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
 }
 
 /* 取色盘 */
 .nb-cc-picker {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid var(--editor-border, rgba(0, 0, 0, 0.1));
-  background: var(--editor-bg, rgba(0, 0, 0, 0.02));
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--editor-border);
+  background: var(--editor-bg);
 }
 
 .nb-cc-sv {
   position: relative;
-  height: 96px;
-  border-radius: 4px;
+  height: var(--dim-96);
+  border-radius: var(--radius-sm);
   cursor: crosshair;
   touch-action: none;
-  background-image: linear-gradient(to top, #000000, transparent), linear-gradient(to right, #ffffff, transparent);
+  background-image: linear-gradient(to top, var(--nb-black), transparent), linear-gradient(to right, var(--nb-white), transparent);
 }
 
 .nb-cc-hue {
   position: relative;
-  height: 10px;
-  border-radius: 5px;
+  height: var(--dim-10);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   touch-action: none;
-  background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+  background: linear-gradient(to right, var(--nb-hue-red), var(--nb-hue-yellow), var(--nb-hue-green), var(--nb-hue-cyan), var(--nb-hue-blue), var(--nb-hue-magenta), var(--nb-hue-red));
 }
 
 .nb-cc-thumb {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.3);
-  transform: translate(-50%, -50%);
+  width: var(--dim-12);
+  height: var(--dim-12);
+  border-radius: var(--radius-pill);
+  border: var(--border-2) solid var(--nb-white);
+  box-shadow: 0 0 0 var(--border-1) var(--nb-black-a35), 0 var(--dim-1) var(--dim-3) var(--nb-black-a30);
+  transform: translate(calc(var(--pct-50) * -1), calc(var(--pct-50) * -1));
   pointer-events: none;
   box-sizing: border-box;
 }
 
 .nb-cc-hue .nb-cc-thumb {
-  top: 50%;
+  top: var(--pct-50);
 }
 
 .nb-cc-controls {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-4);
 }
 
 .nb-cc-preview {
-  width: 20px;
-  height: 20px;
+  width: var(--dim-20);
+  height: var(--dim-20);
   flex-shrink: 0;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-sm);
+  border: var(--border-1) solid var(--nb-black-a15);
   box-sizing: border-box;
 }
 
 .nb-cc-hex {
   flex: 1;
   min-width: 0;
-  height: 22px;
-  padding: 0 6px;
-  font-size: 12px;
-  font-family: var(--font-mono, monospace);
-  border: 1px solid var(--editor-border, #cbd5e1);
-  border-radius: 4px;
+  height: var(--dim-22);
+  padding: var(--space-0) var(--space-6);
+  font-size: var(--text-12);
+  font-family: var(--mono-font-family);
+  border: var(--border-1) solid var(--editor-border);
+  border-radius: var(--radius-sm);
   outline: none;
-  background: var(--editor-surface, #ffffff);
-  color: var(--editor-text, #1e293b);
+  background: var(--editor-surface);
+  color: var(--editor-text);
   box-sizing: border-box;
 }
 
 .nb-cc-hex:focus {
-  border-color: var(--editor-accent, #3b82f6);
+  border-color: var(--editor-accent);
 }
 
 .nb-cc-hex.is-invalid {
-  border-color: #ef4444;
+  border-color: var(--error-500);
 }
 
 .nb-cc-btn {
-  height: 22px;
-  padding: 0 7px;
+  height: var(--dim-22);
+  padding: var(--space-0) var(--space-7);
   flex-shrink: 0;
-  font-size: 12px;
-  border-radius: 4px;
-  border: 1px solid var(--control-border, rgba(0, 0, 0, 0.12));
+  font-size: var(--text-12);
+  border-radius: var(--radius-sm);
+  border: var(--border-1) solid var(--control-border);
   background: transparent;
-  color: var(--editor-text, #1e293b);
+  color: var(--editor-text);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  transition: transform 100ms ease, background-color 100ms ease, border-color 100ms ease;
+  gap: var(--space-3);
+  transition: transform var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out), border-color var(--duration-100) var(--ease-out);
 }
 
 .nb-cc-btn:hover:not(:disabled) {
-  background: var(--editor-hover-background, rgba(0, 0, 0, 0.06));
+  background: var(--editor-hover-background);
 }
 
 .nb-cc-btn:active:not(:disabled) {
-  transform: scale(0.94);
+  transform: scale(var(--scale-0-94));
 }
 
 .nb-cc-btn:disabled {
-  opacity: 0.45;
+  opacity: var(--opacity-0-45);
   cursor: not-allowed;
 }
 
 .nb-cc-btn.is-primary {
-  border-color: var(--editor-accent, #3b82f6);
-  background: var(--editor-accent, #3b82f6);
-  color: #ffffff;
+  border-color: var(--editor-accent);
+  background: var(--editor-accent);
+  color: var(--nb-white);
 }
 
 .nb-cc-btn.is-primary:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--editor-accent, #3b82f6) 85%, #000000);
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-85), var(--nb-black));
 }

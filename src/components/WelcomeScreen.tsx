@@ -51,17 +51,17 @@ const LABEL_ROW_STYLE: React.CSSProperties = {
   flexWrap: 'wrap',
   alignItems: 'center',
   justifyContent: 'space-between',
-  columnGap: 12,
-  height: 18,
+  columnGap: 'var(--dim-12)',
+  height: 'var(--dim-18)',
   overflow: 'hidden',
 };
 
 // 名称：单独占满一行时仍超宽则省略号截断
 const LABEL_TEXT_STYLE: React.CSSProperties = {
   minWidth: 0,
-  maxWidth: '100%',
-  fontWeight: 500,
-  lineHeight: '18px',
+  maxWidth: 'var(--pct-100)',
+  fontWeight: 'var(--weight-500)',
+  lineHeight: 'var(--dim-18)',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
@@ -118,7 +118,7 @@ export function WelcomeScreen({
       name: meta.name,
       ext: meta.ext,
       desc: meta.desc,
-      color: meta.color,
+      color: 'var(--editor-accent)',
       onClick: createHandlers[id],
     };
   };
@@ -126,59 +126,60 @@ export function WelcomeScreen({
   // 常用新建操作列表（直接展示的格式，排入 3 列网格）
   const primaryCreateActions = createFormats.primary.map(toCreateAction);
 
-  // 打开与常用操作列表（4 个操作，整齐排成 2x2 网格，配置多主题自适应微色调）
+  // 打开与常用操作列表（4 个操作，整齐排成 2x2 网格）
+  // 统一使用主题强调色与中性表面，避免高饱和多色描边破坏整体色系
   const openActions = [
     {
       icon: FileSearch,
       label: '打开文件',
       shortcut: 'Ctrl+O',
-      color: 'var(--editor-accent, #3b82f6)',
-      bg: 'rgba(59, 130, 246, 0.05)',
-      border: 'rgba(59, 130, 246, 0.18)',
-      hoverBg: 'rgba(59, 130, 246, 0.10)',
-      hoverBorder: 'rgba(59, 130, 246, 0.38)',
-      iconBg: 'rgba(59, 130, 246, 0.10)',
-      badgeTint: '#3b82f6',
+      color: 'var(--editor-accent)',
+      bg: 'var(--editor-surface)',
+      border: 'var(--editor-border)',
+      hoverBg: 'var(--toolbar-hover)',
+      hoverBorder: 'var(--editor-border-focus)',
+      iconBg: 'color-mix(in srgb, var(--editor-accent) var(--pct-10), transparent)',
+      badgeTint: 'var(--accent-strong)',
       onClick: onOpenFile,
     },
     {
       icon: FolderOpen,
       label: '打开文件夹',
       shortcut: 'Ctrl+Shift+O',
-      color: '#eab308',
-      bg: 'rgba(234, 179, 8, 0.04)',
-      border: 'rgba(234, 179, 8, 0.16)',
-      hoverBg: 'rgba(234, 179, 8, 0.09)',
-      hoverBorder: 'rgba(234, 179, 8, 0.35)',
-      iconBg: 'rgba(234, 179, 8, 0.09)',
-      badgeTint: '#eab308',
+      color: 'var(--editor-accent)',
+      bg: 'var(--editor-surface)',
+      border: 'var(--editor-border)',
+      hoverBg: 'var(--toolbar-hover)',
+      hoverBorder: 'var(--editor-border-focus)',
+      iconBg: 'color-mix(in srgb, var(--editor-accent) var(--pct-10), transparent)',
+      badgeTint: 'var(--accent-strong)',
       onClick: onOpenFolder,
     },
     {
       icon: Star,
-      iconFill: '#f97316',
+      iconFill: 'currentColor',
       label: '打开收藏夹',
       shortcut: '',
-      color: '#f97316',
-      bg: 'rgba(249, 115, 22, 0.05)',
-      border: 'rgba(249, 115, 22, 0.18)',
-      hoverBg: 'rgba(249, 115, 22, 0.10)',
-      hoverBorder: 'rgba(249, 115, 22, 0.38)',
-      iconBg: 'rgba(249, 115, 22, 0.10)',
-      badgeTint: '#f97316',
+      color: 'var(--editor-accent)',
+      bg: 'var(--editor-surface)',
+      border: 'var(--editor-border)',
+      hoverBg: 'var(--toolbar-hover)',
+      hoverBorder: 'var(--editor-border-focus)',
+      iconBg: 'color-mix(in srgb, var(--editor-accent) var(--pct-10), transparent)',
+      badgeTint: 'var(--accent-strong)',
       onClick: onOpenFavorites,
     },
     {
       icon: Archive,
       label: '打开暂存区',
       shortcut: '',
-      color: '#8b5cf6',
-      bg: 'rgba(139, 92, 246, 0.05)',
-      border: 'rgba(139, 92, 246, 0.18)',
-      hoverBg: 'rgba(139, 92, 246, 0.10)',
-      hoverBorder: 'rgba(139, 92, 246, 0.38)',
-      iconBg: 'rgba(139, 92, 246, 0.10)',
-      badgeTint: '#8b5cf6',
+      color: 'var(--editor-accent)',
+      bg: 'var(--editor-surface)',
+      border: 'var(--editor-border)',
+      hoverBg: 'var(--toolbar-hover)',
+      hoverBorder: 'var(--editor-border-focus)',
+      iconBg: 'color-mix(in srgb, var(--editor-accent) var(--pct-10), transparent)',
+      badgeTint: 'var(--accent-strong)',
       onClick: onOpenStaging,
     },
   ];
@@ -189,13 +190,13 @@ export function WelcomeScreen({
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: compact ? '20px 14px' : '32px 24px',
+        padding: compact ? 'var(--dim-20) var(--dim-14)' : 'var(--dim-32) var(--dim-24)',
         boxSizing: 'border-box',
         background: 'var(--editor-bg)',
         color: 'var(--editor-text)',
@@ -218,15 +219,15 @@ export function WelcomeScreen({
           alt="NoteBoard"
           width={compact ? 44 : 64}
           height={compact ? 44 : 64}
-          style={{ filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12))' }}
+          style={{ filter: 'drop-shadow(0 var(--dim-4) var(--dim-12) var(--nb-black-a12))' }}
         />
         <h1
           style={{
             fontSize: compact ? 20 : 26,
-            fontWeight: 600,
+            fontWeight: 'var(--weight-600)',
             color: 'var(--editor-heading)',
             margin: 0,
-            letterSpacing: '-0.02em',
+            letterSpacing: '-var(--em-0-02)',
           }}
         >
           NoteBoard
@@ -240,8 +241,8 @@ export function WelcomeScreen({
           display: 'grid',
           gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
           gap: compact ? 8 : 12,
-          width: '100%',
-          maxWidth: 840,
+          width: 'var(--pct-100)',
+          maxWidth: 'var(--dim-840)',
         }}
       >
         {primaryCreateActions.map((action) => (
@@ -255,24 +256,24 @@ export function WelcomeScreen({
               flexDirection: compact ? 'column' : 'row',
               alignItems: 'center',
               gap: compact ? 6 : 12,
-              padding: compact ? '10px 6px 8px' : '10px 14px',
+              padding: compact ? 'var(--dim-10) var(--dim-6) var(--dim-8)' : 'var(--dim-10) var(--dim-14)',
               // 去掉描述后保持原有卡片高度
               minHeight: compact ? undefined : 57,
               minWidth: 0,
-              border: '1px solid var(--control-border)',
-              borderRadius: 8,
+              border: 'var(--dim-1) solid var(--control-border)',
+              borderRadius: 'var(--radius-lg)',
               background: 'var(--editor-surface)',
               cursor: 'pointer',
-              fontSize: 13,
+              fontSize: 'var(--text-13)',
               color: 'var(--editor-text)',
-              boxShadow: 'var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.04))',
-              transition: 'all var(--transition-fast, 150ms ease)',
+              boxShadow: 'var(--shadow-sm, 0 var(--dim-1) var(--dim-3) var(--nb-black-a04))',
+              transition: 'all var(--transition-fast, var(--duration-150) ease)',
               textAlign: 'left',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
               e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'var(--editor-surface)';
@@ -280,18 +281,18 @@ export function WelcomeScreen({
               e.currentTarget.style.transform = 'translateY(0)';
             }}
             onMouseDown={(e) => {
-              e.currentTarget.style.transform = 'scale(0.98)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-98))';
             }}
             onMouseUp={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
           >
             {/* 图标容器 */}
             <div
               style={{
-                width: 32,
-                height: 32,
-                borderRadius: 6,
+                width: 'var(--dim-32)',
+                height: 'var(--dim-32)',
+                borderRadius: 'var(--radius-md)',
                 background: 'var(--editor-bg)',
                 display: 'flex',
                 alignItems: 'center',
@@ -302,8 +303,8 @@ export function WelcomeScreen({
               <action.icon size={18} color={action.color} />
             </div>
             {/* 名称 + 扩展名徽标（极窄模式只保留居中名称） */}
-            <div style={compact ? { ...LABEL_ROW_STYLE, flex: 'none', width: '100%', justifyContent: 'center' } : LABEL_ROW_STYLE}>
-              <span style={compact ? { ...LABEL_TEXT_STYLE, fontSize: 12 } : LABEL_TEXT_STYLE}>{action.name}</span>
+            <div style={compact ? { ...LABEL_ROW_STYLE, flex: 'none', width: 'var(--pct-100)', justifyContent: 'center' } : LABEL_ROW_STYLE}>
+              <span style={compact ? { ...LABEL_TEXT_STYLE, fontSize: 'var(--text-12)' } : LABEL_TEXT_STYLE}>{action.name}</span>
               {action.ext && !compact && <CodeBadge>{action.ext}</CodeBadge>}
             </div>
           </button>
@@ -316,8 +317,8 @@ export function WelcomeScreen({
       {moreFormats.length > 0 && (
       <div
         style={{
-          width: '100%',
-          maxWidth: 840,
+          width: 'var(--pct-100)',
+          maxWidth: 'var(--dim-840)',
           marginTop: primaryCreateActions.length > 0 ? 12 : 0,
         }}
       >
@@ -325,25 +326,25 @@ export function WelcomeScreen({
           type="button"
           onClick={() => setShowMoreFormats((prev) => !prev)}
           style={{
-            width: '100%',
+            width: 'var(--pct-100)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 8,
-            padding: '8px 16px',
-            border: showMoreFormats ? '1px solid var(--editor-border-focus)' : '1px solid var(--editor-border)',
-            borderRadius: 8,
+            gap: 'var(--dim-8)',
+            padding: 'var(--dim-8) var(--dim-16)',
+            border: showMoreFormats ? 'var(--dim-1) solid var(--editor-border-focus)' : 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-lg)',
             background: showMoreFormats ? 'var(--toolbar-hover)' : 'var(--editor-surface)',
             cursor: 'pointer',
-            fontSize: 12,
+            fontSize: 'var(--text-12)',
             color: 'var(--editor-text)',
-            transition: 'all var(--transition-fast, 150ms ease)',
-            boxShadow: 'var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.03))',
+            transition: 'all var(--transition-fast, var(--duration-150) ease)',
+            boxShadow: 'var(--shadow-sm, 0 var(--dim-1) var(--dim-2) var(--nb-black-a03))',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
             e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-            e.currentTarget.style.transform = 'translateY(-0.5px)';
+            e.currentTarget.style.transform = 'translateY(calc(var(--dim-0-5) * -1))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = showMoreFormats ? 'var(--toolbar-hover)' : 'var(--editor-surface)';
@@ -351,14 +352,14 @@ export function WelcomeScreen({
             e.currentTarget.style.transform = 'translateY(0)';
           }}
           onMouseDown={(e) => {
-            e.currentTarget.style.transform = 'scale(0.99)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-99))';
           }}
           onMouseUp={(e) => {
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1))';
           }}
         >
-          <Sparkles size={14} color="var(--editor-accent, #3b82f6)" />
-          <span style={{ fontWeight: 500 }}>
+          <Sparkles size={14} color="var(--editor-accent)" />
+          <span style={{ fontWeight: 'var(--weight-500)' }}>
             {showMoreFormats ? '收起更多格式' : '更多格式新建'}
           </span>
           {showMoreFormats ? (
@@ -374,16 +375,16 @@ export function WelcomeScreen({
       {showMoreFormats && moreFormats.length > 0 && (
         <div
           style={{
-            marginTop: 10,
-            width: '100%',
-            maxWidth: 840,
+            marginTop: 'var(--dim-10)',
+            width: 'var(--pct-100)',
+            maxWidth: 'var(--dim-840)',
             display: 'grid',
             gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
             gap: compact ? 6 : 10,
             padding: compact ? 8 : 12,
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
-            borderRadius: 8,
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-lg)',
             boxShadow: 'var(--shadow-sm)',
             boxSizing: 'border-box',
           }}
@@ -398,23 +399,23 @@ export function WelcomeScreen({
                 flexDirection: compact ? 'column' : 'row',
                 alignItems: 'center',
                 gap: compact ? 4 : 10,
-                padding: compact ? '8px 4px 6px' : '8px 12px',
+                padding: compact ? 'var(--dim-8) var(--dim-4) var(--dim-6)' : 'var(--dim-8) var(--dim-12)',
                 // 去掉描述后保持原有卡片高度
                 minHeight: compact ? undefined : 52,
                 minWidth: 0,
-                border: '1px solid var(--control-border)',
-                borderRadius: 6,
+                border: 'var(--dim-1) solid var(--control-border)',
+                borderRadius: 'var(--radius-md)',
                 background: 'var(--editor-bg)',
                 cursor: 'pointer',
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 color: 'var(--editor-text)',
                 textAlign: 'left',
-                transition: 'all var(--transition-fast, 150ms ease)',
+                transition: 'all var(--transition-fast, var(--duration-150) ease)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
                 e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = 'var(--editor-bg)';
@@ -422,15 +423,15 @@ export function WelcomeScreen({
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
               onMouseDown={(e) => {
-                e.currentTarget.style.transform = 'scale(0.98)';
+                e.currentTarget.style.transform = 'scale(var(--scale-0-98))';
               }}
               onMouseUp={(e) => {
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
               }}
             >
               <fmt.icon size={16} color={fmt.color} style={{ flexShrink: 0 }} />
               {/* 名称 + 扩展名徽标（极窄模式只保留居中名称） */}
-              <div style={compact ? { ...LABEL_ROW_STYLE, flex: 'none', width: '100%', justifyContent: 'center' } : LABEL_ROW_STYLE}>
+              <div style={compact ? { ...LABEL_ROW_STYLE, flex: 'none', width: 'var(--pct-100)', justifyContent: 'center' } : LABEL_ROW_STYLE}>
                 <span style={LABEL_TEXT_STYLE}>{fmt.name}</span>
                 {fmt.ext && !compact && <CodeBadge>{fmt.ext}</CodeBadge>}
               </div>
@@ -446,8 +447,8 @@ export function WelcomeScreen({
           display: 'grid',
           gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
           gap: compact ? 8 : 12,
-          width: '100%',
-          maxWidth: 840,
+          width: 'var(--pct-100)',
+          maxWidth: 'var(--dim-840)',
           marginTop: compact ? 8 : 12,
         }}
       >
@@ -461,24 +462,24 @@ export function WelcomeScreen({
               display: 'flex',
               alignItems: 'center',
               gap: compact ? 8 : 12,
-              padding: compact ? '8px 10px' : '10px 14px',
+              padding: compact ? 'var(--dim-8) var(--dim-10)' : 'var(--dim-10) var(--dim-14)',
               // 去掉描述后保持原有卡片高度
               minHeight: compact ? undefined : 57,
               minWidth: 0,
-              border: `1px solid ${action.border}`,
-              borderRadius: 8,
+              border: `var(--dim-1) solid ${action.border}`,
+              borderRadius: 'var(--radius-lg)',
               background: action.bg,
               cursor: 'pointer',
-              fontSize: 13,
+              fontSize: 'var(--text-13)',
               color: 'var(--editor-text)',
-              boxShadow: 'var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.03))',
-              transition: 'all var(--transition-fast, 150ms ease)',
+              boxShadow: 'var(--shadow-sm, 0 var(--dim-1) var(--dim-3) var(--nb-black-a03))',
+              transition: 'all var(--transition-fast, var(--duration-150) ease)',
               textAlign: 'left',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = action.hoverBg;
               e.currentTarget.style.borderColor = action.hoverBorder;
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = action.bg;
@@ -486,18 +487,18 @@ export function WelcomeScreen({
               e.currentTarget.style.transform = 'translateY(0)';
             }}
             onMouseDown={(e) => {
-              e.currentTarget.style.transform = 'scale(0.98)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-98))';
             }}
             onMouseUp={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
           >
             {/* 图标容器（带主题协调的轻底色） */}
             <div
               style={{
-                width: 32,
-                height: 32,
-                borderRadius: 6,
+                width: 'var(--dim-32)',
+                height: 'var(--dim-32)',
+                borderRadius: 'var(--radius-md)',
                 background: action.iconBg,
                 display: 'flex',
                 alignItems: 'center',
@@ -532,52 +533,52 @@ export function WelcomeScreen({
               display: 'flex',
               alignItems: 'center',
               gap: compact ? 8 : 12,
-              padding: compact ? '8px 10px' : '10px 14px',
+              padding: compact ? 'var(--dim-8) var(--dim-10)' : 'var(--dim-10) var(--dim-14)',
               // 去掉描述后保持原有卡片高度
               minHeight: compact ? undefined : 57,
               minWidth: 0,
-              border: '1px solid rgba(14, 165, 233, 0.18)',
-              borderRadius: 8,
-              background: 'rgba(14, 165, 233, 0.05)',
+              border: 'var(--dim-1) solid color-mix(in srgb, var(--editor-accent) var(--pct-22), var(--editor-border))',
+              borderRadius: 'var(--radius-lg)',
+              background: 'color-mix(in srgb, var(--editor-accent) var(--pct-6), var(--editor-surface))',
               cursor: 'pointer',
-              fontSize: 13,
+              fontSize: 'var(--text-13)',
               color: 'var(--editor-text)',
-              boxShadow: 'var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.03))',
-              transition: 'all var(--transition-fast, 150ms ease)',
+              boxShadow: 'var(--shadow-sm, 0 var(--dim-1) var(--dim-3) var(--nb-black-a03))',
+              transition: 'all var(--transition-fast, var(--duration-150) ease)',
               textAlign: 'left',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(14, 165, 233, 0.10)';
-              e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.38)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.background = 'color-mix(in srgb, var(--editor-accent) var(--pct-12), var(--editor-surface))';
+              e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--editor-accent) var(--pct-40), var(--editor-border))';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(14, 165, 233, 0.05)';
-              e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.18)';
+              e.currentTarget.style.background = 'color-mix(in srgb, var(--editor-accent) var(--pct-6), var(--editor-surface))';
+              e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--editor-accent) var(--pct-22), var(--editor-border))';
               e.currentTarget.style.transform = 'translateY(0)';
             }}
             onMouseDown={(e) => {
-              e.currentTarget.style.transform = 'scale(0.99)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-99))';
             }}
             onMouseUp={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
           >
             <div
               style={{
-                width: 32,
-                height: 32,
-                borderRadius: 6,
-                background: 'rgba(14, 165, 233, 0.10)',
+                width: 'var(--dim-32)',
+                height: 'var(--dim-32)',
+                borderRadius: 'var(--radius-md)',
+                background: 'color-mix(in srgb, var(--editor-accent) var(--pct-12), transparent)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
               }}
             >
-              <FolderSync size={18} color="#0ea5e9" />
+              <FolderSync size={18} color="var(--editor-accent)" />
             </div>
-            <div style={{ flex: 1, minWidth: 0, fontWeight: 500, lineHeight: 1.3, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+            <div style={{ flex: 1, minWidth: 0, fontWeight: 'var(--weight-500)', lineHeight: 'var(--leading-1-3)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
               打开同步文件夹
             </div>
           </button>

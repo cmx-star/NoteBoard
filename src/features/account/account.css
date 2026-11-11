@@ -5,22 +5,22 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-radius: 50%;
-  font-weight: 600;
-  line-height: 1;
-  color: hsl(var(--avatar-hue, 212) 70% 38%);
-  background: hsl(var(--avatar-hue, 212) 85% 92%);
+  border-radius: var(--pct-50);
+  font-weight: var(--weight-600);
+  line-height: var(--leading-1);
+  color: var(--account-avatar-fg);
+  background: var(--account-avatar-bg);
   user-select: none;
 }
 
-:root[data-theme='mo-ye'] .nb-account-avatar {
-  color: hsl(var(--avatar-hue, 212) 85% 78%);
-  background: hsl(var(--avatar-hue, 212) 40% 22%);
+:root[data-theme='mo-hei'] .nb-account-avatar {
+  color: var(--account-avatar-fg-dark);
+  background: var(--account-avatar-bg-dark);
 }
 
 .nb-account-avatar.is-group {
-  width: 26px;
-  height: 26px;
+  width: var(--dim-26);
+  height: var(--dim-26);
   color: var(--accent-strong);
   background: var(--editor-selection);
 }
@@ -36,24 +36,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 28px 0;
+  gap: var(--dim-8);
+  padding: var(--dim-28) 0;
   color: var(--editor-text-muted);
-  font-size: 12px;
+  font-size: var(--dim-12);
 }
 
 .nb-account-error {
-  padding: 8px 12px;
+  padding: var(--dim-8) var(--dim-12);
   border-radius: var(--radius-sm);
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--error-600, #dc2626);
-  background: rgba(239, 68, 68, 0.08);
+  font-size: var(--dim-12);
+  line-height: var(--leading-1-6);
+  color: var(--error-600);
+  background: color-mix(in srgb, var(--error-500) var(--pct-8), transparent);
 }
 
-:root[data-theme='mo-ye'] .nb-account-error {
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.12);
+:root[data-theme='mo-hei'] .nb-account-error {
+  color: var(--nb-red-400);
+  background: color-mix(in srgb, var(--error-500) var(--pct-12), transparent);
 }
 
 .nb-account-btn {
@@ -62,17 +62,17 @@
 }
 
 .nb-account-btn.is-danger-text {
-  color: var(--error-500, #ef4444);
+  color: var(--error-500);
 }
 
 .nb-account-btn.is-danger-text:hover:not(:disabled) {
-  border-color: var(--error-500, #ef4444);
-  background: rgba(239, 68, 68, 0.08);
+  border-color: var(--error-500);
+  background: color-mix(in srgb, var(--error-500) var(--pct-8), transparent);
 }
 
 /* 下拉弹层原本位于设置弹窗之上，账号类弹窗打开时再提一层，避免被遮挡。 */
 body:has(.nb-account-dialog) .nb-settings-select-menu {
-  z-index: 10020;
+  z-index: var(--z-10020);
 }
 
 /* ── 账号页 ── */
@@ -80,24 +80,24 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 .nb-account-profile {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--dim-14);
 }
 
 .nb-account-profile-main {
   /* 窄屏换行时保留可读宽度，不被操作按钮挤成竖排 */
-  flex: 1 1 160px;
+  flex: 1 1 var(--dim-160);
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--dim-3);
 }
 
 .nb-account-profile-name {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 600;
+  gap: var(--dim-8);
+  font-size: var(--dim-15);
+  font-weight: var(--weight-600);
   color: var(--editor-text);
 }
 
@@ -106,10 +106,10 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
   align-items: center;
   flex-shrink: 0;
   white-space: nowrap;
-  padding: 1px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 500;
+  padding: var(--dim-1) var(--dim-8);
+  border-radius: var(--radius-pill);
+  font-size: var(--dim-11);
+  font-weight: var(--weight-500);
   color: var(--editor-text-secondary);
   background: var(--toolbar-hover);
 }
@@ -124,13 +124,13 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 }
 
 .nb-account-role.is-warn {
-  color: var(--warning-600, #d97706);
-  background: rgba(245, 158, 11, 0.12);
+  color: var(--warning-600);
+  background: color-mix(in srgb, var(--warning-500) var(--pct-12), transparent);
 }
 
 .nb-account-actions {
   display: flex;
-  gap: 8px;
+  gap: var(--dim-8);
   flex-wrap: wrap;
   justify-content: flex-end;
 }
@@ -138,14 +138,14 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 .nb-account-form {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: var(--dim-12);
 }
 
 .nb-account-form-foot {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
+  gap: var(--dim-12);
 }
 
 .nb-account-form-foot .nb-sync-muted {
@@ -153,8 +153,8 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 }
 
 .nb-account-field-error {
-  font-size: 11px;
-  color: var(--error-500, #ef4444);
+  font-size: var(--dim-11);
+  color: var(--error-500);
 }
 
 /* ── 用户管理 ── */
@@ -162,27 +162,27 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 .nb-users-toolbar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--dim-10);
 }
 
 .nb-users-search {
   position: relative;
   flex: 1;
-  max-width: 260px;
+  max-width: var(--dim-260);
 }
 
 .nb-users-search svg {
   position: absolute;
-  left: 9px;
-  top: 50%;
-  transform: translateY(-50%);
+  left: var(--dim-9);
+  top: var(--pct-50);
+  transform: translateY(calc(var(--pct-50) * -1));
   color: var(--editor-text-muted);
   pointer-events: none;
 }
 
 .nb-users-search .nb-sync-input {
-  width: 100%;
-  padding-left: 28px;
+  width: var(--pct-100);
+  padding-left: var(--dim-28);
 }
 
 .nb-users-item.is-disabled .nb-sync-list-name {
@@ -194,12 +194,12 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 .nb-users-item .nb-sync-list-name {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--dim-6);
 }
 
 .nb-password-row {
   display: flex;
-  gap: 6px;
+  gap: var(--dim-6);
 }
 
 .nb-password-row .nb-sync-secret {
@@ -209,12 +209,12 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 /* ── 共享对话框 ── */
 
 .nb-share-body {
-  gap: 14px;
+  gap: var(--dim-14);
 }
 
 .nb-share-path {
-  margin-top: -4px;
-  font-size: 11px;
+  margin-top: calc(var(--dim-4) * -1);
+  font-size: var(--dim-11);
   color: var(--editor-text-muted);
   word-break: break-all;
 }
@@ -222,7 +222,7 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 .nb-share-add {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--dim-8);
 }
 
 .nb-share-add-user {
@@ -242,20 +242,20 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 }
 
 .nb-share-section-title {
-  margin-bottom: -6px;
-  font-size: 12px;
-  font-weight: 600;
+  margin-bottom: calc(var(--dim-6) * -1);
+  font-size: var(--dim-12);
+  font-weight: var(--weight-600);
   color: var(--editor-text);
 }
 
 /* 选择框与“添加”按钮等高对齐 */
 .nb-share-add .nb-settings-select,
 .nb-share-add .nb-account-btn {
-  height: 32px;
+  height: var(--dim-32);
 }
 
 .nb-share-grant .nb-settings-select {
-  min-width: 92px;
+  min-width: var(--dim-92);
 }
 
 .nb-share-foot {
@@ -266,9 +266,9 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 
 .nb-explorer-spaces {
   display: flex;
-  gap: 2px;
-  margin: 6px 8px 2px;
-  padding: 2px;
+  gap: var(--dim-2);
+  margin: var(--dim-6) var(--dim-8) var(--dim-2);
+  padding: var(--dim-2);
   border-radius: var(--radius-sm);
   background: var(--toolbar-hover);
   flex-shrink: 0;
@@ -279,16 +279,16 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: var(--dim-5);
   min-width: 0;
-  height: 24px;
-  padding: 0 6px;
+  height: var(--dim-24);
+  padding: 0 var(--dim-6);
   border: none;
-  border-radius: calc(var(--radius-sm) - 1px);
+  border-radius: calc(var(--radius-sm) - var(--dim-1));
   background: transparent;
   color: var(--explorer-text-muted, var(--editor-text-muted));
   font-family: inherit;
-  font-size: calc(var(--explorer-font-size, 13px) - 1px);
+  font-size: calc(var(--explorer-font-size, var(--dim-13)) - var(--dim-1));
   white-space: nowrap;
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
@@ -305,28 +305,28 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
 }
 
 .nb-explorer-space:active {
-  transform: scale(0.97);
+  transform: scale(var(--scale-0-97));
 }
 
 .nb-explorer-space.is-active {
   color: var(--explorer-text, var(--editor-text));
-  font-weight: 600;
+  font-weight: var(--weight-600);
   background: var(--editor-bg);
   box-shadow: var(--shadow-sm);
 }
 
 .nb-explorer-empty {
-  padding: 28px 16px;
+  padding: var(--dim-28) var(--dim-16);
   text-align: center;
-  font-size: 12px;
-  line-height: 1.7;
+  font-size: var(--dim-12);
+  line-height: var(--leading-1-7);
   color: var(--explorer-text-muted, var(--editor-text-muted));
 }
 
 .nb-tree-share-mark {
   display: inline-flex;
   margin-left: auto;
-  padding-left: 6px;
+  padding-left: var(--dim-6);
   flex-shrink: 0;
   color: var(--explorer-text-muted, var(--editor-text-muted));
 }
@@ -336,7 +336,7 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
     flex-wrap: wrap;
   }
   .nb-account-actions {
-    width: 100%;
+    width: var(--pct-100);
     justify-content: flex-start;
   }
   .nb-account-form {
@@ -349,7 +349,7 @@ body:has(.nb-account-dialog) .nb-settings-select-menu {
     flex-wrap: wrap;
   }
   .nb-share-add-user {
-    flex-basis: 100%;
+    flex-basis: var(--pct-100);
   }
 }
 

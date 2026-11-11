@@ -740,12 +740,12 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
       ref={containerRef}
       onPointerMove={handlePointerMove}
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         overflowY: 'auto',
-        padding: '36px 48px',
-        background: 'var(--editor-bg, #ffffff)',
-        color: 'var(--editor-text, #1e293b)',
+        padding: 'var(--dim-36) var(--dim-48)',
+        background: 'var(--editor-bg)',
+        color: 'var(--editor-text)',
         fontFamily: 'var(--content-font-family, inherit)',
         boxSizing: 'border-box',
         position: 'relative',
@@ -761,7 +761,7 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
         onChange={handleFileSelect}
       />
 
-      <div style={{ maxWidth: 860, margin: '0 auto', position: 'relative', height: virtualized ? virtualizer.getTotalSize() : undefined }}>
+      <div style={{ maxWidth: 'var(--dim-860)', margin: '0 auto', position: 'relative', height: virtualized ? virtualizer.getTotalSize() : undefined }}>
         {renderedItems.map(({ item, idx, virtualRow }) => {
           const isRoot = item.depth === 0;
           // 概要主题行：不能拖动、没有同级，Enter 新增子要点
@@ -791,11 +791,11 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                margin: isRoot ? '12px 0 20px 0' : '4px 0',
+                margin: isRoot ? 'var(--dim-12) 0 var(--dim-20) 0' : 'var(--dim-4) 0',
                 position: 'relative',
                 transition: 'background 0.12s ease',
-                borderRadius: 6,
-                background: isInsideTarget ? 'rgba(59, 130, 246, 0.12)' : 'transparent',
+                borderRadius: 'var(--radius-md)',
+                background: isInsideTarget ? 'var(--nb-auto-3b82f6-a12)' : 'transparent',
               }}
             >
               {/* 行级精确落位高亮指示线 (Drop Indicator Line) - 紧贴目标行边界 */}
@@ -803,27 +803,27 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                 <div
                   style={{
                     position: 'absolute',
-                    top: -2,
+                    top: 'calc(var(--dim-2) * -1)',
                     left: paddingLeft,
                     right: 0,
-                    height: 2,
-                    background: 'var(--editor-accent, #3b82f6)',
-                    zIndex: 50,
+                    height: 'var(--dim-2)',
+                    background: 'var(--editor-accent)',
+                    zIndex: 'var(--z-50)',
                     pointerEvents: 'none',
-                    borderRadius: 1,
-                    boxShadow: '0 0 6px rgba(59, 130, 246, 0.6)',
+                    borderRadius: 'var(--dim-1)',
+                    boxShadow: '0 0 var(--dim-6) var(--nb-auto-3b82f6-a60)',
                   }}
                 >
                   <div
                     style={{
                       position: 'absolute',
-                      left: -4,
-                      top: -3,
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      background: 'var(--editor-accent, #3b82f6)',
-                      boxShadow: '0 0 4px rgba(59, 130, 246, 0.8)',
+                      left: 'calc(var(--dim-4) * -1)',
+                      top: 'calc(var(--dim-3) * -1)',
+                      width: 'var(--dim-8)',
+                      height: 'var(--dim-8)',
+                      borderRadius: 'var(--pct-50)',
+                      background: 'var(--editor-accent)',
+                      boxShadow: '0 0 var(--dim-4) var(--nb-auto-3b82f6-a80)',
                     }}
                   />
                 </div>
@@ -833,27 +833,27 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: -2,
+                    bottom: 'calc(var(--dim-2) * -1)',
                     left: paddingLeft,
                     right: 0,
-                    height: 2,
-                    background: 'var(--editor-accent, #3b82f6)',
-                    zIndex: 50,
+                    height: 'var(--dim-2)',
+                    background: 'var(--editor-accent)',
+                    zIndex: 'var(--z-50)',
                     pointerEvents: 'none',
-                    borderRadius: 1,
-                    boxShadow: '0 0 6px rgba(59, 130, 246, 0.6)',
+                    borderRadius: 'var(--dim-1)',
+                    boxShadow: '0 0 var(--dim-6) var(--nb-auto-3b82f6-a60)',
                   }}
                 >
                   <div
                     style={{
                       position: 'absolute',
-                      left: -4,
-                      top: -3,
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      background: 'var(--editor-accent, #3b82f6)',
-                      boxShadow: '0 0 4px rgba(59, 130, 246, 0.8)',
+                      left: 'calc(var(--dim-4) * -1)',
+                      top: 'calc(var(--dim-3) * -1)',
+                      width: 'var(--dim-8)',
+                      height: 'var(--dim-8)',
+                      borderRadius: 'var(--pct-50)',
+                      background: 'var(--editor-accent)',
+                      boxShadow: '0 0 var(--dim-4) var(--nb-auto-3b82f6-a80)',
                     }}
                   />
                 </div>
@@ -869,7 +869,7 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                 }}
               >
                 {/* 概要主题不能拖动：留出与把手等宽的空位，保持与同级行对齐 */}
-                {isSummaryRow && <div style={{ width: 18, marginRight: 2, flexShrink: 0 }} />}
+                {isSummaryRow && <div style={{ width: 'var(--dim-18)', marginRight: 'var(--dim-2)', flexShrink: 0 }} />}
 
                 {/* 拖拽把手 */}
                 {!isRoot && !isSummaryRow && (
@@ -880,30 +880,30 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                       onPointerUp={handlePointerUp}
                       aria-label="按住拖拽整行换到其他行或调整层级"
                       style={{
-                        width: 18,
-                        height: 24,
+                        width: 'var(--dim-18)',
+                        height: 'var(--dim-24)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: isDragging ? 'grabbing' : 'grab',
-                        color: 'var(--editor-text-secondary, #64748b)',
-                        opacity: 0.6,
+                        color: 'var(--editor-text-secondary)',
+                        opacity: 'var(--opacity-0-6)',
                         transition: 'opacity 0.15s ease, color 0.15s ease',
                         flexShrink: 0,
-                        marginRight: 2,
+                        marginRight: 'var(--dim-2)',
                         touchAction: 'none',
                         userSelect: 'none',
                       }}
                       onMouseEnter={(e) => {
                         if (!isDragging) {
                           e.currentTarget.style.opacity = '1';
-                          e.currentTarget.style.color = 'var(--editor-accent, #3b82f6)';
+                          e.currentTarget.style.color = 'var(--editor-accent)';
                         }
                       }}
                       onMouseLeave={(e) => {
                         if (!isDragging) {
                           e.currentTarget.style.opacity = '0.6';
-                          e.currentTarget.style.color = 'var(--editor-text-secondary, #64748b)';
+                          e.currentTarget.style.color = 'var(--editor-text-secondary)';
                         }
                       }}
                     >
@@ -915,12 +915,12 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                 {/* 展开/折叠指示箭头与大纲圆点 */}
                 <div
                   style={{
-                    width: 24,
-                    height: 24,
+                    width: 'var(--dim-24)',
+                    height: 'var(--dim-24)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginRight: 6,
+                    marginRight: 'var(--dim-6)',
                     flexShrink: 0,
                   }}
                 >
@@ -932,34 +932,34 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                         background: 'transparent',
                         border: 'none',
                         cursor: 'pointer',
-                        padding: 2,
+                        padding: 'var(--dim-2)',
                         display: 'flex',
                         alignItems: 'center',
-                        color: 'var(--editor-text-secondary, #475569)',
-                        borderRadius: 4,
+                        color: 'var(--editor-text-secondary)',
+                        borderRadius: 'var(--dim-4)',
                         transition: 'all 0.12s ease',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--toolbar-hover, rgba(0,0,0,0.06))';
-                        e.currentTarget.style.color = 'var(--editor-accent, #3b82f6)';
+                        e.currentTarget.style.background = 'var(--toolbar-hover)';
+                        e.currentTarget.style.color = 'var(--editor-accent)';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent';
-                        e.currentTarget.style.color = 'var(--editor-text-secondary, #475569)';
+                        e.currentTarget.style.color = 'var(--editor-text-secondary)';
                       }}
                     >
                       {item.isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                     </button>
                   ) : isSummaryRow ? (
                     // 无子节点的概要主题用大括号代替圆点
-                    <Braces size={13} style={{ color: 'var(--editor-accent, #3b82f6)' }} />
+                    <Braces size={13} style={{ color: 'var(--editor-accent)' }} />
                   ) : (
                     <div
                       style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: '50%',
-                        background: isRoot ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-border, #94a3b8)',
+                        width: 'var(--dim-6)',
+                        height: 'var(--dim-6)',
+                        borderRadius: 'var(--pct-50)',
+                        background: isRoot ? 'var(--editor-accent)' : 'var(--editor-border)',
                       }}
                     />
                   )}
@@ -995,17 +995,17 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                         border: 'none',
                         cursor: 'pointer',
                         fontSize: isRoot ? 20 : 16,
-                        lineHeight: 1,
-                        padding: '0 4px',
-                        marginRight: 4,
+                        lineHeight: 'var(--leading-1)',
+                        padding: '0 var(--dim-4)',
+                        marginRight: 'var(--dim-4)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderRadius: 4,
+                        borderRadius: 'var(--dim-4)',
                         transition: 'transform 0.12s ease',
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.2)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(var(--scale-1-2))')}
+                      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(var(--scale-1))')}
                     >
                       {item.node.icon}
                     </button>
@@ -1058,14 +1058,14 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                     flex: 1,
                     border: 'none',
                     outline: 'none',
-                    color: isRoot ? 'var(--editor-heading, #0f172a)' : 'var(--editor-text, #1e293b)',
+                    color: isRoot ? 'var(--editor-heading)' : 'var(--editor-text)',
                     fontSize: isRoot ? 24 : item.depth === 1 ? 16 : 14,
                     fontWeight: isRoot ? 700 : item.depth === 1 ? 600 : 400,
-                    lineHeight: 1.5,
-                    padding: '4px 8px',
-                    borderRadius: 4,
+                    lineHeight: 'var(--leading-1-5)',
+                    padding: 'var(--dim-4) var(--dim-8)',
+                    borderRadius: 'var(--dim-4)',
                     background: isSearchMatch ? 'var(--cm-search-match-bg)' : 'transparent',
-                    boxShadow: isSearchCurrent ? 'inset 0 0 0 2px var(--cm-search-active-bg)' : undefined,
+                    boxShadow: isSearchCurrent ? 'inset 0 0 0 var(--dim-2) var(--cm-search-active-bg)' : undefined,
                     pointerEvents: isDragging ? 'none' : 'auto',
                   }}
                 />
@@ -1076,8 +1076,8 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 4,
-                    marginLeft: 8,
+                    gap: 'var(--dim-4)',
+                    marginLeft: 'var(--dim-8)',
                   }}
                 >
                   {/* 设置/更换图标按钮 */}
@@ -1096,27 +1096,27 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                       aria-label="设置节点图标/标记"
                       style={{
                         background: 'transparent',
-                        border: '1px solid transparent',
-                        borderRadius: 4,
+                        border: 'var(--dim-1) solid transparent',
+                        borderRadius: 'var(--dim-4)',
                         cursor: 'pointer',
-                        padding: '3px 5px',
+                        padding: 'var(--dim-3) var(--dim-5)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: 'var(--editor-text-secondary, #475569)',
+                        color: 'var(--editor-text-secondary)',
                         transition: 'all 0.12s ease',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--toolbar-hover, rgba(59, 130, 246, 0.12))';
-                        e.currentTarget.style.borderColor = 'var(--editor-border, #cbd5e1)';
-                        e.currentTarget.style.color = 'var(--editor-accent, #3b82f6)';
-                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.background = 'var(--toolbar-hover)';
+                        e.currentTarget.style.borderColor = 'var(--editor-border)';
+                        e.currentTarget.style.color = 'var(--editor-accent)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent';
                         e.currentTarget.style.borderColor = 'transparent';
-                        e.currentTarget.style.color = 'var(--editor-text-secondary, #475569)';
-                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.color = 'var(--editor-text-secondary)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1))';
                       }}
                     >
                       <Smile size={13} />
@@ -1136,27 +1136,27 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                       aria-label="添加/编辑备注 (Shift+Enter)"
                       style={{
                         background: 'transparent',
-                        border: '1px solid transparent',
-                        borderRadius: 4,
+                        border: 'var(--dim-1) solid transparent',
+                        borderRadius: 'var(--dim-4)',
                         cursor: 'pointer',
-                        padding: '3px 5px',
+                        padding: 'var(--dim-3) var(--dim-5)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: hasNote ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-text-secondary, #475569)',
+                        color: hasNote ? 'var(--editor-accent)' : 'var(--editor-text-secondary)',
                         transition: 'all 0.12s ease',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--toolbar-hover, rgba(59, 130, 246, 0.12))';
-                        e.currentTarget.style.borderColor = 'var(--editor-border, #cbd5e1)';
-                        e.currentTarget.style.color = 'var(--editor-accent, #3b82f6)';
-                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.background = 'var(--toolbar-hover)';
+                        e.currentTarget.style.borderColor = 'var(--editor-border)';
+                        e.currentTarget.style.color = 'var(--editor-accent)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent';
                         e.currentTarget.style.borderColor = 'transparent';
-                        e.currentTarget.style.color = hasNote ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-text-secondary, #475569)';
-                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.color = hasNote ? 'var(--editor-accent)' : 'var(--editor-text-secondary)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1))';
                       }}
                     >
                       <FileText size={13} />
@@ -1182,27 +1182,27 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                       aria-label="添加图片"
                       style={{
                         background: 'transparent',
-                        border: '1px solid transparent',
-                        borderRadius: 4,
+                        border: 'var(--dim-1) solid transparent',
+                        borderRadius: 'var(--dim-4)',
                         cursor: 'pointer',
-                        padding: '3px 5px',
+                        padding: 'var(--dim-3) var(--dim-5)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: hasImage ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-text-secondary, #475569)',
+                        color: hasImage ? 'var(--editor-accent)' : 'var(--editor-text-secondary)',
                         transition: 'all 0.12s ease',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--toolbar-hover, rgba(59, 130, 246, 0.12))';
-                        e.currentTarget.style.borderColor = 'var(--editor-border, #cbd5e1)';
-                        e.currentTarget.style.color = 'var(--editor-accent, #3b82f6)';
-                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.background = 'var(--toolbar-hover)';
+                        e.currentTarget.style.borderColor = 'var(--editor-border)';
+                        e.currentTarget.style.color = 'var(--editor-accent)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent';
                         e.currentTarget.style.borderColor = 'transparent';
-                        e.currentTarget.style.color = hasImage ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-text-secondary, #475569)';
-                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.color = hasImage ? 'var(--editor-accent)' : 'var(--editor-text-secondary)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1))';
                       }}
                     >
                       <ImageIcon size={13} />
@@ -1233,27 +1233,27 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                       aria-label={isSummaryRow ? '添加子要点 (Enter)' : '添加同级要点 (Enter)'}
                       style={{
                         background: 'transparent',
-                        border: '1px solid transparent',
-                        borderRadius: 4,
+                        border: 'var(--dim-1) solid transparent',
+                        borderRadius: 'var(--dim-4)',
                         cursor: 'pointer',
-                        padding: '3px 5px',
+                        padding: 'var(--dim-3) var(--dim-5)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: 'var(--editor-text-secondary, #475569)',
+                        color: 'var(--editor-text-secondary)',
                         transition: 'all 0.12s ease',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--toolbar-hover, rgba(59, 130, 246, 0.12))';
-                        e.currentTarget.style.borderColor = 'var(--editor-border, #cbd5e1)';
-                        e.currentTarget.style.color = 'var(--editor-accent, #3b82f6)';
-                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.background = 'var(--toolbar-hover)';
+                        e.currentTarget.style.borderColor = 'var(--editor-border)';
+                        e.currentTarget.style.color = 'var(--editor-accent)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent';
                         e.currentTarget.style.borderColor = 'transparent';
-                        e.currentTarget.style.color = 'var(--editor-text-secondary, #475569)';
-                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.color = 'var(--editor-text-secondary)';
+                        e.currentTarget.style.transform = 'scale(var(--scale-1))';
                       }}
                     >
                       <Plus size={14} />
@@ -1269,27 +1269,27 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                         aria-label={isSummaryRow ? '删除此概要' : '删除此要点及子要点'}
                         style={{
                           background: 'transparent',
-                          border: '1px solid transparent',
-                          borderRadius: 4,
+                          border: 'var(--dim-1) solid transparent',
+                          borderRadius: 'var(--dim-4)',
                           cursor: 'pointer',
-                          padding: '3px 5px',
+                          padding: 'var(--dim-3) var(--dim-5)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: 'var(--editor-text-secondary, #475569)',
+                          color: 'var(--editor-text-secondary)',
                           transition: 'all 0.12s ease',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)';
-                          e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.3)';
-                          e.currentTarget.style.color = '#ef4444';
-                          e.currentTarget.style.transform = 'scale(1.05)';
+                          e.currentTarget.style.background = 'var(--nb-auto-ef4444-a12)';
+                          e.currentTarget.style.borderColor = 'var(--nb-auto-ef4444-a30)';
+                          e.currentTarget.style.color = 'var(--nb-red-500)';
+                          e.currentTarget.style.transform = 'scale(var(--scale-1-05))';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = 'transparent';
                           e.currentTarget.style.borderColor = 'transparent';
-                          e.currentTarget.style.color = 'var(--editor-text-secondary, #475569)';
-                          e.currentTarget.style.transform = 'scale(1)';
+                          e.currentTarget.style.color = 'var(--editor-text-secondary)';
+                          e.currentTarget.style.transform = 'scale(var(--scale-1))';
                         }}
                       >
                         <Trash2 size={14} />
@@ -1304,10 +1304,10 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                 <div
                   style={{
                     paddingLeft: paddingLeft + 32,
-                    marginTop: 2,
+                    marginTop: 'var(--dim-2)',
                     display: 'flex',
                     flexWrap: 'wrap',
-                    gap: 6,
+                    gap: 'var(--dim-6)',
                   }}
                 >
                   {structureItems.get(item.node.id)!.map((structure) => (
@@ -1326,16 +1326,16 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                 <div
                   style={{
                     paddingLeft: paddingLeft + 32,
-                    marginTop: 2,
-                    marginBottom: 4,
+                    marginTop: 'var(--dim-2)',
+                    marginBottom: 'var(--dim-4)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 6,
+                    gap: 'var(--dim-6)',
                   }}
                 >
                   {/* 备注文字输入（浅色小字） */}
                   {hasNote && (
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, position: 'relative' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--dim-6)', position: 'relative' }}>
                       <textarea
                         ref={(el) => {
                           if (el) noteInputRefs.current.set(item.node.id, el);
@@ -1357,23 +1357,23 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                           }
                         }}
                         style={{
-                          width: '100%',
-                          maxWidth: 720,
-                          fontSize: 12,
-                          lineHeight: 1.6,
-                          color: 'var(--editor-text-secondary, #64748b)',
-                          background: 'var(--editor-surface, rgba(0, 0, 0, 0.02))',
-                          border: '1px solid var(--editor-border, #e2e8f0)',
-                          borderRadius: 6,
-                          padding: '6px 10px',
+                          width: 'var(--pct-100)',
+                          maxWidth: 'var(--dim-720)',
+                          fontSize: 'var(--text-12)',
+                          lineHeight: 'var(--leading-1-6)',
+                          color: 'var(--editor-text-secondary)',
+                          background: 'var(--editor-surface)',
+                          border: 'var(--dim-1) solid var(--editor-border)',
+                          borderRadius: 'var(--dim-6)',
+                          padding: 'var(--dim-6) var(--dim-10)',
                           outline: 'none',
                           resize: 'vertical',
                           fontFamily: 'inherit',
                           boxSizing: 'border-box',
                           transition: 'border-color 0.15s ease',
                         }}
-                        onFocus={(e) => (e.target.style.borderColor = 'var(--editor-accent, #3b82f6)')}
-                        onBlur={(e) => (e.target.style.borderColor = 'var(--editor-border, #e2e8f0)')}
+                        onFocus={(e) => (e.target.style.borderColor = 'var(--editor-accent)')}
+                        onBlur={(e) => (e.target.style.borderColor = 'var(--editor-border)')}
                       />
                       <Tooltip content="删除备注" side="top" sideOffset={4}>
                         <button
@@ -1384,16 +1384,16 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
                             background: 'transparent',
                             border: 'none',
                             cursor: 'pointer',
-                            color: 'var(--editor-text-muted, #94a3b8)',
-                            padding: 2,
-                            marginTop: 4,
-                            borderRadius: 4,
+                            color: 'var(--editor-text-muted)',
+                            padding: 'var(--dim-2)',
+                            marginTop: 'var(--dim-4)',
+                            borderRadius: 'var(--dim-4)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}
-                          onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
-                          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--editor-text-muted, #94a3b8)')}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--nb-red-500)')}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--editor-text-muted)')}
                         >
                           <X size={13} />
                         </button>
@@ -1447,7 +1447,7 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
             </div>
           );
           return virtualRow ? <div key={item.node.id} data-index={idx} ref={virtualizer.measureElement}
-            style={{ position: 'absolute', left: 0, top: 0, width: '100%', display: 'flow-root', transform: `translateY(${virtualRow.start - 36}px)` }}>
+            style={{ position: 'absolute', left: 0, top: 0, width: 'var(--pct-100)', display: 'flow-root', transform: `translateY(${virtualRow.start - 36}px)` }}>
             {renderedRow}
           </div> : renderedRow;
         })}
@@ -1511,24 +1511,24 @@ export function OutlinerEditor({ root, onChange, searchHighlight, docKey }: Outl
             position: 'fixed',
             left: dragPreview.x,
             top: dragPreview.y,
-            zIndex: 99999,
+            zIndex: 'var(--z-99999)',
             pointerEvents: 'none',
             display: 'flex',
             alignItems: 'center',
-            gap: 6,
-            padding: '6px 12px',
-            background: 'var(--editor-surface, #ffffff)',
-            color: 'var(--editor-text, #1e293b)',
-            border: '1px solid var(--editor-border-focus, #3b82f6)',
-            borderRadius: 6,
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.18)',
-            fontSize: 12,
-            fontWeight: 500,
-            transform: 'scale(1.02)',
-            opacity: 0.95,
+            gap: 'var(--dim-6)',
+            padding: 'var(--dim-6) var(--dim-12)',
+            background: 'var(--editor-surface)',
+            color: 'var(--editor-text)',
+            border: 'var(--dim-1) solid var(--editor-border-focus)',
+            borderRadius: 'var(--dim-6)',
+            boxShadow: '0 var(--dim-8) var(--dim-24) var(--nb-black-a18)',
+            fontSize: 'var(--text-12)',
+            fontWeight: 'var(--weight-500)',
+            transform: 'scale(var(--scale-1-02))',
+            opacity: 'var(--opacity-0-95)',
           }}
         >
-          <GripVertical size={13} color="var(--editor-accent, #3b82f6)" />
+          <GripVertical size={13} color="var(--editor-accent)" />
           <span>移动：{dragPreview.text.slice(0, 20) || '大纲要点'}</span>
         </div>
       )}

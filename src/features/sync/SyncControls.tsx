@@ -285,7 +285,7 @@ export function ConfirmDialog({
       <div className="nb-sync-dialog is-small">
         <div className="nb-sync-dialog-head">
           <div className="nb-sync-dialog-title">
-            {danger && <AlertTriangle size={16} color="var(--error-500, #ef4444)" />}
+            {danger && <AlertTriangle size={16} color="var(--error-500)" />}
             {title}
           </div>
           <Tooltip content="关闭" shortcut="Esc" side="bottom" sideOffset={4}>
@@ -707,7 +707,7 @@ export function ProviderForm({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-14)' }}>
       <div className="nb-sync-segment nb-sync-provider-groups" role="radiogroup" aria-label="同步方式">
         {PROVIDER_GROUPS.map((option, index) => (
           <button
@@ -804,7 +804,7 @@ export function ProviderForm({
         </button>
         {result && (
           <span className={`nb-sync-test-result ${result.ok ? 'is-ok' : 'is-error'}`} role="status">
-            {result.ok ? <CheckCircle2 size={13} style={{ verticalAlign: -2, marginRight: 4 }} /> : <AlertTriangle size={13} style={{ verticalAlign: -2, marginRight: 4 }} />}
+            {result.ok ? <CheckCircle2 size={13} style={{ verticalAlign: -2, marginRight: 'var(--dim-4)' }} /> : <AlertTriangle size={13} style={{ verticalAlign: -2, marginRight: 'var(--dim-4)' }} />}
             {result.text}
           </span>
         )}

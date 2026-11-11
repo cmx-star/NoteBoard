@@ -1,6 +1,6 @@
 [package]
 name = "loomark"
-version = "0.8.4"
+version = "0.8.5"
 description = "Loomark 桌面笔记 + 画板软件（基于 NoteBoard 的开源分支）"
 authors = ["CrazyFigure"]
 license = "AGPL-3.0-only"

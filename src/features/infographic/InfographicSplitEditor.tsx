@@ -192,20 +192,20 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
         }),
         EditorView.theme({
           '&': {
-            height: '100%',
-            fontSize: 'var(--mono-font-size, 13px)',
+            height: 'var(--pct-100)',
+            fontSize: 'var(--mono-font-size, var(--dim-13))',
             fontFamily: 'var(--mono-font-family, monospace)',
-            background: 'var(--cm-background, var(--editor-bg, #ffffff))',
-            color: 'var(--cm-text, var(--editor-text, #1e293b))',
+            background: 'var(--cm-background, var(--editor-bg))',
+            color: 'var(--cm-text, var(--editor-text))',
           },
           '.cm-content': {
-            padding: '12px 0',
-            caretColor: 'var(--cm-cursor, var(--editor-accent, #3b82f6))',
+            padding: 'var(--dim-12) 0',
+            caretColor: 'var(--cm-cursor, var(--editor-accent))',
           },
           '.cm-gutters': {
-            background: 'var(--cm-gutter-background, var(--editor-surface, #f8fafc))',
-            color: 'var(--cm-gutter-text, var(--editor-text-muted, #94a3b8))',
-            borderRight: '1px solid var(--editor-border, #e2e8f0)',
+            background: 'var(--cm-gutter-background, var(--editor-surface))',
+            color: 'var(--cm-gutter-text, var(--editor-text-muted))',
+            borderRight: 'var(--dim-1) solid var(--editor-border)',
           },
           '&.cm-focused': {
             outline: 'none',
@@ -317,11 +317,11 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         overflow: 'hidden',
       }}
     >
@@ -329,90 +329,90 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
         .nb-ig-layout-btn {
           display: flex;
           align-items: center;
-          gap: 4px;
-          padding: 3px 8px;
+          gap: var(--dim-4);
+          padding: var(--dim-3) var(--dim-8);
           border: none;
-          border-radius: 4px;
+          border-radius: var(--radius-sm);
           cursor: pointer;
-          font-size: 11px;
-          font-weight: 400;
+          font-size: var(--dim-11);
+          font-weight: var(--weight-400);
           background: transparent;
-          color: var(--editor-text-muted, #64748b);
-          transition: background 120ms ease, color 120ms ease;
+          color: var(--editor-text-muted);
+          transition: background var(--duration-120) ease, color var(--duration-120) ease;
         }
-        .nb-ig-layout-btn:hover { background: var(--toolbar-hover, rgba(59,130,246,0.12)); }
+        .nb-ig-layout-btn:hover { background: var(--toolbar-hover); }
         .nb-ig-layout-btn[data-active='true'] {
-          background: var(--toolbar-active, rgba(59, 130, 246, 0.12));
-          color: var(--editor-accent, #3b82f6);
-          font-weight: 600;
+          background: var(--toolbar-active);
+          color: var(--editor-accent);
+          font-weight: var(--weight-600);
         }
         .nb-ig-icon-btn {
           display: flex;
           align-items: center;
-          gap: 4px;
-          padding: 4px 8px;
-          border: 1px solid var(--editor-border, #e2e8f0);
-          border-radius: 5px;
-          background: var(--editor-bg, #ffffff);
-          color: var(--editor-text, #1e293b);
+          gap: var(--dim-4);
+          padding: var(--dim-4) var(--dim-8);
+          border: var(--dim-1) solid var(--editor-border);
+          border-radius: var(--radius-sm);
+          background: var(--editor-bg);
+          color: var(--editor-text);
           cursor: pointer;
-          font-size: 12px;
-          transition: background 120ms ease, border-color 120ms ease;
+          font-size: var(--dim-12);
+          transition: background var(--duration-120) ease, border-color var(--duration-120) ease;
         }
-        .nb-ig-icon-btn:hover { background: var(--toolbar-hover, rgba(59,130,246,0.12)); border-color: var(--editor-border-focus, #93c5fd); }
+        .nb-ig-icon-btn:hover { background: var(--toolbar-hover); border-color: var(--editor-border-focus); }
         .nb-ig-primary-btn {
           display: flex;
           align-items: center;
-          gap: 4px;
-          padding: 4px 10px;
+          gap: var(--dim-4);
+          padding: var(--dim-4) var(--dim-10);
           border: none;
-          border-radius: 5px;
-          background: var(--editor-accent, #3b82f6);
-          color: #ffffff;
+          border-radius: var(--radius-sm);
+          background: var(--editor-accent);
+          color: var(--nb-white);
           cursor: pointer;
-          font-size: 12px;
-          font-weight: 500;
-          transition: opacity 120ms ease;
+          font-size: var(--dim-12);
+          font-weight: var(--weight-500);
+          transition: opacity var(--duration-120) ease;
         }
-        .nb-ig-primary-btn:hover { opacity: 0.88; }
+        .nb-ig-primary-btn:hover { opacity: var(--opacity-0-88); }
         .nb-ig-tmpl-item {
           display: flex;
           align-items: center;
-          gap: 8px;
-          width: 100%;
-          padding: 6px 10px;
+          gap: var(--dim-8);
+          width: var(--pct-100);
+          padding: var(--dim-6) var(--dim-10);
           border: none;
-          border-radius: 4px;
+          border-radius: var(--radius-sm);
           background: transparent;
-          color: var(--editor-text, #1e293b);
+          color: var(--editor-text);
           cursor: pointer;
-          font-size: 12px;
+          font-size: var(--dim-12);
           text-align: left;
-          transition: background 120ms ease;
+          transition: background var(--duration-120) ease;
         }
-        .nb-ig-tmpl-item:hover { background: var(--toolbar-hover, rgba(59,130,246,0.12)); }
+        .nb-ig-tmpl-item:hover { background: var(--toolbar-hover); }
       `}</style>
 
       {/* 顶部工具栏 */}
       <div
         className="nb-editor-topbar"
         style={{
-          height: 38,
-          minHeight: 38,
+          height: 'var(--dim-38)',
+          minHeight: 'var(--dim-38)',
           display: isReading ? 'none' : 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 12px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #f8fafc)',
+          padding: '0 var(--dim-12)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
           userSelect: 'none',
-          fontSize: 12,
-          color: 'var(--editor-text, #1e293b)',
+          fontSize: 'var(--text-12)',
+          color: 'var(--editor-text)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div className="nb-editor-topbar-title" style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600 }}>
-            <Sparkles size={16} color="#14b8a6" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-12)' }}>
+          <div className="nb-editor-topbar-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', fontWeight: 'var(--weight-600)' }}>
+            <Sparkles size={16} color="var(--nb-teal-500)" />
             <span>信息图 (.infographic)</span>
           </div>
 
@@ -420,10 +420,10 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'var(--editor-bg, #ffffff)',
-              borderRadius: 6,
-              padding: 2,
-              border: '1px solid var(--editor-border, #e2e8f0)',
+              background: 'var(--editor-bg)',
+              borderRadius: 'var(--radius-md)',
+              padding: 'var(--dim-2)',
+              border: 'var(--dim-1) solid var(--editor-border)',
             }}
           >
             {layoutButton('split', <Columns size={13} />, '分屏', '双栏分屏')}
@@ -450,15 +450,15 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
               <div
                 style={{
                   position: 'absolute',
-                  top: 'calc(100% + 6px)',
+                  top: 'calc(var(--pct-100) + var(--dim-6))',
                   left: 0,
-                  zIndex: 10000,
-                  minWidth: 220,
-                  padding: 4,
-                  background: 'var(--editor-surface, #ffffff)',
-                  border: '1px solid var(--editor-border, #e2e8f0)',
-                  borderRadius: 6,
-                  boxShadow: 'var(--shadow-md, 0 8px 24px rgba(0,0,0,0.12))',
+                  zIndex: 'var(--z-10000)',
+                  minWidth: 'var(--dim-220)',
+                  padding: 'var(--dim-4)',
+                  background: 'var(--editor-surface)',
+                  border: 'var(--dim-1) solid var(--editor-border)',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-md, 0 var(--dim-8) var(--dim-24) var(--nb-black-a12))',
                 }}
               >
                 {INFOGRAPHIC_TEMPLATES.map((tmpl) => (
@@ -472,9 +472,9 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
                       {/* 彩色形象图标容器：与 Markdown 内嵌块模板下拉保持统一视觉 */}
                       <div
                         style={{
-                          width: 24,
-                          height: 24,
-                          borderRadius: 5,
+                          width: 'var(--dim-24)',
+                          height: 'var(--dim-24)',
+                          borderRadius: 'var(--radius-sm)',
                           background: tmpl.iconBg,
                           display: 'flex',
                           alignItems: 'center',
@@ -489,8 +489,8 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
                         style={{
                           flex: 1,
                           minWidth: 0,
-                          fontWeight: 600,
-                          fontSize: 12,
+                          fontWeight: 'var(--weight-600)',
+                          fontSize: 'var(--text-12)',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -506,26 +506,26 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
           {layoutMode !== 'code' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)', marginRight: 'var(--dim-8)' }}>
               <Tooltip content="缩小" side="bottom" sideOffset={4}>
                 <button
                   type="button"
                   className="nb-ig-icon-btn"
-                  style={{ padding: '2px 6px' }}
+                  style={{ padding: 'var(--dim-2) var(--dim-6)' }}
                   onClick={() => setZoom((z) => Math.max(0.2, z - 0.15))}
                   aria-label="缩小"
                 >
                   <ZoomOut size={13} />
                 </button>
               </Tooltip>
-              <span style={{ fontSize: 11, minWidth: 40, textAlign: 'center' }}>{Math.round(zoom * 100)}%</span>
+              <span style={{ fontSize: 'var(--text-11)', minWidth: 'var(--dim-40)', textAlign: 'center' }}>{Math.round(zoom * 100)}%</span>
               <Tooltip content="放大" side="bottom" sideOffset={4}>
                 <button
                   type="button"
                   className="nb-ig-icon-btn"
-                  style={{ padding: '2px 6px' }}
+                  style={{ padding: 'var(--dim-2) var(--dim-6)' }}
                   onClick={() => setZoom((z) => Math.min(4, z + 0.15))}
                   aria-label="放大"
                 >
@@ -536,7 +536,7 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
                 <button
                   type="button"
                   className="nb-ig-icon-btn"
-                  style={{ padding: '2px 6px' }}
+                  style={{ padding: 'var(--dim-2) var(--dim-6)' }}
                   onClick={() => {
                     setZoom(1);
                     setPan({ x: 0, y: 0 });
@@ -586,8 +586,8 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
           ref={editorContainerRef}
           style={{
             display: paneMode === 'preview' ? 'none' : 'block',
-            width: paneMode === 'split' && !stacked ? `calc(${splitRatio * 100}% - 4px)` : '100%',
-            height: paneMode === 'split' && stacked ? `calc(${splitRatio * 100}% - 4px)` : '100%',
+            width: paneMode === 'split' && !stacked ? `calc(${splitRatio * 100}% - var(--dim-4))` : 'var(--pct-100)',
+            height: paneMode === 'split' && stacked ? `calc(${splitRatio * 100}% - var(--dim-4))` : 'var(--pct-100)',
             overflow: 'hidden',
             flexShrink: 0,
           }}
@@ -595,26 +595,26 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
 
         {/* 分栏可拖拽分隔条 */}
         {paneMode === 'split' && (
-          <Tooltip content="拖拽调节分栏比例，双击居中复位 (50%)" side="top" sideOffset={6}>
+          <Tooltip content="拖拽调节分栏比例，双击居中复位 (var(--pct-50))" side="top" sideOffset={6}>
             <div
               onMouseDown={handleResizerMouseDown}
               onDoubleClick={() => setSplitRatio(0.5)}
-              aria-label="拖拽调节分栏比例，双击居中复位 (50%)"
+              aria-label="拖拽调节分栏比例，双击居中复位 (var(--pct-50))"
               style={{
-                width: stacked ? '100%' : 8,
-                height: stacked ? 8 : '100%',
+                width: stacked ? 'var(--pct-100)' : 8,
+                height: stacked ? 8 : 'var(--pct-100)',
                 cursor: stacked ? 'row-resize' : 'col-resize',
-                background: isResizing ? 'var(--editor-accent, #3b82f6)' : 'transparent',
+                background: isResizing ? 'var(--editor-accent)' : 'transparent',
                 position: 'relative',
                 flexShrink: 0,
-                zIndex: 10,
+                zIndex: 'var(--z-10)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 transition: 'background 0.15s ease',
               }}
               onMouseEnter={(e) => {
-                if (!isResizing) e.currentTarget.style.background = 'var(--toolbar-hover, rgba(59, 130, 246, 0.2))';
+                if (!isResizing) e.currentTarget.style.background = 'var(--toolbar-hover)';
               }}
               onMouseLeave={(e) => {
                 if (!isResizing) e.currentTarget.style.background = 'transparent';
@@ -622,9 +622,9 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
             >
               <div
                 style={{
-                  width: stacked ? '100%' : 1,
-                  height: stacked ? 1 : '100%',
-                  background: 'var(--editor-border, #e2e8f0)',
+                  width: stacked ? 'var(--pct-100)' : 1,
+                  height: stacked ? 1 : 'var(--pct-100)',
+                  background: 'var(--editor-border)',
                 }}
               />
             </div>
@@ -635,11 +635,11 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
         <div
           style={{
             display: paneMode === 'code' ? 'none' : 'flex',
-            width: paneMode === 'split' && !stacked ? `calc(${(1 - splitRatio) * 100}% - 4px)` : '100%',
-            height: paneMode === 'split' && stacked ? `calc(${(1 - splitRatio) * 100}% - 4px)` : '100%',
+            width: paneMode === 'split' && !stacked ? `calc(${(1 - splitRatio) * 100}% - var(--dim-4))` : 'var(--pct-100)',
+            height: paneMode === 'split' && stacked ? `calc(${(1 - splitRatio) * 100}% - var(--dim-4))` : 'var(--pct-100)',
             overflow: 'hidden',
             position: 'relative',
-            background: 'var(--editor-bg, #ffffff)',
+            background: 'var(--editor-bg)',
             flexDirection: 'column',
             cursor: isDragging ? 'grabbing' : 'grab',
             flexShrink: 0,
@@ -654,19 +654,19 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
             <div
               style={{
                 position: 'absolute',
-                top: 12,
-                left: 12,
-                right: 12,
-                zIndex: 20,
-                padding: '8px 14px',
-                background: 'rgba(239, 68, 68, 0.12)',
-                border: '1px solid #ef4444',
-                borderRadius: 6,
-                color: '#dc2626',
-                fontSize: 12,
+                top: 'var(--dim-12)',
+                left: 'var(--dim-12)',
+                right: 'var(--dim-12)',
+                zIndex: 'var(--z-20)',
+                padding: 'var(--dim-8) var(--dim-14)',
+                background: 'var(--nb-auto-ef4444-a12)',
+                border: 'var(--dim-1) solid var(--nb-red-500)',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--nb-red-600)',
+                fontSize: 'var(--text-12)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 8,
+                gap: 'var(--dim-8)',
               }}
             >
               <AlertCircle size={16} style={{ flexShrink: 0 }} />
@@ -688,11 +688,11 @@ export function InfographicSplitEditor({ docKey }: InfographicSplitEditorProps) 
             }}
           >
             {data ? (
-              <div ref={setPreviewEl} style={{ width: CANVAS_BASE_WIDTH, maxWidth: '100%', padding: 16 }}>
+              <div ref={setPreviewEl} style={{ width: CANVAS_BASE_WIDTH, maxWidth: 'var(--pct-100)', padding: 'var(--dim-16)' }}>
                 <InfographicRenderer data={data} />
               </div>
             ) : (
-              <div style={{ color: 'var(--editor-text-muted, #94a3b8)', fontSize: 13, textAlign: 'center' }}>
+              <div style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)', textAlign: 'center' }}>
                 {error ? '信息图源码有误，请修正后查看' : '在左侧编写信息图源码即可实时预览'}
               </div>
             )}

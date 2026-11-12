@@ -108,14 +108,14 @@ function createSourceTypographyTheme() {
     '&': {
       fontFamily: 'var(--mono-font-family)',
       fontSize: 'var(--mono-font-size)',
-      height: '100%',
+      height: 'var(--pct-100)',
     },
     '.cm-scroller': {
       lineHeight: 'var(--mono-line-height, 1.5)',
       fontFamily: 'var(--mono-font-family)',
       fontSize: 'var(--mono-font-size)',
       // 百分比按编辑器宽度计算：两侧留白 = (编辑器宽 - 内容宽) / 2
-      paddingInline: 'max(0px, calc((100% - var(--mono-max-width, 100%)) / 2))',
+      paddingInline: 'max(var(--dim-0), calc((var(--pct-100) - var(--mono-max-width, var(--pct-100))) / 2))',
     },
     '.cm-content, .cm-line': {
       fontFamily: 'var(--mono-font-family)',
@@ -123,7 +123,7 @@ function createSourceTypographyTheme() {
     },
     '.cm-content': {
       // 行号槽已有右边线分隔，左内边距取设置值的一半，避免正文被挤得过窄
-      padding: 'var(--mono-padding-y, 16px) var(--mono-padding-x, 24px) var(--mono-padding-y, 16px) calc(var(--mono-padding-x, 24px) / 2)',
+      padding: 'var(--mono-padding-y, var(--dim-16)) var(--mono-padding-x, var(--dim-24)) var(--mono-padding-y, var(--dim-16)) calc(var(--mono-padding-x, var(--dim-24)) / 2)',
     },
   });
 }
@@ -923,14 +923,14 @@ export function TipTapEditor({ docKey, onEditorReady }: TipTapEditorProps) {
   const largeBanner = showLargeBanner && largeVerdict ? (
     <div
       style={{
-        padding: '12px 16px',
+        padding: 'var(--dim-12) var(--dim-16)',
         background: 'var(--warning-50)',
-        borderBottom: '1px solid var(--warning-200)',
-        fontSize: 13,
+        borderBottom: 'var(--dim-1) solid var(--warning-200)',
+        fontSize: 'var(--text-13)',
         color: 'var(--editor-text)',
         display: 'flex',
         alignItems: 'center',
-        gap: 8,
+        gap: 'var(--dim-8)',
         flexShrink: 0,
       }}
     >
@@ -942,13 +942,13 @@ export function TipTapEditor({ docKey, onEditorReady }: TipTapEditorProps) {
       <button
         style={{
           marginLeft: 'auto',
-          padding: '4px 12px',
-          border: '1px solid var(--control-border)',
-          borderRadius: 3,
+          padding: 'var(--dim-4) var(--dim-12)',
+          border: 'var(--dim-1) solid var(--control-border)',
+          borderRadius: 'var(--radius-xs)',
           background: 'transparent',
           color: 'inherit',
           cursor: 'pointer',
-          fontSize: 12,
+          fontSize: 'var(--text-12)',
         }}
         onClick={() => {
           setShowLargeBanner(false);
@@ -967,7 +967,7 @@ export function TipTapEditor({ docKey, onEditorReady }: TipTapEditorProps) {
   return (
     <div
       className={[isReading ? 'nb-md-reading' : '', (largeVerdict?.charCount ?? 0) >= VISUAL_PREPARATION_THRESHOLD ? 'nb-md-large-visual' : ''].filter(Boolean).join(' ') || undefined}
-      style={{ height: '100%', overflow: 'hidden', position: 'relative' }}
+      style={{ height: 'var(--pct-100)', overflow: 'hidden', position: 'relative' }}
       ref={editorRef}
     >
       {!showLargeBanner && <ExternalChangeBanner docKey={docKey} />}
@@ -989,7 +989,7 @@ export function TipTapEditor({ docKey, onEditorReady }: TipTapEditorProps) {
       <div
         className={isReading ? undefined : 'nb-text-editor-surface'}
         style={{
-          height: '100%',
+          height: 'var(--pct-100)',
           overflow: 'hidden',
           background: 'var(--editor-bg)',
           display: viewMode === 'source' ? 'flex' : 'none',
@@ -1006,7 +1006,7 @@ export function TipTapEditor({ docKey, onEditorReady }: TipTapEditorProps) {
         <div
           ref={sourceDivRef}
           style={{
-            width: '100%',
+            width: 'var(--pct-100)',
             // 横幅出现和收起时仅重新分配高度，源码视图和选区始终保留在同一个挂载点。
             flex: 1,
             minHeight: 0,

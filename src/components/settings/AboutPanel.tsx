@@ -44,24 +44,24 @@ export function AboutPanel() {
 
 
   const sectionStyle: React.CSSProperties = {
-    marginBottom: 24,
-  fontSize: 13,
-    lineHeight: 1.8,
+    marginBottom: 'var(--dim-24)',
+  fontSize: 'var(--text-13)',
+    lineHeight: 'var(--leading-1-8)',
   color: 'var(--editor-text)',
   whiteSpace: 'pre-wrap',
   wordBreak: 'break-word',
   overflowWrap: 'break-word',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  maxWidth: '100%',
-  width: '100%',
+  maxWidth: 'var(--pct-100)',
+  width: 'var(--pct-100)',
   boxSizing: 'border-box',
-    padding: '0 8px',
+    padding: '0 var(--dim-8)',
   };
 
   const headingStyle: React.CSSProperties = {
-    fontSize: 14,
-    marginBottom: 8,
+    fontSize: 'var(--text-14)',
+    marginBottom: 'var(--dim-8)',
     marginTop: 0,
   };
 
@@ -69,16 +69,16 @@ export function AboutPanel() {
     margin: 0,
     padding: 0,
     listStyle: 'none',
-    fontSize: 13,
-    lineHeight: 1.8,
+    fontSize: 'var(--text-13)',
+    lineHeight: 'var(--leading-1-8)',
   };
 
   return (
     <div>
-      <h2 style={headingStyle}>关于 NoteBoard</h2>
+      <h2 style={headingStyle}>关于 Loomark</h2>
 
       <div style={sectionStyle}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-12)', marginBottom: 'var(--dim-8)' }}>
           <span>版本: v{APP_VERSION}</span>
           {/* 网页版本由部署者更新镜像，访问者不显示桌面安装器入口。 */}
           {!IS_WEB && <button
@@ -88,15 +88,15 @@ export function AboutPanel() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 4,
-              padding: '3px 10px',
-              fontSize: 12,
+              gap: 'var(--dim-4)',
+              padding: 'var(--dim-3) var(--dim-10)',
+              fontSize: 'var(--text-12)',
               borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--control-border)',
+              border: 'var(--dim-1) solid var(--control-border)',
               background: 'var(--editor-surface)',
               color: 'var(--accent-strong)',
               cursor: checkingUpdate ? 'not-allowed' : 'pointer',
-              fontWeight: 500,
+              fontWeight: 'var(--weight-500)',
               boxShadow: 'var(--shadow-sm)',
               transition: 'all var(--transition-fast)',
             }}
@@ -104,7 +104,7 @@ export function AboutPanel() {
               if (!checkingUpdate) {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
                 e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
                 e.currentTarget.style.boxShadow = 'var(--shadow-md)';
               }
             }}
@@ -119,13 +119,13 @@ export function AboutPanel() {
             onMouseDown={(e) => {
               if (!checkingUpdate) {
                 e.currentTarget.style.background = 'var(--toolbar-active)';
-                e.currentTarget.style.transform = 'translateY(0) scale(0.96)';
+                e.currentTarget.style.transform = 'translateY(0) scale(var(--scale-0-96))';
               }
             }}
             onMouseUp={(e) => {
               if (!checkingUpdate) {
                 e.currentTarget.style.background = 'var(--toolbar-hover)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
               }
             }}
           >
@@ -133,7 +133,7 @@ export function AboutPanel() {
             <span>{checkingUpdate ? '正在检查' : '检测更新'}</span>
           </button>}
         </div>
-        <p style={{ margin: '4px 0' }}>许可证: AGPL-3.0</p>
+        <p style={{ margin: 'var(--dim-4) 0' }}>许可证: AGPL-3.0</p>
         <UpdateChannelSelector />
         <div className="nb-about-row">
           <span>开源仓库:</span>
@@ -155,10 +155,10 @@ export function AboutPanel() {
       {/* 快捷键列表 */}
       <div style={sectionStyle}>
         <h3 style={headingStyle}>快捷键（只读）</h3>
-        <div style={{ fontSize: 12, color: 'var(--editor-text-muted)' }}>
+        <div style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)' }}>
           {shortcuts.map((s: { key: string; description: string }) => (
-            <div key={s.key} style={{ display: 'flex', gap: 12, marginBottom: 4 }}>
-              <code style={{ minWidth: 120 }}>{s.key}</code>
+            <div key={s.key} style={{ display: 'flex', gap: 'var(--dim-12)', marginBottom: 'var(--dim-4)' }}>
+              <code style={{ minWidth: 'var(--dim-120)' }}>{s.key}</code>
               <span>{s.description}</span>
             </div>
           ))}
@@ -168,7 +168,7 @@ export function AboutPanel() {
       {/* 配置损坏告警位 */}
       <div style={sectionStyle}>
         <h3 style={headingStyle}>配置</h3>
-        <p style={{ fontSize: 12, color: 'var(--editor-text-muted)' }}>
+        <p style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)' }}>
           如果设置无法正常保存，可能是配置文件损坏。
           删除 settings.json 后重启应用可恢复默认设置。
         </p>

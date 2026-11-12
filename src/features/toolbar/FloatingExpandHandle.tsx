@@ -46,10 +46,10 @@ export function FloatingExpandHandle({ onExpand }: FloatingExpandHandleProps) {
   // 视觉样式计算（默认 0，靠近热区 0.85，悬停 1）
   const opacity = isHighlighted ? 1 : inHotZone ? 0.85 : 0;
   const transform = isHighlighted
-    ? 'translateX(-50%) translateY(0) scale(1.04)'
+    ? 'translateX(calc(var(--pct-50) * -1)) translateY(0) scale(var(--scale-1-04))'
     : inHotZone
-    ? 'translateX(-50%) translateY(0) scale(1)'
-    : 'translateX(-50%) translateY(-10px) scale(0.95)';
+    ? 'translateX(calc(var(--pct-50) * -1)) translateY(0) scale(var(--scale-1))'
+    : 'translateX(calc(var(--pct-50) * -1)) translateY(calc(var(--dim-10) * -1)) scale(var(--scale-0-95))';
 
   return (
     <>
@@ -61,8 +61,8 @@ export function FloatingExpandHandle({ onExpand }: FloatingExpandHandleProps) {
           top: 0,
           left: 0,
           right: 0,
-          height: 36,
-          zIndex: 26,
+          height: 'var(--dim-36)',
+          zIndex: 'var(--z-26)',
           pointerEvents: 'none',
         }}
       />
@@ -82,44 +82,44 @@ export function FloatingExpandHandle({ onExpand }: FloatingExpandHandleProps) {
           onMouseUp={() => setIsPressed(false)}
           style={{
             position: 'absolute',
-            top: 6,
-            left: '50%',
-            transform: `${transform} ${isPressed ? 'scale(0.94)' : ''}`,
-            zIndex: 27,
+            top: 'var(--dim-6)',
+            left: 'var(--pct-50)',
+            transform: `${transform} ${isPressed ? 'scale(var(--scale-0-94))' : ''}`,
+            zIndex: 'var(--z-27)',
             display: 'flex',
             alignItems: 'center',
-            gap: 4,
-            padding: '3px 10px',
-            borderRadius: 14,
+            gap: 'var(--dim-4)',
+            padding: 'var(--dim-3) var(--dim-10)',
+            borderRadius: 'var(--radius-2xl)',
             background: isHighlighted
-              ? 'var(--editor-surface, #ffffff)'
-              : 'var(--editor-bg, #f9fafb)',
+              ? 'var(--editor-surface)'
+              : 'var(--editor-bg)',
             border: isHighlighted
-              ? '1px solid var(--editor-border-focus, #3b82f6)'
+              ? 'var(--dim-1) solid var(--editor-border-focus)'
               : inHotZone
-              ? '1px solid var(--editor-border, #e5e7eb)'
-              : '1px solid transparent',
+              ? 'var(--dim-1) solid var(--editor-border)'
+              : 'var(--dim-1) solid transparent',
             boxShadow: isHighlighted
-              ? '0 4px 14px rgba(0, 0, 0, 0.16)'
+              ? '0 var(--dim-4) var(--dim-14) var(--nb-black-a16)'
               : inHotZone
-              ? '0 2px 8px rgba(0, 0, 0, 0.08)'
+              ? '0 var(--dim-2) var(--dim-8) var(--nb-black-a08)'
               : 'none',
             color: isHighlighted
-              ? 'var(--accent-500, #3b82f6)'
-              : 'var(--editor-text-secondary, #6b7280)',
-            fontSize: 11,
+              ? 'var(--accent-500)'
+              : 'var(--editor-text-secondary)',
+            fontSize: 'var(--text-11)',
             fontFamily: 'var(--ui-font-family, inherit)',
             cursor: 'pointer',
             userSelect: 'none',
             opacity,
             pointerEvents: isVisible ? 'auto' : 'none',
-            backdropFilter: 'blur(8px)',
+            backdropFilter: 'blur(var(--dim-8))',
             transition:
               'opacity var(--transition-normal), transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast)',
           }}
         >
           <ChevronDown size={13} strokeWidth={2.2} />
-          <span style={{ fontWeight: 500 }}>展开操作栏</span>
+          <span style={{ fontWeight: 'var(--weight-500)' }}>展开操作栏</span>
         </button>
       </Tooltip>
     </>

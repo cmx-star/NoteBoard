@@ -15,17 +15,17 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
   const rowStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 12,
-    fontSize: 'var(--ui-font-size, 13px)',
+    gap: 'var(--dim-12)',
+    marginBottom: 'var(--dim-12)',
+    fontSize: 'var(--ui-font-size, var(--dim-13))',
   };
 
-  const labelStyle: React.CSSProperties = { width: 140, flexShrink: 0, fontWeight: 500 };
-  const sectionTitleStyle: React.CSSProperties = { fontSize: 14, fontWeight: 600, margin: '16px 0 10px', color: 'var(--editor-heading)' };
+  const labelStyle: React.CSSProperties = { width: 'var(--dim-140)', flexShrink: 0, fontWeight: 'var(--weight-500)' };
+  const sectionTitleStyle: React.CSSProperties = { fontSize: 'var(--text-14)', fontWeight: 'var(--weight-600)', margin: 'var(--dim-16) 0 var(--dim-10)', color: 'var(--editor-heading)' };
 
   return (
-    <div style={{ paddingBottom: 20, fontFamily: 'var(--ui-font-family)', fontSize: 'var(--ui-font-size, 13px)' }}>
-      <h2 style={{ fontSize: 16, marginTop: 0, marginBottom: 16 }}>排版设置</h2>
+    <div style={{ paddingBottom: 'var(--dim-20)', fontFamily: 'var(--ui-font-family)', fontSize: 'var(--ui-font-size, var(--dim-13))' }}>
+      <h2 style={{ fontSize: 'var(--text-16)', marginTop: 0, marginBottom: 'var(--dim-16)' }}>排版设置</h2>
 
       {/* 独立设置窗口与主设置弹窗复用同一份字体包运行态和管理操作。 */}
       <FontPackSettingsCard onOpen={onOpenFonts} />
@@ -36,7 +36,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 界面 UI 西文字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>界面西文字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.uiFontFamily ?? ''}
             filterType="en"
@@ -52,7 +52,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 界面 UI 中文字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>界面中文字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.uiFontFamilyZh ?? ''}
             filterType="zh"
@@ -78,9 +78,9 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             useSettingsStore.getState().setTypography({ uiFontSize: v });
             applyTypography({ ...settings.typography, uiFontSize: v });
           }}
-          style={{ flex: 1, maxWidth: 200 }}
+          style={{ flex: 1, maxWidth: 'var(--dim-200)' }}
         />
-        <span style={{ width: 36 }}>{settings.typography.uiFontSize ?? 13}px</span>
+        <span style={{ width: 'var(--dim-36)' }}>{settings.typography.uiFontSize ?? 13}px</span>
       </div>
 
       {/* ── 2. Markdown 正文排版 ── */}
@@ -89,7 +89,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 正文西文字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>正文西文字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.contentFontFamily}
             filterType="en"
@@ -105,7 +105,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 正文中文字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>正文中文字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.contentFontFamilyZh ?? ''}
             filterType="zh"
@@ -131,7 +131,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             useSettingsStore.getState().setTypography({ contentFontSize: v });
             applyTypography({ ...settings.typography, contentFontSize: v });
           }}
-          style={{ ...inputStyle, width: 70 }}
+          style={{ ...inputStyle, width: 'var(--dim-70)' }}
         />
         <span style={{ color: 'var(--editor-text-muted)' }}>px</span>
       </div>
@@ -149,15 +149,15 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             useSettingsStore.getState().setTypography({ contentLineHeight: v });
             applyTypography({ ...settings.typography, contentLineHeight: v });
           }}
-          style={{ flex: 1, maxWidth: 200 }}
+          style={{ flex: 1, maxWidth: 'var(--dim-200)' }}
         />
-        <span style={{ width: 36 }}>{settings.typography.contentLineHeight.toFixed(1)}</span>
+        <span style={{ width: 'var(--dim-36)' }}>{settings.typography.contentLineHeight.toFixed(1)}</span>
       </div>
 
       {/* Markdown 版心最大宽度 */}
       <div style={{ ...rowStyle, alignItems: 'flex-start' }}>
-        <span style={{ ...labelStyle, marginTop: 4 }}>Markdown 最大宽度</span>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1, maxWidth: 360 }}>
+        <span style={{ ...labelStyle, marginTop: 'var(--dim-4)' }}>Markdown 最大宽度</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-8)', flex: 1, maxWidth: 'var(--dim-360)' }}>
           <select
             value={['narrow', 'standard', 'wide', 'full'].includes(settings.typography.contentWidth ?? 'wide') ? (settings.typography.contentWidth ?? 'wide') : 'custom'}
             onChange={(e) => {
@@ -178,7 +178,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             )}
           </select>
           {/* 滑动条自定义宽度调节 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
             <SettingsRange
               min="40"
               max="100"
@@ -191,7 +191,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
               }}
               style={{ flex: 1, cursor: 'pointer' }}
             />
-            <span style={{ width: 42, fontSize: 12, color: 'var(--editor-text-muted)', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ width: 'var(--dim-42)', fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
               {contentWidthToPercent(settings.typography.contentWidth ?? 'wide')}%
             </span>
           </div>
@@ -204,7 +204,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 代码西文等宽字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>代码西文等宽字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.monoFontFamily}
             filterType="mono"
@@ -221,7 +221,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 代码中文等宽/中文字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>代码中文等宽/中文字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.monoFontFamilyZh ?? ''}
             filterType="zh"
@@ -247,7 +247,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             useSettingsStore.getState().setTypography({ monoFontSize: v });
             applyTypography({ ...settings.typography, monoFontSize: v });
           }}
-          style={{ ...inputStyle, width: 70 }}
+          style={{ ...inputStyle, width: 'var(--dim-70)' }}
         />
         <span style={{ color: 'var(--editor-text-muted)' }}>px (支持 Ctrl+滚轮)</span>
       </div>
@@ -265,15 +265,15 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             useSettingsStore.getState().setTypography({ monoLineHeight: v });
             applyTypography({ ...settings.typography, monoLineHeight: v });
           }}
-          style={{ flex: 1, maxWidth: 200 }}
+          style={{ flex: 1, maxWidth: 'var(--dim-200)' }}
         />
-        <span style={{ width: 36 }}>{(settings.typography.monoLineHeight ?? 1.5).toFixed(1)}</span>
+        <span style={{ width: 'var(--dim-36)' }}>{(settings.typography.monoLineHeight ?? 1.5).toFixed(1)}</span>
       </div>
 
       {/* 代码与纯文本版心最大宽度 */}
       <div style={{ ...rowStyle, alignItems: 'flex-start' }}>
-        <span style={{ ...labelStyle, marginTop: 4 }}>代码/纯文本最大宽度</span>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1, maxWidth: 360 }}>
+        <span style={{ ...labelStyle, marginTop: 'var(--dim-4)' }}>代码/纯文本最大宽度</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-8)', flex: 1, maxWidth: 'var(--dim-360)' }}>
           <select
             value={['narrow', 'standard', 'wide', 'full'].includes(settings.typography.monoContentWidth ?? 'full') ? (settings.typography.monoContentWidth ?? 'full') : 'custom'}
             onChange={(e) => {
@@ -294,7 +294,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             )}
           </select>
           {/* 滑动条自定义宽度调节 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
             <SettingsRange
               min="40"
               max="100"
@@ -307,7 +307,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
               }}
               style={{ flex: 1, cursor: 'pointer' }}
             />
-            <span style={{ width: 42, fontSize: 12, color: 'var(--editor-text-muted)', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ width: 'var(--dim-42)', fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
               {contentWidthToPercent(settings.typography.monoContentWidth ?? 'full')}%
             </span>
           </div>
@@ -320,7 +320,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 文件树西文字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>文件树西文字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.explorerFontFamily ?? ''}
             filterType="en"
@@ -336,7 +336,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
       {/* 文件树中文字体 */}
       <div style={rowStyle}>
         <span style={labelStyle}>文件树中文字体</span>
-        <div style={{ flex: 1, maxWidth: 360 }}>
+        <div style={{ flex: 1, maxWidth: 'var(--dim-360)' }}>
           <FontSelect
             value={settings.typography.explorerFontFamilyZh ?? ''}
             filterType="zh"
@@ -362,7 +362,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             useSettingsStore.getState().setTypography({ explorerFontSize: v });
             applyTypography({ ...settings.typography, explorerFontSize: v });
           }}
-          style={{ ...inputStyle, width: 70 }}
+          style={{ ...inputStyle, width: 'var(--dim-70)' }}
         />
         <span style={{ color: 'var(--editor-text-muted)' }}>px</span>
       </div>
@@ -380,23 +380,23 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             useSettingsStore.getState().setTypography({ explorerLineHeight: v });
             applyTypography({ ...settings.typography, explorerLineHeight: v });
           }}
-          style={{ ...inputStyle, width: 70 }}
+          style={{ ...inputStyle, width: 'var(--dim-70)' }}
         />
         <span style={{ color: 'var(--editor-text-muted)' }}>px</span>
       </div>
 
       {/* 实时预览 */}
-      <div style={{ marginTop: 24 }}>
-        <h3 style={{ fontSize: 14, marginBottom: 8 }}>排版效果预览</h3>
+      <div style={{ marginTop: 'var(--dim-24)' }}>
+        <h3 style={{ fontSize: 'var(--text-14)', marginBottom: 'var(--dim-8)' }}>排版效果预览</h3>
         <div
           style={{
-            padding: '16px 20px',
+            padding: 'var(--dim-16) var(--dim-20)',
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
-            borderRadius: 6,
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-md)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 12,
+            gap: 'var(--dim-12)',
           }}
         >
           {/* 界面 UI 预览 */}
@@ -404,17 +404,17 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             style={{
               fontFamily: 'var(--ui-font-family)',
               fontSize: settings.typography.uiFontSize ?? 13,
-              padding: '8px 12px',
+              padding: 'var(--dim-8) var(--dim-12)',
               background: 'var(--editor-bg)',
-              border: '1px solid var(--editor-border)',
-              borderRadius: 4,
+              border: 'var(--dim-1) solid var(--editor-border)',
+              borderRadius: 'var(--radius-sm)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
           >
-            <span style={{ fontWeight: 600 }}>软件界面 UI 预览 · 中西混排 NoteBoard 2026</span>
-            <span style={{ padding: '2px 6px', background: 'var(--editor-selection)', color: 'var(--accent-strong)', borderRadius: 3, fontSize: '0.9em' }}>
+            <span style={{ fontWeight: 'var(--weight-600)' }}>软件界面 UI 预览 · 中西混排 Loomark 2026</span>
+            <span style={{ padding: 'var(--dim-2) var(--dim-6)', background: 'var(--editor-selection)', color: 'var(--accent-strong)', borderRadius: 'var(--radius-xs)', fontSize: 'var(--em-0-9)' }}>
               按钮示例 (Button)
             </span>
           </div>
@@ -428,7 +428,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
             }}
           >
             <p style={{ margin: 0 }}>
-              Markdown 正文效果（Quick brown fox 123 中文测试），包含 <code style={{ fontFamily: 'var(--mono-font-family)', fontSize: '0.9em', background: 'var(--code-inline-bg)', padding: '2px 4px', borderRadius: 3 }}>code</code> 行内代码。
+              Markdown 正文效果（Quick brown fox 123 中文测试），包含 <code style={{ fontFamily: 'var(--mono-font-family)', fontSize: 'var(--em-0-9)', background: 'var(--code-inline-bg)', padding: 'var(--dim-2) var(--dim-4)', borderRadius: 'var(--radius-xs)' }}>code</code> 行内代码。
             </p>
           </div>
 
@@ -441,8 +441,8 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
               fontSize: settings.typography.monoFontSize ?? 14,
               lineHeight: settings.typography.monoLineHeight ?? 1.5,
               background: 'var(--cm-gutter-background)',
-              padding: '8px 12px',
-              borderRadius: 4,
+              padding: 'var(--dim-8) var(--dim-12)',
+              borderRadius: 'var(--radius-sm)',
             }}
           >
             <code>{'-- SQL 查询测试 (Chinese & English Mixed)\nSELECT id, title FROM notes WHERE status = "ok";'}</code>
@@ -456,10 +456,10 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
               fontFamily: 'var(--explorer-font-family)',
               display: 'flex',
               alignItems: 'center',
-              padding: '0 8px',
+              padding: '0 var(--dim-8)',
               background: 'var(--explorer-active)',
-              borderLeft: '2px solid var(--accent-strong)',
-              borderRadius: 3,
+              borderLeft: 'var(--dim-2) solid var(--accent-strong)',
+              borderRadius: 'var(--radius-xs)',
             }}
           >
             📁 01_示例文档 (Guide.md)
@@ -471,19 +471,19 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
 }
 
 const inputStyle: React.CSSProperties = {
-  padding: '4px 8px',
-  fontSize: 'var(--ui-font-size, 13px)',
-  border: '1px solid var(--editor-border)',
-  borderRadius: 3,
+  padding: 'var(--dim-4) var(--dim-8)',
+  fontSize: 'var(--ui-font-size, var(--dim-13))',
+  border: 'var(--dim-1) solid var(--editor-border)',
+  borderRadius: 'var(--radius-xs)',
   background: 'var(--editor-surface)',
   color: 'var(--editor-text)',
   outline: 'none',
   flex: 1,
-  maxWidth: 200,
+  maxWidth: 'var(--dim-200)',
 };
 
 const selectStyle: React.CSSProperties = {
   ...inputStyle,
-  maxWidth: 160,
+  maxWidth: 'var(--dim-160)',
 };
 

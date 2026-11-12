@@ -44,7 +44,7 @@ export function WorkbenchView(props: Props) {
     if(!current?.enabled||!ref.current)return;
     const controller=new AbortController();let dispose:(()=>void)|void;
     // 每次加载使用独立容器，迟到的旧版本清理不能移除新版本界面。
-    const target=document.createElement('div');target.style.height='100%';ref.current.replaceChildren(target);
+    const target=document.createElement('div');target.style.height='var(--pct-100)';ref.current.replaceChildren(target);
     const authorized=new Map<string,WorkbenchSource>();
     const readConfig=()=>latest.current.config;
     const currentData=():WorkbenchDataset=>({id:'current',name:nameRef.current,columns:latest.current.data.columns,rows:latest.current.data.rows});
@@ -114,6 +114,6 @@ export function WorkbenchView(props: Props) {
         :<button type="button" className="nb-plugin-button primary" onClick={()=>openPluginSettings('plugin:workbench')}><Download size={15}/>前往下载插件</button>}
     </div></div>}
     {error&&<div className="nb-plugin-error" role="alert">{error}</div>}
-    <div ref={ref} hidden={!current?.enabled} style={{height:'100%'}}/>
+    <div ref={ref} hidden={!current?.enabled} style={{height:'var(--pct-100)'}}/>
   </div>;
 }

@@ -98,7 +98,7 @@ function getTabIcon(tab: Tab) {
 
   // 文本对比工具 tab：双栏对比语义图标（与「+」菜单/欢迎卡片一致）
   if (tab.toolKind === 'textdiff') {
-    return <GitCompare {...iconProps} color="#10b981" />;
+    return <GitCompare {...iconProps} color="currentColor" />;
   }
 
   // 统一调用优雅文件格式图标体系
@@ -169,12 +169,15 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
     };
   }, [menuPos]);
 
+  // 激活标签比普通标签多出的高度：原本到主行底边的空隙 + 向下延伸量
+  const activeBottomPad = getTabTopSpace(compactMode) + ACTIVE_TAB_EXTEND;
+
   // 单个 Tab 的外观样式（采用现代圆角卡片设计，短标题自动紧凑缩短，长标题受限截断）
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
-    transition: transition ?? 'opacity 120ms ease',
+    transition: transition ?? 'opacity var(--duration-120) ease',
     opacity: isDragging || nativeDragging ? 0.4 : 1,
-    animation: arriving && !isDragging ? 'nb-tab-arrive 200ms ease-out' : undefined,
+    animation: arriving && !isDragging ? 'nb-tab-arrive var(--duration-200) ease-out' : undefined,
     display: 'flex',
     alignItems: 'center',
     gap: compactMode ? 4 : 6,
@@ -183,11 +186,17 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
     maxWidth: compactMode ? 132 : 200,
     width: 'max-content',
     flex: '0 0 auto',
-    height: compactMode ? 26 : 28,
-    padding: compactMode ? '0 4px 0 7px' : '0 6px 0 10px',
+    // 激活标签拉伸到滚动容器底部（即标题栏底边），其余标签保持固定高度
+    height: isActive ? undefined : getTabHeight(compactMode),
+    alignSelf: isActive ? 'stretch' : undefined,
+    // 激活标签底部内边距等于向下延伸量，文字与图标仍停在原来的位置
+    padding: compactMode
+      ? `0 var(--dim-4) ${isActive ? activeBottomPad : 0}px var(--dim-7)`
+      : `0 var(--dim-6) ${isActive ? activeBottomPad : 0}px var(--dim-10)`,
     // 左右留出间距，防止边缘遮挡（相邻 Tab 间缝隙为 4px）
-    margin: '0 2px',
-    borderRadius: 6,
+    margin: `0 ${TAB_MARGIN_X}px`,
+    // 激活标签只留上方圆角，底部由外翻圆弧接到编辑区
+    borderRadius: isActive ? `${ACTIVE_TAB_FOOT}px ${ACTIVE_TAB_FOOT}px 0 0` : 'var(--radius-md)',
     background: isActive
       ? 'var(--tab-active-bg)'
       : 'var(--tab-inactive-bg)',
@@ -195,20 +204,21 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
       ? 'var(--editor-text)'
       : 'var(--editor-text-secondary)',
     // 独立清晰的卡片边界线，确保左右与四周边界一目了然
-    border: '1px solid var(--tab-border)',
-    borderBottom: isActive
-      ? '2px solid var(--tab-active-indicator)'
-      : '1px solid var(--tab-border)',
+    border: 'var(--dim-1) solid var(--tab-border)',
+    // 激活标签去掉底边，与下方编辑区之间不留分隔线；顶部改用 2px 强调色线标识
+    borderBottom: isActive ? 'none' : 'var(--dim-1) solid var(--tab-border)',
     boxShadow: isActive
-      ? '0 1px 3px rgba(0, 0, 0, 0.08)'
+      ? 'inset 0 var(--dim-2) 0 var(--tab-active-indicator)'
       : 'none',
     cursor: 'pointer',
     flexShrink: 0,
     userSelect: 'none',
     position: 'relative',
+    // 外翻圆弧会压到相邻标签的边缘，激活标签需绘制在上层
+    zIndex: isActive ? 1 : undefined,
     boxSizing: 'border-box',
     fontFamily: 'var(--ui-font-family, inherit)',
-    fontSize: 'var(--ui-font-size, 13px)',
+    fontSize: 'var(--ui-font-size, var(--dim-13))',
     fontWeight: isActive ? 500 : 400,
   };
 
@@ -217,9 +227,9 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
     display: isActive ? 'flex' : 'none',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 18,
-    height: 18,
-    borderRadius: 4,
+    width: 'var(--dim-18)',
+    height: 'var(--dim-18)',
+    borderRadius: 'var(--radius-sm)',
     border: 'none',
     background: 'transparent',
     cursor: 'pointer',
@@ -234,6 +244,7 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
       <Tooltip content={tab.path ?? tab.displayName} disabled={Boolean(menuPos)} side="bottom" sideOffset={6}>
         <div
           ref={setNodeRef}
+          className={isActive ? 'nb-window-tab is-active' : 'nb-window-tab'}
           style={style}
           {...attributes}
           {...listeners}
@@ -301,9 +312,9 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
           {tab.isDirty && (
             <span
               style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
+                width: 'var(--dim-6)',
+                height: 'var(--dim-6)',
+                borderRadius: 'var(--pct-50)',
                 background: 'var(--tab-dirty-dot)',
                 flexShrink: 0,
               }}
@@ -339,19 +350,19 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1.1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-1))';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.9)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-9))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1.1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-1))';
             }}
             aria-label={`关闭 ${tab.displayName}`}
           >
@@ -368,13 +379,13 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
             position: 'fixed',
             top: menuPos.y,
             left: menuPos.x,
-            zIndex: 9999,
+            zIndex: 'var(--z-9999)',
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             borderRadius: 'var(--radius-sm)',
             boxShadow: 'var(--shadow-md)',
-            padding: '4px',
-            minWidth: 150,
+            padding: 'var(--dim-4)',
+            minWidth: 'var(--dim-150)',
             ...menuClamp.style,
           }}
           onClick={(e) => e.stopPropagation()}
@@ -473,7 +484,7 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
           {/* 桌面所有标签均通过统一迁移入口打开独立窗口。 */}
           {!IS_WEB && !IS_NATIVE_MOBILE && (
             <>
-              <div style={{ height: 1, background: 'var(--editor-border)', margin: '4px 0' }} />
+              <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)', margin: 'var(--dim-4) 0' }} />
 
               {/* 在独立新窗口中打开 */}
               <button
@@ -515,8 +526,8 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
               >
                 <Star
                   size={13}
-                  color="#f97316"
-                  style={{ fill: isFavorited ? '#f97316' : 'none' }}
+                  color="currentColor"
+                  style={{ fill: isFavorited ? 'currentColor' : 'none' }}
                 />
                 <span>{isFavorited ? '编辑收藏' : '加入收藏夹'}</span>
               </button>
@@ -599,7 +610,7 @@ function TabItem({ tab, isActive, onActivate, onClose, nativeDragging, arriving 
 }
 
 // 菜单项里的扩展名与快捷键徽标统一中性色、靠右对齐；名称右侧多留 8px，加上 gap 后与徽标至少隔开 16px
-const MENU_BADGE_LABEL_STYLE: React.CSSProperties = { marginRight: 8 };
+const MENU_BADGE_LABEL_STYLE: React.CSSProperties = { marginRight: 'var(--dim-8)' };
 const MENU_BADGE_STYLE: React.CSSProperties = { marginLeft: 'auto' };
 
 // 菜单项基础样式生成函数（支持禁用态）
@@ -607,18 +618,18 @@ function getMenuItemStyle(disabled = false): React.CSSProperties {
   return {
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
-    width: '100%',
-    padding: '6px 10px',
+    gap: 'var(--dim-8)',
+    width: 'var(--pct-100)',
+    padding: 'var(--dim-6) var(--dim-10)',
     background: 'transparent',
     border: 'none',
-    borderRadius: 4,
+    borderRadius: 'var(--radius-sm)',
     textAlign: 'left',
     // 菜单项始终单行：靠近窗口右缘时菜单宽度受限也不折行，越界部分由视口收回逻辑平移
     whiteSpace: 'nowrap',
     cursor: disabled ? 'not-allowed' : 'pointer',
     fontFamily: 'var(--ui-font-family, inherit)',
-    fontSize: 'calc(var(--ui-font-size, 13px) - 1px)',
+    fontSize: 'calc(var(--ui-font-size, var(--dim-13)) - var(--dim-1))',
     color: disabled ? 'var(--editor-text-muted)' : 'var(--editor-text)',
     opacity: disabled ? 0.45 : 1,
     transition: 'all var(--transition-fast)',
@@ -635,14 +646,14 @@ function handleMenuItemMouseEnter(e: React.MouseEvent<HTMLButtonElement>) {
 // 菜单项鼠标移出还原
 function handleMenuItemMouseLeave(e: React.MouseEvent<HTMLButtonElement>) {
   e.currentTarget.style.background = 'transparent';
-  e.currentTarget.style.transform = 'scale(1)';
+  e.currentTarget.style.transform = 'scale(var(--scale-1))';
 }
 
 // 菜单项鼠标按下按压反馈
 function handleMenuItemMouseDown(e: React.MouseEvent<HTMLButtonElement>) {
   if (!e.currentTarget.disabled) {
     e.currentTarget.style.background = 'var(--toolbar-active)';
-    e.currentTarget.style.transform = 'scale(0.98)';
+    e.currentTarget.style.transform = 'scale(var(--scale-0-98))';
   }
 }
 
@@ -650,7 +661,7 @@ function handleMenuItemMouseDown(e: React.MouseEvent<HTMLButtonElement>) {
 function handleMenuItemMouseUp(e: React.MouseEvent<HTMLButtonElement>) {
   if (!e.currentTarget.disabled) {
     e.currentTarget.style.background = 'var(--toolbar-hover)';
-    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.transform = 'scale(var(--scale-1))';
   }
 }
 
@@ -674,8 +685,36 @@ const CREATE_FORMAT_ACTIONS: Record<CreateFormatId, () => void> = {
 
 // 滚动条轨道距 Tab 栏左右两端的内缩（与滚动容器 padding 对齐）
 const TAB_SCROLLBAR_INSET = 4;
+// 标题栏主行下方的留白高度（由 TitleBar 渲染为可拖动空白条）：与 Tab 下方 4px 空隙合计 8px，横向滚动条居中显示在其中。
+// 与顶部拖动条呼应，仅桌面端提供；网页端无顶部拖动条，Tab 上下空隙本就对称
+export const TITLEBAR_BOTTOM_GAP = IS_WEB ? 0 : 4;
+// Tab（含边框 28px）在 36px 主行内垂直居中，下方到主行底边的空隙
+const TAB_BOTTOM_SPACE = 4;
+// 滚动条命中区向下越过标题栏底边的距离，便于抓取
+const TAB_SCROLLBAR_HIT_OVERFLOW = 2;
 // 滑块最小宽度，标签很多时仍能稳定命中拖动
 const TAB_SCROLLBAR_MIN_THUMB = 24;
+
+// ── 激活标签外翻造型 ──
+
+// 标题栏主行高度（与 TitleBar 主行一致），标签在其中垂直居中
+const TAB_ROW_HEIGHT = 36;
+// 激活标签越过主行底边继续向下延伸：盖住下方留白与标题栏 1px 底边框，与编辑区连成一体
+const ACTIVE_TAB_EXTEND = TITLEBAR_BOTTOM_GAP + 1;
+// 激活标签底部外翻圆弧半径（与 globals.css 中 .nb-window-tab.is-active 伪元素尺寸一致）
+const ACTIVE_TAB_FOOT = 8;
+// 标签左右外边距
+const TAB_MARGIN_X = 2;
+
+/** 标签高度（含边框）：极窄模式更矮 */
+function getTabHeight(compact: boolean): number {
+  return compact ? 26 : 28;
+}
+
+/** 标签顶边到主行顶边的空隙（同时也是原本到主行底边的空隙） */
+function getTabTopSpace(compact: boolean): number {
+  return (TAB_ROW_HEIGHT - getTabHeight(compact)) / 2;
+}
 
 type TabScrollbarState = {
   visible: boolean;
@@ -955,24 +994,28 @@ export function TabBar() {
   // 滑块配色跟随主题：静止时取次要文字色的淡化版，悬停/拖动时切到主题强调色
   const scrollbarActive = scrollbarHovered || scrollbarDragging;
   const scrollbarThumbColor = scrollbarDragging
-    ? 'color-mix(in srgb, var(--accent-strong) 85%, transparent)'
+    ? 'color-mix(in srgb, var(--accent-strong) var(--pct-85), transparent)'
     : scrollbarHovered
-      ? 'color-mix(in srgb, var(--accent-strong) 60%, transparent)'
-      : 'color-mix(in srgb, var(--editor-text-secondary) 30%, transparent)';
+      ? 'color-mix(in srgb, var(--accent-strong) var(--pct-60), transparent)'
+      : 'color-mix(in srgb, var(--editor-text-secondary) var(--pct-30), transparent)';
 
   // Tab 栏横向滚动容器（隐藏原生滚动条，改用下方自绘细滑块）
+  // 容器向下延伸到标题栏底边，激活标签才能伸出主行、与编辑区相连；普通标签靠顶部内边距停在原位
   const containerStyle: React.CSSProperties = {
     display: 'flex',
-    alignItems: 'center',
-    height: '100%',
+    alignItems: 'flex-start',
+    height: `calc(var(--pct-100) + ${ACTIVE_TAB_EXTEND}px)`,
     overflowX: 'auto',
     overflowY: 'hidden',
     scrollbarWidth: 'none',
     flex: '0 1 auto',
     minWidth: 0,
-    // 左侧不留内边距：应用图标容器自带 10px 留白，再叠加会让首个 Tab 离图标过远
-    padding: '0 4px 0 0',
+    // 左右内边距只给激活标签的外翻圆弧留位（扣除标签自身外边距），避免首尾标签激活时圆弧被裁切
+    padding: `${getTabTopSpace(compactMode)}px ${ACTIVE_TAB_FOOT - TAB_MARGIN_X}px 0`,
     boxSizing: 'border-box',
+    // 盖住标题栏下方留白与底边框；自绘滚动条在 DOM 中位于其后，同层级下仍显示在最上层
+    position: 'relative',
+    zIndex: 'var(--z-1)',
   };
 
   // 渲染单个新建格式菜单项（首层与二级菜单同样式）
@@ -1007,16 +1050,16 @@ export function TabBar() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 24,
-    height: 24,
-    borderRadius: 6,
-    border: '1px solid transparent',
+    width: 'var(--dim-24)',
+    height: 'var(--dim-24)',
+    borderRadius: 'var(--radius-md)',
+    border: 'var(--dim-1) solid transparent',
     background: 'transparent',
     color: 'var(--editor-text-secondary)',
     cursor: 'pointer',
     flexShrink: 0,
     // 相邻按钮间缝隙 6px
-    margin: '0 3px',
+    margin: '0 var(--dim-3)',
     transition: 'background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast)',
   };
 
@@ -1036,10 +1079,10 @@ export function TabBar() {
 
   return (
     // 极窄模式按钮更少，不再预留常规模式的右侧宽度，标签栏随拖拽区按需收缩
-    <div style={{ display: 'flex', alignItems: 'center', height: '100%', minWidth: 0, flex: '0 1 auto', maxWidth: compactMode ? undefined : 'calc(100vw - 210px)' }}>
+    <div style={{ display: 'flex', alignItems: 'center', height: 'var(--pct-100)', minWidth: 0, flex: '0 1 auto', maxWidth: compactMode ? undefined : 'calc(100vw - var(--dim-210))' }}>
       {!IS_WEB && !IS_NATIVE_MOBILE && <TabDropOverlay />}
       {/* 滚动外壳：不随内容滚动，为自绘滚动条提供定位基准 */}
-      <div style={{ position: 'relative', display: 'flex', height: '100%', minWidth: 0, flex: '0 1 auto' }}>
+      <div style={{ position: 'relative', display: 'flex', height: 'var(--pct-100)', minWidth: 0, flex: '0 1 auto' }}>
         <div
           ref={scrollRef}
           className="scrollbar-none"
@@ -1069,7 +1112,7 @@ export function TabBar() {
           </DndContext>
         </div>
 
-        {/* 自绘横向滚动条：只占用 Tab 下方与标题栏底边之间的空隙，不挤占 Tab 及其激活指示线 */}
+        {/* 自绘横向滚动条：只占用 Tab 下方与标题栏底边之间的空隙（含主行下方留白条），不挤占 Tab 及其激活指示线 */}
         {scrollbar.visible && (
           <div
             aria-hidden="true"
@@ -1077,14 +1120,14 @@ export function TabBar() {
               position: 'absolute',
               left: TAB_SCROLLBAR_INSET,
               right: TAB_SCROLLBAR_INSET,
-              // 命中区向下越过标题栏底边 2px 以便抓取，可见滑块仍居中于空隙内
-              bottom: -2,
-              height: 6,
-              paddingBottom: 2,
+              // 命中区从 Tab 底边起，向下越过标题栏底边 2px 以便抓取；底部内边距抵消越界部分，可见滑块仍居中于空隙内
+              bottom: -(TITLEBAR_BOTTOM_GAP + TAB_SCROLLBAR_HIT_OVERFLOW),
+              height: TAB_BOTTOM_SPACE + TITLEBAR_BOTTOM_GAP + TAB_SCROLLBAR_HIT_OVERFLOW,
+              paddingBottom: TAB_SCROLLBAR_HIT_OVERFLOW,
               display: 'flex',
               alignItems: 'center',
               cursor: 'pointer',
-              zIndex: 1,
+              zIndex: 'var(--z-1)',
               touchAction: 'none',
             }}
             onPointerEnter={() => setScrollbarHovered(true)}
@@ -1098,10 +1141,10 @@ export function TabBar() {
               style={{
                 width: scrollbar.thumbWidth,
                 height: scrollbarActive ? 3 : 2,
-                borderRadius: 999,
+                borderRadius: 'var(--radius-pill)',
                 background: scrollbarThumbColor,
                 transform: `translateX(${scrollbar.thumbLeft}px)`,
-                transition: 'height 120ms ease, background-color 120ms ease',
+                transition: 'height var(--duration-120) ease, background-color var(--duration-120) ease',
                 willChange: 'transform',
               }}
             />
@@ -1142,21 +1185,21 @@ export function TabBar() {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
             e.currentTarget.style.borderColor = 'var(--tab-border)';
             e.currentTarget.style.color = 'var(--editor-accent)';
-            e.currentTarget.style.transform = 'scale(1.08)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = 'transparent';
             e.currentTarget.style.borderColor = 'transparent';
             e.currentTarget.style.color = 'var(--editor-text-secondary)';
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1))';
           }}
           onMouseDown={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-active)';
-            e.currentTarget.style.transform = 'scale(0.92)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
           }}
           onMouseUp={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
-            e.currentTarget.style.transform = 'scale(1.08)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
           }}
           aria-label="保存与另存为"
         >
@@ -1180,21 +1223,21 @@ export function TabBar() {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
             e.currentTarget.style.borderColor = 'var(--tab-border)';
             e.currentTarget.style.color = 'var(--editor-accent)';
-            e.currentTarget.style.transform = 'scale(1.08)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = 'transparent';
             e.currentTarget.style.borderColor = 'transparent';
             e.currentTarget.style.color = 'var(--editor-text-secondary)';
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1))';
           }}
           onMouseDown={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-active)';
-            e.currentTarget.style.transform = 'scale(0.92)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
           }}
           onMouseUp={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
-            e.currentTarget.style.transform = 'scale(1.08)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
           }}
           aria-label="回到主界面"
         >
@@ -1234,21 +1277,21 @@ export function TabBar() {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
             e.currentTarget.style.borderColor = 'var(--tab-border)';
             e.currentTarget.style.color = 'var(--editor-text)';
-            e.currentTarget.style.transform = 'scale(1.08)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = 'transparent';
             e.currentTarget.style.borderColor = 'transparent';
             e.currentTarget.style.color = 'var(--editor-text-secondary)';
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1))';
           }}
           onMouseDown={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-active)';
-            e.currentTarget.style.transform = 'scale(0.92)';
+            e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
           }}
           onMouseUp={(e) => {
             e.currentTarget.style.background = 'var(--toolbar-hover)';
-            e.currentTarget.style.transform = 'scale(1.08)';
+            e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
           }}
           aria-label="新建或打开"
         >
@@ -1264,13 +1307,13 @@ export function TabBar() {
             position: 'fixed',
             top: newMenuPos.y,
             left: newMenuPos.x,
-            zIndex: 9999,
+            zIndex: 'var(--z-9999)',
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             borderRadius: 'var(--radius-sm)',
             boxShadow: 'var(--shadow-md)',
-            padding: '4px',
-            minWidth: 175,
+            padding: 'var(--dim-4)',
+            minWidth: 'var(--dim-175)',
             ...newMenuClamp.style,
           }}
           onClick={(e) => e.stopPropagation()}
@@ -1279,7 +1322,7 @@ export function TabBar() {
           {createFormats.primary.map(renderCreateMenuItem)}
 
           {createFormats.primary.length > 0 && createFormats.more.length > 0 && (
-            <div style={{ height: 1, background: 'var(--editor-border)', margin: '4px 0' }} />
+            <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)', margin: 'var(--dim-4) 0' }} />
           )}
 
           {/* 更多格式新建（带二级菜单，防抖无缝悬停与自适应向左展开；没有收进更多的格式时不渲染） */}
@@ -1302,7 +1345,7 @@ export function TabBar() {
               onMouseDown={handleMenuItemMouseDown}
               onMouseUp={handleMenuItemMouseUp}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
                 <FileCode size={13} color="var(--editor-accent)" />
                 <span>更多新建格式</span>
               </div>
@@ -1318,17 +1361,17 @@ export function TabBar() {
                 style={{
                   ...moreSubMenuClamp.style,
                   position: 'absolute',
-                  top: -4,
+                  top: 'calc(var(--dim-4) * -1)',
                   ...(flipSubMenuLeft
-                    ? { right: 'calc(100% - 2px)', left: 'auto' }
-                    : { left: 'calc(100% - 2px)', right: 'auto' }),
-                  zIndex: 10000,
+                    ? { right: 'calc(var(--pct-100) - var(--dim-2))', left: 'auto' }
+                    : { left: 'calc(var(--pct-100) - var(--dim-2))', right: 'auto' }),
+                  zIndex: 'var(--z-10000)',
                   background: 'var(--editor-surface)',
-                  border: '1px solid var(--editor-border)',
+                  border: 'var(--dim-1) solid var(--editor-border)',
                   borderRadius: 'var(--radius-sm)',
                   boxShadow: 'var(--shadow-md)',
-                  padding: '4px',
-                  minWidth: 175,
+                  padding: 'var(--dim-4)',
+                  minWidth: 'var(--dim-175)',
                 }}
               >
                 {createFormats.more.map(renderCreateMenuItem)}
@@ -1337,7 +1380,7 @@ export function TabBar() {
           </div>
           )}
 
-          <div style={{ height: 1, background: 'var(--editor-border)', margin: '4px 0' }} />
+          <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)', margin: 'var(--dim-4) 0' }} />
 
           {/* 打开文件 */}
           <button
@@ -1353,7 +1396,7 @@ export function TabBar() {
             onMouseDown={handleMenuItemMouseDown}
             onMouseUp={handleMenuItemMouseUp}
           >
-            <File size={13} color="#3b82f6" />
+            <File size={13} color="currentColor" />
             <span style={MENU_BADGE_LABEL_STYLE}>打开文件</span>
             <CodeBadge style={MENU_BADGE_STYLE}>{formatShortcut('Ctrl+O')}</CodeBadge>
           </button>
@@ -1372,7 +1415,7 @@ export function TabBar() {
             onMouseDown={handleMenuItemMouseDown}
             onMouseUp={handleMenuItemMouseUp}
           >
-            <FolderOpen size={13} color="#eab308" />
+            <FolderOpen size={13} color="currentColor" />
             <span style={MENU_BADGE_LABEL_STYLE}>打开文件夹</span>
             <CodeBadge style={MENU_BADGE_STYLE}>{formatShortcut('Ctrl+Shift+O')}</CodeBadge>
           </button>
@@ -1391,7 +1434,7 @@ export function TabBar() {
             onMouseDown={handleMenuItemMouseDown}
             onMouseUp={handleMenuItemMouseUp}
           >
-            <Star size={13} color="#f97316" fill="#f97316" />
+            <Star size={13} color="currentColor" fill="currentColor" />
             <span>打开收藏夹</span>
           </button>
 
@@ -1409,7 +1452,7 @@ export function TabBar() {
             onMouseDown={handleMenuItemMouseDown}
             onMouseUp={handleMenuItemMouseUp}
           >
-            <Archive size={13} color="#8b5cf6" />
+            <Archive size={13} color="currentColor" />
             <span>打开暂存区</span>
           </button>
 
@@ -1428,7 +1471,7 @@ export function TabBar() {
               onMouseDown={handleMenuItemMouseDown}
               onMouseUp={handleMenuItemMouseUp}
             >
-              <FolderSync size={13} color="#0ea5e9" />
+              <FolderSync size={13} color="currentColor" />
               <span>打开同步文件夹</span>
             </button>
           )}
@@ -1443,13 +1486,13 @@ export function TabBar() {
             position: 'fixed',
             top: saveMenuPos.y,
             left: saveMenuPos.x,
-            zIndex: 9999,
+            zIndex: 'var(--z-9999)',
             background: 'var(--editor-surface)',
-            border: '1px solid var(--editor-border)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             borderRadius: 'var(--radius-sm)',
             boxShadow: 'var(--shadow-md)',
-            padding: '4px',
-            minWidth: 160,
+            padding: 'var(--dim-4)',
+            minWidth: 'var(--dim-160)',
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -1490,7 +1533,7 @@ export function TabBar() {
             onMouseDown={handleMenuItemMouseDown}
             onMouseUp={handleMenuItemMouseUp}
           >
-            <SaveAll size={13} color={activeKey ? '#06b6d4' : undefined} />
+            <SaveAll size={13} color={activeKey ? 'var(--nb-cyan-500)' : undefined} />
             <span style={MENU_BADGE_LABEL_STYLE}>另存为</span>
             <CodeBadge style={MENU_BADGE_STYLE}>{formatShortcut('Ctrl+Shift+S')}</CodeBadge>
           </button>

@@ -169,9 +169,9 @@ export function DiagramFullscreenModal({
         position: 'fixed',
         inset: 0,
         // 需高于多维表格单元格编辑弹层（100002），低于全局输入弹窗（100010）
-        zIndex: 100006,
+        zIndex: 'var(--z-100006)',
         // 不用 backdrop-filter：全屏毛玻璃在内容每帧变化时都要重新模糊，拖动缩放会明显掉帧
-        background: 'rgba(0, 0, 0, 0.8)',
+        background: 'var(--nb-black-a80)',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -181,15 +181,15 @@ export function DiagramFullscreenModal({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '12px 20px',
-          background: 'var(--editor-surface, #ffffff)',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
+          padding: 'var(--dim-12) var(--dim-20)',
+          background: 'var(--editor-surface)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
           userSelect: 'none',
         }}
       >
-        <span style={{ fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>{title}</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <span style={{ fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>{title}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-12)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }}>
             <Tooltip content={formatShortcut('缩小（Ctrl+滚轮）')} side="bottom" sideOffset={4}>
               <button
                 type="button"
@@ -197,17 +197,17 @@ export function DiagramFullscreenModal({
                 onClick={() => zoomAt(viewRef.current.zoom / BUTTON_ZOOM_FACTOR, { x: 0, y: 0 }, true)}
                 disabled={zoom <= MIN_ZOOM}
                 aria-label="缩小"
-                style={{ padding: '4px 6px' }}
+                style={{ padding: 'var(--dim-4) var(--dim-6)' }}
               >
                 <ZoomOut size={15} />
               </button>
             </Tooltip>
             <span
               style={{
-                fontSize: 12,
-                minWidth: 44,
+                fontSize: 'var(--text-12)',
+                minWidth: 'var(--dim-44)',
                 textAlign: 'center',
-                color: 'var(--editor-text, #1e293b)',
+                color: 'var(--editor-text)',
               }}
             >
               {Math.round(zoom * 100)}%
@@ -219,7 +219,7 @@ export function DiagramFullscreenModal({
                 onClick={() => zoomAt(viewRef.current.zoom * BUTTON_ZOOM_FACTOR, { x: 0, y: 0 }, true)}
                 disabled={zoom >= MAX_ZOOM}
                 aria-label="放大"
-                style={{ padding: '4px 6px' }}
+                style={{ padding: 'var(--dim-4) var(--dim-6)' }}
               >
                 <ZoomIn size={15} />
               </button>
@@ -230,7 +230,7 @@ export function DiagramFullscreenModal({
                 className="nb-editor-icon-btn"
                 onClick={resetView}
                 aria-label="复位视图"
-                style={{ padding: '4px 6px' }}
+                style={{ padding: 'var(--dim-4) var(--dim-6)' }}
               >
                 <RotateCcw size={15} />
               </button>
@@ -244,7 +244,7 @@ export function DiagramFullscreenModal({
               className="nb-diagram-action-btn"
               onClick={onClose}
               aria-label="关闭预览"
-              style={{ padding: 4 }}
+              style={{ padding: 'var(--dim-4)' }}
             >
               <X size={20} />
             </button>
@@ -268,7 +268,7 @@ export function DiagramFullscreenModal({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 40,
+          padding: 'var(--dim-40)',
           cursor: dragging ? 'grabbing' : 'grab',
           userSelect: 'none',
           touchAction: 'none',
@@ -291,14 +291,14 @@ export function DiagramFullscreenModal({
       <div
         style={{
           position: 'absolute',
-          left: '50%',
-          bottom: 16,
-          transform: 'translateX(-50%)',
-          padding: '4px 12px',
-          borderRadius: 999,
-          background: 'rgba(0, 0, 0, 0.5)',
-          color: 'rgba(255, 255, 255, 0.85)',
-          fontSize: 12,
+          left: 'var(--pct-50)',
+          bottom: 'var(--dim-16)',
+          transform: 'translateX(calc(var(--pct-50) * -1))',
+          padding: 'var(--dim-4) var(--dim-12)',
+          borderRadius: 'var(--radius-pill)',
+          background: 'var(--nb-black-a50)',
+          color: 'var(--nb-white-a85)',
+          fontSize: 'var(--text-12)',
           pointerEvents: 'none',
           userSelect: 'none',
         }}

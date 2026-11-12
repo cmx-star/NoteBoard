@@ -163,8 +163,8 @@ export function FlowchartQuickConnect({
   };
 
   const isDark = theme === 'dark';
-  const arrowColor = isDark ? 'rgba(92, 179, 255, 0.65)' : 'rgba(24, 144, 255, 0.65)';
-  const arrowHoverColor = isDark ? '#40a9ff' : '#1890ff';
+  const arrowColor = isDark ? 'var(--nb-auto-5cb3ff-a65)' : 'var(--nb-auto-1890ff-a65)';
+  const arrowHoverColor = isDark ? 'var(--nb-auto-40a9ff)' : 'var(--nb-auto-1890ff)';
 
   // 渲染候选图形面板
   const renderShapeMenu = (direction: FlowchartDirection) => {
@@ -174,39 +174,39 @@ export function FlowchartQuickConnect({
     const menuStyle: React.CSSProperties = {
       position: 'absolute',
       display: 'flex',
-      gap: 4,
-      padding: '4px 6px',
-      borderRadius: 8,
-      background: isDark ? 'rgba(30, 34, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-      backdropFilter: 'blur(10px)',
+      gap: 'var(--dim-4)',
+      padding: 'var(--dim-4) var(--dim-6)',
+      borderRadius: 'var(--radius-lg)',
+      background: isDark ? 'var(--nb-auto-1e222a-a95)' : 'var(--nb-white-a95)',
+      backdropFilter: 'blur(var(--dim-10))',
       boxShadow: isDark
-        ? '0 6px 18px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.12)'
-        : '0 6px 18px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.08)',
-      zIndex: 20,
+        ? '0 var(--dim-6) var(--dim-18) var(--nb-black-a50), 0 0 0 var(--dim-1) var(--nb-white-a12)'
+        : '0 var(--dim-6) var(--dim-18) var(--nb-black-a15), 0 0 0 var(--dim-1) var(--nb-black-a08)',
+      zIndex: 'var(--z-20)',
       pointerEvents: 'auto',
       animation: 'flowchartMenuFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
     };
 
     if (direction === 'right') {
       menuStyle.flexDirection = 'column';
-      menuStyle.left = 'calc(100% + 8px)';
-      menuStyle.top = '50%';
-      menuStyle.transform = 'translateY(-50%)';
+      menuStyle.left = 'calc(var(--pct-100) + var(--dim-8))';
+      menuStyle.top = 'var(--pct-50)';
+      menuStyle.transform = 'translateY(calc(var(--pct-50) * -1))';
     } else if (direction === 'left') {
       menuStyle.flexDirection = 'column';
-      menuStyle.right = 'calc(100% + 8px)';
-      menuStyle.top = '50%';
-      menuStyle.transform = 'translateY(-50%)';
+      menuStyle.right = 'calc(var(--pct-100) + var(--dim-8))';
+      menuStyle.top = 'var(--pct-50)';
+      menuStyle.transform = 'translateY(calc(var(--pct-50) * -1))';
     } else if (direction === 'down') {
       menuStyle.flexDirection = 'row';
-      menuStyle.top = 'calc(100% + 8px)';
-      menuStyle.left = '50%';
-      menuStyle.transform = 'translateX(-50%)';
+      menuStyle.top = 'calc(var(--pct-100) + var(--dim-8))';
+      menuStyle.left = 'var(--pct-50)';
+      menuStyle.transform = 'translateX(calc(var(--pct-50) * -1))';
     } else if (direction === 'up') {
       menuStyle.flexDirection = 'row';
-      menuStyle.bottom = 'calc(100% + 8px)';
-      menuStyle.left = '50%';
-      menuStyle.transform = 'translateX(-50%)';
+      menuStyle.bottom = 'calc(var(--pct-100) + var(--dim-8))';
+      menuStyle.left = 'var(--pct-50)';
+      menuStyle.transform = 'translateX(calc(var(--pct-50) * -1))';
     }
 
     return (
@@ -237,29 +237,29 @@ export function FlowchartQuickConnect({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: 32,
-                  height: 32,
-                  borderRadius: 6,
+                  width: 'var(--dim-32)',
+                  height: 'var(--dim-32)',
+                  borderRadius: 'var(--radius-md)',
                   border: 'none',
                   background: 'transparent',
-                  color: isDark ? '#e6edf3' : '#24292f',
+                  color: isDark ? 'var(--nb-auto-e6edf3)' : 'var(--nb-auto-24292f)',
                   cursor: 'pointer',
                   transition: 'background 0.12s ease, transform 0.12s ease',
                   padding: 0,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.06)';
-                  e.currentTarget.style.transform = 'scale(1.1)';
+                  e.currentTarget.style.background = isDark ? 'var(--nb-white-a12)' : 'var(--nb-black-a06)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1-1))';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1))';
                 }}
                 onMouseDown={(e) => {
-                  e.currentTarget.style.transform = 'scale(0.92)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
                 }}
                 onMouseUp={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.1)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1-1))';
                 }}
               >
                 {shape.renderIcon()}
@@ -279,7 +279,7 @@ export function FlowchartQuickConnect({
     justifyContent: 'center',
     pointerEvents: 'auto',
     cursor: 'pointer',
-    zIndex: 10,
+    zIndex: 'var(--z-10)',
     userSelect: 'none',
   };
 
@@ -287,8 +287,8 @@ export function FlowchartQuickConnect({
     <>
       <style>{`
         @keyframes flowchartMenuFadeIn {
-          from { opacity: 0; transform: scale(0.92); }
-          to { opacity: 1; transform: scale(1); }
+          from { opacity: var(--opacity-0); transform: scale(var(--scale-0-92)); }
+          to { opacity: var(--opacity-1); transform: scale(var(--scale-1)); }
         }
       `}</style>
 
@@ -299,7 +299,7 @@ export function FlowchartQuickConnect({
           ...handleBaseStyle,
           left: left + width + 14,
           top: top + height / 2,
-          transform: 'translateY(-50%)',
+          transform: 'translateY(calc(var(--pct-50) * -1))',
         }}
         onMouseEnter={() => handleMouseEnterDirection('right')}
         onMouseLeave={handleMouseLeaveDirection}
@@ -311,26 +311,26 @@ export function FlowchartQuickConnect({
           style={{
             background: hoveredDirection === 'right' ? arrowHoverColor : 'transparent',
             border: 'none',
-            borderRadius: '50%',
-            width: 26,
-            height: 26,
+            borderRadius: 'var(--pct-50)',
+            width: 'var(--dim-26)',
+            height: 'var(--dim-26)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             padding: 0,
             transition: 'all 0.15s ease',
-            boxShadow: hoveredDirection === 'right' ? '0 2px 8px rgba(24, 144, 255, 0.4)' : 'none',
+            boxShadow: hoveredDirection === 'right' ? '0 var(--dim-2) var(--dim-8) var(--nb-auto-1890ff-a40)' : 'none',
           }}
         >
           <svg
             width="18"
             height="18"
             viewBox="0 0 24 24"
-            fill={hoveredDirection === 'right' ? '#ffffff' : arrowColor}
+            fill={hoveredDirection === 'right' ? 'var(--nb-white)' : arrowColor}
             style={{ transform: 'rotate(0deg)', transition: 'fill 0.15s ease' }}
           >
-            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'right' ? '#ffffff' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'right' ? 'var(--nb-white)' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         {renderShapeMenu('right')}
@@ -342,7 +342,7 @@ export function FlowchartQuickConnect({
           ...handleBaseStyle,
           left: left + width / 2,
           top: top + height + 14,
-          transform: 'translateX(-50%)',
+          transform: 'translateX(calc(var(--pct-50) * -1))',
         }}
         onMouseEnter={() => handleMouseEnterDirection('down')}
         onMouseLeave={handleMouseLeaveDirection}
@@ -354,26 +354,26 @@ export function FlowchartQuickConnect({
           style={{
             background: hoveredDirection === 'down' ? arrowHoverColor : 'transparent',
             border: 'none',
-            borderRadius: '50%',
-            width: 26,
-            height: 26,
+            borderRadius: 'var(--pct-50)',
+            width: 'var(--dim-26)',
+            height: 'var(--dim-26)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             padding: 0,
             transition: 'all 0.15s ease',
-            boxShadow: hoveredDirection === 'down' ? '0 2px 8px rgba(24, 144, 255, 0.4)' : 'none',
+            boxShadow: hoveredDirection === 'down' ? '0 var(--dim-2) var(--dim-8) var(--nb-auto-1890ff-a40)' : 'none',
           }}
         >
           <svg
             width="18"
             height="18"
             viewBox="0 0 24 24"
-            fill={hoveredDirection === 'down' ? '#ffffff' : arrowColor}
+            fill={hoveredDirection === 'down' ? 'var(--nb-white)' : arrowColor}
             style={{ transform: 'rotate(90deg)', transition: 'fill 0.15s ease' }}
           >
-            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'down' ? '#ffffff' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'down' ? 'var(--nb-white)' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         {renderShapeMenu('down')}
@@ -385,7 +385,7 @@ export function FlowchartQuickConnect({
           ...handleBaseStyle,
           left: left - 14,
           top: top + height / 2,
-          transform: 'translate(-100%, -50%)',
+          transform: 'translate(calc(var(--pct-100) * -1), calc(var(--pct-50) * -1))',
         }}
         onMouseEnter={() => handleMouseEnterDirection('left')}
         onMouseLeave={handleMouseLeaveDirection}
@@ -397,26 +397,26 @@ export function FlowchartQuickConnect({
           style={{
             background: hoveredDirection === 'left' ? arrowHoverColor : 'transparent',
             border: 'none',
-            borderRadius: '50%',
-            width: 26,
-            height: 26,
+            borderRadius: 'var(--pct-50)',
+            width: 'var(--dim-26)',
+            height: 'var(--dim-26)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             padding: 0,
             transition: 'all 0.15s ease',
-            boxShadow: hoveredDirection === 'left' ? '0 2px 8px rgba(24, 144, 255, 0.4)' : 'none',
+            boxShadow: hoveredDirection === 'left' ? '0 var(--dim-2) var(--dim-8) var(--nb-auto-1890ff-a40)' : 'none',
           }}
         >
           <svg
             width="18"
             height="18"
             viewBox="0 0 24 24"
-            fill={hoveredDirection === 'left' ? '#ffffff' : arrowColor}
+            fill={hoveredDirection === 'left' ? 'var(--nb-white)' : arrowColor}
             style={{ transform: 'rotate(180deg)', transition: 'fill 0.15s ease' }}
           >
-            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'left' ? '#ffffff' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'left' ? 'var(--nb-white)' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         {renderShapeMenu('left')}
@@ -428,7 +428,7 @@ export function FlowchartQuickConnect({
           ...handleBaseStyle,
           left: left + width / 2,
           top: top - 14,
-          transform: 'translate(-50%, -100%)',
+          transform: 'translate(calc(var(--pct-50) * -1), calc(var(--pct-100) * -1))',
         }}
         onMouseEnter={() => handleMouseEnterDirection('up')}
         onMouseLeave={handleMouseLeaveDirection}
@@ -440,26 +440,26 @@ export function FlowchartQuickConnect({
           style={{
             background: hoveredDirection === 'up' ? arrowHoverColor : 'transparent',
             border: 'none',
-            borderRadius: '50%',
-            width: 26,
-            height: 26,
+            borderRadius: 'var(--pct-50)',
+            width: 'var(--dim-26)',
+            height: 'var(--dim-26)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             padding: 0,
             transition: 'all 0.15s ease',
-            boxShadow: hoveredDirection === 'up' ? '0 2px 8px rgba(24, 144, 255, 0.4)' : 'none',
+            boxShadow: hoveredDirection === 'up' ? '0 var(--dim-2) var(--dim-8) var(--nb-auto-1890ff-a40)' : 'none',
           }}
         >
           <svg
             width="18"
             height="18"
             viewBox="0 0 24 24"
-            fill={hoveredDirection === 'up' ? '#ffffff' : arrowColor}
+            fill={hoveredDirection === 'up' ? 'var(--nb-white)' : arrowColor}
             style={{ transform: 'rotate(270deg)', transition: 'fill 0.15s ease' }}
           >
-            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'up' ? '#ffffff' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M5 12h14M13 6l6 6-6 6" stroke={hoveredDirection === 'up' ? 'var(--nb-white)' : arrowColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         {renderShapeMenu('up')}

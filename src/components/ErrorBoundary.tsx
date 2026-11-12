@@ -57,22 +57,22 @@ export class ErrorBoundary extends Component<Props, State> {
             alignItems: 'center',
             justifyContent: 'center',
             height: '100vh',
-            padding: 32,
-            background: 'var(--editor-bg, #ffffff)',
-            color: 'var(--editor-text, #1e293b)',
+            padding: 'var(--dim-32)',
+            background: 'var(--editor-bg)',
+            color: 'var(--editor-text)',
             fontFamily: 'var(--content-font-family, sans-serif)',
             userSelect: 'text',
           }}
         >
-          <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 8, color: '#dc2626' }}>
+          <div style={{ fontSize: 'var(--text-18)', fontWeight: 'var(--weight-600)', marginBottom: 'var(--dim-8)', color: 'var(--nb-red-600)' }}>
             界面渲染异常
           </div>
           <div
             style={{
-              fontSize: 13,
-              color: 'var(--editor-text-secondary, #64748b)',
-              marginBottom: 16,
-              maxWidth: 600,
+              fontSize: 'var(--text-13)',
+              color: 'var(--editor-text-secondary)',
+              marginBottom: 'var(--dim-16)',
+              maxWidth: 'var(--dim-600)',
               textAlign: 'center',
               wordBreak: 'break-word',
             }}
@@ -84,8 +84,8 @@ export class ErrorBoundary extends Component<Props, State> {
             className="nb-btn-primary"
             onClick={() => this.setState({ hasError: false, error: null })}
             style={{
-              padding: '8px 20px',
-              fontSize: 13,
+              padding: 'var(--dim-8) var(--dim-20)',
+              fontSize: 'var(--text-13)',
             }}
           >
             恢复并重新加载

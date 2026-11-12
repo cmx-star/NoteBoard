@@ -70,7 +70,7 @@ const ISOLATED_BASE_CSS = `
 :where(.${ISOLATED_BODY_CLASS} > :first-child) { margin-top: 0; }
 :where(.${ISOLATED_BODY_CLASS} > :last-child) { margin-bottom: 0; }
 :where(a) { color: var(--editor-link, LinkText); }
-:where(img, video) { max-width: 100%; }
+:where(img, video) { max-width: var(--pct-100); }
 :where(a, img) { -webkit-user-drag: none; }
 `;
 

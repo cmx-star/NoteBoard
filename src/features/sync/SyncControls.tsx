@@ -208,7 +208,7 @@ function HeaderInputs({ value, onChange }: { value: HttpHeader[]; onChange: (nex
     <div className="nb-sync-field nb-sync-headers is-wide" role="group" aria-labelledby={id}>
       <div className="nb-sync-headers-head">
         <span id={id}>Header（可选）</span>
-        <Tooltip content="按名称和值添加自定义请求头，例如 Cloudflare Access 的认证头。User-Agent 也可在此设置，未设置时使用 NoteBoard 默认标识。" side="top">
+        <Tooltip content="按名称和值添加自定义请求头，例如 Cloudflare Access 的认证头。User-Agent 也可在此设置，未设置时使用 Loomark 默认标识。" side="top">
           <button type="button" className="nb-sync-icon-btn" aria-label="Header 说明"><HelpCircle size={14} /></button>
         </Tooltip>
         <Tooltip content="添加 Header" side="top">
@@ -285,7 +285,7 @@ export function ConfirmDialog({
       <div className="nb-sync-dialog is-small">
         <div className="nb-sync-dialog-head">
           <div className="nb-sync-dialog-title">
-            {danger && <AlertTriangle size={16} color="var(--error-500, #ef4444)" />}
+            {danger && <AlertTriangle size={16} color="var(--error-500)" />}
             {title}
           </div>
           <Tooltip content="关闭" shortcut="Esc" side="bottom" sideOffset={4}>
@@ -397,7 +397,7 @@ function WebDavHelp() {
         <strong>群晖 / Alist / 其他 NAS</strong>：在对应服务中开启 WebDAV，填写服务地址、账号和密码即可。
       </div>
       <div>
-        <strong>自定义 Header</strong>：点击「+」逐项填写名称和值；如需指定客户端标识，名称填 <code>User-Agent</code>，值填服务要求的标识，未设置时使用 NoteBoard 默认标识。
+        <strong>自定义 Header</strong>：点击「+」逐项填写名称和值；如需指定客户端标识，名称填 <code>User-Agent</code>，值填服务要求的标识，未设置时使用 Loomark 默认标识。
       </div>
       <div>
         <strong>Cloudflare Access</strong>：使用 Service Token 时，分别添加 <code>CF-Access-Client-Id</code> 和 <code>CF-Access-Client-Secret</code>，值填写对应的 Client ID 与 Client Secret；WebDAV 用户名和密码仍填写原服务的账号凭证。
@@ -425,7 +425,7 @@ function S3Help() {
       </ul>
       <div>阿里云 OSS、天翼云 ZOS / OOS、华为云 OBS、腾讯云 COS 可在「存储服务」下拉中选择，各服务独立保存配置。</div>
       <div>
-        <strong>自定义 Header</strong>：需要网关认证或指定客户端标识时，点击「+」添加名称和值；客户端标识的名称填 <code>User-Agent</code>，未设置时使用 NoteBoard 默认标识。
+        <strong>自定义 Header</strong>：需要网关认证或指定客户端标识时，点击「+」添加名称和值；客户端标识的名称填 <code>User-Agent</code>，未设置时使用 Loomark 默认标识。
         Cloudflare Access 的 Service Token 需分别添加 <code>CF-Access-Client-Id</code> 和 <code>CF-Access-Client-Secret</code>；S3 访问密钥仍填写在上方对应字段中。
       </div>
       <div>请求头名称不能重复，值不能换行。Host、Content-Length 和 S3 的 Authorization 等由程序管理，无需自行添加。</div>
@@ -482,7 +482,7 @@ function ObjectStorageHelp({ kind }: { kind: Exclude<ObjectStorageKind, 's3'> })
         <HelpLink href="https://console.cloud.tencent.com/cam/capi">打开 API 密钥管理</HelpLink>
       </>}
       <div>「对象前缀」用于限定远端目录；同步与远端备份分别保存配置，可使用不同的桶或前缀。建议选择标准存储，归档类型通常需要先解冻才能恢复；当前单个文件或备份包上限为 1 GiB。</div>
-      <div>自定义 Header 可填写网关认证或 <code>User-Agent</code>，未设置时使用 NoteBoard 默认标识；Host、Authorization 等签名字段由程序管理。使用 HTTPS，并先点击「测试连接」验证对象读写、列举与删除权限。</div>
+      <div>自定义 Header 可填写网关认证或 <code>User-Agent</code>，未设置时使用 Loomark 默认标识；Host、Authorization 等签名字段由程序管理。使用 HTTPS，并先点击「测试连接」验证对象读写、列举与删除权限。</div>
     </div>
   );
 }
@@ -707,7 +707,7 @@ export function ProviderForm({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-14)' }}>
       <div className="nb-sync-segment nb-sync-provider-groups" role="radiogroup" aria-label="同步方式">
         {PROVIDER_GROUPS.map((option, index) => (
           <button
@@ -804,7 +804,7 @@ export function ProviderForm({
         </button>
         {result && (
           <span className={`nb-sync-test-result ${result.ok ? 'is-ok' : 'is-error'}`} role="status">
-            {result.ok ? <CheckCircle2 size={13} style={{ verticalAlign: -2, marginRight: 4 }} /> : <AlertTriangle size={13} style={{ verticalAlign: -2, marginRight: 4 }} />}
+            {result.ok ? <CheckCircle2 size={13} style={{ verticalAlign: -2, marginRight: 'var(--dim-4)' }} /> : <AlertTriangle size={13} style={{ verticalAlign: -2, marginRight: 'var(--dim-4)' }} />}
             {result.text}
           </span>
         )}

@@ -33,7 +33,7 @@ jobs:
       - uses: docker/metadata-action@v6
         id: meta
         with:
-          images: crazyfigure/noteboard
+          images: starcmx/loomark
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' || !contains(github.ref_name, '-') }}

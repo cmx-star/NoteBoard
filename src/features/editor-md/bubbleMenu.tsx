@@ -27,6 +27,7 @@ import { ALIGN_OPTIONS, AlignIcon, INDENT_OPTIONS, TextColorGrid, TextColorIcon 
 import { useWindowStore } from '../../stores/windowStore';
 import { Tooltip } from '../../components/Tooltip';
 import { useViewportClamp } from '../../components/useViewportClamp';
+import { CustomColorSection } from '../../components/colorPicker/CustomColorPicker';
 import { promptLinkUrl } from '../../components/promptPresets';
 import { formatShortcut } from '../../core/shortcuts';
 
@@ -47,16 +48,16 @@ function BubbleButton({ icon, onClick, active, title, danger }: BubbleButtonProp
   let color = 'var(--editor-text)';
 
   if (active) {
-    background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.15))';
-    color = 'var(--accent-500, #3b82f6)';
+    background = 'var(--editor-selection-background)';
+    color = 'var(--accent-500)';
   } else if (pressed) {
-    background = 'var(--toolbar-active, rgba(0, 0, 0, 0.12))';
+    background = 'var(--toolbar-active)';
   } else if (hovered) {
     if (danger) {
-      background = 'rgba(239, 68, 68, 0.12)';
-      color = '#ef4444';
+      background = 'var(--nb-auto-ef4444-a12)';
+      color = 'var(--nb-red-500)';
     } else {
-      background = 'var(--editor-hover-background, rgba(0, 0, 0, 0.06))';
+      background = 'var(--editor-hover-background)';
     }
   }
 
@@ -75,20 +76,20 @@ function BubbleButton({ icon, onClick, active, title, danger }: BubbleButtonProp
         setPressed(false);
       }}
       style={{
-        width: 32,
-        height: 32,
-        minWidth: 32,
+        width: 'var(--dim-32)',
+        height: 'var(--dim-32)',
+        minWidth: 'var(--dim-32)',
         padding: 0,
         border: 'none',
         background,
         color,
         cursor: 'pointer',
-        fontSize: 14,
-        borderRadius: 6,
+        fontSize: 'var(--text-14)',
+        borderRadius: 'var(--radius-md)',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transform: pressed ? 'scale(0.92)' : hovered ? 'scale(1.06)' : 'scale(1)',
+        transform: pressed ? 'scale(var(--scale-0-92))' : hovered ? 'scale(var(--scale-1-06))' : 'scale(var(--scale-1))',
         transition: 'all var(--transition-fast)',
         userSelect: 'none',
       }}
@@ -114,10 +115,10 @@ function MenuDivider() {
   return (
     <div
       style={{
-        width: 1,
-        height: 18,
-        background: 'var(--editor-border, rgba(0,0,0,0.12))',
-        margin: '0 4px',
+        width: 'var(--dim-1)',
+        height: 'var(--dim-18)',
+        background: 'var(--editor-border)',
+        margin: '0 var(--dim-4)',
         flexShrink: 0,
       }}
     />
@@ -126,15 +127,17 @@ function MenuDivider() {
 
 /** 高亮预设颜色列表 */
 const HIGHLIGHT_COLORS = [
-  { name: '柠檬黄', color: '#fef08a', border: '#facc15' },
-  { name: '清新绿', color: '#bbf7d0', border: '#4ade80' },
-  { name: '天空蓝', color: '#bfdbfe', border: '#60a5fa' },
-  { name: '浅紫', color: '#e9d5ff', border: '#c084fc' },
-  { name: '蜜桃粉', color: '#fbcfe8', border: '#f472b6' },
-  { name: '暖阳橙', color: '#fed7aa', border: '#fb923c' },
-  { name: '珊瑚红', color: '#fecaca', border: '#f87171' },
-  { name: '湖水青', color: '#a5f3fc', border: '#22d3ee' },
+  { name: '柠檬黄', color: 'var(--nb-yellow-200)', border: 'var(--nb-yellow-400)' },
+  { name: '清新绿', color: 'var(--nb-green-200)', border: 'var(--nb-green-400)' },
+  { name: '天空蓝', color: 'var(--nb-blue-200)', border: 'var(--nb-blue-400)' },
+  { name: '浅紫', color: 'var(--nb-purple-200)', border: 'var(--nb-purple-300)' },
+  { name: '蜜桃粉', color: 'var(--nb-pink-200)', border: 'var(--nb-pink-400)' },
+  { name: '暖阳橙', color: 'var(--nb-orange-200)', border: 'var(--nb-orange-400)' },
+  { name: '珊瑚红', color: 'var(--nb-red-200)', border: 'var(--nb-red-400)' },
+  { name: '湖水青', color: 'var(--nb-cyan-200)', border: 'var(--nb-cyan-400)' },
 ];
+
+const HIGHLIGHT_COLOR_VALUES = HIGHLIGHT_COLORS.map((item) => item.color);
 
 /** 悬浮菜单下拉按钮：触发按钮 + 下方弹出面板（点击外部关闭，再次点击触发按钮收起） */
 function BubbleDropdown({
@@ -172,11 +175,11 @@ function BubbleDropdown({
 
   let background = 'transparent';
   if (active) {
-    background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.15))';
+    background = 'var(--editor-selection-background)';
   } else if (pressed) {
-    background = 'var(--toolbar-active, rgba(0, 0, 0, 0.12))';
+    background = 'var(--toolbar-active)';
   } else if (open || hovered) {
-    background = 'var(--editor-hover-background, rgba(0,0,0,0.06))';
+    background = 'var(--editor-hover-background)';
   }
 
   return (
@@ -197,24 +200,24 @@ function BubbleDropdown({
           }}
           onClick={() => onOpenChange(!open)}
           style={{
-            height: 32,
-            padding: '0 6px',
+            height: 'var(--dim-32)',
+            padding: '0 var(--dim-6)',
             border: 'none',
             background,
-            color: active ? 'var(--accent-500, #3b82f6)' : 'var(--editor-text)',
+            color: active ? 'var(--accent-500)' : 'var(--editor-text)',
             cursor: 'pointer',
-            borderRadius: 6,
+            borderRadius: 'var(--radius-md)',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 2,
-            transform: pressed ? 'scale(0.94)' : 'scale(1)',
-            transition: 'all 120ms ease',
+            gap: 'var(--dim-2)',
+            transform: pressed ? 'scale(var(--scale-0-94))' : 'scale(var(--scale-1))',
+            transition: 'all var(--duration-120) ease',
           }}
           aria-label={tip}
           aria-expanded={open}
         >
           {icon}
-          <ChevronDown size={12} style={{ opacity: 0.7 }} />
+          <ChevronDown size={12} style={{ opacity: 'var(--opacity-0-7)' }} />
         </button>
       </Tooltip>
 
@@ -225,19 +228,19 @@ function BubbleDropdown({
           style={{
             ...panelClamp.style,
             position: 'absolute',
-            top: 'calc(100% + 6px)',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-            borderRadius: 8,
-            boxShadow: '0 8px 24px -4px rgba(0, 0, 0, 0.15), 0 2px 6px -1px rgba(0, 0, 0, 0.08)',
-            padding: '8px 10px',
+            top: 'calc(var(--pct-100) + var(--dim-6))',
+            left: 'var(--pct-50)',
+            transform: 'translateX(calc(var(--pct-50) * -1))',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: '0 var(--dim-8) var(--dim-24) calc(var(--dim-4) * -1) var(--nb-black-a15), 0 var(--dim-2) var(--dim-6) calc(var(--dim-1) * -1) var(--nb-black-a08)',
+            padding: 'var(--dim-8) var(--dim-10)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 6,
-            zIndex: 1010,
-            minWidth: 180,
+            gap: 'var(--dim-6)',
+            zIndex: 'var(--z-1010)',
+            minWidth: 'var(--dim-180)',
             ...panelStyle,
           }}
         >
@@ -267,7 +270,7 @@ function AlignIndentPanel({ editor, onDone }: { editor: Editor; onDone: () => vo
           onDone={onDone}
         />
       ))}
-      <div style={{ height: 1, background: 'var(--editor-border, rgba(0,0,0,0.08))', margin: '2px 0' }} />
+      <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)', margin: 'var(--dim-2) 0' }} />
       {INDENT_OPTIONS.map(({ delta, label, Icon }) => (
         <TableMenuItemButton
           key={delta}
@@ -294,10 +297,10 @@ function HighlightPalette({
 }) {
   return (
     <>
-      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--editor-text-secondary, #64748b)', paddingLeft: 2 }}>
+      <div style={{ fontSize: 'var(--text-11)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-secondary)', paddingLeft: 'var(--dim-2)' }}>
         选择高亮背景颜色
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--dim-6)' }}>
         {HIGHLIGHT_COLORS.map((item) => (
           <Tooltip key={item.color} content={item.name} side="top" sideOffset={4}>
             <button
@@ -308,33 +311,46 @@ function HighlightPalette({
                 onClose();
               }}
               style={{
-                width: 32,
-                height: 26,
+                width: 'var(--dim-32)',
+                height: 'var(--dim-26)',
                 background: item.color,
-                border: `1px solid ${item.border}`,
-                borderRadius: 4,
+                border: `var(--dim-1) solid ${item.border}`,
+                borderRadius: 'var(--radius-sm)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                transition: 'transform 100ms ease',
+                transition: 'transform var(--duration-100) ease',
               }}
               aria-label={item.name}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1-1))';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1))';
               }}
             >
               {/* 默认黄色以无颜色存储，按规范化后的属性判断选中 */}
               {editor.isActive('highlight', normalizeHighlightAttributes(item.color)) && (
-                <span style={{ fontSize: 11, color: 'rgba(0,0,0,0.6)', fontWeight: 'bold' }}>✓</span>
+                <span style={{ fontSize: 'var(--text-11)', color: 'var(--nb-black-a60)', fontWeight: 'bold' }}>✓</span>
               )}
             </button>
           </Tooltip>
         ))}
       </div>
+      {/* 自定义高亮颜色：固定的颜色可直接选用，「+」展开取色盘 */}
+      <CustomColorSection
+        kind="highlight"
+        variant="fill"
+        activeColor={editor.getAttributes('highlight').color}
+        presetColors={HIGHLIGHT_COLOR_VALUES}
+        onSelect={(color) => {
+          editor.chain().focus().setHighlight({ color }).run();
+          onClose();
+        }}
+        swatchWidth={32}
+        swatchHeight={26}
+      />
       <button
         type="button"
         onMouseDown={(e) => e.preventDefault()}
@@ -343,18 +359,18 @@ function HighlightPalette({
           onClose();
         }}
         style={{
-          marginTop: 2,
-          padding: '4px 8px',
-          border: '1px solid var(--control-border, rgba(0,0,0,0.1))',
-          borderRadius: 4,
+          marginTop: 'var(--dim-2)',
+          padding: 'var(--dim-4) var(--dim-8)',
+          border: 'var(--dim-1) solid var(--control-border)',
+          borderRadius: 'var(--radius-sm)',
           background: 'transparent',
-          color: 'var(--editor-text-secondary, #64748b)',
+          color: 'var(--editor-text-secondary)',
           cursor: 'pointer',
-          fontSize: 12,
+          fontSize: 'var(--text-12)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 4,
+          gap: 'var(--dim-4)',
         }}
       >
         <X size={13} />
@@ -527,14 +543,14 @@ export function EditorBubbleMenu({
         style={{
           display: 'flex',
           alignItems: 'center',
-          padding: '4px 6px',
-          background: 'var(--editor-surface, #ffffff)',
-          border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-          borderRadius: 8,
-          boxShadow: '0 6px 20px -2px rgba(0, 0, 0, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.08)',
-          backdropFilter: 'blur(8px)',
+          padding: 'var(--dim-4) var(--dim-6)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: '0 var(--dim-6) var(--dim-20) calc(var(--dim-2) * -1) var(--nb-black-a12), 0 var(--dim-2) var(--dim-6) calc(var(--dim-1) * -1) var(--nb-black-a08)',
+          backdropFilter: 'blur(var(--dim-8))',
           position: 'relative',
-          gap: 2,
+          gap: 'var(--dim-2)',
         }}
       >
         {/* 缩进和对齐下拉：触发图标随当前对齐方式变化 */}
@@ -544,7 +560,7 @@ export function EditorBubbleMenu({
           open={openPanel === 'align'}
           onOpenChange={panelToggles.align}
           // 位于菜单最左侧：面板与按钮左对齐，避免居中展开时越出窄屏左边缘
-          panelStyle={{ padding: 4, gap: 0, minWidth: 140, left: 0, transform: 'none' }}
+          panelStyle={{ padding: 'var(--dim-4)', gap: 0, minWidth: 'var(--dim-140)', left: 0, transform: 'none' }}
         >
           <AlignIndentPanel editor={editor} onDone={closePanel} />
         </BubbleDropdown>
@@ -810,11 +826,11 @@ function TableMenuItemButton({ item, onDone }: { item: TableMenuItem; onDone: ()
   if (item.disabled) {
     background = 'transparent';
   } else if (item.active) {
-    background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.15))';
+    background = 'var(--editor-selection-background)';
   } else if (pressed) {
-    background = item.danger ? 'rgba(239, 68, 68, 0.18)' : 'var(--toolbar-active, rgba(0, 0, 0, 0.12))';
+    background = item.danger ? 'var(--nb-auto-ef4444-a18)' : 'var(--toolbar-active)';
   } else if (hovered) {
-    background = item.danger ? 'rgba(239, 68, 68, 0.12)' : 'var(--editor-hover-background, rgba(0, 0, 0, 0.06))';
+    background = item.danger ? 'var(--nb-auto-ef4444-a12)' : 'var(--editor-hover-background)';
   }
 
   return (
@@ -841,19 +857,19 @@ function TableMenuItemButton({ item, onDone }: { item: TableMenuItem; onDone: ()
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 10,
-        width: '100%',
-        padding: '6px 10px',
+        gap: 'var(--dim-10)',
+        width: 'var(--pct-100)',
+        padding: 'var(--dim-6) var(--dim-10)',
         border: 'none',
-        borderRadius: 5,
+        borderRadius: 'var(--radius-sm)',
         background,
-        color: item.danger ? '#ef4444' : item.active ? 'var(--accent-500, #3b82f6)' : 'var(--editor-text)',
+        color: item.danger ? 'var(--nb-red-500)' : item.active ? 'var(--accent-500)' : 'var(--editor-text)',
         opacity: item.disabled ? 0.4 : 1,
         cursor: item.disabled ? 'not-allowed' : 'pointer',
-        fontSize: 13,
+        fontSize: 'var(--text-13)',
         textAlign: 'left',
         whiteSpace: 'nowrap',
-        transition: 'background-color 120ms ease',
+        transition: 'background-color var(--duration-120) ease',
       }}
     >
       {item.icon}
@@ -905,9 +921,9 @@ function TableDropdown({
 
   let background = 'transparent';
   if (pressed) {
-    background = 'var(--toolbar-active, rgba(0, 0, 0, 0.12))';
+    background = 'var(--toolbar-active)';
   } else if (open || hovered) {
-    background = 'var(--editor-hover-background, rgba(0, 0, 0, 0.06))';
+    background = 'var(--editor-hover-background)';
   }
 
   // 危险项（删除）前加一条分隔线
@@ -933,25 +949,25 @@ function TableDropdown({
         }}
         onClick={() => onOpenChange(!open)}
         style={{
-          height: 32,
-          padding: '0 6px 0 8px',
+          height: 'var(--dim-32)',
+          padding: '0 var(--dim-6) 0 var(--dim-8)',
           border: 'none',
-          borderRadius: 6,
+          borderRadius: 'var(--radius-md)',
           background,
           color: 'var(--editor-text)',
           cursor: 'pointer',
-          fontSize: 13,
+          fontSize: 'var(--text-13)',
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 4,
-          transform: pressed ? 'scale(0.95)' : 'scale(1)',
-          transition: 'background-color 120ms ease, transform 80ms ease',
+          gap: 'var(--dim-4)',
+          transform: pressed ? 'scale(var(--scale-0-95))' : 'scale(var(--scale-1))',
+          transition: 'background-color var(--duration-120) ease, transform var(--duration-80) ease',
           userSelect: 'none',
         }}
       >
         {icon}
         <span>{label}</span>
-        <ChevronDown size={12} style={{ opacity: 0.6, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 120ms ease' }} />
+        <ChevronDown size={12} style={{ opacity: 'var(--opacity-0-6)', transform: open ? 'rotate(180deg)' : 'none', transition: 'transform var(--duration-120) ease' }} />
       </button>
 
       {open && (
@@ -961,23 +977,23 @@ function TableDropdown({
           style={{
             ...menuClamp.style,
             position: 'absolute',
-            top: 'calc(100% + 6px)',
+            top: 'calc(var(--pct-100) + var(--dim-6))',
             left: 0,
-            minWidth: 156,
-            padding: 4,
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-            borderRadius: 8,
-            boxShadow: '0 8px 24px -4px rgba(0, 0, 0, 0.15), 0 2px 6px -1px rgba(0, 0, 0, 0.08)',
+            minWidth: 'var(--dim-156)',
+            padding: 'var(--dim-4)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: '0 var(--dim-8) var(--dim-24) calc(var(--dim-4) * -1) var(--nb-black-a15), 0 var(--dim-2) var(--dim-6) calc(var(--dim-1) * -1) var(--nb-black-a08)',
             display: 'flex',
             flexDirection: 'column',
-            zIndex: 1010,
+            zIndex: 'var(--z-1010)',
           }}
         >
           {items.map((item, index) => (
             <div key={item.label}>
               {index === dangerIndex && index > 0 && (
-                <div style={{ height: 1, margin: '4px 6px', background: 'var(--editor-border, rgba(0,0,0,0.12))' }} />
+                <div style={{ height: 'var(--dim-1)', margin: 'var(--dim-4) var(--dim-6)', background: 'var(--editor-border)' }} />
               )}
               <TableMenuItemButton item={item} onDone={() => onOpenChange(false)} />
             </div>
@@ -1124,19 +1140,19 @@ export function TableToolbar({ editor }: { editor: Editor }) {
         position: 'fixed',
         top: position.top,
         left: position.left,
-        transform: 'translateX(-50%)',
+        transform: 'translateX(calc(var(--pct-50) * -1))',
         display: 'flex',
         alignItems: 'center',
-        padding: '4px 6px',
-        background: 'var(--editor-surface, #ffffff)',
-        border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-        borderRadius: 8,
-        boxShadow: '0 6px 20px -2px rgba(0, 0, 0, 0.14), 0 2px 6px -1px rgba(0, 0, 0, 0.08)',
-        backdropFilter: 'blur(8px)',
-        zIndex: 1000,
-        gap: 2,
+        padding: 'var(--dim-4) var(--dim-6)',
+        background: 'var(--editor-surface)',
+        border: 'var(--dim-1) solid var(--editor-border)',
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: '0 var(--dim-6) var(--dim-20) calc(var(--dim-2) * -1) var(--nb-black-a14), 0 var(--dim-2) var(--dim-6) calc(var(--dim-1) * -1) var(--nb-black-a08)',
+        backdropFilter: 'blur(var(--dim-8))',
+        zIndex: 'var(--z-1000)',
+        gap: 'var(--dim-2)',
         userSelect: 'none',
-        transition: 'top 80ms ease, opacity 120ms ease',
+        transition: 'top var(--duration-80) ease, opacity var(--duration-120) ease',
       }}
     >
       {/* ── 行操作下拉（上下插行、表头行、删行） ── */}

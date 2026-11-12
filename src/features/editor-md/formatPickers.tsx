@@ -6,6 +6,9 @@ import { AlignCenter, AlignLeft, AlignRight, IndentDecrease, IndentIncrease, X, 
 import { Tooltip } from '../../components/Tooltip';
 import { TEXT_COLORS } from './markdownInlineMarks';
 import type { BlockAlign } from './blockFormat';
+import { CustomColorSection } from '../../components/colorPicker/CustomColorPicker';
+
+const TEXT_COLOR_VALUES = TEXT_COLORS.map((item) => item.color);
 
 /** 对齐选项（顺序即菜单顺序） */
 export const ALIGN_OPTIONS: Array<{ align: BlockAlign; label: string; Icon: LucideIcon }> = [
@@ -82,21 +85,21 @@ function TextColorSwatch({
         className="nb-text-color-preview"
         style={{
           '--nb-text-color': color,
-          width: 32,
-          height: 26,
+          width: 'var(--dim-32)',
+          height: 'var(--dim-26)',
           padding: 0,
-          borderRadius: 4,
-          border: active ? '2px solid var(--nb-text-color)' : '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-          background: hovered ? 'var(--editor-hover-background, rgba(0,0,0,0.06))' : 'transparent',
+          borderRadius: 'var(--radius-sm)',
+          border: active ? 'var(--dim-2) solid var(--nb-text-color)' : 'var(--dim-1) solid var(--editor-border)',
+          background: hovered ? 'var(--editor-hover-background)' : 'transparent',
           cursor: 'pointer',
-          fontSize: 14,
-          fontWeight: 700,
-          lineHeight: 1,
+          fontSize: 'var(--text-14)',
+          fontWeight: 'var(--weight-700)',
+          lineHeight: 'var(--leading-1)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          transform: pressed ? 'scale(0.92)' : hovered ? 'scale(1.1)' : 'scale(1)',
-          transition: 'transform 100ms ease, background-color 100ms ease',
+          transform: pressed ? 'scale(var(--scale-0-92))' : hovered ? 'scale(var(--scale-1-1))' : 'scale(var(--scale-1))',
+          transition: 'transform var(--duration-100) ease, background-color var(--duration-100) ease',
         } as CSSProperties}
       >
         A
@@ -105,7 +108,7 @@ function TextColorSwatch({
   );
 }
 
-/** 字体颜色色板：8 色网格 + 恢复默认颜色 */
+/** 字体颜色色板：8 色网格 + 自定义颜色 + 恢复默认颜色 */
 export function TextColorGrid({
   activeColor,
   onSelect,
@@ -117,11 +120,11 @@ export function TextColorGrid({
 }) {
   const [clearHovered, setClearHovered] = useState(false);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--editor-text-secondary, #64748b)', paddingLeft: 2 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)' }}>
+      <div style={{ fontSize: 'var(--text-11)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-secondary)', paddingLeft: 'var(--dim-2)' }}>
         选择字体颜色
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--dim-6)' }}>
         {TEXT_COLORS.map((item) => (
           <TextColorSwatch
             key={item.color}
@@ -132,6 +135,16 @@ export function TextColorGrid({
           />
         ))}
       </div>
+      {/* 自定义颜色：固定的颜色可直接选用，「+」展开取色盘 */}
+      <CustomColorSection
+        kind="text"
+        variant="text"
+        activeColor={activeColor}
+        presetColors={TEXT_COLOR_VALUES}
+        onSelect={onSelect}
+        swatchWidth={32}
+        swatchHeight={26}
+      />
       <button
         type="button"
         onMouseDown={(e) => e.preventDefault()}
@@ -139,19 +152,19 @@ export function TextColorGrid({
         onMouseLeave={() => setClearHovered(false)}
         onClick={onClear}
         style={{
-          marginTop: 2,
-          padding: '4px 8px',
-          border: '1px solid var(--control-border, rgba(0,0,0,0.1))',
-          borderRadius: 4,
-          background: clearHovered ? 'var(--editor-hover-background, rgba(0,0,0,0.06))' : 'transparent',
-          color: 'var(--editor-text-secondary, #64748b)',
+          marginTop: 'var(--dim-2)',
+          padding: 'var(--dim-4) var(--dim-8)',
+          border: 'var(--dim-1) solid var(--control-border)',
+          borderRadius: 'var(--radius-sm)',
+          background: clearHovered ? 'var(--editor-hover-background)' : 'transparent',
+          color: 'var(--editor-text-secondary)',
           cursor: 'pointer',
-          fontSize: 12,
+          fontSize: 'var(--text-12)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 4,
-          transition: 'background-color 100ms ease',
+          gap: 'var(--dim-4)',
+          transition: 'background-color var(--duration-100) ease',
         }}
       >
         <X size={13} />

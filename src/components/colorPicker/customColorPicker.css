@@ -1,0 +1,232 @@
+/* NoteBoard 自定义颜色：已固定色块 + 内嵌取色盘 */
+
+.nb-cc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.nb-cc-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* 已固定的自定义色块；右上角删除徽标在悬停时出现 */
+.nb-cc-swatch {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--weight-700);
+  line-height: var(--leading-1);
+  background: transparent;
+  transition: transform var(--duration-100) var(--ease-out), box-shadow var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out);
+}
+
+.nb-cc-swatch:hover {
+  transform: scale(var(--scale-1-1));
+  box-shadow: 0 var(--dim-2) var(--dim-6) var(--nb-black-a18);
+  z-index: var(--z-2);
+}
+
+.nb-cc-swatch:active {
+  transform: scale(var(--scale-0-94));
+}
+
+.nb-cc-swatch.is-active {
+  outline: var(--border-2) solid var(--editor-accent);
+  outline-offset: var(--border-1);
+}
+
+.nb-cc-remove {
+  position: absolute;
+  top: calc(var(--dim-6) * -1);
+  right: calc(var(--dim-6) * -1);
+  width: var(--dim-14);
+  height: var(--dim-14);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--error-500);
+  color: var(--nb-white);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 var(--dim-1) var(--dim-3) var(--nb-black-a25);
+  transition: transform var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out);
+}
+
+.nb-cc-swatch:hover .nb-cc-remove,
+.nb-cc-swatch:focus-visible .nb-cc-remove {
+  display: inline-flex;
+}
+
+.nb-cc-remove:hover {
+  background: var(--error-600);
+  transform: scale(var(--scale-1-15));
+}
+
+.nb-cc-remove:active {
+  transform: scale(var(--scale-0-9));
+}
+
+/* 打开取色盘的按钮：彩虹描边 + 加号 */
+.nb-cc-add {
+  box-sizing: border-box;
+  padding: 0;
+  border: var(--border-1) dashed var(--control-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--editor-text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out), border-color var(--duration-100) var(--ease-out), color var(--duration-100) var(--ease-out);
+}
+
+.nb-cc-add:hover {
+  background: var(--editor-hover-background);
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
+}
+
+.nb-cc-add:active {
+  transform: scale(var(--scale-0-92));
+}
+
+.nb-cc-add.is-open {
+  border-style: solid;
+  border-color: var(--editor-accent);
+  color: var(--editor-accent);
+}
+
+/* 取色盘 */
+.nb-cc-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--editor-border);
+  background: var(--editor-bg);
+}
+
+.nb-cc-sv {
+  position: relative;
+  height: var(--dim-96);
+  border-radius: var(--radius-sm);
+  cursor: crosshair;
+  touch-action: none;
+  background-image: linear-gradient(to top, var(--nb-black), transparent), linear-gradient(to right, var(--nb-white), transparent);
+}
+
+.nb-cc-hue {
+  position: relative;
+  height: var(--dim-10);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  touch-action: none;
+  background: linear-gradient(to right, var(--nb-hue-red), var(--nb-hue-yellow), var(--nb-hue-green), var(--nb-hue-cyan), var(--nb-hue-blue), var(--nb-hue-magenta), var(--nb-hue-red));
+}
+
+.nb-cc-thumb {
+  position: absolute;
+  width: var(--dim-12);
+  height: var(--dim-12);
+  border-radius: var(--radius-pill);
+  border: var(--border-2) solid var(--nb-white);
+  box-shadow: 0 0 0 var(--border-1) var(--nb-black-a35), 0 var(--dim-1) var(--dim-3) var(--nb-black-a30);
+  transform: translate(calc(var(--pct-50) * -1), calc(var(--pct-50) * -1));
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.nb-cc-hue .nb-cc-thumb {
+  top: var(--pct-50);
+}
+
+.nb-cc-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.nb-cc-preview {
+  width: var(--dim-20);
+  height: var(--dim-20);
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  border: var(--border-1) solid var(--nb-black-a15);
+  box-sizing: border-box;
+}
+
+.nb-cc-hex {
+  flex: 1;
+  min-width: 0;
+  height: var(--dim-22);
+  padding: var(--space-0) var(--space-6);
+  font-size: var(--text-12);
+  font-family: var(--mono-font-family);
+  border: var(--border-1) solid var(--editor-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--editor-surface);
+  color: var(--editor-text);
+  box-sizing: border-box;
+}
+
+.nb-cc-hex:focus {
+  border-color: var(--editor-accent);
+}
+
+.nb-cc-hex.is-invalid {
+  border-color: var(--error-500);
+}
+
+.nb-cc-btn {
+  height: var(--dim-22);
+  padding: var(--space-0) var(--space-7);
+  flex-shrink: 0;
+  font-size: var(--text-12);
+  border-radius: var(--radius-sm);
+  border: var(--border-1) solid var(--control-border);
+  background: transparent;
+  color: var(--editor-text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  transition: transform var(--duration-100) var(--ease-out), background-color var(--duration-100) var(--ease-out), border-color var(--duration-100) var(--ease-out);
+}
+
+.nb-cc-btn:hover:not(:disabled) {
+  background: var(--editor-hover-background);
+}
+
+.nb-cc-btn:active:not(:disabled) {
+  transform: scale(var(--scale-0-94));
+}
+
+.nb-cc-btn:disabled {
+  opacity: var(--opacity-0-45);
+  cursor: not-allowed;
+}
+
+.nb-cc-btn.is-primary {
+  border-color: var(--editor-accent);
+  background: var(--editor-accent);
+  color: var(--nb-white);
+}
+
+.nb-cc-btn.is-primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--editor-accent) var(--pct-85), var(--nb-black));
+}

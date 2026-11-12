@@ -46,6 +46,7 @@ import {
   BarChart3,
   Smile,
   Ellipsis,
+  Languages,
 } from 'lucide-react';
 import {
   ToolbarButton,
@@ -84,6 +85,7 @@ import { TextColorGrid, TextColorIcon } from '../editor-md/formatPickers';
 import { getMdTipTapEditor as getActiveTipTapEditor, getMdSourceView as getActiveSourceView } from '../editor-md/editorInstances';
 import { emit } from '../../core/emitter';
 import { DEFAULT_INFOGRAPHIC_CODE } from '../infographic/infographicTemplates';
+import { runCjkFormatWithToast } from '../cjkFormat/applyCjkFormat';
 import type { EditorView } from '@codemirror/view';
 
 /**
@@ -744,7 +746,7 @@ export function MarkdownToolbar({
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
+        gap: 'var(--dim-2)',
         overflow: 'visible',
         flex: 1,
         flexWrap: wrap ? 'wrap' : undefined,
@@ -887,7 +889,7 @@ export function MarkdownToolbar({
           />
         }
       >
-        <div style={{ padding: '6px 4px', width: 176 }}>
+        <div style={{ padding: 'var(--dim-6) var(--dim-4)', width: 'var(--dim-176)' }}>
           <TextColorGrid
             activeColor={isSourceMode ? null : editor?.getAttributes('textColor').color}
             onSelect={handleSelectTextColor}
@@ -910,6 +912,7 @@ export function MarkdownToolbar({
         }
       >
         <HighlightColorPicker
+          activeColor={isSourceMode ? null : editor?.getAttributes('highlight').color}
           onSelectColor={handleSelectHighlightColor}
           onRemoveHighlight={handleRemoveHighlight}
         />
@@ -967,7 +970,7 @@ export function MarkdownToolbar({
 
         {/* 2. GitHub 提示块 (Alert) 二级菜单 */}
         <ToolbarDropdownItem
-          icon={<Boxes size={14} color="#3b82f6" />}
+          icon={<Boxes size={14} color="var(--nb-blue-500)" />}
           label="GitHub 提示块"
           submenu={
             <>
@@ -986,7 +989,7 @@ export function MarkdownToolbar({
 
         {/* 2.5 高亮块二级菜单（常用颜色与图标组合，插入后可随时更换） */}
         <ToolbarDropdownItem
-          icon={<Highlighter size={14} color="#8b5cf6" />}
+          icon={<Highlighter size={14} color="var(--nb-purple-500)" />}
           label="高亮块"
           submenu={
             <>
@@ -1092,7 +1095,7 @@ export function MarkdownToolbar({
                 onClick={handleInsertMermaid}
               />
               <ToolbarDropdownItem
-                icon={<BarChart3 size={14} color="#3b82f6" />}
+                icon={<BarChart3 size={14} color="var(--nb-blue-500)" />}
                 label="Infographic 现代信息图"
                 onClick={handleInsertInfographic}
               />
@@ -1112,7 +1115,7 @@ export function MarkdownToolbar({
                 onClick={handleInsertLocalImage}
               />
               <ToolbarDropdownItem
-                icon={<ImageIcon size={14} style={{ opacity: 0.7 }} />}
+                icon={<ImageIcon size={14} style={{ opacity: 'var(--opacity-0-7)' }} />}
                 label="网络图片"
                 onClick={handleInsertNetworkImage}
               />
@@ -1122,7 +1125,7 @@ export function MarkdownToolbar({
 
         {/* 6.5 表情二级面板（写入标准 Unicode 表情，与高亮块「表情」页同一套图案） */}
         <ToolbarDropdownItem
-          icon={<Smile size={14} color="#f59e0b" />}
+          icon={<Smile size={14} color="var(--nb-amber-500)" />}
           label="表情"
           submenuWidth={310}
           submenu={<InlineEmojiGrid onSelect={handleInsertEmoji} />}
@@ -1139,7 +1142,7 @@ export function MarkdownToolbar({
         {/* 7.5 双向链接（多维表格单元格等未启用双链的编辑器不显示） */}
         {canInsertWikiLink && (
           <ToolbarDropdownItem
-            icon={<Waypoints size={14} color="#8b5cf6" />}
+            icon={<Waypoints size={14} color="var(--nb-purple-500)" />}
             label="双向链接"
             shortcut="[["
             onClick={handleInsertWikiLink}
@@ -1185,9 +1188,19 @@ export function MarkdownToolbar({
       {/* ── 清除格式 ── */}
       {!compact && (
         <ToolbarButton
-          icon={<RemoveFormatting size={15} color="#ef4444" />}
+          icon={<RemoveFormatting size={15} color="var(--nb-red-500)" />}
           title="清除选中文本格式"
           onClick={handleClearFormat}
+        />
+      )}
+
+      {/* ── 中文排版：中英间距、全角标点、括号与省略号 ── */}
+      {!compact && (
+        <ToolbarButton
+          icon={<Languages size={15} color="var(--nb-emerald-500)" />}
+          title="格式化中文排版（选区优先，未选中时处理全文）"
+          shortcut="Ctrl+Alt+F"
+          onClick={() => void runCjkFormatWithToast()}
         />
       )}
 
@@ -1230,7 +1243,7 @@ export function MarkdownToolbar({
             label="字体颜色"
             submenuWidth={190}
             submenu={
-              <div style={{ padding: '6px 4px', width: 176 }}>
+              <div style={{ padding: 'var(--dim-6) var(--dim-4)', width: 'var(--dim-176)' }}>
                 <TextColorGrid
                   activeColor={isSourceMode ? null : editor?.getAttributes('textColor').color}
                   onSelect={(color) => runFromMore(() => handleSelectTextColor(color))()}
@@ -1245,6 +1258,7 @@ export function MarkdownToolbar({
             submenuWidth={190}
             submenu={
               <HighlightColorPicker
+                activeColor={isSourceMode ? null : editor?.getAttributes('highlight').color}
                 onSelectColor={(color) => runFromMore(() => handleSelectHighlightColor(color))()}
                 onRemoveHighlight={runFromMore(handleRemoveHighlight)}
               />
@@ -1267,9 +1281,15 @@ export function MarkdownToolbar({
           />
           <ToolbarDropdownSeparator />
           <ToolbarDropdownItem
-            icon={<RemoveFormatting size={14} color="#ef4444" />}
+            icon={<RemoveFormatting size={14} color="var(--nb-red-500)" />}
             label="清除格式"
             onClick={runFromMore(handleClearFormat)}
+          />
+          <ToolbarDropdownItem
+            icon={<Languages size={14} color="var(--nb-emerald-500)" />}
+            label="格式化中文排版"
+            shortcut="Ctrl+Alt+F"
+            onClick={runFromMore(() => void runCjkFormatWithToast())}
           />
           {moreItems && (
             <>

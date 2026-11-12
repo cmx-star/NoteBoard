@@ -181,7 +181,7 @@ async fn upload_own(svc: &Service, ctx: &SyncCtx, backend: &mut Backend) -> Sync
         manifest_path: cat_path,
         manifest: next.to_bytes(),
         base_rev: remote_cat.as_ref().map(|c| c.rev),
-        message: format!("NoteBoard 历史记录（{}）", ctx.device_name),
+        message: format!("Loomark 历史记录（{}）", ctx.device_name),
     };
     match backend.commit(batch).await {
         Ok(()) => {
@@ -218,9 +218,9 @@ async fn retire(svc: &Service, root: &str, remote: &str, device_id: &str, backen
         if done {
             // 最后一轮：连同目录文件一起删除
             for rel in &deletes {
-                backend.delete(rel, "NoteBoard 清理历史记录").await?;
+                backend.delete(rel, "Loomark 清理历史记录").await?;
             }
-            backend.delete(&cat_path, "NoteBoard 清理历史记录").await?;
+            backend.delete(&cat_path, "Loomark 清理历史记录").await?;
             svc.finish_retire(&item);
             svc.save_uploaded(&ctx, None);
         } else {
@@ -232,7 +232,7 @@ async fn retire(svc: &Service, root: &str, remote: &str, device_id: &str, backen
                 manifest_path: cat_path,
                 manifest: next.to_bytes(),
                 base_rev: Some(current.rev),
-                message: "NoteBoard 清理历史记录".into(),
+                message: "Loomark 清理历史记录".into(),
             };
             match backend.commit(batch).await {
                 Ok(()) => svc.save_uploaded(&ctx, Some(&next)),

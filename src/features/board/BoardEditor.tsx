@@ -179,8 +179,8 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
   const docKeyRef = useRef(docKey);
   docKeyRef.current = docKey;
 
-  const themeMode = useSettingsStore((s) => s.settings.appearance.themeMode);
-  const theme = mapTheme(themeMode);
+  const resolvedTheme = useSettingsStore((s) => s.resolvedTheme);
+  const theme = mapTheme(resolvedTheme);
   const initialMountHandledRef = useRef<boolean>(false);
   const lastCommittedSignatureRef = useRef<string>('');
   // 同一次鼠标手势内的连续 onChange 必须合并成一个撤销步骤
@@ -681,7 +681,7 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
 
   if (!Component || !stableInitialData) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--editor-text-muted)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'var(--pct-100)', color: 'var(--editor-text-muted)' }}>
         加载画板组件
       </div>
     );
@@ -689,14 +689,14 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
 
   if (readOnly) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: 'var(--pct-100)', position: 'relative' }}>
         {!boardPresentationMode && (
           <div
             style={{
-              padding: '8px 12px',
+              padding: 'var(--dim-8) var(--dim-12)',
               background: 'var(--warning-50)',
-              borderBottom: '1px solid var(--warning-200)',
-              fontSize: 13,
+              borderBottom: 'var(--dim-1) solid var(--warning-200)',
+              fontSize: 'var(--text-13)',
               color: 'var(--editor-text)',
             }}
           >
@@ -729,10 +729,10 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
       onKeyDownCapture={handleBoardKeyDownCapture}
       onPointerDownCapture={handleBoardHistoryPointerDownCapture}
       onClickCapture={handleBoardHistoryClickCapture}
-      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      style={{ display: 'flex', flexDirection: 'column', height: 'var(--pct-100)' }}
     >
       {/* 画板区域 */}
-      <div style={{ flex: 1, height: '100%', width: '100%', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ flex: 1, height: 'var(--pct-100)', width: 'var(--pct-100)', overflow: 'hidden', position: 'relative' }}>
         <ExcalidrawCanvas
           Component={Component}
           initialData={stableInitialData as unknown as Record<string, unknown>}
@@ -751,7 +751,7 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
               inset: 0,
               pointerEvents: 'none',
               overflow: 'hidden',
-              zIndex: 5,
+              zIndex: 'var(--z-5)',
             }}
           >
             <FlowchartQuickConnect
@@ -771,7 +771,7 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
             onNavigate={handleMinimapNavigate}
             right={16}
             bottom={64}
-            canvasFilter={theme === 'dark' ? 'invert(93%) hue-rotate(180deg)' : undefined}
+            canvasFilter={theme === 'dark' ? 'invert(var(--pct-93)) hue-rotate(180deg)' : undefined}
           />
         )}
         <BoardPresentationToggle
@@ -788,12 +788,12 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 12,
-            padding: '2px 12px',
-            height: 24,
-            borderTop: '1px solid var(--editor-border)',
+            gap: 'var(--dim-12)',
+            padding: 'var(--dim-2) var(--dim-12)',
+            height: 'var(--dim-24)',
+            borderTop: 'var(--dim-1) solid var(--editor-border)',
             background: 'var(--editor-surface)',
-            fontSize: 11,
+            fontSize: 'var(--text-11)',
             color: 'var(--editor-text-muted)',
             flexShrink: 0,
           }}
@@ -806,54 +806,54 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
             type="button"
             onClick={handleToggleSnapMode}
             style={{
-              background: isSnapEnabled ? 'var(--primary-subtle, rgba(14, 127, 214, 0.12))' : 'transparent',
-              border: isSnapEnabled ? '1px solid var(--primary-500, #0e7fd6)' : '1px solid var(--editor-border)',
-              borderRadius: 4,
-              padding: '2px 8px',
+              background: isSnapEnabled ? 'var(--primary-subtle)' : 'transparent',
+              border: isSnapEnabled ? 'var(--dim-1) solid var(--primary-500)' : 'var(--dim-1) solid var(--editor-border)',
+              borderRadius: 'var(--radius-sm)',
+              padding: 'var(--dim-2) var(--dim-8)',
               cursor: 'pointer',
-              color: isSnapEnabled ? 'var(--primary-500, #0e7fd6)' : 'inherit',
-              fontSize: 11,
+              color: isSnapEnabled ? 'var(--primary-500)' : 'inherit',
+              fontSize: 'var(--text-11)',
               fontWeight: isSnapEnabled ? 500 : 400,
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 'var(--dim-4)',
               transition: 'all var(--transition-fast)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = isSnapEnabled
-                ? 'var(--primary-subtle-hover, rgba(14, 127, 214, 0.2))'
+                ? 'var(--primary-subtle-hover)'
                 : 'var(--toolbar-hover)';
               e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
               if (!isSnapEnabled) e.currentTarget.style.color = 'var(--editor-text)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = isSnapEnabled
-                ? 'var(--primary-subtle, rgba(14, 127, 214, 0.12))'
+                ? 'var(--primary-subtle)'
                 : 'transparent';
               e.currentTarget.style.borderColor = isSnapEnabled
-                ? 'var(--primary-500, #0e7fd6)'
+                ? 'var(--primary-500)'
                 : 'var(--editor-border)';
-              e.currentTarget.style.color = isSnapEnabled ? 'var(--primary-500, #0e7fd6)' : 'inherit';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.color = isSnapEnabled ? 'var(--primary-500)' : 'inherit';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.92)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = isSnapEnabled
-                ? 'var(--primary-subtle-hover, rgba(14, 127, 214, 0.2))'
+                ? 'var(--primary-subtle-hover)'
                 : 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             aria-label="自动吸附对齐"
           >
             <span>🧲 自动吸附</span>
-            <span style={{ fontSize: 10, opacity: 0.85 }}>[{isSnapEnabled ? '开' : '关'}]</span>
+            <span style={{ fontSize: 'var(--text-10)', opacity: 'var(--opacity-0-85)' }}>[{isSnapEnabled ? '开' : '关'}]</span>
           </button>
         </Tooltip>
 
-        <Tooltip content="重置缩放" shortcut="100%" side="top" sideOffset={6}>
+        <Tooltip content="重置缩放" shortcut="var(--pct-100)" side="top" sideOffset={6}>
           <button
             type="button"
             onClick={() => {
@@ -872,12 +872,12 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
             }}
             style={{
               background: 'transparent',
-              border: '1px solid var(--control-border)',
-              borderRadius: 4,
-              padding: '2px 8px',
+              border: 'var(--dim-1) solid var(--control-border)',
+              borderRadius: 'var(--radius-sm)',
+              padding: 'var(--dim-2) var(--dim-8)',
               cursor: 'pointer',
               color: 'inherit',
-              fontSize: 11,
+              fontSize: 'var(--text-11)',
               transition: 'all var(--transition-fast)',
             }}
             onMouseEnter={(e) => {
@@ -889,15 +889,15 @@ function BoardEditorInner({ docKey }: BoardEditorProps) {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.borderColor = 'var(--control-border)';
               e.currentTarget.style.color = 'inherit';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.92)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             aria-label="重置缩放"
           >
@@ -944,26 +944,26 @@ class BoardErrorBoundary extends React.Component<
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '100%',
-            padding: 32,
-            gap: 16,
+            height: 'var(--pct-100)',
+            padding: 'var(--dim-32)',
+            gap: 'var(--dim-16)',
             color: 'var(--editor-text)',
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: 32 }}>🎨</div>
-          <div style={{ fontSize: 15, fontWeight: 600 }}>画板加载或渲染出现异常</div>
+          <div style={{ fontSize: 'var(--text-32)' }}>🎨</div>
+          <div style={{ fontSize: 'var(--text-15)', fontWeight: 'var(--weight-600)' }}>画板加载或渲染出现异常</div>
           <div
             style={{
-              fontSize: 12,
+              fontSize: 'var(--text-12)',
               color: 'var(--editor-text-muted)',
-              maxWidth: 480,
+              maxWidth: 'var(--dim-480)',
               wordBreak: 'break-all',
               fontFamily: 'var(--mono-font-family)',
               background: 'var(--editor-surface)',
-              padding: '8px 12px',
-              borderRadius: 4,
-              border: '1px solid var(--editor-border)',
+              padding: 'var(--dim-8) var(--dim-12)',
+              borderRadius: 'var(--radius-sm)',
+              border: 'var(--dim-1) solid var(--editor-border)',
             }}
           >
             {this.state.error?.message ?? '未知错误'}
@@ -973,8 +973,8 @@ class BoardErrorBoundary extends React.Component<
             className="nb-btn-primary"
             onClick={() => this.setState({ hasError: false, error: null })}
             style={{
-              padding: '8px 20px',
-              fontSize: 13,
+              padding: 'var(--dim-8) var(--dim-20)',
+              fontSize: 'var(--text-13)',
             }}
           >
             重试加载画板

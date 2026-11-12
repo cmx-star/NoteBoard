@@ -31,26 +31,26 @@ export function normalizeForDiff(kind: string, text: string): string {
  */
 const P = '&.cm-merge-b.cm-editor';
 const historyDiffTheme: Extension = EditorView.theme({
-  '&': { height: '100%', backgroundColor: 'var(--editor-bg)' },
+  '&': { height: 'var(--pct-100)', backgroundColor: 'var(--editor-bg)' },
   '.cm-scroller': { fontFamily: 'var(--mono-font-family)', lineHeight: 'var(--mono-line-height)' },
-  '.cm-content': { padding: '16px 0 48px' },
+  '.cm-content': { padding: 'var(--dim-16) 0 var(--dim-48)' },
   // 新增：整行浅底 + 行内改动加深
-  [`${P} .cm-changedLine`]: { backgroundColor: 'color-mix(in srgb, var(--diff-insert-border) 8%, transparent)' },
-  [`${P} .cm-changedLine .cm-changedText`]: { background: 'var(--diff-insert-bg)', borderRadius: '2px' },
+  [`${P} .cm-changedLine`]: { backgroundColor: 'color-mix(in srgb, var(--diff-insert-border) var(--pct-8), transparent)' },
+  [`${P} .cm-changedLine .cm-changedText`]: { background: 'var(--diff-insert-bg)', borderRadius: 'var(--radius-xs)' },
   [`${P} .cm-insertedLine`]: { textDecoration: 'none' },
   // 删除：插入在原位置的只读块，删除线 + 红色
   [`${P} .cm-deletedChunk`]: {
-    backgroundColor: 'color-mix(in srgb, var(--diff-delete-border) 7%, transparent)',
-    paddingLeft: '6px',
+    backgroundColor: 'color-mix(in srgb, var(--diff-delete-border) var(--pct-7), transparent)',
+    paddingLeft: 'var(--dim-6)',
   },
   [`${P} .cm-deletedChunk .cm-deletedLine`]: { color: 'var(--diff-delete-text)' },
   [`${P} .cm-deletedChunk .cm-deletedText, ${P} .cm-deletedChunk del`]: {
     background: 'var(--diff-delete-bg)',
     textDecoration: 'line-through',
     textDecorationColor: 'var(--diff-delete-border)',
-    borderRadius: '2px',
+    borderRadius: 'var(--radius-xs)',
   },
-  '.cm-changeGutter': { width: '3px', paddingLeft: '0' },
+  '.cm-changeGutter': { width: 'var(--dim-3)', paddingLeft: '0' },
   [`${P} .cm-changedLineGutter`]: { background: 'var(--diff-insert-border)' },
   [`${P} .cm-deletedLineGutter`]: { background: 'var(--diff-delete-border)' },
 });
@@ -159,5 +159,5 @@ export default function TextVersionViewer({ path, kind, base, target, showChange
     };
   }, [navigatorRef]);
 
-  return <div ref={hostRef} className="nb-vh-text-viewer" style={{ height: '100%', overflow: 'hidden' }} />;
+  return <div ref={hostRef} className="nb-vh-text-viewer" style={{ height: 'var(--pct-100)', overflow: 'hidden' }} />;
 }

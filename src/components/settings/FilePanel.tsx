@@ -15,12 +15,12 @@ export function FilePanel() {
   const rowStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 16,
-    fontSize: 13,
+    gap: 'var(--dim-12)',
+    marginBottom: 'var(--dim-16)',
+    fontSize: 'var(--text-13)',
   };
 
-  const labelStyle: React.CSSProperties = { width: 140, flexShrink: 0 };
+  const labelStyle: React.CSSProperties = { width: 'var(--dim-140)', flexShrink: 0 };
 
   /** 通过系统目录选择器更新暂存位置，取消选择时保持现有设置。 */
   const chooseStagingDirectory = async () => {
@@ -45,9 +45,9 @@ export function FilePanel() {
 
   return (
     <div>
-      <h2 style={{ fontSize: 16, marginTop: 0 }}>文件</h2>
+      <h2 style={{ fontSize: 'var(--text-16)', marginTop: 0 }}>文件</h2>
 
-      <div style={{ margin: '16px 0 8px', fontWeight: 600, fontSize: 13, color: 'var(--accent-strong)' }}>
+      <div style={{ margin: 'var(--dim-16) 0 var(--dim-8)', fontWeight: 'var(--weight-600)', fontSize: 'var(--text-13)', color: 'var(--accent-strong)' }}>
         自动保存设置（关闭时使用 Ctrl+S 手动保存，关闭未保存标签页时将提示确认）
       </div>
 
@@ -81,28 +81,28 @@ export function FilePanel() {
         />
       </div>
 
-      <div style={{ margin: '16px 0 8px', fontWeight: 600, fontSize: 13, color: 'var(--accent-strong)' }}>
+      <div style={{ margin: 'var(--dim-16) 0 var(--dim-8)', fontWeight: 'var(--weight-600)', fontSize: 'var(--text-13)', color: 'var(--accent-strong)' }}>
         通用文件设置
       </div>
 
       {/* 暂存目录：只读展示，使用目录选择器避免手工输入无效路径。 */}
       <div style={{ ...rowStyle, alignItems: 'flex-start' }}>
-        <span style={{ ...labelStyle, paddingTop: 5 }}>暂存位置</span>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
+        <span style={{ ...labelStyle, paddingTop: 'var(--dim-5)' }}>暂存位置</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)', flex: 1 }}>
           <Tooltip content={settings.file.stagingDirectory ?? ''} disabled={!settings.file.stagingDirectory} side="top" sideOffset={4}>
             <input
               type="text"
               readOnly
               value={settings.file.stagingDirectory ?? ''}
-              style={{ ...inputStyle, maxWidth: 360, width: '100%' }}
+              style={{ ...inputStyle, maxWidth: 'var(--dim-360)', width: 'var(--pct-100)' }}
             />
           </Tooltip>
-          <div style={{ display: 'flex', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 'var(--dim-6)' }}>
             <button type="button" className="nb-btn-secondary" onClick={chooseStagingDirectory}>选择位置</button>
             <button type="button" className="nb-btn-secondary" onClick={resetStagingDirectory}>恢复默认</button>
             <button type="button" className="nb-btn-secondary" onClick={revealStagingDirectory}>打开</button>
           </div>
-          <span style={{ fontSize: 11, color: 'var(--editor-text-muted)' }}>
+          <span style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)' }}>
             未保存内容以“时间-序号-文件名”写入；正常保存后自动清理本次恢复副本。
           </span>
         </div>
@@ -127,7 +127,7 @@ export function FilePanel() {
           onChange={(e) => setFile({ restoreSession: e.target.checked })}
         />
       </div>
-      <div style={{ margin: '-10px 0 16px 152px', fontSize: 11, color: 'var(--editor-text-muted)' }}>
+      <div style={{ margin: 'calc(var(--dim-10) * -1) 0 var(--dim-16) var(--dim-152)', fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)' }}>
         默认开启；启动时自动恢复到 Tab 栏，当前页面仍停留 Home。
       </div>
 
@@ -155,7 +155,7 @@ export function FilePanel() {
             const mb = parseInt(e.target.value, 10) || 50;
             setFile({ largeFileConfirmMb: mb });
           }}
-          style={{ ...inputStyle, width: 60 }}
+          style={{ ...inputStyle, width: 'var(--dim-60)' }}
         />
       </div>
     </div>
@@ -163,13 +163,13 @@ export function FilePanel() {
 }
 
 const inputStyle: React.CSSProperties = {
-  padding: '4px 8px',
-  fontSize: 13,
-  border: '1px solid var(--editor-border)',
-  borderRadius: 3,
+  padding: 'var(--dim-4) var(--dim-8)',
+  fontSize: 'var(--text-13)',
+  border: 'var(--dim-1) solid var(--editor-border)',
+  borderRadius: 'var(--radius-xs)',
   background: 'var(--editor-surface)',
   color: 'var(--editor-text)',
   outline: 'none',
   flex: 1,
-  maxWidth: 200,
+  maxWidth: 'var(--dim-200)',
 };

@@ -1,10 +1,10 @@
 ; 文件关联只登记“打开方式”，不接管扩展名默认值、UserChoice 或其他应用的 ShellNew。
 ; Tauri 在引入 installerHooks 前定义这两个宏；若模板顺序变化，必须编译失败，不能退回抢占默认值的实现。
 !ifmacrondef APP_ASSOCIATE
-  !error "Tauri APP_ASSOCIATE must be defined before NoteBoard hooks"
+  !error "Tauri APP_ASSOCIATE must be defined before Loomark hooks"
 !endif
 !ifmacrondef APP_UNASSOCIATE
-  !error "Tauri APP_UNASSOCIATE must be defined before NoteBoard hooks"
+  !error "Tauri APP_UNASSOCIATE must be defined before Loomark hooks"
 !endif
 
 ; 测试可将注册表根目录指向隔离的临时键；正式安装始终使用当前用户的 Classes。
@@ -15,7 +15,7 @@
   !define NB_SHELLNEW_CACHE "Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\ShellNew"
 !endif
 !ifndef NB_REPAIR_STATE_ROOT
-  !define NB_REPAIR_STATE_ROOT "Software\crazyfigure\NoteBoard\FileAssociationRepair"
+  !define NB_REPAIR_STATE_ROOT "Software\starcmx\Loomark\FileAssociationRepair"
 !endif
 ; 只在实际恢复旧覆盖后失效菜单缓存，新装或用户已改用其他程序时不碰该缓存。
 Var NB_AssociationsRepaired
@@ -36,7 +36,7 @@ Var NB_AssociationsRepaired
       ${OrIf} $0 == ""
         StrCpy $2 $1 10
         ${If} $1 == ""
-        ${OrIf} $2 == "NoteBoard."
+        ${OrIf} $2 == "Loomark."
           ; 重复安装可能已经丢失最初的备份：不硬编码 Office/WPS 类型，不写入机器级注册表。
           DeleteRegValue HKCU "${NB_CLASSES_ROOT}\.${EXT}" ""
           ${IfNot} ${Errors}
@@ -82,7 +82,7 @@ Var NB_AssociationsRepaired
   WriteRegStr HKCU "${NB_CLASSES_ROOT}\Applications\${MAINBINARYNAME}.exe\SupportedTypes" ".${EXT}" ""
 !macroend
 
-; 卸载只清理 NoteBoard 自己的候选项；绝不把过期备份重新写成用户的默认关联。
+; 卸载只清理 Loomark 自己的候选项；绝不把过期备份重新写成用户的默认关联。
 !macroundef APP_UNASSOCIATE
 !macro APP_UNASSOCIATE EXT FILECLASS
   !insertmacro NB_REPAIR_ASSOCIATION "${EXT}" "${FILECLASS}"

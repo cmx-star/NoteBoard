@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>登录 · NoteBoard</title>
+<title>登录 · Loomark</title>
 <link rel="icon" href="/favicon.ico">
 <style>
-  /* 配色取自晨光（浅）与墨夜（深）主题，跟随系统深浅色。 */
+  /* 配色取自素白（浅）与墨黑（深）主题，跟随系统深浅色。 */
   :root {
     --bg: #f4f6f9;
     --card: #ffffff;
@@ -124,7 +124,7 @@
   <form class="card" id="form" novalidate>
     <div class="brand">
       <img src="/logo.png" alt="" width="48" height="48">
-      <h1>NoteBoard</h1>
+      <h1>Loomark</h1>
       <p>登录以继续</p>
     </div>
     <div class="error" id="error" role="alert">
@@ -210,7 +210,7 @@
     try {
       const response = await fetch('/api/login', {
         method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-NoteBoard-Request': '1' },
+        headers: { 'Content-Type': 'application/json', 'X-Loomark-Request': '1' },
         body: JSON.stringify({ username: name, password: password.value }),
       });
       if (response.ok) {

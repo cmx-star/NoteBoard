@@ -37,7 +37,9 @@ export function translateUpdateCheckError(reason: string, source = 'GitHub'): st
     case 'http_status':
       return `${source} 请求异常返回：${params}`;
     case 'parse':
-      return `解析版本数据失败：${params}`;
+      return params === '未找到已发布的正式版本'
+        ? '暂无可用的正式版本，请稍后重试。'
+        : `解析版本数据失败：${params}`;
     default:
       return `检查更新失败：${reason}`;
   }

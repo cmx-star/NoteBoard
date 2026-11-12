@@ -115,7 +115,7 @@ pub(crate) fn font_packs_root_dir() -> PathBuf {
             let trimmed = local_appdata.trim();
             if !trimmed.is_empty() {
                 return PathBuf::from(trimmed)
-                    .join("com.crazyfigure.noteboard")
+                    .join("com.starcmx.loomark")
                     .join("font-packs");
             }
         }

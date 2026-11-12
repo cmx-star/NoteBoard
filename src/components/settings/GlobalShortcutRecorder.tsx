@@ -57,7 +57,7 @@ export function GlobalShortcutRecorder() {
   const label = recording ? hint || '请按下组合键…' : shortcut ? formatAccelerator(shortcut) : '未设置';
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)', flexShrink: 0 }}>
       <Tooltip content={recording ? 'Esc 取消' : '点击录制'} side="top" sideOffset={4}>
         <button
           type="button"
@@ -65,9 +65,9 @@ export function GlobalShortcutRecorder() {
           onClick={() => setRecording((v) => !v)}
           onBlur={() => setRecording(false)}
           style={{
-            minWidth: 120,
-            padding: '2px 10px',
-            fontSize: 11,
+            minWidth: 'var(--dim-120)',
+            padding: 'var(--dim-2) var(--dim-10)',
+            fontSize: 'var(--text-11)',
             fontFamily: 'var(--mono-font-family)',
             color: recording ? 'var(--accent-strong)' : shortcut ? 'var(--editor-text-secondary)' : 'var(--editor-text-muted)',
             borderColor: recording ? 'var(--accent-strong)' : undefined,

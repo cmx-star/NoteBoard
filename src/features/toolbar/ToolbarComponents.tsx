@@ -8,6 +8,7 @@ import { Tooltip } from '../../components/Tooltip';
 import { isTouchInteraction } from '../../core/inputModality';
 import { formatShortcut } from '../../core/shortcuts';
 import { useViewportClamp } from '../../components/useViewportClamp';
+import { CustomColorSection } from '../../components/colorPicker/CustomColorPicker';
 
 // ── 基础工具栏按钮 ──
 
@@ -47,22 +48,22 @@ export function ToolbarButton({
   // 动态计算背景色与文字颜色
   let background = 'transparent';
   let color = 'var(--editor-text-secondary, var(--editor-text))';
-  let border = '1px solid transparent';
+  let border = 'var(--dim-1) solid transparent';
 
   if (disabled) {
-    color = 'var(--editor-text-muted, #9ca3af)';
+    color = 'var(--editor-text-muted)';
   } else if (active) {
-    background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.15))';
-    color = 'var(--accent-500, #3b82f6)';
-    border = '1px solid var(--editor-border-focus, rgba(59, 130, 246, 0.3))';
+    background = 'var(--editor-selection-background)';
+    color = 'var(--accent-500)';
+    border = 'var(--dim-1) solid var(--editor-border-focus)';
   } else if (pressed) {
-    background = 'var(--toolbar-active, rgba(0, 0, 0, 0.12))';
+    background = 'var(--toolbar-active)';
   } else if (hovered) {
     if (danger) {
-      background = 'rgba(239, 68, 68, 0.12)';
-      color = '#ef4444';
+      background = 'var(--nb-auto-ef4444-a12)';
+      color = 'var(--nb-red-500)';
     } else {
-      background = 'var(--toolbar-hover, rgba(0, 0, 0, 0.06))';
+      background = 'var(--toolbar-hover)';
       color = 'var(--editor-text)';
     }
   }
@@ -91,36 +92,36 @@ export function ToolbarButton({
           setPressed(false);
         }}
         style={{
-          height: 28,
+          height: 'var(--dim-28)',
           minWidth: label ? undefined : 28,
-          padding: label ? '0 8px' : '0 6px',
+          padding: label ? '0 var(--dim-8)' : '0 var(--dim-6)',
           border,
           background,
           color,
           opacity: disabled ? 0.38 : 1,
           cursor: disabled ? 'not-allowed' : 'pointer',
-          fontSize: 12,
+          fontSize: 'var(--text-12)',
           fontFamily: 'var(--ui-font-family, inherit)',
-          borderRadius: 5,
+          borderRadius: 'var(--radius-sm)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 4,
-          transform: !disabled && pressed ? 'scale(0.93)' : !disabled && hovered ? 'scale(1.04)' : 'scale(1)',
-          transition: 'all var(--transition-fast, 150ms ease)',
+          gap: 'var(--dim-4)',
+          transform: !disabled && pressed ? 'scale(var(--scale-0-93))' : !disabled && hovered ? 'scale(var(--scale-1-04))' : 'scale(var(--scale-1))',
+          transition: 'all var(--transition-fast, var(--duration-150) ease)',
           userSelect: 'none',
           flexShrink: 0,
           ...style,
         }}
       >
-        {icon && <span style={{ display: 'flex', alignItems: 'center', fontSize: 14 }}>{icon}</span>}
+        {icon && <span style={{ display: 'flex', alignItems: 'center', fontSize: 'var(--text-14)' }}>{icon}</span>}
         {label && <span style={{ fontWeight: active ? 600 : 450, whiteSpace: 'nowrap' }}>{label}</span>}
         {hasDropdown && (
           <ChevronDown
             size={12}
             strokeWidth={2}
             style={{
-              opacity: 0.7,
+              opacity: 'var(--opacity-0-7)',
               marginLeft: label ? 2 : -2,
               transition: 'transform var(--transition-fast)',
             }}
@@ -137,10 +138,10 @@ export function ToolbarDivider() {
   return (
     <div
       style={{
-        width: 1,
-        height: 16,
-        background: 'var(--editor-border, rgba(0,0,0,0.12))',
-        margin: '0 3px',
+        width: 'var(--dim-1)',
+        height: 'var(--dim-16)',
+        background: 'var(--editor-border)',
+        margin: '0 var(--dim-3)',
         flexShrink: 0,
         alignSelf: 'center',
       }}
@@ -155,9 +156,9 @@ export function ToolbarDropdownSeparator() {
     <div
       role="separator"
       style={{
-        height: 1,
-        margin: '3px 6px',
-        background: 'var(--editor-border, rgba(0,0,0,0.12))',
+        height: 'var(--dim-1)',
+        margin: 'var(--dim-3) var(--dim-6)',
+        background: 'var(--editor-border)',
         flexShrink: 0,
       }}
     />
@@ -231,20 +232,20 @@ export function ToolbarDropdown({
           onMouseDown={(e) => e.stopPropagation()}
           style={{
             position: 'absolute',
-            top: 'calc(100% + 4px)',
+            top: 'calc(var(--pct-100) + var(--dim-4))',
             ...(effectiveAlign === 'left' ? { left: 0 } : { right: 0 }),
-            zIndex: 120,
-            minWidth: 160,
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, #e5e7eb)',
-            borderRadius: 7,
-            padding: '4px',
-            boxShadow: '0 6px 20px rgba(0, 0, 0, 0.16)',
-            backdropFilter: 'blur(10px)',
+            zIndex: 'var(--z-120)',
+            minWidth: 'var(--dim-160)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-md)',
+            padding: 'var(--dim-4)',
+            boxShadow: '0 var(--dim-6) var(--dim-20) var(--nb-black-a16)',
+            backdropFilter: 'blur(var(--dim-10))',
             display: 'flex',
             flexDirection: 'column',
-            gap: 1,
-            animation: 'nb-fade-in 120ms ease-out',
+            gap: 'var(--dim-1)',
+            animation: 'nb-fade-in var(--duration-120) ease-out',
             ...style,
             ...panelClamp.style,
           }}
@@ -299,16 +300,16 @@ export function ToolbarDropdownItem({
   let color = 'var(--editor-text)';
 
   if (disabled) {
-    color = 'var(--editor-text-muted, #9ca3af)';
+    color = 'var(--editor-text-muted)';
   } else if (active) {
-    background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.15))';
-    color = 'var(--accent-500, #3b82f6)';
+    background = 'var(--editor-selection-background)';
+    color = 'var(--accent-500)';
   } else if (hovered || submenuOpen) {
     if (danger) {
-      background = 'rgba(239, 68, 68, 0.12)';
-      color = '#ef4444';
+      background = 'var(--nb-auto-ef4444-a12)';
+      color = 'var(--nb-red-500)';
     } else {
-      background = 'var(--toolbar-hover, rgba(0, 0, 0, 0.06))';
+      background = 'var(--toolbar-hover)';
     }
   }
 
@@ -390,11 +391,11 @@ export function ToolbarDropdownItem({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '5px 8px',
-        borderRadius: 5,
+        padding: 'var(--dim-5) var(--dim-8)',
+        borderRadius: 'var(--radius-sm)',
         background,
         color,
-        fontSize: 12,
+        fontSize: 'var(--text-12)',
         cursor: disabled ? 'not-allowed' : 'pointer',
         userSelect: 'none',
         transition: 'background var(--transition-fast)',
@@ -402,16 +403,16 @@ export function ToolbarDropdownItem({
       }}
     >
       {/* 左侧图标与标题 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
-        {icon && <span style={{ display: 'flex', alignItems: 'center', fontSize: 14 }}>{icon}</span>}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', flex: 1 }}>
+        {icon && <span style={{ display: 'flex', alignItems: 'center', fontSize: 'var(--text-14)' }}>{icon}</span>}
         <span style={{ fontWeight: active ? 600 : 450 }}>{label}</span>
       </div>
 
       {/* 右侧指示：当前选中 Check、快捷键或子菜单箭头 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 12 }}>
-        {active && !hasSubmenu && <Check size={13} strokeWidth={2.5} color="var(--accent-500, #3b82f6)" />}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', marginLeft: 'var(--dim-12)' }}>
+        {active && !hasSubmenu && <Check size={13} strokeWidth={2.5} color="var(--accent-500)" />}
         {shortcut && (
-          <span style={{ fontSize: 11, color: 'var(--editor-text-muted, #9ca3af)', opacity: 0.8 }}>
+          <span style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', opacity: 'var(--opacity-0-8)' }}>
             {/* 与按钮提示共用平台转换，Mac 下显示 Cmd / Option。 */}
             {formatShortcut(shortcut)}
           </span>
@@ -422,7 +423,7 @@ export function ToolbarDropdownItem({
             size={13}
             strokeWidth={2}
             style={{
-              opacity: 0.6,
+              opacity: 'var(--opacity-0-6)',
               transform: submenuOpen ? (flipLeft ? 'rotate(180deg)' : 'rotate(0deg)') : 'none',
               transition: 'transform var(--transition-fast)',
             }}
@@ -445,22 +446,22 @@ export function ToolbarDropdownItem({
           onMouseLeave={handleMouseLeave}
           style={{
             position: 'absolute',
-            top: -4,
+            top: 'calc(var(--dim-4) * -1)',
             ...(flipLeft
-              ? { right: 'calc(100% + 2px)' }
-              : { left: 'calc(100% + 2px)' }),
-            zIndex: 140,
-            minWidth: 160,
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, #e5e7eb)',
-            borderRadius: 7,
-            padding: '4px',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.18)',
-            backdropFilter: 'blur(12px)',
+              ? { right: 'calc(var(--pct-100) + var(--dim-2))' }
+              : { left: 'calc(var(--pct-100) + var(--dim-2))' }),
+            zIndex: 'var(--z-140)',
+            minWidth: 'var(--dim-160)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-md)',
+            padding: 'var(--dim-4)',
+            boxShadow: '0 var(--dim-8) var(--dim-24) var(--nb-black-a18)',
+            backdropFilter: 'blur(var(--dim-12))',
             display: 'flex',
             flexDirection: 'column',
-            gap: 1,
-            animation: 'nb-fade-in 100ms ease-out',
+            gap: 'var(--dim-1)',
+            animation: 'nb-fade-in var(--duration-100) ease-out',
             ...submenuClamp.style,
           }}
         >
@@ -471,7 +472,7 @@ export function ToolbarDropdownItem({
               position: 'absolute',
               top: 0,
               bottom: 0,
-              ...(flipLeft ? { right: -6, width: 8 } : { left: -6, width: 8 }),
+              ...(flipLeft ? { right: 'calc(var(--dim-6) * -1)', width: 'var(--dim-8)' } : { left: 'calc(var(--dim-6) * -1)', width: 'var(--dim-8)' }),
               pointerEvents: 'auto',
             }}
           />
@@ -485,28 +486,33 @@ export function ToolbarDropdownItem({
 // ── 高亮调色盘组件 ──
 
 export const HIGHLIGHT_COLORS = [
-  { name: '柠檬黄', color: '#fef08a', border: '#facc15' },
-  { name: '清新绿', color: '#bbf7d0', border: '#4ade80' },
-  { name: '天空蓝', color: '#bfdbfe', border: '#60a5fa' },
-  { name: '浅紫', color: '#e9d5ff', border: '#c084fc' },
-  { name: '蜜桃粉', color: '#fbcfe8', border: '#f472b6' },
-  { name: '暖阳橙', color: '#fed7aa', border: '#fb923c' },
-  { name: '珊瑚红', color: '#fecaca', border: '#f87171' },
-  { name: '湖水青', color: '#a5f3fc', border: '#22d3ee' },
+  { name: '柠檬黄', color: 'var(--nb-yellow-200)', border: 'var(--nb-yellow-400)' },
+  { name: '清新绿', color: 'var(--nb-green-200)', border: 'var(--nb-green-400)' },
+  { name: '天空蓝', color: 'var(--nb-blue-200)', border: 'var(--nb-blue-400)' },
+  { name: '浅紫', color: 'var(--nb-purple-200)', border: 'var(--nb-purple-300)' },
+  { name: '蜜桃粉', color: 'var(--nb-pink-200)', border: 'var(--nb-pink-400)' },
+  { name: '暖阳橙', color: 'var(--nb-orange-200)', border: 'var(--nb-orange-400)' },
+  { name: '珊瑚红', color: 'var(--nb-red-200)', border: 'var(--nb-red-400)' },
+  { name: '湖水青', color: 'var(--nb-cyan-200)', border: 'var(--nb-cyan-400)' },
 ];
+
+const HIGHLIGHT_COLOR_VALUES = HIGHLIGHT_COLORS.map((item) => item.color);
 
 export interface HighlightColorPickerProps {
   onSelectColor: (color: string) => void;
   onRemoveHighlight: () => void;
+  /** 当前高亮颜色（源码模式等无法读取时不传） */
+  activeColor?: string | null;
 }
 
 export function HighlightColorPicker({
   onSelectColor,
   onRemoveHighlight,
+  activeColor,
 }: HighlightColorPickerProps) {
   return (
-    <div style={{ padding: '6px 4px', width: 176 }}>
-      <div style={{ fontSize: 11, color: 'var(--editor-text-muted)', marginBottom: 6, paddingLeft: 4 }}>
+    <div style={{ padding: 'var(--dim-6) var(--dim-4)', width: 'var(--dim-176)' }}>
+      <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', marginBottom: 'var(--dim-6)', paddingLeft: 'var(--dim-4)' }}>
         选择高亮背景颜色
       </div>
       {/* 8 色调色盘色块网格 */}
@@ -514,8 +520,8 @@ export function HighlightColorPicker({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 6,
-          marginBottom: 8,
+          gap: 'var(--dim-6)',
+          marginBottom: 'var(--dim-8)',
         }}
       >
         {HIGHLIGHT_COLORS.map((item) => (
@@ -524,49 +530,61 @@ export function HighlightColorPicker({
               type="button"
               onClick={() => onSelectColor(item.color)}
               style={{
-                width: 32,
-                height: 24,
-                borderRadius: 4,
+                width: 'var(--dim-32)',
+                height: 'var(--dim-24)',
+                borderRadius: 'var(--radius-sm)',
                 background: item.color,
-                border: `1px solid ${item.border}`,
+                border: `var(--dim-1) solid ${item.border}`,
                 cursor: 'pointer',
                 transition: 'transform var(--transition-fast), box-shadow var(--transition-fast)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.15)';
-                e.currentTarget.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1-15))';
+                e.currentTarget.style.boxShadow = '0 var(--dim-2) var(--dim-6) var(--nb-black-a20)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.transform = 'scale(var(--scale-1))';
                 e.currentTarget.style.boxShadow = 'none';
               }}
             />
           </Tooltip>
         ))}
       </div>
+      {/* 自定义高亮颜色：固定的颜色可直接选用，「+」展开取色盘 */}
+      <div style={{ marginBottom: 'var(--dim-8)' }}>
+        <CustomColorSection
+          kind="highlight"
+          variant="fill"
+          activeColor={activeColor}
+          presetColors={HIGHLIGHT_COLOR_VALUES}
+          onSelect={onSelectColor}
+          swatchWidth={32}
+          swatchHeight={24}
+        />
+      </div>
       {/* 清除高亮按钮 */}
       <button
         type="button"
         onClick={onRemoveHighlight}
         style={{
-          width: '100%',
-          padding: '4px 6px',
-          borderRadius: 4,
-          border: '1px dashed var(--control-border)',
+          width: 'var(--pct-100)',
+          padding: 'var(--dim-4) var(--dim-6)',
+          borderRadius: 'var(--radius-sm)',
+          border: 'var(--dim-1) dashed var(--control-border)',
           background: 'transparent',
           color: 'var(--editor-text-secondary)',
-          fontSize: 11,
+          fontSize: 'var(--text-11)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 4,
+          gap: 'var(--dim-4)',
           transition: 'all var(--transition-fast)',
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = 'var(--toolbar-hover)';
-          e.currentTarget.style.color = '#ef4444';
-          e.currentTarget.style.borderColor = '#ef4444';
+          e.currentTarget.style.color = 'var(--nb-red-500)';
+          e.currentTarget.style.borderColor = 'var(--nb-red-500)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background = 'transparent';

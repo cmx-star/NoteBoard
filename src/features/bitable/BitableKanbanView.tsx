@@ -215,12 +215,12 @@ export function BitableKanbanView({
           badge: (
             <span
               style={{
-                fontSize: 12,
-                fontWeight: 600,
-                color: 'var(--editor-text, #1e293b)',
-                padding: '2px 8px',
-                borderRadius: 12,
-                background: 'var(--editor-bg, #f1f5f9)',
+                fontSize: 'var(--text-12)',
+                fontWeight: 'var(--weight-600)',
+                color: 'var(--editor-text)',
+                padding: 'var(--dim-2) var(--dim-8)',
+                borderRadius: 'var(--dim-12)',
+                background: 'var(--editor-bg)',
               }}
             >
               {val}
@@ -366,11 +366,11 @@ export function BitableKanbanView({
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #f8fafc)',
+        background: 'var(--editor-bg)',
         overflow: 'hidden',
       }}
     >
@@ -378,18 +378,18 @@ export function BitableKanbanView({
       <div
         className="nb-bitable-subbar"
         style={{
-          padding: '8px 16px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #ffffff)',
+          padding: 'var(--dim-4) var(--dim-16)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
           display: 'flex',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: 10,
-          rowGap: 6,
-          fontSize: 12,
+          gap: 'var(--dim-10)',
+          rowGap: 'var(--dim-6)',
+          fontSize: 'var(--text-12)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--editor-text-muted, #64748b)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', color: 'var(--editor-text-muted)' }}>
           <SlidersHorizontal size={13} />
           <span>分组依据</span>
         </div>
@@ -404,7 +404,7 @@ export function BitableKanbanView({
         {/* 分组内排序：卡片在每个分组内按规则排列 */}
         {onUpdateSortRules && (
           <>
-            <div style={{ width: 1, height: 16, background: 'var(--editor-border, #e2e8f0)' }} />
+            <div style={{ width: 'var(--dim-1)', height: 'var(--dim-16)', background: 'var(--editor-border)' }} />
             <Tooltip
               content={
                 sortRules.length > 0
@@ -425,11 +425,11 @@ export function BitableKanbanView({
                   setSortPanelOpen(true);
                 }}
                 style={{
-                  gap: 4,
-                  padding: '3px 8px',
-                  background: sortRules.length > 0 ? 'rgba(59, 130, 246, 0.08)' : undefined,
-                  color: sortRules.length > 0 ? 'var(--editor-accent, #3b82f6)' : undefined,
-                  borderColor: sortRules.length > 0 ? 'var(--editor-accent, #3b82f6)' : undefined,
+                  gap: 'var(--dim-4)',
+                  padding: 'var(--dim-3) var(--dim-8)',
+                  background: sortRules.length > 0 ? 'var(--nb-auto-3b82f6-a8)' : undefined,
+                  color: sortRules.length > 0 ? 'var(--editor-accent)' : undefined,
+                  borderColor: sortRules.length > 0 ? 'var(--editor-accent)' : undefined,
                 }}
               >
                 <ArrowUpDown size={13} />
@@ -441,7 +441,7 @@ export function BitableKanbanView({
                 type="button"
                 className="nb-bitable-btn-ghost"
                 onClick={() => onUpdateSortRules([])}
-                style={{ gap: 4, padding: '2px 6px', fontSize: 11 }}
+                style={{ gap: 'var(--dim-4)', padding: 'var(--dim-2) var(--dim-6)', fontSize: 'var(--text-11)' }}
               >
                 <X size={11} />
                 <span>清除排序</span>
@@ -473,8 +473,8 @@ export function BitableKanbanView({
         style={{
           flex: 1,
           display: 'flex',
-          gap: 16,
-          padding: '16px 20px',
+          gap: 'var(--dim-16)',
+          padding: 'var(--dim-16) var(--dim-20)',
           overflowX: 'auto',
           alignItems: 'flex-start',
         }}
@@ -492,12 +492,12 @@ export function BitableKanbanView({
               else laneRefs.current.delete(lane.id);
             }}
             style={{
-              width: 280,
-              minWidth: 280,
-              maxHeight: '100%',
-              borderRadius: 10,
-              background: 'var(--editor-surface, #ffffff)',
-              border: '1px solid var(--editor-border, #e2e8f0)',
+              width: 'var(--dim-280)',
+              minWidth: 'var(--dim-280)',
+              maxHeight: 'var(--pct-100)',
+              borderRadius: 'var(--dim-10)',
+              background: 'var(--editor-surface)',
+              border: 'var(--dim-1) solid var(--editor-border)',
               display: 'flex',
               flexDirection: 'column',
               // 落点指示条依赖绝对定位，故泳道设为定位上下文；卡片阴影仍由 overflow:hidden 裁剪到圆角内
@@ -517,15 +517,15 @@ export function BitableKanbanView({
                   bottom: 0,
                   left: laneIndicator === 'left' ? 0 : 'auto',
                   right: laneIndicator === 'right' ? 0 : 'auto',
-                  width: 4,
-                  background: '#3b82f6',
+                  width: 'var(--dim-4)',
+                  background: 'var(--nb-blue-500)',
                   // 外侧与泳道圆角对齐，内侧直角，视觉上是泳道边缘被涂蓝
                   borderTopLeftRadius: laneIndicator === 'left' ? 10 : 0,
                   borderBottomLeftRadius: laneIndicator === 'left' ? 10 : 0,
                   borderTopRightRadius: laneIndicator === 'right' ? 10 : 0,
                   borderBottomRightRadius: laneIndicator === 'right' ? 10 : 0,
-                  boxShadow: '0 0 10px rgba(59, 130, 246, 0.45)',
-                  zIndex: 5,
+                  boxShadow: '0 0 var(--dim-10) var(--nb-auto-3b82f6-a45)',
+                  zIndex: 'var(--z-5)',
                   pointerEvents: 'none',
                 }}
               />
@@ -535,23 +535,23 @@ export function BitableKanbanView({
             <div
               onMouseDown={(e) => startLaneDrag(e, laneIdx)}
               style={{
-                padding: '10px 14px',
-                borderBottom: '1px solid var(--editor-border, #f1f5f9)',
+                padding: 'var(--dim-10) var(--dim-14)',
+                borderBottom: 'var(--dim-1) solid var(--editor-border)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                background: 'var(--editor-surface, #ffffff)',
+                background: 'var(--editor-surface)',
                 cursor: laneDrag ? 'grabbing' : laneDragEnabled ? 'grab' : 'default',
                 userSelect: laneDrag ? 'none' : undefined,
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
                 {lane.badge}
-                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--editor-text-muted, #94a3b8)' }}>
+                <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-muted)' }}>
                   {lane.rows.length}
                 </span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-2)' }}>
                 <Tooltip content="在当前分组下添加卡片" side="top" sideOffset={4}>
                   <button
                     type="button"
@@ -562,8 +562,8 @@ export function BitableKanbanView({
                     }}
                     aria-label="在当前分组下添加卡片"
                     style={{
-                      padding: 3,
-                      borderRadius: 4,
+                      padding: 'var(--dim-3)',
+                      borderRadius: 'var(--dim-4)',
                     }}
                   >
                     <Plus size={14} />
@@ -588,8 +588,8 @@ export function BitableKanbanView({
                       }}
                       aria-label="编辑或删除该分组"
                       style={{
-                        background: groupMenu && groupMenu.optionId === lane.id ? 'var(--editor-bg, #f1f5f9)' : undefined,
-                        padding: 3,
+                        background: groupMenu && groupMenu.optionId === lane.id ? 'var(--editor-bg)' : undefined,
+                        padding: 'var(--dim-3)',
                       }}
                     >
                       <MoreHorizontal size={14} />
@@ -602,15 +602,15 @@ export function BitableKanbanView({
             {editingGroup && editingGroup.optionId === lane.id && groupColumn && (
               <div
                 style={{
-                  padding: '8px 10px',
-                  borderBottom: '1px solid var(--editor-border, #f1f5f9)',
-                  background: 'var(--editor-bg, #f8fafc)',
+                  padding: 'var(--dim-8) var(--dim-10)',
+                  borderBottom: 'var(--dim-1) solid var(--editor-border)',
+                  background: 'var(--editor-bg)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 6,
+                  gap: 'var(--dim-6)',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }}>
                   <input
                     type="text"
                     value={editingGroup.label}
@@ -637,10 +637,10 @@ export function BitableKanbanView({
                     style={{
                       flex: 1,
                       minWidth: 0,
-                      padding: '4px 6px',
-                      fontSize: 12,
-                      border: '1px solid var(--editor-accent, #3b82f6)',
-                      borderRadius: 4,
+                      padding: 'var(--dim-4) var(--dim-6)',
+                      fontSize: 'var(--text-12)',
+                      border: 'var(--dim-1) solid var(--editor-accent)',
+                      borderRadius: 'var(--dim-4)',
                       outline: 'none',
                     }}
                   />
@@ -650,7 +650,7 @@ export function BitableKanbanView({
                       aria-label="取消编辑"
                       className="nb-bitable-btn-ghost"
                       onClick={() => setEditingGroup(null)}
-                      style={{ padding: 2 }}
+                      style={{ padding: 'var(--dim-2)' }}
                     >
                       <X size={13} />
                     </button>
@@ -683,8 +683,8 @@ export function BitableKanbanView({
                   }}
                   style={{
                     alignSelf: 'flex-end',
-                    padding: '3px 8px',
-                    fontSize: 11,
+                    padding: 'var(--dim-3) var(--dim-8)',
+                    fontSize: 'var(--text-11)',
                   }}
                 >
                   保存分组
@@ -732,7 +732,7 @@ export function BitableKanbanView({
                       setPendingDeleteId(null);
                       setGroupMenu(null);
                     }}
-                    style={{ background: '#fee2e2' }}
+                    style={{ background: 'var(--nb-red-100)' }}
                   >
                     <span style={MENU_ICON_STYLE}><Trash2 size={13} /></span>
                     <span>确认删除（{lane.rows.length} 张卡片将变为未分组）</span>
@@ -755,10 +755,10 @@ export function BitableKanbanView({
               style={{
                 flex: 1,
                 overflowY: 'auto',
-                padding: '10px',
+                padding: 'var(--dim-10)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 10,
+                gap: 'var(--dim-10)',
               }}
             >
               {lane.rows.map((row) => {
@@ -783,14 +783,14 @@ export function BitableKanbanView({
                     if (onOpenRecord) onOpenRecord(row.id);
                   }}
                   style={{
-                    padding: '12px 14px',
-                    borderRadius: 8,
-                    background: 'var(--editor-surface, #ffffff)',
-                    border: '1px solid var(--editor-border, #e2e8f0)',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.03)',
+                    padding: 'var(--dim-12) var(--dim-14)',
+                    borderRadius: 'var(--dim-8)',
+                    background: 'var(--editor-surface)',
+                    border: 'var(--dim-1) solid var(--editor-border)',
+                    boxShadow: '0 var(--dim-2) var(--dim-6) var(--nb-black-a03)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 8,
+                    gap: 'var(--dim-8)',
                     cursor: cardDrag ? 'grabbing' : cardDragEnabled ? 'grab' : 'pointer',
                     position: 'relative',
                     // 落点指示线依赖溢出绘制，被拖卡片压暗以明确「哪张在搬运」
@@ -808,10 +808,10 @@ export function BitableKanbanView({
                         position: 'absolute',
                         left: 0,
                         right: 0,
-                        height: 3,
-                        borderRadius: 2,
-                        background: 'var(--editor-accent, #3b82f6)',
-                        boxShadow: '0 0 8px rgba(59, 130, 246, 0.5)',
+                        height: 'var(--dim-3)',
+                        borderRadius: 'var(--dim-2)',
+                        background: 'var(--editor-accent)',
+                        boxShadow: '0 0 var(--dim-8) var(--nb-auto-3b82f6-a50)',
                         top: indicator === 'top' ? -2 : undefined,
                         bottom: indicator === 'bottom' ? -2 : undefined,
                         pointerEvents: 'none',
@@ -819,8 +819,8 @@ export function BitableKanbanView({
                     />
                   )}
                   {/* 卡片头部与删除按钮 */}
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--editor-text, #1e293b)', lineHeight: 1.4, flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 'var(--dim-6)' }}>
+                    <div style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)', lineHeight: 'var(--leading-1-4)', flex: 1 }}>
                       {resolveCardTitle(titleCol, row)}
                     </div>
                     <Tooltip content="删除卡片" side="top" sideOffset={4}>
@@ -834,15 +834,15 @@ export function BitableKanbanView({
                           onDeleteRow(row.id);
                         }}
                         style={{
-                          padding: 2,
-                          opacity: 0.6,
+                          padding: 'var(--dim-2)',
+                          opacity: 'var(--opacity-0-6)',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = '#ef4444';
+                          e.currentTarget.style.color = 'var(--nb-red-500)';
                           e.currentTarget.style.opacity = '1';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.color = 'var(--editor-text-muted, #64748b)';
+                          e.currentTarget.style.color = 'var(--editor-text-muted)';
                           e.currentTarget.style.opacity = '0.6';
                         }}
                       >
@@ -852,7 +852,7 @@ export function BitableKanbanView({
                   </div>
 
                   {/* 关键属性标签与元数据摘要 */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--dim-6)', alignItems: 'center' }}>
                     {columns
                       .filter((c) => c.id !== groupColumn.id && c.id !== titleCol?.id)
                       .map((c) => {
@@ -868,13 +868,13 @@ export function BitableKanbanView({
                               <div
                                 key={c.id}
                                 style={{
-                                  width: '100%',
-                                  padding: '6px 8px',
-                                  borderRadius: 6,
-                                  background: 'var(--editor-bg, #f8fafc)',
-                                  color: 'var(--editor-text, #1e293b)',
-                                  fontSize: 12,
-                                  lineHeight: 1.6,
+                                  width: 'var(--pct-100)',
+                                  padding: 'var(--dim-6) var(--dim-8)',
+                                  borderRadius: 'var(--dim-6)',
+                                  background: 'var(--editor-bg)',
+                                  color: 'var(--editor-text)',
+                                  fontSize: 'var(--text-12)',
+                                  lineHeight: 'var(--leading-1-6)',
                                   overflow: 'hidden',
                                 }}
                               >
@@ -890,12 +890,12 @@ export function BitableKanbanView({
                             <Tooltip key={c.id} content={text} side="bottom" sideOffset={4}>
                               <span
                                 style={{
-                                  fontSize: 11,
-                                  padding: '1px 6px',
-                                  borderRadius: 4,
-                                  background: 'var(--editor-bg, #f1f5f9)',
-                                  color: 'var(--editor-text-muted, #64748b)',
-                                  maxWidth: '100%',
+                                  fontSize: 'var(--text-11)',
+                                  padding: 'var(--dim-1) var(--dim-6)',
+                                  borderRadius: 'var(--dim-4)',
+                                  background: 'var(--editor-bg)',
+                                  color: 'var(--editor-text-muted)',
+                                  maxWidth: 'var(--pct-100)',
                                   overflow: 'hidden',
                                   textOverflow: 'ellipsis',
                                   whiteSpace: 'nowrap',
@@ -925,7 +925,7 @@ export function BitableKanbanView({
                             .filter((o): o is NonNullable<typeof o> => Boolean(o));
                           if (selectedOptions.length === 0) return null;
                           return (
-                            <div key={c.id} style={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
+                            <div key={c.id} style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--dim-4)', alignItems: 'center' }}>
                               {selectedOptions.map((opt) => (
                                 <OptionBadge key={opt.id} option={opt} />
                               ))}
@@ -941,10 +941,10 @@ export function BitableKanbanView({
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: 3,
-                                fontSize: 11,
-                                color: 'var(--editor-text-muted, #64748b)',
-                                maxWidth: '100%',
+                                gap: 'var(--dim-3)',
+                                fontSize: 'var(--text-11)',
+                                color: 'var(--editor-text-muted)',
+                                maxWidth: 'var(--pct-100)',
                                 overflow: 'hidden',
                               }}
                             >
@@ -970,10 +970,10 @@ export function BitableKanbanView({
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: 4,
-                                fontSize: 11,
-                                fontWeight: 600,
-                                color: p === 100 ? '#16a34a' : '#3b82f6',
+                                gap: 'var(--dim-4)',
+                                fontSize: 'var(--text-11)',
+                                fontWeight: 'var(--weight-600)',
+                                color: p === 100 ? 'var(--nb-green-600)' : 'var(--nb-blue-500)',
                               }}
                             >
                               <span>{p}%</span>
@@ -983,9 +983,9 @@ export function BitableKanbanView({
 
                         if (c.type === 'rating') {
                           return (
-                            <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                              <Star size={11} fill="#f59e0b" color="#f59e0b" />
-                              <span style={{ fontSize: 11, color: '#f59e0b', fontWeight: 600 }}>{String(val)}</span>
+                            <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-2)' }}>
+                              <Star size={11} fill="var(--nb-amber-500)" color="var(--nb-amber-500)" />
+                              <span style={{ fontSize: 'var(--text-11)', color: 'var(--nb-amber-500)', fontWeight: 'var(--weight-600)' }}>{String(val)}</span>
                             </div>
                           );
                         }
@@ -994,11 +994,11 @@ export function BitableKanbanView({
                           <span
                             key={c.id}
                             style={{
-                              fontSize: 11,
-                              padding: '1px 6px',
-                              borderRadius: 4,
-                              background: 'var(--editor-bg, #f1f5f9)',
-                              color: 'var(--editor-text-muted, #64748b)',
+                              fontSize: 'var(--text-11)',
+                              padding: 'var(--dim-1) var(--dim-6)',
+                              borderRadius: 'var(--dim-4)',
+                              background: 'var(--editor-bg)',
+                              color: 'var(--editor-text-muted)',
                             }}
                           >
                             {String(val)}
@@ -1015,12 +1015,12 @@ export function BitableKanbanView({
               {lane.rows.length === 0 && (
                 <div
                   style={{
-                    padding: '24px 10px',
+                    padding: 'var(--dim-24) var(--dim-10)',
                     textAlign: 'center',
-                    fontSize: 12,
-                    color: 'var(--editor-text-muted, #94a3b8)',
-                    border: '1px dashed var(--editor-border, #e2e8f0)',
-                    borderRadius: 6,
+                    fontSize: 'var(--text-12)',
+                    color: 'var(--editor-text-muted)',
+                    border: 'var(--dim-1) dashed var(--editor-border)',
+                    borderRadius: 'var(--dim-6)',
                   }}
                 >
                   暂无卡片
@@ -1035,15 +1035,15 @@ export function BitableKanbanView({
         {isOptionGroup && onAddGroupOption && (
           <div
             style={{
-              width: 200,
-              minWidth: 200,
-              borderRadius: 10,
-              border: '1px dashed var(--editor-border, #cbd5e1)',
+              width: 'var(--dim-200)',
+              minWidth: 'var(--dim-200)',
+              borderRadius: 'var(--dim-10)',
+              border: 'var(--dim-1) dashed var(--editor-border)',
               background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: 56,
+              minHeight: 'var(--dim-56)',
             }}
           >
             <Tooltip content="新增一个分组" side="top" sideOffset={4}>
@@ -1054,9 +1054,9 @@ export function BitableKanbanView({
                 aria-label="新增一个分组"
                 style={{
                   borderStyle: 'dashed',
-                  padding: '6px 12px',
-                  color: 'var(--editor-text-muted, #64748b)',
-                  fontWeight: 500,
+                  padding: 'var(--dim-6) var(--dim-12)',
+                  color: 'var(--editor-text-muted)',
+                  fontWeight: 'var(--weight-500)',
                 }}
               >
                 <Plus size={14} />
@@ -1070,30 +1070,30 @@ export function BitableKanbanView({
         {unclassifiedRows.length > 0 && (
           <div
             style={{
-              width: 280,
-              minWidth: 280,
-              maxHeight: '100%',
-              borderRadius: 10,
-              background: 'var(--editor-surface, #ffffff)',
-              border: '1px dashed var(--editor-border, #cbd5e1)',
+              width: 'var(--dim-280)',
+              minWidth: 'var(--dim-280)',
+              maxHeight: 'var(--pct-100)',
+              borderRadius: 'var(--dim-10)',
+              background: 'var(--editor-surface)',
+              border: 'var(--dim-1) dashed var(--editor-border)',
               display: 'flex',
               flexDirection: 'column',
-              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.02)',
+              boxShadow: '0 var(--dim-1) var(--dim-4) var(--nb-black-a02)',
               overflow: 'hidden',
             }}
           >
             <div
               style={{
-                padding: '10px 14px',
-                borderBottom: '1px solid var(--editor-border, #f1f5f9)',
+                padding: 'var(--dim-10) var(--dim-14)',
+                borderBottom: 'var(--dim-1) solid var(--editor-border)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--editor-text-muted, #64748b)' }}>未分类</span>
-                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--editor-text-muted, #94a3b8)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
+                <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-muted)' }}>未分类</span>
+                <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-muted)' }}>
                   {unclassifiedRows.length}
                 </span>
               </div>
@@ -1103,10 +1103,10 @@ export function BitableKanbanView({
               style={{
                 flex: 1,
                 overflowY: 'auto',
-                padding: '10px',
+                padding: 'var(--dim-10)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 10,
+                gap: 'var(--dim-10)',
               }}
             >
               {unclassifiedRows.map((row) => {
@@ -1130,14 +1130,14 @@ export function BitableKanbanView({
                     if (onOpenRecord) onOpenRecord(row.id);
                   }}
                   style={{
-                    padding: '12px 14px',
-                    borderRadius: 8,
-                    background: 'var(--editor-surface, #ffffff)',
-                    border: '1px solid var(--editor-border, #e2e8f0)',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.03)',
+                    padding: 'var(--dim-12) var(--dim-14)',
+                    borderRadius: 'var(--dim-8)',
+                    background: 'var(--editor-surface)',
+                    border: 'var(--dim-1) solid var(--editor-border)',
+                    boxShadow: '0 var(--dim-2) var(--dim-6) var(--nb-black-a03)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 8,
+                    gap: 'var(--dim-8)',
                     cursor: cardDrag ? 'grabbing' : cardDragEnabled ? 'grab' : 'pointer',
                     position: 'relative',
                     overflow: 'visible',
@@ -1153,17 +1153,17 @@ export function BitableKanbanView({
                         position: 'absolute',
                         left: 0,
                         right: 0,
-                        height: 3,
-                        borderRadius: 2,
-                        background: 'var(--editor-accent, #3b82f6)',
-                        boxShadow: '0 0 8px rgba(59, 130, 246, 0.5)',
+                        height: 'var(--dim-3)',
+                        borderRadius: 'var(--dim-2)',
+                        background: 'var(--editor-accent)',
+                        boxShadow: '0 0 var(--dim-8) var(--nb-auto-3b82f6-a50)',
                         top: indicator === 'top' ? -2 : undefined,
                         bottom: indicator === 'bottom' ? -2 : undefined,
                         pointerEvents: 'none',
                       }}
                     />
                   )}
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+                  <div style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
                     {resolveCardTitle(titleCol, row)}
                   </div>
                 </div>

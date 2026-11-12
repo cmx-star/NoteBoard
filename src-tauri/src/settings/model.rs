@@ -38,6 +38,9 @@ pub struct Settings {
     // 本地文件搜索：开关与索引位置（仅桌面端生效）
     #[serde(default)]
     pub local_search: LocalSearchSettings,
+    // MCP 文档编辑服务（仅桌面端生效，默认关闭）
+    #[serde(default)]
+    pub mcp: McpSettings,
 }
 
 impl Default for Settings {
@@ -52,6 +55,36 @@ impl Default for Settings {
             layout: LayoutSettings::default(),
             system: SystemSettings::default(),
             local_search: LocalSearchSettings::default(),
+            mcp: McpSettings::default(),
+        }
+    }
+}
+
+/// MCP 文档编辑服务设置
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct McpSettings {
+    // 总开关（默认关闭；开启后仅监听 127.0.0.1）
+    #[serde(default)]
+    pub enabled: bool,
+    // 监听端口（固定本机回环地址）
+    #[serde(default = "default_mcp_port")]
+    pub port: u16,
+    // Bearer 访问令牌（为空时保存设置会自动生成）
+    #[serde(default)]
+    pub token: String,
+}
+
+fn default_mcp_port() -> u16 {
+    39731
+}
+
+impl Default for McpSettings {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            port: default_mcp_port(),
+            token: String::new(),
         }
     }
 }
@@ -77,16 +110,45 @@ pub struct AppearanceSettings {
     pub system_light_theme: String,
     #[serde(default = "default_dark_theme")]
     pub system_dark_theme: String,
+    // 界面材质：classic / borderless / candy
+    #[serde(default = "default_material")]
+    pub material: String,
 }
 
 impl Default for AppearanceSettings {
     fn default() -> Self {
         Self {
             theme_mode: "system".to_string(),
-            system_light_theme: "chen-guang".to_string(),
-            system_dark_theme: "mo-ye".to_string(),
+            system_light_theme: "su-bai".to_string(),
+            system_dark_theme: "mo-hei".to_string(),
+            material: default_material(),
         }
     }
+}
+
+impl AppearanceSettings {
+    /// 旧版本三套主题迁移到四套主题；未知值回退到安全默认，避免整页取不到 token。
+    fn normalize(&mut self) {
+        if self.theme_mode != "system" {
+            self.theme_mode = normalize_theme_id(&self.theme_mode, "system");
+        }
+        self.system_light_theme = normalize_theme_id(&self.system_light_theme, "su-bai");
+        self.system_dark_theme = normalize_theme_id(&self.system_dark_theme, "mo-hei");
+    }
+}
+
+fn normalize_theme_id(value: &str, fallback: &str) -> String {
+    match value {
+        "su-bai" | "zhi-gan" | "mo-hei" | "wu-mian" => value.to_string(),
+        "chen-guang" => "su-bai".to_string(),
+        "hu-po" => "zhi-gan".to_string(),
+        "mo-ye" => "mo-hei".to_string(),
+        _ => fallback.to_string(),
+    }
+}
+
+fn default_material() -> String {
+    "classic".to_string()
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -230,6 +292,21 @@ pub struct EditorSettings {
     // 思维导图节点图片默认显示方式：original（原始比例）/ fill（宽度填充）
     #[serde(default = "default_mindmap_image_fit")]
     pub mindmap_image_fit: String,
+    // 用户固定的自定义颜色（十六进制），按用途分组；旧配置缺失时为空
+    #[serde(default)]
+    pub custom_colors: CustomColorSettings,
+}
+
+/// 固定的自定义颜色：多维表格标签 / Markdown 字体颜色 / Markdown 高亮
+#[derive(Serialize, Deserialize, Clone, Debug, Default)]
+#[serde(rename_all = "camelCase")]
+pub struct CustomColorSettings {
+    #[serde(default)]
+    pub tag: Vec<String>,
+    #[serde(default)]
+    pub text: Vec<String>,
+    #[serde(default)]
+    pub highlight: Vec<String>,
 }
 
 impl Default for EditorSettings {
@@ -254,6 +331,7 @@ impl Default for EditorSettings {
             mindmap_node_max_width: default_mindmap_node_max_width(),
             mindmap_text_align: default_mindmap_text_align(),
             mindmap_image_fit: default_mindmap_image_fit(),
+            custom_colors: CustomColorSettings::default(),
         }
     }
 }
@@ -342,6 +420,9 @@ pub struct LayoutSettings {
     // 标题栏可选按钮是否展示（默认全部展示）
     #[serde(default)]
     pub title_bar_buttons: TitleBarButtons,
+    // 文件树所在侧，大纲自动位于另一侧
+    #[serde(default)]
+    pub explorer_side: ExplorerSide,
 }
 
 impl Default for LayoutSettings {
@@ -351,7 +432,21 @@ impl Default for LayoutSettings {
             ui_scale: 100,
             create_formats: CreateFormatsLayout::default(),
             title_bar_buttons: TitleBarButtons::default(),
+            explorer_side: ExplorerSide::Left,
         }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Copy, Debug, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum ExplorerSide {
+    Left,
+    Right,
+}
+
+impl Default for ExplorerSide {
+    fn default() -> Self {
+        Self::Left
     }
 }
 
@@ -427,8 +522,8 @@ impl Default for SystemSettings {
 // 默认值函数
 fn default_schema_version() -> u32 { 1 }
 fn default_theme_mode() -> String { "system".to_string() }
-fn default_light_theme() -> String { "chen-guang".to_string() }
-fn default_dark_theme() -> String { "mo-ye".to_string() }
+fn default_light_theme() -> String { "su-bai".to_string() }
+fn default_dark_theme() -> String { "mo-hei".to_string() }
 // 默认代码西文字体：JetBrains Mono
 fn default_mono_font() -> String { "JetBrains Mono".to_string() }
 // 默认代码中文字体：Maple Mono Normal NF CN
@@ -481,7 +576,10 @@ pub fn load() -> Settings {
 
     // 尝试解析，失败则备份 + 返回默认
     match serde_json::from_str::<Settings>(&content) {
-        Ok(s) => s,
+        Ok(mut s) => {
+            s.appearance.normalize();
+            s
+        }
         Err(_) => {
             // 损坏文件备份
             let backup = path.with_extension(format!("corrupt-{}.json",
@@ -498,6 +596,7 @@ pub fn load() -> Settings {
 /// 保存设置（原子写 + revision 递增）
 pub fn save(settings: &mut Settings) -> Result<u64, String> {
     // 确保当前运行模式选择的数据目录存在，不另行推导 APPDATA。
+    settings.appearance.normalize();
     let dir = app_data_dir();
     if !dir.exists() {
         std::fs::create_dir_all(&dir).map_err(|e| format!("创建数据目录失败: {}", e))?;
@@ -622,5 +721,36 @@ mod tests {
             .expect("部分字段应能补全");
         assert!(!partial.layout.title_bar_buttons.theme);
         assert!(partial.layout.title_bar_buttons.home);
+    }
+
+    /// 旧版 layout 不含侧栏位置时默认文件树在左；显式选右后可往返。
+    #[test]
+    fn explorer_side_defaults_left_and_round_trips() {
+        let legacy: Settings = serde_json::from_str(r#"{"layout":{"uiScale":110}}"#)
+            .expect("旧版设置应能补全侧栏位置");
+        assert_eq!(legacy.layout.explorer_side, ExplorerSide::Left);
+
+        let right: Settings = serde_json::from_str(r#"{"layout":{"explorerSide":"right"}}"#)
+            .expect("侧栏位置应能解析");
+        assert_eq!(right.layout.explorer_side, ExplorerSide::Right);
+        let restored: Settings = serde_json::from_str(&serde_json::to_string(&right).unwrap()).unwrap();
+        assert_eq!(restored.layout.explorer_side, ExplorerSide::Right);
+    }
+
+    /// 旧版三套主题在加载与保存前都迁移到四套主题 ID，未知值回退到默认。
+    #[test]
+    fn legacy_theme_ids_migrate_to_four_theme_set() {
+        let mut settings: Settings = serde_json::from_str(
+            r#"{"appearance":{"themeMode":"hu-po","systemLightTheme":"chen-guang","systemDarkTheme":"mo-ye"}}"#,
+        )
+        .expect("旧版主题字段应能解析");
+        settings.appearance.normalize();
+        assert_eq!(settings.appearance.theme_mode, "zhi-gan");
+        assert_eq!(settings.appearance.system_light_theme, "su-bai");
+        assert_eq!(settings.appearance.system_dark_theme, "mo-hei");
+
+        settings.appearance.theme_mode = "unknown-theme".to_string();
+        settings.appearance.normalize();
+        assert_eq!(settings.appearance.theme_mode, "system");
     }
 }

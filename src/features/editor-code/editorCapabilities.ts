@@ -117,5 +117,31 @@ export function createCodeEditorCapabilities(
     }),
     search,
     codeOps,
+    docEditing: {
+      replaceAll: (content) => {
+        view.dispatch({
+          changes: { from: 0, to: view.state.doc.length, insert: content },
+          selection: { anchor: 0 },
+          scrollIntoView: true,
+        });
+      },
+      insertText: (text) => {
+        if (!text) return;
+        const selection = view.state.selection.main;
+        view.dispatch({
+          changes: { from: selection.from, to: selection.to, insert: text },
+          selection: { anchor: selection.from + text.length },
+          scrollIntoView: true,
+        });
+      },
+      replaceSelection: (text) => {
+        const selection = view.state.selection.main;
+        view.dispatch({
+          changes: { from: selection.from, to: selection.to, insert: text },
+          selection: { anchor: selection.from + text.length },
+          scrollIntoView: true,
+        });
+      },
+    },
   };
 }

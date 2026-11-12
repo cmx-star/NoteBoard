@@ -38,14 +38,14 @@ export function scheduleWikiLinkTooltip(target: HTMLElement, text: string, short
     outer.style.position = 'fixed';
     outer.style.left = `${Math.min(Math.max(rect.left + rect.width / 2, 90), window.innerWidth - 90)}px`;
     outer.style.top = `${rect.top - 8}px`;
-    outer.style.transform = 'translate(-50%, -100%)';
+    outer.style.transform = 'translate(calc(var(--pct-50) * -1), calc(var(--pct-100) * -1))';
     outer.style.zIndex = '1000001';
     outer.style.pointerEvents = 'none';
 
     // 外层定位、内层动画：动画会覆盖 transform，不能写在同一节点上
     const content = document.createElement('div');
     content.className = 'nb-tooltip-content';
-    content.style.animation = 'nb-tooltip-slide-down-and-fade 120ms cubic-bezier(0.16, 1, 0.3, 1)';
+    content.style.animation = 'nb-tooltip-slide-down-and-fade var(--duration-120) cubic-bezier(0.16, 1, 0.3, 1)';
     const label = document.createElement('span');
     label.textContent = text;
     content.appendChild(label);

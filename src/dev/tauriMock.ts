@@ -4,13 +4,32 @@
 
 import { mockIPC, mockWindows } from '@tauri-apps/api/mocks';
 import { createDefaultBitableDocument, serializeBitableDocument } from '../features/bitable/bitableConverter';
+import type { StagingDocument, StagingResult } from '../core/ipc/types';
+import { DEFAULT_SETTINGS } from '../stores/settingsStore';
 
 interface MockFile {
   content: string;
   mtime: number;
 }
 
-const WORKSPACE = '/data/user/0/com.crazyfigure.noteboard/workspace';
+const WORKSPACE = '/data/user/0/com.starcmx.loomark/workspace';
+const STAGING_DIR = `${WORKSPACE}/../staging`;
+
+/** 模拟暂存路径：同一文档在本次会话内复用同一路径，与 Rust 端行为一致。 */
+const mockStagedPaths = new Map<string, string>();
+let mockStagingSequence = 0;
+
+function mockStagingTarget(document: StagingDocument): string {
+  const reusable = document.targetPath?.startsWith(`${STAGING_DIR}/`)
+    ? document.targetPath
+    : mockStagedPaths.get(document.key);
+  if (reusable) return reusable;
+  const baseName = (document.displayName || '未命名.txt').replace(/[<>:"/\\|?*\u0000-\u001f]/g, '_').replace(/[ .]+$/, '') || '未命名.txt';
+  mockStagingSequence += 1;
+  const target = `${STAGING_DIR}/${mockStagingSequence}-${baseName}`;
+  mockStagedPaths.set(document.key, target);
+  return target;
+}
 
 /** 本地文件搜索模拟：按空白切词，全部词都出现才算命中；高亮片段与真实接口结构一致 */
 function mockLocalSearch(cmd: string, query: string, files: Map<string, { content: string; mtime: number }>, dirs: Set<string>): unknown {
@@ -67,7 +86,7 @@ function seed(path: string, content: string, ageMinutes: number): void {
   files.set(path, { content, mtime: now - ageMinutes * 60_000 });
 }
 
-seed(`${WORKSPACE}/欢迎使用 NoteBoard.md`, '# 欢迎使用 NoteBoard\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n- 输入 `[[` 链接其它笔记：[[周报]]、[[需求#目标|项目目标]]、[[尚未同步的笔记]]\n\n> [!TIP]\n> 从其它应用分享文件到 NoteBoard 即可编辑。\n\n![[需求]]\n', 3);
+seed(`${WORKSPACE}/欢迎使用 Loomark.md`, '# 欢迎使用 Loomark\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n- 输入 `[[` 链接其它笔记：[[周报]]、[[需求#目标|项目目标]]、[[尚未同步的笔记]]\n\n> [!TIP]\n> 从其它应用分享文件到 Loomark 即可编辑。\n\n![[需求]]\n', 3);
 seed(`${WORKSPACE}/周报.md`, '* 本周完成\n* 下周计划\n\n_重点_：移动端适配，见 [[需求]]\n', 60 * 30);
 seed(`${WORKSPACE}/购物清单.txt`, '牛奶\n面包\n鸡蛋\n', 60 * 24 * 40);
 seed(`${WORKSPACE}/架构草图.excalidraw`, '', 60 * 5);
@@ -89,7 +108,7 @@ seed(`${WORKSPACE}/产品介绍.html`, `<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <h1>NoteBoard</h1>
+  <h1>Loomark</h1>
   <p class="lead">一站式笔记、画板与图表工具。</p>
   <div class="card">
     <h2>功能</h2>
@@ -145,7 +164,7 @@ function mockUpdateResult() {
   const releaseNotes = list.map((note, index) => ({
     version: note.version,
     name: `v${note.version}`,
-    url: `https://github.com/CrazyFigure/NoteBoard/releases/tag/v${note.version}`,
+    url: `https://github.com/cmx-star/NoteBoard/releases/tag/v${note.version}`,
     publishedAt: new Date(now - index * day).toISOString(),
     body: note.body,
   }));
@@ -243,10 +262,10 @@ seedHistory(`${WORKSPACE}/周报.md`, [
   mockVersion('* 本周完成：同步设置页\n* 下周计划：历史记录\n\n_重点_：移动端适配\n', 60 * 26),
   mockVersion('* 本周完成\n* 下周计划\n\n_重点_：移动端适配\n', 60 * 30),
 ]);
-seedHistory(`${WORKSPACE}/欢迎使用 NoteBoard.md`, [
-  mockVersion('# 欢迎使用 NoteBoard\n\n这是你的笔记工作区。\n', 60 * 24 * 2, 'initial'),
-  mockVersion('# 欢迎使用 NoteBoard\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n', 60 * 5),
-  mockVersion(files.get(`${WORKSPACE}/欢迎使用 NoteBoard.md`)?.content ?? '', 3),
+seedHistory(`${WORKSPACE}/欢迎使用 Loomark.md`, [
+  mockVersion('# 欢迎使用 Loomark\n\n这是你的笔记工作区。\n', 60 * 24 * 2, 'initial'),
+  mockVersion('# 欢迎使用 Loomark\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n', 60 * 5),
+  mockVersion(files.get(`${WORKSPACE}/欢迎使用 Loomark.md`)?.content ?? '', 3),
 ]);
 seedHistory(`${WORKSPACE}/购物清单.txt`, [
   mockVersion('牛奶\n面包\n', 60 * 24 * 41, 'initial'),
@@ -482,10 +501,14 @@ export function installTauriMock(): void {
       case 'plugin:dialog|open': return `${WORKSPACE}/快捷笔记.bitable`;
       // 窗口全屏：只记录状态，mock 不改变实际视口，也不发原生 resize 事件
       case 'plugin:window|is_fullscreen': return mockFullscreen;
+      case 'plugin:window|is_maximized': return false;
       case 'plugin:window|set_fullscreen':
         mockFullscreen = Boolean(args.value);
         return null;
       case 'plugin:window|minimize':
+      case 'plugin:window|maximize':
+      case 'plugin:window|unmaximize':
+      case 'plugin:window|toggle_maximize':
       case 'set_traffic_lights_hidden':
         return null;
       // ── 事件与插件 ──
@@ -511,19 +534,38 @@ export function installTauriMock(): void {
       case 'clear_session':
       case 'push_recent':
       case 'record_web_spans':
-      case 'delete_staged_file':
         return null;
       case 'list_incoming_transfers':
         // 浏览器开发没有跨原生窗口迁移，保持新握手接口返回空队列。
         return [];
       case 'list_open_requests':
-      case 'stash_documents':
       case 'list_system_fonts':
       case 'take_incoming_files':
       case 'reconcile_documents':
         return [];
       case 'load_settings':
-        throw new Error('mock：使用默认设置');
+        return structuredClone({
+          ...DEFAULT_SETTINGS,
+          file: { ...DEFAULT_SETTINGS.file, stagingDirectory: STAGING_DIR },
+        });
+      case 'stash_documents': {
+        const documents = Array.isArray(args.documents) ? (args.documents as StagingDocument[]) : [];
+        const results: StagingResult[] = documents.map((document) => {
+          const targetPath = mockStagingTarget(document);
+          files.set(targetPath, { content: document.content, mtime: Date.now() });
+          dirs.add(STAGING_DIR);
+          return { key: document.key, targetPath };
+        });
+        return results;
+      }
+      case 'delete_staged_file': {
+        const path = String(args.path);
+        files.delete(path);
+        for (const [key, stagedPath] of mockStagedPaths) {
+          if (stagedPath === path) mockStagedPaths.delete(key);
+        }
+        return null;
+      }
       case 'load_favorites':
         return { schemaVersion: 1, roots: [] };
       case 'load_session':
@@ -552,7 +594,8 @@ export function installTauriMock(): void {
         throw new Error('mock：离线');
       case 'get_default_staging_directory':
       case 'ensure_staging_directory':
-        return `${WORKSPACE}/../staging`;
+      case 'open_staging_directory':
+        return STAGING_DIR;
       // ── 平台 ──
       case 'get_platform_info':
         return { platform: 'android', isMobile: true, defaultWorkspace: WORKSPACE, externalRoot: EXTERNAL_ROOT, allFilesAccess: false };

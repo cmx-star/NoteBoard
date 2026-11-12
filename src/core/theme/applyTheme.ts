@@ -2,12 +2,13 @@
 // 写 data-theme + 注入排版 CSS 变量
 // 详见 docs/06-主题与设计规范.md §9
 
-import type { ThemeId, ThemeMode, TypographySettings, ContentWidth } from '../ipc/types';
+import type { ThemeId, ThemeMode, MaterialStyle, TypographySettings, ContentWidth } from '../ipc/types';
 import { THEMES } from './themes';
 
 // localStorage 键名
 const THEME_RESOLVED_KEY = 'nb.theme.resolved';
 const TYPOGRAPHY_KEY = 'nb.typography';
+const MATERIAL_KEY = 'nb.material';
 
 // ── 主题解析 ──
 
@@ -39,6 +40,24 @@ export function applyTheme(themeId: ThemeId): void {
   // 缓存到 localStorage，供 main.tsx 防首屏闪烁读取
   try {
     localStorage.setItem(THEME_RESOLVED_KEY, themeId);
+  } catch {
+    // ignore
+  }
+}
+
+/**
+ * 应用界面材质到 documentElement
+ * classic 不写 data-material，保持原有 DOM 与样式路径完全不变
+ */
+export function applyMaterial(material: MaterialStyle = 'classic'): void {
+  const root = document.documentElement;
+  if (material === 'classic') {
+    delete root.dataset.material;
+  } else {
+    root.dataset.material = material;
+  }
+  try {
+    localStorage.setItem(MATERIAL_KEY, material);
   } catch {
     // ignore
   }
@@ -297,6 +316,21 @@ export function applyCachedTheme(): boolean {
     // ignore
   }
   return false;
+}
+
+/**
+ * 从 localStorage 读取缓存的材质并应用
+ * 供 main.tsx 在 React 渲染前同步调用，避免首屏从经典材质跳到无边框
+ */
+export function applyCachedMaterial(): void {
+  try {
+    const cached = localStorage.getItem(MATERIAL_KEY);
+    if (cached === 'borderless' || cached === 'candy') {
+      document.documentElement.dataset.material = cached;
+    }
+  } catch {
+    // ignore
+  }
 }
 
 // ── 系统主题跟随 ──

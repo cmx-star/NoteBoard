@@ -10,8 +10,10 @@ export type SavePolicy = 'auto' | 'manual';
 export type ViewMode = 'visual' | 'source';
 export type Encoding = 'utf8' | 'utf8-bom' | 'gbk';
 export type Eol = 'crlf' | 'lf';
-export type ThemeId = 'chen-guang' | 'hu-po' | 'mo-ye';
+export type ThemeId = 'su-bai' | 'zhi-gan' | 'mo-hei' | 'wu-mian';
 export type ThemeMode = ThemeId | 'system';
+// 界面材质：classic 保留现有边框；borderless 用间距与光影替代边框；candy 在无边框基础上给控件加糖果质感
+export type MaterialStyle = 'classic' | 'borderless' | 'candy';
 // 编辑区宽度：预设档位或自定义百分比字符串（如 '75%'）
 export type ContentWidth = 'narrow' | 'standard' | 'wide' | 'full' | (string & {});
 
@@ -21,7 +23,7 @@ export const ALL_DOCUMENT_KINDS: DocumentKind[] = ['markdown', 'code', 'board', 
 export const ALL_ENCODINGS: Encoding[] = ['utf8', 'utf8-bom', 'gbk'];
 export const ALL_EOLS: Eol[] = ['crlf', 'lf'];
 export const ALL_LANGUAGE_IDS: LanguageId[] = ['markdown', 'sql', 'json', 'yaml', 'xml', 'mermaid', 'plantuml', 'infographic', 'html', 'plaintext'];
-export const ALL_THEME_IDS: ThemeId[] = ['chen-guang', 'hu-po', 'mo-ye'];
+export const ALL_THEME_IDS: ThemeId[] = ['su-bai', 'zhi-gan', 'mo-hei', 'wu-mian'];
 
 // ── 文档载荷 ──
 
@@ -298,12 +300,16 @@ export interface Settings {
   system: SystemSettings;
   /** 本地文件搜索（旧设置文件与网页端可能缺失） */
   localSearch?: LocalSearchSettings;
+  /** MCP 文档编辑服务（仅桌面端；旧设置文件可能缺失） */
+  mcp?: McpSettings;
 }
 
 export interface AppearanceSettings {
   themeMode: ThemeMode;
   systemLightTheme: ThemeId;
   systemDarkTheme: ThemeId;
+  /** 界面材质（旧设置文件与网页端可能缺失，缺省按 classic 处理） */
+  material?: MaterialStyle;
 }
 
 export interface TypographySettings {
@@ -375,7 +381,18 @@ export interface EditorSettings {
   mindmapTextAlign?: 'left' | 'center';
   // 思维导图节点图片默认显示方式：原始比例 / 宽度填充（缺省视为 original）
   mindmapImageFit?: 'original' | 'fill';
+  // 用户固定的自定义颜色（十六进制小写），按用途分组；旧配置缺失时视为空
+  customColors?: CustomColorSettings;
 }
+
+/** 固定的自定义颜色分组：多维表格标签 / Markdown 字体颜色 / Markdown 高亮 */
+export interface CustomColorSettings {
+  tag?: string[];
+  text?: string[];
+  highlight?: string[];
+}
+
+export type CustomColorKind = keyof CustomColorSettings;
 
 export interface FileSettings {
   // 自动保存设置：Markdown / 画板 / 其他文本（默认均关闭，即手动保存）
@@ -478,11 +495,16 @@ export interface TitleBarButtons {
   compactMode: boolean;
 }
 
+/** 桌面端侧栏布局：文件树在左或在右 */
+export type ExplorerSide = 'left' | 'right';
+
 export interface LayoutSettings {
   statusBarVisible: boolean;
   uiScale: number;
   createFormats: CreateFormatsLayout;
   titleBarButtons: TitleBarButtons;
+  /** 文件树所在侧；大纲自动位于另一侧。旧设置缺失时按左侧处理 */
+  explorerSide: ExplorerSide;
 }
 
 /** 系统集成设置（仅桌面端生效） */
@@ -501,6 +523,36 @@ export interface LocalSearchSettings {
   enabled: boolean;
   /** 索引位置：文件夹或整个磁盘的绝对路径（有序） */
   roots: string[];
+}
+
+/** MCP 文档编辑服务：默认关闭，只监听本机回环地址 */
+export interface McpSettings {
+  enabled: boolean;
+  port: number;
+  token: string;
+}
+
+/** MCP 服务运行状态（设置页提示端口占用等错误） */
+export interface McpStatus {
+  running: boolean;
+  port: number;
+  error: string | null;
+}
+
+/** 前端回包负载：data 与 error 二选一 */
+export interface McpBridgeResponse {
+  requestId: string;
+  ok: boolean;
+  data?: unknown;
+  error?: { code: string; message: string } | null;
+}
+
+/** Rust → 前端的一次 MCP 工具调用 */
+export interface McpBridgeRequest {
+  requestId: string;
+  tool: string;
+  arguments: Record<string, unknown>;
+  windowLabel: string;
 }
 
 /** 高亮片段：命中部分 hit 为 true */

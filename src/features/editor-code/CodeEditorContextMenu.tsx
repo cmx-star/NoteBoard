@@ -103,14 +103,14 @@ export function CodeEditorContextMenu({ view, position, onClose }: CodeEditorCon
         position: 'fixed',
         top: pos.y,
         left: pos.x,
-        zIndex: 9999,
-        background: 'var(--editor-surface, #ffffff)',
-        border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-        borderRadius: 8,
-        boxShadow: '0 10px 30px -4px rgba(0, 0, 0, 0.16), 0 3px 8px -2px rgba(0, 0, 0, 0.08)',
-        backdropFilter: 'blur(8px)',
-        padding: 5,
-        minWidth: 168,
+        zIndex: 'var(--z-9999)',
+        background: 'var(--editor-surface)',
+        border: 'var(--dim-1) solid var(--editor-border)',
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: '0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a16), 0 var(--dim-3) var(--dim-8) calc(var(--dim-2) * -1) var(--nb-black-a08)',
+        backdropFilter: 'blur(var(--dim-8))',
+        padding: 'var(--dim-5)',
+        minWidth: 'var(--dim-168)',
       }}
       onMouseDown={(e) => {
         // 阻止按下时编辑器失焦导致选区高亮消失
@@ -148,8 +148,8 @@ function MenuItem({
 
   // 背景色随交互状态切换：按下 > 悬停 > 默认透明；禁用态不响应
   let background = 'transparent';
-  if (!disabled && active) background = 'var(--toolbar-active, rgba(125, 125, 125, 0.2))';
-  else if (!disabled && hover) background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+  if (!disabled && active) background = 'var(--toolbar-active)';
+  else if (!disabled && hover) background = 'var(--editor-selection-background)';
 
   return (
     <button
@@ -161,19 +161,19 @@ function MenuItem({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 16,
-        width: '100%',
-        padding: '7px 12px',
+        gap: 'var(--dim-16)',
+        width: 'var(--pct-100)',
+        padding: 'var(--dim-7) var(--dim-12)',
         background,
         border: 'none',
         textAlign: 'left',
         cursor: disabled ? 'not-allowed' : 'pointer',
-        fontSize: 13,
-        color: 'var(--editor-text, #1e293b)',
+        fontSize: 'var(--text-13)',
+        color: 'var(--editor-text)',
         opacity: disabled ? 0.4 : 1,
-        borderRadius: 6,
+        borderRadius: 'var(--radius-md)',
         userSelect: 'none',
-        transition: 'background 100ms ease',
+        transition: 'background var(--duration-100) ease',
       }}
       onClick={onClick}
       onMouseEnter={() => setHover(true)}
@@ -184,12 +184,12 @@ function MenuItem({
       onMouseDown={() => setActive(true)}
       onMouseUp={() => setActive(false)}
     >
-      <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Icon size={15} color={disabled ? 'currentColor' : 'var(--accent-500, #3b82f6)'} />
+      <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+        <Icon size={15} color={disabled ? 'currentColor' : 'var(--accent-500)'} />
         <span>{label}</span>
       </span>
       {shortcut && (
-        <span style={{ fontSize: 11, color: 'var(--editor-text-muted, currentColor)', opacity: 0.7 }}>
+        <span style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted, currentColor)', opacity: 'var(--opacity-0-7)' }}>
           {shortcut}
         </span>
       )}

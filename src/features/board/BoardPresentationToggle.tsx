@@ -63,9 +63,9 @@ export function BoardPresentationToggle({ enabled, onToggle }: BoardPresentation
           position: 'absolute',
           top: 0,
           left: 0,
-          width: 112,
-          height: 96,
-          zIndex: 29,
+          width: 'var(--dim-112)',
+          height: 'var(--dim-96)',
+          zIndex: 'var(--z-29)',
           pointerEvents: 'none',
         }}
       />
@@ -91,22 +91,22 @@ export function BoardPresentationToggle({ enabled, onToggle }: BoardPresentation
         style={{
           position: 'absolute',
           // 与 Excalidraw 左上角菜单保持同一 16px 顶边和 36px 总尺寸
-          top: 16,
-          left: 62,
-          zIndex: 30,
-          width: 36,
-          height: 36,
+          top: 'var(--dim-16)',
+          left: 'var(--dim-62)',
+          zIndex: 'var(--z-30)',
+          width: 'var(--dim-36)',
+          height: 'var(--dim-36)',
           boxSizing: 'border-box',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           padding: 0,
-          borderRadius: 10,
+          borderRadius: 'var(--radius-lg)',
           border: isHighlighted
-            ? '1px solid var(--editor-border-focus)'
+            ? 'var(--dim-1) solid var(--editor-border-focus)'
             : isVisible
-              ? '1px solid var(--editor-border)'
-              : '1px solid transparent',
+              ? 'var(--dim-1) solid var(--editor-border)'
+              : 'var(--dim-1) solid transparent',
           background: isPressed
             ? 'var(--toolbar-active)'
             : isHighlighted
@@ -116,22 +116,22 @@ export function BoardPresentationToggle({ enabled, onToggle }: BoardPresentation
             ? 'var(--accent-strong)'
             : 'var(--editor-text-secondary)',
           boxShadow: isHighlighted
-            ? '0 6px 18px rgba(0, 0, 0, 0.18)'
+            ? '0 var(--dim-6) var(--dim-18) var(--nb-black-a18)'
             : isVisible
-              ? '0 3px 12px rgba(0, 0, 0, 0.10)'
+              ? '0 var(--dim-3) var(--dim-12) var(--nb-black-a10)'
               : 'none',
           opacity: isHighlighted ? 1 : inHotZone ? 0.86 : 0,
           transform: isPressed
-            ? 'translateY(0) scale(0.92)'
+            ? 'translateY(0) scale(var(--scale-0-92))'
             : isVisible
-              ? 'translateY(0) scale(1)'
-              : 'translateY(-8px) scale(0.94)',
+              ? 'translateY(0) scale(var(--scale-1))'
+              : 'translateY(calc(var(--dim-8) * -1)) scale(var(--scale-0-94))',
           cursor: 'pointer',
           pointerEvents: isVisible ? 'auto' : 'none',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          outline: isFocused ? '2px solid var(--editor-border-focus)' : 'none',
-          outlineOffset: 2,
+          backdropFilter: 'blur(var(--dim-10))',
+          WebkitBackdropFilter: 'blur(var(--dim-10))',
+          outline: isFocused ? 'var(--dim-2) solid var(--editor-border-focus)' : 'none',
+          outlineOffset: 'var(--dim-2)',
           transition:
             'opacity var(--transition-normal), transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast)',
         }}

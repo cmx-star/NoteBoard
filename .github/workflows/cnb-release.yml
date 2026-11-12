@@ -21,7 +21,7 @@ permissions:
 jobs:
   sync:
     name: Upload release assets to CNB
-    if: github.repository == 'CrazyFigure/NoteBoard'
+    if: github.repository == 'cmx-star/NoteBoard'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     # 同一 Release 的多次同步串行执行，避免重复上传同名附件

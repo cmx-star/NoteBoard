@@ -100,11 +100,11 @@ function AlertComponent({ node, updateAttributes, selected }: NodeViewProps) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        borderLeft: `4px solid var(--alert-${kind}-border, var(--editor-accent))`,
+        borderLeft: `var(--dim-4) solid var(--alert-${kind}-border, var(--editor-accent))`,
         background: `var(--alert-${kind}-background, var(--editor-surface))`,
         borderRadius: 'var(--radius-sm)',
-        padding: '8px 12px',
-        margin: '8px 0',
+        padding: 'var(--dim-8) var(--dim-12)',
+        margin: 'var(--dim-8) 0',
         position: 'relative',
       }}
     >
@@ -113,10 +113,10 @@ function AlertComponent({ node, updateAttributes, selected }: NodeViewProps) {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 8,
-          marginBottom: 4,
-          fontSize: 13,
-          fontWeight: 600,
+          gap: 'var(--dim-8)',
+          marginBottom: 'var(--dim-4)',
+          fontSize: 'var(--text-13)',
+          fontWeight: 'var(--weight-600)',
           color: `var(--alert-${kind}-text, var(--editor-text))`,
         }}
       >
@@ -156,11 +156,11 @@ export { ALERT_META };
 
 // 插入菜单（斜杠命令、工具栏、右键菜单）共用的图标与颜色，保证三处展示一致
 const ALERT_MENU_ICON: Record<AlertKind, { Icon: LucideIcon; color: string }> = {
-  note: { Icon: Info, color: '#3b82f6' },
-  tip: { Icon: Lightbulb, color: '#10b981' },
-  important: { Icon: AlertCircle, color: '#8b5cf6' },
-  warning: { Icon: AlertTriangle, color: '#f59e0b' },
-  caution: { Icon: Flame, color: '#ef4444' },
+  note: { Icon: Info, color: 'var(--nb-blue-500)' },
+  tip: { Icon: Lightbulb, color: 'var(--nb-emerald-500)' },
+  important: { Icon: AlertCircle, color: 'var(--nb-purple-500)' },
+  warning: { Icon: AlertTriangle, color: 'var(--nb-amber-500)' },
+  caution: { Icon: Flame, color: 'var(--nb-red-500)' },
 };
 
 /** 插入菜单中的 GitHub 提示块图标 */

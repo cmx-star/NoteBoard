@@ -937,7 +937,7 @@ mod tests {
     }
 
     // 模拟真实 Release 列表包含 Android 安装包，验证直连结果进入原来的版本及安装包处理流程。
-    const RELEASE_BODY: &str = r#"[{"tag_name":"v0.4.6","html_url":"https://github.com/CrazyFigure/NoteBoard/releases/tag/v0.4.6","assets":[{"name":"NoteBoard_android_arm64.apk","browser_download_url":"https://example.com/update.apk","size":123}]}]"#;
+    const RELEASE_BODY: &str = r#"[{"tag_name":"v0.4.6","html_url":"https://github.com/cmx-star/NoteBoard/releases/tag/v0.4.6","assets":[{"name":"NoteBoard_android_arm64.apk","browser_download_url":"https://example.com/update.apk","size":123}]}]"#;
 
     /// 构造仅含版本号的 Release，用于版本筛选与排序测试
     fn release(tag: &str, prerelease: bool) -> GitHubReleaseResponse {
@@ -1113,11 +1113,11 @@ mod tests {
     /// CNB 镜像列表无 html_url，页面地址按渠道拼接；其限流说明位于 errmsg。
     #[test]
     fn cnb_release_list_parses_without_html_url() {
-        const CNB_BODY: &str = r#"[{"id":"1","tag_name":"v0.7.2","name":"NoteBoard v0.7.2","body":"notes","draft":false,"prerelease":false,"is_latest":true,"published_at":"2026-10-29T03:36:15Z","assets":[{"name":"NoteBoard_0.7.2_windows_x64-setup.exe","browser_download_url":"https://cnb.cool/crazy-figure/NoteBoard/-/releases/download/v0.7.2/NoteBoard_0.7.2_windows_x64-setup.exe","size":123}]}]"#;
+        const CNB_BODY: &str = r#"[{"id":"1","tag_name":"v0.7.2","name":"NoteBoard v0.7.2","body":"notes","draft":false,"prerelease":false,"is_latest":true,"published_at":"2026-10-29T03:36:15Z","assets":[{"name":"NoteBoard_0.7.2_windows_x64-setup.exe","browser_download_url":"https://cnb.cool/starcmx/NoteBoard/-/releases/download/v0.7.2/NoteBoard_0.7.2_windows_x64-setup.exe","size":123}]}]"#;
         let releases = parse_release_response(response(200, None, CNB_BODY)).unwrap();
         assert_eq!(
             release_page_url(&releases[0], ReleaseChannel::Cnb),
-            "https://cnb.cool/crazy-figure/NoteBoard/-/releases/tag/v0.7.2"
+            "https://cnb.cool/starcmx/NoteBoard/-/releases/tag/v0.7.2"
         );
         assert_eq!(releases[0].assets[0].size, Some(123));
         let limited = ReleaseHttpResponse {

@@ -84,6 +84,19 @@ export interface CodeOpsCapabilities {
 }
 
 /**
+ * 程序化编辑能力组：供 MCP 等外部代理修改当前文档。
+ * - replaceAll：整篇替换（Markdown 文档按 Markdown 语法解析）
+ * - insertText：在光标/选区处插入（Markdown 文档按 Markdown 语法解析）
+ * - replaceSelection：替换当前选区（无选区时等同插入）
+ * 所有修改都进入编辑器自身的撤销历史；失败时抛出带可读原因的错误。
+ */
+export interface DocumentEditingCapabilities {
+  replaceAll(content: string): void;
+  insertText(text: string): void;
+  replaceSelection(text: string): void;
+}
+
+/**
  * 编辑器实例能力：每个挂载中的编辑器注册一份，实例卸载后随之失效。
  * 注册表按键（docKey）查询；实例以 instanceId 代际区分，
  * 旧实例的 disposer 无权删除同 key 的新实例。
@@ -121,6 +134,8 @@ export interface EditorCapabilities {
   readonly search?: SearchCapabilities;
   /** 代码操作能力组（code 编辑器与 Markdown 源码模式提供） */
   readonly codeOps?: CodeOpsCapabilities;
+  /** 程序化编辑能力组（Markdown 与代码/纯文本编辑器提供） */
+  readonly docEditing?: DocumentEditingCapabilities;
 }
 
 /**

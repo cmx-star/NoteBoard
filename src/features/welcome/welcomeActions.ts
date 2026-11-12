@@ -199,12 +199,12 @@ function createUntitledDocument(
     kind = 'code';
     language = 'json';
     displayName = '未命名.json';
-    initialContent = `{\n  "name": "NoteBoard",\n  "version": "0.1.3"\n}`;
+    initialContent = `{\n  "name": "Loomark",\n  "version": "0.1.3"\n}`;
   } else if (type === 'sql') {
     kind = 'code';
     language = 'sql';
     displayName = '未命名.sql';
-    initialContent = `-- NoteBoard SQL 查询\nSELECT * FROM notes WHERE is_active = 1;`;
+    initialContent = `-- Loomark SQL 查询\nSELECT * FROM notes WHERE is_active = 1;`;
   } else {
     // 纯文本 (TXT) 使用代码编辑器与纯文本语法模式
     kind = 'code';

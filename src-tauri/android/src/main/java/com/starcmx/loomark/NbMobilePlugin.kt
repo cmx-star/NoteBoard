@@ -1,6 +1,6 @@
 // NoteBoard Android 原生桥接插件
-// 由 CI 在 `tauri android init` 后复制到生成工程 app/src/main/java/com/crazyfigure/noteboard/ 下，
-// Rust 侧通过 register_android_plugin("com.crazyfigure.noteboard", "NbMobilePlugin") 注册。
+// 由 CI 在 `tauri android init` 后复制到生成工程 app/src/main/java/com/starcmx/loomark/ 下，
+// Rust 侧通过 register_android_plugin("com.starcmx.loomark", "NbMobilePlugin") 注册。
 // 提供：
 // 1. 所有文件访问权限查询与申请（浏览手机外部文件夹）；
 // 2. 接收"用其他应用打开 / 分享到 NoteBoard"的文件（content:// 复制到应用收件箱后返回真实路径）；
@@ -8,7 +8,7 @@
 // 4. 更新检测失败时通过非 VPN 的 Wi-Fi / 蜂窝网络尝试直连 GitHub。
 // 5. 应用内下载的更新 APK 交给系统软件包安装器安装。
 
-package com.crazyfigure.noteboard
+package com.starcmx.loomark
 
 import android.Manifest
 import android.app.Activity

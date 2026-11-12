@@ -12,16 +12,16 @@ export function EditorPanel() {
   const rowStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 16,
-    fontSize: 13,
+    gap: 'var(--dim-12)',
+    marginBottom: 'var(--dim-16)',
+    fontSize: 'var(--text-13)',
   };
 
-  const labelStyle: React.CSSProperties = { width: 140, flexShrink: 0 };
+  const labelStyle: React.CSSProperties = { width: 'var(--dim-140)', flexShrink: 0 };
 
   return (
     <div>
-      <h2 style={{ fontSize: 16, marginTop: 0 }}>编辑器</h2>
+      <h2 style={{ fontSize: 'var(--text-16)', marginTop: 0 }}>编辑器</h2>
 
       {/* 默认视图模式 */}
       <div style={rowStyle}>
@@ -36,7 +36,7 @@ export function EditorPanel() {
         </select>
       </div>
 
-      <div style={{ margin: '16px 0 8px', fontWeight: 600, fontSize: 13, color: 'var(--accent-strong)' }}>
+      <div style={{ margin: 'var(--dim-16) 0 var(--dim-8)', fontWeight: 'var(--weight-600)', fontSize: 'var(--text-13)', color: 'var(--accent-strong)' }}>
         代码与纯文本展示 (.sql / .txt / .json 等)
       </div>
 
@@ -119,7 +119,7 @@ export function EditorPanel() {
         />
       </div>
 
-      <div style={{ margin: '16px 0 8px', fontWeight: 600, fontSize: 13, color: 'var(--accent-strong)' }}>
+      <div style={{ margin: 'var(--dim-16) 0 var(--dim-8)', fontWeight: 'var(--weight-600)', fontSize: 'var(--text-13)', color: 'var(--accent-strong)' }}>
         Markdown 渲染增强
       </div>
 
@@ -155,10 +155,10 @@ export function EditorPanel() {
 }
 
 const inputStyle: React.CSSProperties = {
-  padding: '4px 8px',
-  fontSize: 13,
-  border: '1px solid var(--editor-border)',
-  borderRadius: 3,
+  padding: 'var(--dim-4) var(--dim-8)',
+  fontSize: 'var(--text-13)',
+  border: 'var(--dim-1) solid var(--editor-border)',
+  borderRadius: 'var(--radius-xs)',
   background: 'var(--editor-surface)',
   color: 'var(--editor-text)',
   outline: 'none',
@@ -166,5 +166,5 @@ const inputStyle: React.CSSProperties = {
 
 const selectStyle: React.CSSProperties = {
   ...inputStyle,
-  width: 120,
+  width: 'var(--dim-120)',
 };

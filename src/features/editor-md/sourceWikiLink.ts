@@ -247,19 +247,19 @@ const wikiLinkSourceTheme = EditorView.theme({
   // 补全面板跟随主题
   '.cm-tooltip.cm-tooltip-autocomplete': {
     background: 'var(--editor-surface)',
-    border: '1px solid var(--editor-border)',
-    borderRadius: '8px',
-    boxShadow: '0 10px 30px -4px rgba(0, 0, 0, 0.18)',
+    border: 'var(--dim-1) solid var(--editor-border)',
+    borderRadius: 'var(--radius-lg)',
+    boxShadow: '0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a18)',
     overflow: 'hidden',
-    padding: '4px',
+    padding: 'var(--dim-4)',
   },
   '.cm-tooltip.cm-tooltip-autocomplete > ul': {
     fontFamily: 'inherit',
-    maxHeight: '280px',
+    maxHeight: 'var(--dim-280)',
   },
   '.cm-tooltip.cm-tooltip-autocomplete > ul > li': {
-    padding: '4px 8px',
-    borderRadius: '6px',
+    padding: 'var(--dim-4) var(--dim-8)',
+    borderRadius: 'var(--radius-md)',
     color: 'var(--editor-text)',
   },
   '.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected]': {
@@ -267,9 +267,9 @@ const wikiLinkSourceTheme = EditorView.theme({
     color: 'var(--editor-text)',
   },
   '.cm-completionDetail': {
-    marginLeft: '8px',
+    marginLeft: 'var(--dim-8)',
     fontStyle: 'normal',
     color: 'var(--editor-text-muted)',
-    fontSize: '12px',
+    fontSize: 'var(--dim-12)',
   },
 });

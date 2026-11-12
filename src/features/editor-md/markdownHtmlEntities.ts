@@ -65,7 +65,7 @@ export const INVISIBLE_CHARACTER_ENTITIES: Record<string, string> = {
   ' ': '&ensp;',
   ' ': '&emsp;',
   ' ': '&thinsp;',
-  '​': '&#8203;',
+  '​': '&var(--nb-auto-882200-a20);',
 };
 
 /** 原文是否以实体书写不可见空白字符（决定序列化时写回实体还是字符） */

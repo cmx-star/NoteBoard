@@ -8,6 +8,7 @@ import { getOptionColor, BITABLE_PALETTE } from './bitableConverter';
 import { FloatingPanel, type AnchorRect } from './BitableFloating';
 import { Check, Edit2, Trash2, ChevronUp, ChevronDown, X } from 'lucide-react';
 import { Tooltip } from '../../components/Tooltip';
+import { CustomColorSection } from '../../components/colorPicker/CustomColorPicker';
 
 /** 彩色标签胶囊 */
 export function OptionBadge({
@@ -24,17 +25,17 @@ export function OptionBadge({
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 4,
-        padding: '2px 8px',
-        borderRadius: 12,
+        gap: 'var(--dim-4)',
+        padding: 'var(--dim-2) var(--dim-8)',
+        borderRadius: 'var(--dim-12)',
         background: color.bg,
-        border: `1px solid ${color.border}`,
+        border: `var(--dim-1) solid ${color.border}`,
         color: color.text,
-        fontSize: 12,
-        fontWeight: 500,
-        lineHeight: 1.3,
+        fontSize: 'var(--text-12)',
+        fontWeight: 'var(--weight-500)',
+        lineHeight: 'var(--leading-1-3)',
         userSelect: 'none',
-        maxWidth: '100%',
+        maxWidth: 'var(--pct-100)',
         flexShrink: 0,
       }}
     >
@@ -52,7 +53,7 @@ export function OptionBadge({
           style={{
             padding: 0,
             color: color.text,
-            opacity: 0.7,
+            opacity: 'var(--opacity-0-7)',
           }}
         >
           <X size={12} />
@@ -82,34 +83,47 @@ export function ColorPickerRow({
   size?: number;
 }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, padding: '3px 0' }}>
-      {BITABLE_PALETTE.map((pal) => {
-        const isSelected = value === pal.id;
-        return (
-          <Tooltip key={pal.id} content={pal.label} side="top" sideOffset={4}>
-            <div
-              className="nb-bitable-color-swatch"
-              onClick={() => onChange(pal.id as SelectOptionColor)}
-              style={{
-                width: size,
-                height: size,
-                borderRadius: Math.max(4, Math.round(size * 0.3)),
-                background: pal.bg,
-                cursor: 'pointer',
-                boxSizing: 'border-box',
-                // 色板底色全是 50 级浅色，必须靠各自的 200 级描边才分得清相邻色块
-                border: `1px solid ${pal.border}`,
-                // 选中态用外描边而不是改边框色：改边框会把「标签本色预览」本身弄丢
-                outline: isSelected ? '2px solid var(--editor-accent, #3b82f6)' : 'none',
-                outlineOffset: 1,
-              }}
-            />
-          </Tooltip>
-        );
-      })}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-6)', padding: 'var(--dim-3) 0' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--dim-6)' }}>
+        {BITABLE_PALETTE.map((pal) => {
+          const isSelected = value === pal.id;
+          return (
+            <Tooltip key={pal.id} content={pal.label} side="top" sideOffset={4}>
+              <div
+                className="nb-bitable-color-swatch"
+                onClick={() => onChange(pal.id as SelectOptionColor)}
+                style={{
+                  width: size,
+                  height: size,
+                  borderRadius: Math.max(4, Math.round(size * 0.3)),
+                  background: pal.bg,
+                  cursor: 'pointer',
+                  boxSizing: 'border-box',
+                  // 色板底色全是 50 级浅色，必须靠各自的 200 级描边才分得清相邻色块
+                  border: `var(--dim-1) solid ${pal.border}`,
+                  // 选中态用外描边而不是改边框色：改边框会把「标签本色预览」本身弄丢
+                  outline: isSelected ? 'var(--dim-2) solid var(--editor-accent)' : 'none',
+                  outlineOffset: 'var(--dim-1)',
+                }}
+              />
+            </Tooltip>
+          );
+        })}
+      </div>
+      {/* 自定义颜色：固定的色块与内置色同排外观（标签胶囊预览），「+」展开取色盘 */}
+      <CustomColorSection
+        kind="tag"
+        variant="tag"
+        activeColor={value}
+        presetColors={PRESET_IDS}
+        onSelect={(hex) => onChange(hex as SelectOptionColor)}
+        swatchWidth={size}
+      />
     </div>
   );
 }
+
+const PRESET_IDS = BITABLE_PALETTE.map((pal) => pal.id);
 
 interface SelectOptionsPanelProps {
   anchor: AnchorRect;
@@ -188,10 +202,10 @@ export function SelectOptionsPanel({
       {title && (
         <div
           style={{
-            padding: '2px 6px 4px',
-            fontSize: 11,
-            fontWeight: 600,
-            color: 'var(--editor-text-muted, #94a3b8)',
+            padding: 'var(--dim-2) var(--dim-6) var(--dim-4)',
+            fontSize: 'var(--text-11)',
+            fontWeight: 'var(--weight-600)',
+            color: 'var(--editor-text-muted)',
           }}
         >
           {title}
@@ -199,7 +213,7 @@ export function SelectOptionsPanel({
       )}
 
       {/* 选项列表 */}
-      <div style={{ maxHeight: 210, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <div style={{ maxHeight: 'var(--dim-210)', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--dim-2)' }}>
         {options.map((opt, idx) => {
           const isSelected = selectedIds.includes(opt.id);
           const isEditingThis = editingId === opt.id;
@@ -210,16 +224,16 @@ export function SelectOptionsPanel({
                 key={opt.id}
                 ref={editBlockRef}
                 style={{
-                  padding: '6px 8px',
-                  borderRadius: 6,
-                  background: 'var(--editor-bg, #f8fafc)',
-                  border: '1px solid var(--editor-border, #cbd5e1)',
+                  padding: 'var(--dim-6) var(--dim-8)',
+                  borderRadius: 'var(--dim-6)',
+                  background: 'var(--editor-bg)',
+                  border: 'var(--dim-1) solid var(--editor-border)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 6,
+                  gap: 'var(--dim-6)',
                 }}
               >
-                <div style={{ display: 'flex', gap: 4 }}>
+                <div style={{ display: 'flex', gap: 'var(--dim-4)' }}>
                   <input
                     type="text"
                     value={editLabel}
@@ -232,13 +246,13 @@ export function SelectOptionsPanel({
                     style={{
                       flex: 1,
                       minWidth: 0,
-                      padding: '4px 8px',
-                      fontSize: 12,
-                      border: '1px solid var(--editor-accent, #3b82f6)',
-                      borderRadius: 4,
+                      padding: 'var(--dim-4) var(--dim-8)',
+                      fontSize: 'var(--text-12)',
+                      border: 'var(--dim-1) solid var(--editor-accent)',
+                      borderRadius: 'var(--dim-4)',
                       outline: 'none',
-                      background: 'var(--editor-surface, #ffffff)',
-                      color: 'var(--editor-text, #1e293b)',
+                      background: 'var(--editor-surface)',
+                      color: 'var(--editor-text)',
                     }}
                   />
                   <button
@@ -246,14 +260,14 @@ export function SelectOptionsPanel({
                     className="nb-bitable-btn-primary"
                     onClick={() => saveEdit(opt.id)}
                     style={{
-                      padding: '4px 10px',
-                      fontSize: 12,
+                      padding: 'var(--dim-4) var(--dim-10)',
+                      fontSize: 'var(--text-12)',
                     }}
                   >
                     保存
                   </button>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8, rowGap: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--dim-8)', rowGap: 'var(--dim-4)' }}>
                   {/* 色板整行不收缩，标签名过长时预览徽章自动换到下一行 */}
                   <div style={{ flexShrink: 0 }}>
                     <ColorPickerRow value={editColor} onChange={setEditColor} size={18} />
@@ -275,27 +289,27 @@ export function SelectOptionsPanel({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: 4,
-                padding: '4px 6px',
-                borderRadius: 4,
+                gap: 'var(--dim-4)',
+                padding: 'var(--dim-4) var(--dim-6)',
+                borderRadius: 'var(--dim-4)',
                 cursor: selectable ? 'pointer' : 'default',
-                background: isSelected ? 'var(--editor-selection, rgba(59,130,246,0.12))' : 'transparent',
+                background: isSelected ? 'var(--editor-selection)' : 'transparent',
                 transition: 'background 0.12s ease',
               }}
               onMouseEnter={(e) => {
-                if (!isSelected) e.currentTarget.style.background = 'var(--toolbar-hover, #f1f5f9)';
+                if (!isSelected) e.currentTarget.style.background = 'var(--toolbar-hover)';
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) e.currentTarget.style.background = 'transparent';
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                 <OptionBadge option={opt} />
-                {isSelected && <Check size={14} color="#3b82f6" />}
+                {isSelected && <Check size={14} color="var(--nb-blue-500)" />}
               </div>
 
               {manageable && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 2 }} onClick={(e) => e.stopPropagation()}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-2)' }} onClick={(e) => e.stopPropagation()}>
                   {onMoveOption && (
                     <>
                       <Tooltip content="上移" side="top" sideOffset={4} disabled={idx === 0}>
@@ -310,7 +324,7 @@ export function SelectOptionsPanel({
                           }}
                           style={{
                             opacity: idx === 0 ? 0.25 : 1,
-                            padding: '3px 4px',
+                            padding: 'var(--dim-3) var(--dim-4)',
                             display: 'inline-flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -331,7 +345,7 @@ export function SelectOptionsPanel({
                           }}
                           style={{
                             opacity: idx === options.length - 1 ? 0.25 : 1,
-                            padding: '3px 4px',
+                            padding: 'var(--dim-3) var(--dim-4)',
                             display: 'inline-flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -349,7 +363,7 @@ export function SelectOptionsPanel({
                       className="nb-bitable-btn-ghost"
                       onClick={(e) => startEdit(e, opt)}
                       style={{
-                        padding: '3px 4px',
+                        padding: 'var(--dim-3) var(--dim-4)',
                         display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -368,8 +382,8 @@ export function SelectOptionsPanel({
                         onDeleteOption?.(opt.id);
                       }}
                       style={{
-                        padding: '3px 4px',
-                        color: '#ef4444',
+                        padding: 'var(--dim-3) var(--dim-4)',
+                        color: 'var(--nb-red-500)',
                         display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -385,7 +399,7 @@ export function SelectOptionsPanel({
         })}
 
         {options.length === 0 && (
-          <div style={{ padding: '10px 8px', fontSize: 11, color: 'var(--editor-text-muted, #94a3b8)', textAlign: 'center' }}>
+          <div style={{ padding: 'var(--dim-10) var(--dim-8)', fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', textAlign: 'center' }}>
             {isMulti ? '暂无多选标签，请在下方创建' : '暂无选项，请在下方创建'}
           </div>
         )}
@@ -395,15 +409,15 @@ export function SelectOptionsPanel({
       {manageable && onAddOption && !editingId && (
         <div
           style={{
-            borderTop: '1px solid var(--editor-border, #f1f5f9)',
-            paddingTop: 6,
-            marginTop: 2,
+            borderTop: 'var(--dim-1) solid var(--editor-border)',
+            paddingTop: 'var(--dim-6)',
+            marginTop: 'var(--dim-2)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 6,
+            gap: 'var(--dim-6)',
           }}
         >
-          <div style={{ display: 'flex', gap: 4 }}>
+          <div style={{ display: 'flex', gap: 'var(--dim-4)' }}>
             <input
               type="text"
               placeholder="新建标签选项..."
@@ -415,13 +429,13 @@ export function SelectOptionsPanel({
               style={{
                 flex: 1,
                 minWidth: 0,
-                padding: '4px 8px',
-                fontSize: 12,
-                border: '1px solid var(--editor-border, #cbd5e1)',
-                borderRadius: 4,
+                padding: 'var(--dim-4) var(--dim-8)',
+                fontSize: 'var(--text-12)',
+                border: 'var(--dim-1) solid var(--editor-border)',
+                borderRadius: 'var(--dim-4)',
                 outline: 'none',
-                background: 'var(--editor-surface, #ffffff)',
-                color: 'var(--editor-text, #1e293b)',
+                background: 'var(--editor-surface)',
+                color: 'var(--editor-text)',
               }}
             />
             <button
@@ -429,8 +443,8 @@ export function SelectOptionsPanel({
               className="nb-bitable-btn-primary"
               onClick={handleAdd}
               style={{
-                padding: '4px 10px',
-                fontSize: 12,
+                padding: 'var(--dim-4) var(--dim-10)',
+                fontSize: 'var(--text-12)',
               }}
             >
               添加

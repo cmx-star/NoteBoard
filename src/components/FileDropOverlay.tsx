@@ -21,48 +21,48 @@ export function FileDropOverlay() {
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 9999,
+        zIndex: 'var(--z-9999)',
         pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 32,
+        padding: 'var(--dim-32)',
         boxSizing: 'border-box',
-        backgroundColor: 'rgba(0, 0, 0, 0.45)',
+        backgroundColor: 'var(--nb-black-a45)',
         // 拖入反馈随指针持续变化，使用纯色遮罩避免每帧重新虚化整窗。
-        animation: 'fadeIn 150ms ease-out',
+        animation: 'fadeIn var(--duration-150) ease-out',
       }}
     >
       {/* 拖拽释放视觉中心卡片 */}
       <div
         style={{
-          width: '100%',
-          maxWidth: 520,
-          padding: '40px 32px',
+          width: 'var(--pct-100)',
+          maxWidth: 'var(--dim-520)',
+          padding: 'var(--dim-40) var(--dim-32)',
           boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           textAlign: 'center',
-          borderRadius: 16,
-          background: 'var(--editor-surface, #1e1e1e)',
-          border: '2px dashed var(--editor-accent, #3b82f6)',
-          boxShadow: '0 12px 36px rgba(0, 0, 0, 0.35)',
-          gap: 16,
+          borderRadius: 'var(--radius-2xl)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-2) dashed var(--editor-accent)',
+          boxShadow: '0 var(--dim-12) var(--dim-36) var(--nb-black-a35)',
+          gap: 'var(--dim-16)',
         }}
       >
         {/* 顶部图标 */}
         <div
           style={{
-            width: 64,
-            height: 64,
-            borderRadius: 16,
-            background: 'var(--editor-bg, #141414)',
-            border: '1px solid var(--editor-border, #333)',
+            width: 'var(--dim-64)',
+            height: 'var(--dim-64)',
+            borderRadius: 'var(--radius-2xl)',
+            background: 'var(--editor-bg)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--editor-accent, #3b82f6)',
+            color: 'var(--editor-accent)',
           }}
         >
           <Files size={32} />
@@ -71,9 +71,9 @@ export function FileDropOverlay() {
         {/* 标题 */}
         <div
           style={{
-            fontSize: 18,
-            fontWeight: 600,
-            color: 'var(--editor-heading, #fff)',
+            fontSize: 'var(--text-18)',
+            fontWeight: 'var(--weight-600)',
+            color: 'var(--editor-heading)',
           }}
         >
           释放文件以在新标签页中打开
@@ -82,10 +82,10 @@ export function FileDropOverlay() {
         {/* 辅助说明 */}
         <div
           style={{
-            fontSize: 13,
-            lineHeight: 1.5,
-            color: 'var(--editor-text-secondary, #a1a1aa)',
-            maxWidth: 380,
+            fontSize: 'var(--text-13)',
+            lineHeight: 'var(--leading-1-5)',
+            color: 'var(--editor-text-secondary)',
+            maxWidth: 'var(--dim-380)',
           }}
         >
           支持 Markdown 笔记、画板、代码、图片以及所有其他格式文件。

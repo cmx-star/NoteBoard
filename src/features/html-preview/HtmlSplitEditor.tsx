@@ -194,20 +194,20 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
         }),
         EditorView.theme({
           '&': {
-            height: '100%',
-            fontSize: 'var(--mono-font-size, 13px)',
+            height: 'var(--pct-100)',
+            fontSize: 'var(--mono-font-size, var(--dim-13))',
             fontFamily: 'var(--mono-font-family, monospace)',
-            background: 'var(--cm-background, var(--editor-bg, #ffffff))',
-            color: 'var(--cm-text, var(--editor-text, #1e293b))',
+            background: 'var(--cm-background, var(--editor-bg))',
+            color: 'var(--cm-text, var(--editor-text))',
           },
           '.cm-content': {
-            padding: '12px 0',
-            caretColor: 'var(--cm-cursor, var(--editor-accent, #3b82f6))',
+            padding: 'var(--dim-12) 0',
+            caretColor: 'var(--cm-cursor, var(--editor-accent))',
           },
           '.cm-gutters': {
-            background: 'var(--cm-gutter-background, var(--editor-surface, #f8fafc))',
-            color: 'var(--cm-gutter-text, var(--editor-text-muted, #94a3b8))',
-            borderRight: '1px solid var(--editor-border, #e2e8f0)',
+            background: 'var(--cm-gutter-background, var(--editor-surface))',
+            color: 'var(--cm-gutter-text, var(--editor-text-muted))',
+            borderRight: 'var(--dim-1) solid var(--editor-border)',
           },
           '&.cm-focused': {
             outline: 'none',
@@ -359,7 +359,7 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
         data-active={layoutMode === mode}
         onClick={() => setLayoutMode(mode)}
         aria-label={tip}
-        style={{ padding: '3px 8px', fontSize: 11 }}
+        style={{ padding: 'var(--dim-3) var(--dim-8)', fontSize: 'var(--text-11)' }}
       >
         {icon}
         <span>{label}</span>
@@ -370,11 +370,11 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         overflow: 'hidden',
       }}
     >
@@ -382,23 +382,23 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
       <div
         className="nb-editor-topbar"
         style={{
-          height: 38,
-          minHeight: 38,
+          height: 'var(--dim-38)',
+          minHeight: 'var(--dim-38)',
           display: isReading ? 'none' : 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 12px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #f8fafc)',
+          padding: '0 var(--dim-12)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
           userSelect: 'none',
-          fontSize: 12,
-          color: 'var(--editor-text, #1e293b)',
+          fontSize: 'var(--text-12)',
+          color: 'var(--editor-text)',
         }}
       >
         {/* 左侧：格式标识与布局切换 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div className="nb-editor-topbar-title" style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600 }}>
-            <Globe size={16} color="var(--editor-accent, #3b82f6)" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-12)' }}>
+          <div className="nb-editor-topbar-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', fontWeight: 'var(--weight-600)' }}>
+            <Globe size={16} color="var(--editor-accent)" />
             <span>HTML 网页</span>
           </div>
 
@@ -406,10 +406,10 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'var(--editor-bg, #ffffff)',
-              borderRadius: 6,
-              padding: 2,
-              border: '1px solid var(--editor-border, #e2e8f0)',
+              background: 'var(--editor-bg)',
+              borderRadius: 'var(--radius-md)',
+              padding: 'var(--dim-2)',
+              border: 'var(--dim-1) solid var(--editor-border)',
             }}
           >
             {layoutButton('split', <Columns size={13} />, '分屏', '双栏分屏')}
@@ -419,14 +419,14 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
         </div>
 
         {/* 右侧：安全说明、刷新与浏览器打开 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)' }}>
           {previewVisible && (
             <>
               {missingStyles.length > 0 && (
                 <Tooltip content={`样式表未能加载：${missingStyles.join('、')}`} side="bottom" sideOffset={4}>
                   <span
                     aria-label={`样式表未能加载：${missingStyles.join('、')}`}
-                    style={{ display: 'inline-flex', alignItems: 'center', padding: '2px 6px', color: 'var(--warning-600, #d97706)' }}
+                    style={{ display: 'inline-flex', alignItems: 'center', padding: 'var(--dim-2) var(--dim-6)', color: 'var(--warning-600)' }}
                   >
                     <TriangleAlert size={14} />
                   </span>
@@ -435,7 +435,7 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
               <Tooltip content="安全预览：不运行脚本，不加载网络样式" side="bottom" sideOffset={4}>
                 <span
                   aria-label="安全预览：不运行脚本，不加载网络样式"
-                  style={{ display: 'inline-flex', alignItems: 'center', padding: '2px 6px', color: 'var(--editor-text-muted, #94a3b8)' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', padding: 'var(--dim-2) var(--dim-6)', color: 'var(--editor-text-muted)' }}
                 >
                   <ShieldCheck size={14} />
                 </span>
@@ -446,7 +446,7 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
                   className="nb-editor-icon-btn"
                   onClick={() => setRefreshTick((n) => n + 1)}
                   aria-label="刷新预览"
-                  style={{ padding: '2px 6px' }}
+                  style={{ padding: 'var(--dim-2) var(--dim-6)' }}
                 >
                   <RotateCw size={13} />
                 </button>
@@ -460,7 +460,7 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
                 className="nb-editor-pill-btn"
                 onClick={() => void openInBrowser()}
                 aria-label="用系统浏览器打开"
-                style={{ padding: '3px 8px', fontSize: 11, border: '1px solid var(--editor-border, #e2e8f0)' }}
+                style={{ padding: 'var(--dim-3) var(--dim-8)', fontSize: 'var(--text-11)', border: 'var(--dim-1) solid var(--editor-border)' }}
               >
                 <ExternalLink size={13} />
                 <span>浏览器打开</span>
@@ -489,8 +489,8 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
           ref={editorContainerRef}
           style={{
             display: paneMode === 'preview' ? 'none' : 'block',
-            width: paneMode === 'split' && !stacked ? `calc(${splitRatio * 100}% - 4px)` : '100%',
-            height: paneMode === 'split' && stacked ? `calc(${splitRatio * 100}% - 4px)` : '100%',
+            width: paneMode === 'split' && !stacked ? `calc(${splitRatio * 100}% - var(--dim-4))` : 'var(--pct-100)',
+            height: paneMode === 'split' && stacked ? `calc(${splitRatio * 100}% - var(--dim-4))` : 'var(--pct-100)',
             overflow: 'hidden',
             flexShrink: 0,
           }}
@@ -510,12 +510,12 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
               onDoubleClick={() => setSplitRatio(0.5)}
               aria-label="拖拽调节分栏比例，双击复位"
               style={{
-                width: stacked ? '100%' : 8,
-                height: stacked ? 8 : '100%',
+                width: stacked ? 'var(--pct-100)' : 8,
+                height: stacked ? 8 : 'var(--pct-100)',
                 cursor: stacked ? 'row-resize' : 'col-resize',
                 position: 'relative',
                 flexShrink: 0,
-                zIndex: 10,
+                zIndex: 'var(--z-10)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -524,9 +524,9 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
             >
               <div
                 style={{
-                  width: stacked ? '100%' : 1,
-                  height: stacked ? 1 : '100%',
-                  background: 'var(--editor-border, #e2e8f0)',
+                  width: stacked ? 'var(--pct-100)' : 1,
+                  height: stacked ? 1 : 'var(--pct-100)',
+                  background: 'var(--editor-border)',
                 }}
               />
             </div>
@@ -538,13 +538,13 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
         <div
           style={{
             display: paneMode === 'code' ? 'none' : 'flex',
-            width: paneMode === 'split' && !stacked ? `calc(${(1 - splitRatio) * 100}% - 4px)` : '100%',
-            height: paneMode === 'split' && stacked ? `calc(${(1 - splitRatio) * 100}% - 4px)` : '100%',
+            width: paneMode === 'split' && !stacked ? `calc(${(1 - splitRatio) * 100}% - var(--dim-4))` : 'var(--pct-100)',
+            height: paneMode === 'split' && stacked ? `calc(${(1 - splitRatio) * 100}% - var(--dim-4))` : 'var(--pct-100)',
             overflow: 'hidden',
             position: 'relative',
             flexShrink: 0,
             // 网页默认按白底设计，预览与浏览器保持一致，不跟随应用深色主题
-            background: '#ffffff',
+            background: 'var(--nb-white)',
           }}
         >
           <iframe
@@ -555,10 +555,10 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
             onLoad={handlePreviewLoad}
             style={{
               flex: 1,
-              width: '100%',
-              height: '100%',
+              width: 'var(--pct-100)',
+              height: 'var(--pct-100)',
               border: 'none',
-              background: '#ffffff',
+              background: 'var(--nb-white)',
               colorScheme: 'light',
               // 拖动分隔条期间屏蔽 iframe 的指针事件，避免拖拽中途丢失
               pointerEvents: isResizing ? 'none' : 'auto',
@@ -572,8 +572,8 @@ export function HtmlSplitEditor({ docKey }: HtmlSplitEditorProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#94a3b8',
-                fontSize: 13,
+                color: 'var(--nb-slate-400)',
+                fontSize: 'var(--text-13)',
                 pointerEvents: 'none',
               }}
             >

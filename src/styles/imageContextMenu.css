@@ -4,31 +4,31 @@
 
 .nb-image-menu {
   position: fixed;
-  z-index: 100005;
-  min-width: 216px;
-  max-width: min(288px, calc(100vw - 16px));
-  max-height: calc(100vh - 16px);
+  z-index: var(--z-100005);
+  min-width: var(--dim-216);
+  max-width: min(var(--dim-288), calc(100vw - var(--dim-16)));
+  max-height: calc(100vh - var(--dim-16));
   overflow-y: auto;
-  padding: 5px;
-  background: var(--editor-surface, #ffffff);
-  border: 1px solid var(--editor-border, rgba(0, 0, 0, 0.12));
-  border-radius: 8px;
-  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.16), 0 3px 8px -2px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(8px);
-  color: var(--editor-text, #1e293b);
-  font-size: 13px;
+  padding: var(--space-5);
+  background: var(--editor-surface);
+  border: var(--border-1) solid var(--editor-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a16), 0 var(--dim-3) var(--dim-8) calc(var(--dim-2) * -1) var(--nb-black-a08);
+  backdrop-filter: blur(var(--dim-8));
+  color: var(--editor-text);
+  font-size: var(--text-13);
   user-select: none;
   outline: none;
-  animation: nb-image-menu-in 100ms ease-out;
+  animation: nb-image-menu-in var(--duration-100) var(--ease-out);
 }
 
 @keyframes nb-image-menu-in {
   from {
-    opacity: 0;
-    transform: translateY(-2px);
+    opacity: var(--opacity-0);
+    transform: translateY(calc(var(--space-2) * -1));
   }
   to {
-    opacity: 1;
+    opacity: var(--opacity-1);
     transform: none;
   }
 }
@@ -37,16 +37,16 @@
 .nb-image-menu-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-8);
   min-width: 0;
-  padding: 5px 10px 6px;
-  color: var(--editor-text-secondary, #64748b);
-  font-size: 12px;
+  padding: var(--space-5) var(--space-10) var(--space-6);
+  color: var(--editor-text-secondary);
+  font-size: var(--text-12);
 }
 
 .nb-image-menu-header > svg {
   flex-shrink: 0;
-  opacity: 0.8;
+  opacity: var(--opacity-0-8);
 }
 
 .nb-image-menu-header-name {
@@ -55,72 +55,72 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--editor-text, #1e293b);
-  font-weight: 600;
+  color: var(--editor-text);
+  font-weight: var(--weight-600);
 }
 
 .nb-image-menu-header-meta {
   flex-shrink: 0;
-  font-size: 11px;
+  font-size: var(--text-11);
   font-variant-numeric: tabular-nums;
 }
 
 .nb-image-menu-divider {
-  height: 1px;
-  margin: 4px 0;
-  background: var(--editor-border, rgba(0, 0, 0, 0.08));
+  height: var(--border-1);
+  margin: var(--space-4) var(--space-0);
+  background: var(--editor-border);
 }
 
 /* 普通菜单项 */
 .nb-image-menu-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 7px 12px;
+  gap: var(--space-8);
+  width: var(--pct-100);
+  padding: var(--space-7) var(--space-12);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   background: transparent;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background 100ms ease, color 100ms ease;
+  transition: background var(--duration-100) var(--ease-out), color var(--duration-100) var(--ease-out);
 }
 
 .nb-image-menu-item > svg {
   flex-shrink: 0;
-  color: var(--editor-text-secondary, #64748b);
-  transition: color 100ms ease;
+  color: var(--editor-text-secondary);
+  transition: color var(--duration-100) var(--ease-out);
 }
 
 .nb-image-menu-item:hover,
 .nb-image-menu-item:focus-visible {
-  background: var(--editor-selection-background, rgba(59, 130, 246, 0.12));
+  background: var(--editor-selection-background);
   outline: none;
 }
 
 .nb-image-menu-item:hover > svg,
 .nb-image-menu-item:focus-visible > svg {
-  color: var(--accent-500, #3b82f6);
+  color: var(--accent-500);
 }
 
 .nb-image-menu-item:active {
-  background: color-mix(in srgb, var(--accent-500, #3b82f6) 22%, transparent);
+  background: color-mix(in srgb, var(--accent-500) var(--pct-22), transparent);
 }
 
 .nb-image-menu-item.is-danger,
 .nb-image-menu-item.is-danger > svg {
-  color: var(--error-500, #ef4444);
+  color: var(--error-500);
 }
 
 .nb-image-menu-item.is-danger:hover,
 .nb-image-menu-item.is-danger:focus-visible {
-  background: color-mix(in srgb, var(--error-500, #ef4444) 10%, transparent);
+  background: color-mix(in srgb, var(--error-500) var(--pct-10), transparent);
 }
 
 .nb-image-menu-item.is-danger:active {
-  background: color-mix(in srgb, var(--error-500, #ef4444) 18%, transparent);
+  background: color-mix(in srgb, var(--error-500) var(--pct-18), transparent);
 }
 
 /* 行内控件：对齐 / 宽度 */
@@ -128,58 +128,58 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 3px 6px 3px 12px;
+  gap: var(--space-12);
+  padding: var(--space-3) var(--space-6) var(--space-3) var(--space-12);
 }
 
 .nb-image-menu-row-label {
   flex-shrink: 0;
-  color: var(--editor-text-secondary, #64748b);
-  font-size: 12px;
+  color: var(--editor-text-secondary);
+  font-size: var(--text-12);
 }
 
 .nb-image-menu-segment {
   display: inline-flex;
-  gap: 2px;
-  padding: 2px;
-  border-radius: 6px;
-  background: var(--toolbar-hover, rgba(0, 0, 0, 0.05));
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--toolbar-hover);
 }
 
 .nb-image-menu-segment > button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 24px;
-  padding: 0 6px;
+  min-width: var(--dim-28);
+  height: var(--dim-24);
+  padding: var(--space-0) var(--space-6);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--editor-text-secondary, #64748b);
+  color: var(--editor-text-secondary);
   font: inherit;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--text-11);
+  font-weight: var(--weight-600);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
-  transition: background 100ms ease, color 100ms ease, transform 80ms ease;
+  transition: background var(--duration-100) var(--ease-out), color var(--duration-100) var(--ease-out), transform var(--duration-80) var(--ease-out);
 }
 
 .nb-image-menu-segment > button:hover,
 .nb-image-menu-segment > button:focus-visible {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.08));
-  color: var(--editor-text, #1e293b);
+  background: var(--toolbar-active);
+  color: var(--editor-text);
   outline: none;
 }
 
 .nb-image-menu-segment > button:active {
-  transform: scale(0.94);
+  transform: scale(var(--scale-0-94));
 }
 
 .nb-image-menu-segment > button[aria-pressed='true'] {
-  background: var(--editor-surface, #ffffff);
-  color: var(--accent-500, #3b82f6);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  background: var(--editor-surface);
+  color: var(--accent-500);
+  box-shadow: 0 var(--dim-1) var(--dim-2) var(--nb-black-a12);
 }
 
 @media (prefers-reduced-motion: reduce) {

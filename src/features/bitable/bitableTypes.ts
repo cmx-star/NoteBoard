@@ -109,8 +109,9 @@ export const DEFAULT_LONG_TEXT_CONFIG: LongTextConfig = {
  * 彩色标签选项颜色。
  * 取值必须与 BITABLE_PALETTE（bitableConverter.ts）的 id 完全一致：
  * 色板里没有的颜色 lookup 不到，会静默回落到蓝色，标签看着像「改了色但没生效」。
+ * 另支持用户自定义的十六进制色（`#rrggbb`），由 getOptionColor 派生底色 / 文字 / 描边。
  */
-export type SelectOptionColor =
+export type PresetOptionColor =
   | 'blue'
   | 'green'
   | 'purple'
@@ -119,6 +120,8 @@ export type SelectOptionColor =
   | 'cyan'
   | 'pink'
   | 'gray';
+
+export type SelectOptionColor = PresetOptionColor | `#${string}`;
 
 /** 单选/多选标签选项 */
 export interface SelectOption {
@@ -190,6 +193,8 @@ export interface GanttViewConfig {
   excludeHolidays?: boolean;
   /** 左侧列表面板展示并固定的字段（顺序即列顺序） */
   leftColumnIds?: string[];
+  /** 移动端手动调整的左侧字段列宽；未调整的列仍自动适配窄屏，不影响桌面列宽。 */
+  mobileLeftColumnWidths?: Record<string, number>;
   /** 时间刻度，默认 month */
   zoom?: GanttZoom;
 }

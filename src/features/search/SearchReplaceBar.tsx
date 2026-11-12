@@ -238,30 +238,30 @@ export function SearchReplaceBar({
       className="nb-search-bar"
       style={{
         position: 'absolute',
-        top: 12,
-        right: 20,
-        zIndex: 40,
-        width: 380,
-        maxWidth: 'calc(100% - 40px)',
+        top: 'var(--dim-12)',
+        right: 'var(--dim-20)',
+        zIndex: 'var(--z-40)',
+        width: 'var(--dim-380)',
+        maxWidth: 'calc(var(--pct-100) - var(--dim-40))',
         boxSizing: 'border-box',
         background: 'var(--editor-surface, var(--editor-bg))',
-        border: '1px solid var(--editor-border)',
-        borderRadius: 12,
-        boxShadow: 'var(--shadow-lg, 0 10px 25px -5px rgba(0, 0, 0, 0.15))',
-        padding: '10px 12px',
+        border: 'var(--dim-1) solid var(--editor-border)',
+        borderRadius: 'var(--radius-xl)',
+        boxShadow: 'var(--shadow-lg, 0 var(--dim-10) var(--dim-25) calc(var(--dim-5) * -1) var(--nb-black-a15))',
+        padding: 'var(--dim-10) var(--dim-12)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 8,
+        gap: 'var(--dim-8)',
         fontFamily: 'var(--ui-font-family, -apple-system, sans-serif)',
-        fontSize: 13,
+        fontSize: 'var(--text-13)',
         color: 'var(--editor-text)',
-        backdropFilter: 'blur(8px)',
+        backdropFilter: 'blur(var(--dim-8))',
         userSelect: 'none',
         ...positionStyle,
       }}
     >
       {/* ── 第一行：搜索输入框 + 匹配计数 + 上下导航 + 关闭 ── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: '100%', boxSizing: 'border-box' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', width: 'var(--pct-100)', boxSizing: 'border-box' }}>
         <div
           style={{
             flex: 1,
@@ -269,12 +269,12 @@ export function SearchReplaceBar({
             boxSizing: 'border-box',
             display: 'flex',
             alignItems: 'center',
-            height: 32,
-            padding: '0 8px',
-            borderRadius: 8,
-            border: '1px solid var(--editor-border)',
+            height: 'var(--dim-32)',
+            padding: '0 var(--dim-8)',
+            borderRadius: 'var(--radius-lg)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             background: 'var(--editor-bg)',
-            gap: 6,
+            gap: 'var(--dim-6)',
           }}
           onFocus={(e) => {
             e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
@@ -312,17 +312,17 @@ export function SearchReplaceBar({
               outline: 'none',
               background: 'transparent',
               color: 'var(--editor-text)',
-              fontSize: 13,
+              fontSize: 'var(--text-13)',
             }}
           />
           {searchText && (
             <span
               style={{
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 color: matchCount > 0 ? 'var(--editor-text-secondary)' : 'var(--editor-text-muted)',
                 fontVariantNumeric: 'tabular-nums',
                 flexShrink: 0,
-                paddingLeft: 4,
+                paddingLeft: 'var(--dim-4)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -354,9 +354,9 @@ export function SearchReplaceBar({
             type="button"
             onClick={handleClose}
             style={{
-              width: 28,
-              height: 28,
-              borderRadius: 6,
+              width: 'var(--dim-28)',
+              height: 'var(--dim-28)',
+              borderRadius: 'var(--radius-md)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -371,20 +371,20 @@ export function SearchReplaceBar({
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
               e.currentTarget.style.color = 'var(--editor-text)';
-              e.currentTarget.style.transform = 'scale(1.08)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = 'var(--editor-text-secondary)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.92)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1.08)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
             }}
             aria-label="关闭搜索栏"
           >
@@ -394,7 +394,7 @@ export function SearchReplaceBar({
       </div>
 
       {/* ── 第二行：替换输入框 + 替换按钮 + 全部替换按钮 ── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: '100%', boxSizing: 'border-box' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', width: 'var(--pct-100)', boxSizing: 'border-box' }}>
         <div
           style={{
             flex: 1,
@@ -402,16 +402,16 @@ export function SearchReplaceBar({
             boxSizing: 'border-box',
             display: 'flex',
             alignItems: 'center',
-            height: 32,
-            padding: '0 8px',
-            borderRadius: 8,
-            border: '1px solid var(--editor-border)',
+            height: 'var(--dim-32)',
+            padding: '0 var(--dim-8)',
+            borderRadius: 'var(--radius-lg)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             background: 'var(--editor-bg)',
-            gap: 6,
+            gap: 'var(--dim-6)',
           }}
           onFocus={(e) => {
             e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-            e.currentTarget.style.boxShadow = '0 0 0 2px var(--focus-ring)';
+            e.currentTarget.style.boxShadow = '0 0 0 var(--dim-2) var(--focus-ring)';
           }}
           onBlur={(e) => {
             e.currentTarget.style.borderColor = 'var(--editor-border)';
@@ -447,7 +447,7 @@ export function SearchReplaceBar({
               outline: 'none',
               background: 'transparent',
               color: 'var(--editor-text)',
-              fontSize: 13,
+              fontSize: 'var(--text-13)',
             }}
           />
         </div>
@@ -458,16 +458,16 @@ export function SearchReplaceBar({
             type="button"
             onClick={handleReplace}
             style={{
-              height: 32,
-              padding: '0 8px',
-              borderRadius: 8,
-              border: '1px solid var(--control-border)',
+              height: 'var(--dim-32)',
+              padding: '0 var(--dim-8)',
+              borderRadius: 'var(--radius-lg)',
+              border: 'var(--dim-1) solid var(--control-border)',
               background: 'var(--editor-bg)',
               color: 'var(--editor-text)',
-              fontSize: 12,
+              fontSize: 'var(--text-12)',
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 'var(--dim-4)',
               cursor: 'pointer',
               flexShrink: 0,
               whiteSpace: 'nowrap',
@@ -477,7 +477,7 @@ export function SearchReplaceBar({
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
               e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'var(--editor-bg)';
@@ -486,11 +486,11 @@ export function SearchReplaceBar({
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'translateY(0) scale(0.96)';
+              e.currentTarget.style.transform = 'translateY(0) scale(var(--scale-0-96))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
           >
             <Replace size={13} />
@@ -504,16 +504,16 @@ export function SearchReplaceBar({
             type="button"
             onClick={handleReplaceAll}
             style={{
-              height: 32,
-              padding: '0 8px',
-              borderRadius: 8,
-              border: '1px solid var(--control-border)',
+              height: 'var(--dim-32)',
+              padding: '0 var(--dim-8)',
+              borderRadius: 'var(--radius-lg)',
+              border: 'var(--dim-1) solid var(--control-border)',
               background: 'var(--editor-bg)',
               color: 'var(--editor-text)',
-              fontSize: 12,
+              fontSize: 'var(--text-12)',
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 'var(--dim-4)',
               cursor: 'pointer',
               flexShrink: 0,
               whiteSpace: 'nowrap',
@@ -523,7 +523,7 @@ export function SearchReplaceBar({
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
               e.currentTarget.style.borderColor = 'var(--editor-border-focus)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'var(--editor-bg)';
@@ -532,11 +532,11 @@ export function SearchReplaceBar({
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'translateY(0) scale(0.96)';
+              e.currentTarget.style.transform = 'translateY(0) scale(var(--scale-0-96))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.transform = 'translateY(calc(var(--dim-1) * -1))';
             }}
             aria-label="全部替换"
           >
@@ -547,14 +547,14 @@ export function SearchReplaceBar({
       </div>
 
       {/* ── 第三行：选项设置（区分大小写 / 全字匹配 / 正则表达式） ── */}
-      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 12, paddingTop: 2, width: '100%', boxSizing: 'border-box' }}>
+      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--dim-12)', paddingTop: 'var(--dim-2)', width: 'var(--pct-100)', boxSizing: 'border-box' }}>
         <label
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 5,
+            gap: 'var(--dim-5)',
             cursor: 'pointer',
-            fontSize: 12,
+            fontSize: 'var(--text-12)',
             whiteSpace: 'nowrap',
             color: caseSensitive ? 'var(--editor-text)' : 'var(--editor-text-secondary)',
           }}
@@ -564,7 +564,7 @@ export function SearchReplaceBar({
             checked={caseSensitive}
             onChange={(e) => setCaseSensitive(e.target.checked)}
             style={{
-              accentColor: 'var(--editor-accent, #3b82f6)',
+              accentColor: 'var(--editor-accent)',
               cursor: 'pointer',
             }}
           />
@@ -575,9 +575,9 @@ export function SearchReplaceBar({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 5,
+            gap: 'var(--dim-5)',
             cursor: 'pointer',
-            fontSize: 12,
+            fontSize: 'var(--text-12)',
             whiteSpace: 'nowrap',
             color: wholeWord ? 'var(--editor-text)' : 'var(--editor-text-secondary)',
           }}
@@ -587,7 +587,7 @@ export function SearchReplaceBar({
             checked={wholeWord}
             onChange={(e) => setWholeWord(e.target.checked)}
             style={{
-              accentColor: 'var(--editor-accent, #3b82f6)',
+              accentColor: 'var(--editor-accent)',
               cursor: 'pointer',
             }}
           />
@@ -598,9 +598,9 @@ export function SearchReplaceBar({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 5,
+            gap: 'var(--dim-5)',
             cursor: 'pointer',
-            fontSize: 12,
+            fontSize: 'var(--text-12)',
             whiteSpace: 'nowrap',
             color: isRegex ? 'var(--editor-text)' : 'var(--editor-text-secondary)',
           }}
@@ -610,7 +610,7 @@ export function SearchReplaceBar({
             checked={isRegex}
             onChange={(e) => setIsRegex(e.target.checked)}
             style={{
-              accentColor: 'var(--editor-accent, #3b82f6)',
+              accentColor: 'var(--editor-accent)',
               cursor: 'pointer',
             }}
           />
@@ -641,26 +641,26 @@ function NavIconButton({ label, shortcut, onClick, children }: NavIconButtonProp
         onMouseDown={(e) => {
           e.preventDefault();
           e.currentTarget.style.background = 'var(--toolbar-active)';
-          e.currentTarget.style.transform = 'scale(0.92)';
+          e.currentTarget.style.transform = 'scale(var(--scale-0-92))';
         }}
         onMouseUp={(e) => {
           e.currentTarget.style.background = 'var(--toolbar-hover)';
-          e.currentTarget.style.transform = 'scale(1.08)';
+          e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = 'var(--toolbar-hover)';
           e.currentTarget.style.color = 'var(--editor-text)';
-          e.currentTarget.style.transform = 'scale(1.08)';
+          e.currentTarget.style.transform = 'scale(var(--scale-1-08))';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background = 'transparent';
           e.currentTarget.style.color = 'var(--editor-text-secondary)';
-          e.currentTarget.style.transform = 'scale(1)';
+          e.currentTarget.style.transform = 'scale(var(--scale-1))';
         }}
         style={{
-          width: 26,
-          height: 28,
-          borderRadius: 6,
+          width: 'var(--dim-26)',
+          height: 'var(--dim-28)',
+          borderRadius: 'var(--radius-md)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

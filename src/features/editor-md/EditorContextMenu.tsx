@@ -7,6 +7,8 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import type { Editor } from '@tiptap/core';
 import { isInTable } from '@tiptap/pm/tables';
 import { applyTablePaste } from './tableClipboard';
+import { serializeSelectionPlainText } from './plainTextClipboard';
+import { showToast } from '../../stores/toastStore';
 import { DEFAULT_DETAILS_SUMMARY, insertDetailsContent, requestDetailsSummaryFocus } from './detailsExtension';
 import { insertColumnsBlock } from './columnsExtension';
 import { insertCalloutBlock } from './calloutExtension';
@@ -23,6 +25,8 @@ import { insertWikiLinkInEditor } from '../wikilink/wikiLinkActions';
 import { activeBlockAlign, canChangeBlockIndent, canSetBlockAlign, changeBlockIndent, setBlockAlign } from './blockFormat';
 import { ALIGN_OPTIONS, AlignIcon, INDENT_OPTIONS, TextColorIcon } from './formatPickers';
 import { TEXT_COLORS } from './markdownInlineMarks';
+import { useCustomColors } from '../../stores/settingsStore';
+import { mixHex } from '../../components/colorPicker/colorMath';
 import {
   Bold,
   Italic,
@@ -78,14 +82,14 @@ interface EditorContextMenuProps {
 
 /** 高亮颜色选项 */
 const HIGHLIGHT_COLOR_OPTIONS = [
-  { name: '柠檬黄', color: '#fef08a', border: '#facc15' },
-  { name: '清新绿', color: '#bbf7d0', border: '#4ade80' },
-  { name: '天空蓝', color: '#bfdbfe', border: '#60a5fa' },
-  { name: '浅紫', color: '#e9d5ff', border: '#c084fc' },
-  { name: '蜜桃粉', color: '#fbcfe8', border: '#f472b6' },
-  { name: '暖阳橙', color: '#fed7aa', border: '#fb923c' },
-  { name: '珊瑚红', color: '#fecaca', border: '#f87171' },
-  { name: '湖水青', color: '#a5f3fc', border: '#22d3ee' },
+  { name: '柠檬黄', color: 'var(--nb-yellow-200)', border: 'var(--nb-yellow-400)' },
+  { name: '清新绿', color: 'var(--nb-green-200)', border: 'var(--nb-green-400)' },
+  { name: '天空蓝', color: 'var(--nb-blue-200)', border: 'var(--nb-blue-400)' },
+  { name: '浅紫', color: 'var(--nb-purple-200)', border: 'var(--nb-purple-300)' },
+  { name: '蜜桃粉', color: 'var(--nb-pink-200)', border: 'var(--nb-pink-400)' },
+  { name: '暖阳橙', color: 'var(--nb-orange-200)', border: 'var(--nb-orange-400)' },
+  { name: '珊瑚红', color: 'var(--nb-red-200)', border: 'var(--nb-red-400)' },
+  { name: '湖水青', color: 'var(--nb-cyan-200)', border: 'var(--nb-cyan-400)' },
 ];
 
 /**
@@ -145,6 +149,17 @@ export function EditorContextMenu({
   const submenuRef = useRef<HTMLDivElement>(null);
   // 当前激活的二级子菜单标识
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  // 已固定的自定义颜色追加在内置色之后（取色盘在工具栏与悬浮菜单中，右键菜单只负责快速选用）
+  const pinnedTextColors = useCustomColors('text');
+  const pinnedHighlightColors = useCustomColors('highlight');
+  const textColorItems = [
+    ...TEXT_COLORS,
+    ...pinnedTextColors.map((color) => ({ name: color.toUpperCase(), color })),
+  ];
+  const highlightColorItems = [
+    ...HIGHLIGHT_COLOR_OPTIONS,
+    ...pinnedHighlightColors.map((color) => ({ name: color.toUpperCase(), color, border: mixHex(color, 'var(--nb-black)', 0.8) })),
+  ];
   const [submenuPos, setSubmenuPos] = useState<{ top: number; left: number; flipLeft: boolean }>({
     top: 0,
     left: 0,
@@ -203,23 +218,23 @@ export function EditorContextMenu({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%',
-    padding: '7px 12px',
+    width: 'var(--pct-100)',
+    padding: 'var(--dim-7) var(--dim-12)',
     background: 'transparent',
     border: 'none',
     textAlign: 'left',
     cursor: 'pointer',
-    fontSize: 13,
-    color: 'var(--editor-text, #1e293b)',
-    borderRadius: 6,
+    fontSize: 'var(--text-13)',
+    color: 'var(--editor-text)',
+    borderRadius: 'var(--radius-md)',
     userSelect: 'none',
-    transition: 'background 100ms ease',
+    transition: 'background var(--duration-100) ease',
   };
 
   const dividerStyle: React.CSSProperties = {
-    height: 1,
-    background: 'var(--editor-border, rgba(0,0,0,0.08))',
-    margin: '4px 0',
+    height: 'var(--dim-1)',
+    background: 'var(--editor-border)',
+    margin: 'var(--dim-4) 0',
   };
 
   // 计算主菜单位置与越界防护
@@ -245,6 +260,40 @@ export function EditorContextMenu({
     setActiveSubmenu(submenuKey);
   };
 
+  // 两种菜单都在“粘贴”下面提供纯文本复制；没有选区时禁用，避免误复制整篇。
+  const plainTextCopyButton = (
+    <button
+      type="button"
+      disabled={!hasSelection}
+      style={{ ...btnStyle, opacity: hasSelection ? 1 : 0.45, cursor: hasSelection ? 'pointer' : 'default' }}
+      onMouseDown={(e) => {
+        // 保留编辑器的文字/单元格选区，并提供与 hover 一致的按下反馈。
+        e.preventDefault();
+        if (hasSelection) e.currentTarget.style.background = 'var(--editor-selection-background)';
+      }}
+      onClick={async () => {
+        const text = serializeSelectionPlainText(editor);
+        onClose();
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          showToast('纯文本复制失败，请检查剪贴板权限后重试', 'error');
+        }
+      }}
+      onMouseEnter={(e) => {
+        setActiveSubmenu(null);
+        if (hasSelection) e.currentTarget.style.background = 'var(--editor-selection-background)';
+      }}
+      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+        <ClipboardType size={15} color="var(--accent-500)" />
+        <span>纯文本复制</span>
+      </div>
+    </button>
+  );
+
   return (
     <>
       {/* ── 主右键菜单容器 ── */}
@@ -255,16 +304,16 @@ export function EditorContextMenu({
           position: 'fixed',
           top: menuTop ?? Math.max(adjustedY, 40),
           left: Math.max(adjustedX, 10),
-          zIndex: 9999,
-          background: 'var(--editor-surface, #ffffff)',
-          border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-          borderRadius: 8,
-          boxShadow: '0 10px 30px -4px rgba(0, 0, 0, 0.16), 0 3px 8px -2px rgba(0, 0, 0, 0.08)',
-          backdropFilter: 'blur(8px)',
-          padding: '5px',
-          minWidth: 195,
+          zIndex: 'var(--z-9999)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: '0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a16), 0 var(--dim-3) var(--dim-8) calc(var(--dim-2) * -1) var(--nb-black-a08)',
+          backdropFilter: 'blur(var(--dim-8))',
+          padding: 'var(--dim-5)',
+          minWidth: 'var(--dim-195)',
           // 上方预留 40px（与 top 下限一致）、下方 8px，只有视口实在放不下时才滚动
-          maxHeight: 'calc(100vh - 48px)',
+          maxHeight: 'calc(100vh - var(--dim-48))',
           overflowY: 'auto',
         }}
         onClick={(e) => e.stopPropagation()}
@@ -282,12 +331,12 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Scissors size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Scissors size={15} color="var(--accent-500)" />
                 <span>{formatShortcut('剪切 (Ctrl+X)')}</span>
               </div>
             </button>
@@ -301,12 +350,12 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Copy size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Copy size={15} color="var(--accent-500)" />
                 <span>{formatShortcut('复制 (Ctrl+C)')}</span>
               </div>
             </button>
@@ -330,15 +379,17 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Clipboard size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Clipboard size={15} color="var(--accent-500)" />
                 <span>{formatShortcut('粘贴 (Ctrl+V)')}</span>
               </div>
             </button>
+
+            {plainTextCopyButton}
 
             <div style={dividerStyle} />
 
@@ -350,17 +401,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'selection-align'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('selection-align', e)}
               onClick={(e) => handleOpenSubmenu('selection-align', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <AlignIcon align={activeBlockAlign(editor)} size={15} />
                 <span>缩进和对齐</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* ── 文字格式 (加粗 / 斜体 / 下划线 / 删除线，二级子菜单) ── */}
@@ -370,17 +421,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'selection-text-format'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('selection-text-format', e)}
               onClick={(e) => handleOpenSubmenu('selection-text-format', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Type size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Type size={15} color="var(--accent-500)" />
                 <span>文字格式</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             <button
@@ -392,11 +443,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Code size={15} />
                 <span>行内代码</span>
               </div>
@@ -409,17 +460,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'selection-text-color'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('selection-text-color', e)}
               onClick={(e) => handleOpenSubmenu('selection-text-color', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <TextColorIcon color={editor.getAttributes('textColor').color} size={15} />
                 <span>字体颜色</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* ── 文本高亮 (带多色二级子菜单) ── */}
@@ -429,17 +480,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'selection-highlight'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('selection-highlight', e)}
               onClick={(e) => handleOpenSubmenu('selection-highlight', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Highlighter size={15} color="#eab308" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Highlighter size={15} color="var(--nb-yellow-500)" />
                 <span>文本高亮</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             <div style={dividerStyle} />
@@ -451,17 +502,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'selection-heading'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('selection-heading', e)}
               onClick={(e) => handleOpenSubmenu('selection-heading', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Heading size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Heading size={15} color="var(--accent-500)" />
                 <span>转为标题 (H1~H6)</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* ── 转为代码块（多个段落合并为一个代码块，每段一行） ── */}
@@ -474,12 +525,12 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <FileCode size={15} color="var(--accent-strong, #6366f1)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <FileCode size={15} color="var(--accent-strong)" />
                 <span>转为代码块</span>
               </div>
             </button>
@@ -491,17 +542,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'selection-alert'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('selection-alert', e)}
               onClick={(e) => handleOpenSubmenu('selection-alert', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Boxes size={15} color="#3b82f6" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Boxes size={15} color="var(--nb-blue-500)" />
                 <span>转为 GitHub 提示块</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* ── 转为高亮块 (带预设二级子菜单) ── */}
@@ -511,17 +562,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'selection-callout'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('selection-callout', e)}
               onClick={(e) => handleOpenSubmenu('selection-callout', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Highlighter size={15} color="#8b5cf6" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Highlighter size={15} color="var(--nb-purple-500)" />
                 <span>转为高亮块</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             <button
@@ -533,11 +584,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Quote size={15} />
                 <span>转为引用块</span>
               </div>
@@ -554,11 +605,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <ListCollapse size={15} />
                 <span>转为折叠块</span>
               </div>
@@ -588,11 +639,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Link size={15} />
                 <span>{formatShortcut('超链接 (Ctrl+K)')}</span>
               </div>
@@ -607,12 +658,12 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <RemoveFormatting size={15} color="#ef4444" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <RemoveFormatting size={15} color="var(--nb-red-500)" />
                 <span>清除格式</span>
               </div>
             </button>
@@ -640,44 +691,17 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Clipboard size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Clipboard size={15} color="var(--accent-500)" />
                 <span>{formatShortcut('粘贴 (Ctrl+V)')}</span>
               </div>
             </button>
 
-            <button
-              type="button"
-              style={btnStyle}
-              onClick={async () => {
-                onClose();
-                try {
-                  const text = await navigator.clipboard.readText();
-                  if (text) {
-                    if (isInTable(editor.state) && applyTablePaste(editor, text)) {
-                      return;
-                    }
-                    editor.chain().focus().insertContent({ type: 'text', text }).run();
-                  }
-                } catch {
-                  document.execCommand('paste');
-                }
-              }}
-              onMouseEnter={(e) => {
-                setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
-              }}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <ClipboardType size={15} color="var(--accent-500, #3b82f6)" />
-                <span>{formatShortcut('纯文本粘贴 (Ctrl+Shift+V)')}</span>
-              </div>
-            </button>
+            {plainTextCopyButton}
 
             <div style={dividerStyle} />
 
@@ -688,17 +712,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-heading'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-heading', e)}
               onClick={(e) => handleOpenSubmenu('insert-heading', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Heading size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Heading size={15} color="var(--accent-500)" />
                 <span>插入标题 (H1~H6)</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 2. 插入列表 (带二级子菜单) */}
@@ -708,17 +732,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-list'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-list', e)}
               onClick={(e) => handleOpenSubmenu('insert-list', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <List size={15} />
                 <span>插入列表</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 3. 插入代码块 */}
@@ -731,12 +755,12 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <FileCode size={15} color="var(--accent-strong, #6366f1)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <FileCode size={15} color="var(--accent-strong)" />
                 <span>插入代码块</span>
               </div>
             </button>
@@ -748,17 +772,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-alert'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-alert', e)}
               onClick={(e) => handleOpenSubmenu('insert-alert', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Boxes size={15} color="#3b82f6" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Boxes size={15} color="var(--nb-blue-500)" />
                 <span>插入 GitHub 提示块</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 4.5 高亮块 (带二级子菜单：常用颜色与图标组合) */}
@@ -768,17 +792,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-callout'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-callout', e)}
               onClick={(e) => handleOpenSubmenu('insert-callout', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Highlighter size={15} color="#8b5cf6" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Highlighter size={15} color="var(--nb-purple-500)" />
                 <span>插入高亮块</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 5. 插入引用块 */}
@@ -791,11 +815,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Quote size={15} />
                 <span>插入引用块</span>
               </div>
@@ -811,11 +835,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <ListCollapse size={15} />
                 <span>插入折叠块</span>
               </div>
@@ -828,17 +852,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-columns'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-columns', e)}
               onClick={(e) => handleOpenSubmenu('insert-columns', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Columns2 size={15} />
                 <span>插入分栏</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 5.2 插入 HTML 块（插入后直接进入源码编辑） */}
@@ -851,11 +875,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <SquareCode size={15} />
                 <span>插入 HTML 块</span>
               </div>
@@ -868,17 +892,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-table'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-table', e)}
               onClick={(e) => handleOpenSubmenu('insert-table', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Table size={15} />
                 <span>插入表格</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             <div style={dividerStyle} />
@@ -890,17 +914,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-math'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-math', e)}
               onClick={(e) => handleOpenSubmenu('insert-math', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Sigma size={15} />
                 <span>插入公式与图表</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 8. 图片 (带二级子菜单：本地图片 / 网络图片) */}
@@ -910,17 +934,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-image'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-image', e)}
               onClick={(e) => handleOpenSubmenu('insert-image', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <ImageIcon size={15} />
                 <span>插入图片</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 8.5 表情 (带二级表情面板，写入标准 Unicode 表情) */}
@@ -930,17 +954,17 @@ export function EditorContextMenu({
                 ...btnStyle,
                 background:
                   activeSubmenu === 'insert-emoji'
-                    ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                    ? 'var(--editor-selection-background)'
                     : 'transparent',
               }}
               onMouseEnter={(e) => handleOpenSubmenu('insert-emoji', e)}
               onClick={(e) => handleOpenSubmenu('insert-emoji', e)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Smile size={15} color="#f59e0b" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Smile size={15} color="var(--nb-amber-500)" />
                 <span>插入表情</span>
               </div>
-              <ChevronRight size={14} style={{ opacity: 0.6 }} />
+              <ChevronRight size={14} style={{ opacity: 'var(--opacity-0-6)' }} />
             </button>
 
             {/* 9. 插入超链接 */}
@@ -961,12 +985,12 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Link size={15} color="var(--accent-500, #3b82f6)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                <Link size={15} color="var(--accent-500)" />
                 <span>插入超链接</span>
               </div>
             </button>
@@ -982,12 +1006,12 @@ export function EditorContextMenu({
                 }}
                 onMouseEnter={(e) => {
                   setActiveSubmenu(null);
-                  e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                  e.currentTarget.style.background = 'var(--editor-selection-background)';
                 }}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Waypoints size={15} color="#8b5cf6" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                  <Waypoints size={15} color="var(--nb-purple-500)" />
                   <span>插入双向链接…</span>
                 </div>
               </button>
@@ -1003,11 +1027,11 @@ export function EditorContextMenu({
               }}
               onMouseEnter={(e) => {
                 setActiveSubmenu(null);
-                e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                e.currentTarget.style.background = 'var(--editor-selection-background)';
               }}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 <Minus size={15} />
                 <span>插入水平分割线 (---)</span>
               </div>
@@ -1025,14 +1049,14 @@ export function EditorContextMenu({
             position: 'fixed',
             top: submenuTop ?? submenuPos.top,
             left: submenuPos.left,
-            zIndex: 10000,
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-            borderRadius: 8,
-            boxShadow: '0 10px 30px -4px rgba(0, 0, 0, 0.18), 0 3px 8px -2px rgba(0, 0, 0, 0.08)',
-            backdropFilter: 'blur(8px)',
-            padding: '5px',
-            minWidth: 170,
+            zIndex: 'var(--z-10000)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: '0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a18), 0 var(--dim-3) var(--dim-8) calc(var(--dim-2) * -1) var(--nb-black-a08)',
+            backdropFilter: 'blur(var(--dim-8))',
+            padding: 'var(--dim-5)',
+            minWidth: 'var(--dim-170)',
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -1049,8 +1073,8 @@ export function EditorContextMenu({
                     disabled={!alignable}
                     style={{
                       ...btnStyle,
-                      background: active ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))' : 'transparent',
-                      color: active ? 'var(--accent-500, #3b82f6)' : btnStyle.color,
+                      background: active ? 'var(--editor-selection-background)' : 'transparent',
+                      color: active ? 'var(--accent-500)' : btnStyle.color,
                       opacity: alignable ? 1 : 0.4,
                       cursor: alignable ? 'pointer' : 'not-allowed',
                     }}
@@ -1060,13 +1084,13 @@ export function EditorContextMenu({
                       onClose();
                     }}
                     onMouseEnter={(e) => {
-                      if (alignable && !active) e.currentTarget.style.background = 'var(--editor-hover-background, rgba(0, 0, 0, 0.06))';
+                      if (alignable && !active) e.currentTarget.style.background = 'var(--editor-hover-background)';
                     }}
                     onMouseLeave={(e) => {
                       if (!active) e.currentTarget.style.background = 'transparent';
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                       <Icon size={15} />
                       <span>{label}</span>
                     </div>
@@ -1088,11 +1112,11 @@ export function EditorContextMenu({
                       onClose();
                     }}
                     onMouseEnter={(e) => {
-                      if (enabled) e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))';
+                      if (enabled) e.currentTarget.style.background = 'var(--editor-selection-background)';
                     }}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                       <Icon size={15} />
                       <span>{label}</span>
                     </div>
@@ -1113,8 +1137,8 @@ export function EditorContextMenu({
                     type="button"
                     style={{
                       ...btnStyle,
-                      background: active ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))' : 'transparent',
-                      color: active ? 'var(--accent-500, #3b82f6)' : btnStyle.color,
+                      background: active ? 'var(--editor-selection-background)' : 'transparent',
+                      color: active ? 'var(--accent-500)' : btnStyle.color,
                     }}
                     onClick={() => {
                       // 切换行内标记，保持选区后关闭菜单
@@ -1122,13 +1146,13 @@ export function EditorContextMenu({
                       onClose();
                     }}
                     onMouseEnter={(e) => {
-                      if (!active) e.currentTarget.style.background = 'var(--editor-hover-background, rgba(0, 0, 0, 0.06))';
+                      if (!active) e.currentTarget.style.background = 'var(--editor-hover-background)';
                     }}
                     onMouseLeave={(e) => {
                       if (!active) e.currentTarget.style.background = 'transparent';
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                       <item.Icon size={15} />
                       <span>{formatShortcut(item.label)}</span>
                     </div>
@@ -1141,10 +1165,10 @@ export function EditorContextMenu({
           {/* 二级：字体颜色挑选 */}
           {activeSubmenu === 'selection-text-color' && (
             <>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--editor-text-secondary, #64748b)', padding: '4px 8px' }}>
+              <div style={{ fontSize: 'var(--text-11)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-secondary)', padding: 'var(--dim-4) var(--dim-8)' }}>
                 选择字体颜色
               </div>
-              {TEXT_COLORS.map((item) => (
+              {textColorItems.map((item) => (
                 <button
                   key={item.color}
                   type="button"
@@ -1154,14 +1178,14 @@ export function EditorContextMenu({
                     editor.chain().focus().setMark('textColor', { color: item.color }).run();
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     {/* 色样与正文同样在深色主题下提亮 */}
                     <span
                       className="nb-text-color-preview"
-                      style={{ '--nb-text-color': item.color, width: 15, textAlign: 'center', fontWeight: 700 } as React.CSSProperties}
+                      style={{ '--nb-text-color': item.color, width: 'var(--dim-15)', textAlign: 'center', fontWeight: 'var(--weight-700)' } as React.CSSProperties}
                     >
                       A
                     </span>
@@ -1178,10 +1202,10 @@ export function EditorContextMenu({
                   editor.chain().focus().unsetMark('textColor').run();
                   onClose();
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--editor-text-secondary, #64748b)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)', color: 'var(--editor-text-secondary)' }}>
                   <X size={14} />
                   <span>默认颜色</span>
                 </div>
@@ -1192,10 +1216,10 @@ export function EditorContextMenu({
           {/* 二级：高亮颜色挑选 */}
           {activeSubmenu === 'selection-highlight' && (
             <>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--editor-text-secondary, #64748b)', padding: '4px 8px' }}>
+              <div style={{ fontSize: 'var(--text-11)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-secondary)', padding: 'var(--dim-4) var(--dim-8)' }}>
                 选择高亮颜色
               </div>
-              {HIGHLIGHT_COLOR_OPTIONS.map((item) => (
+              {highlightColorItems.map((item) => (
                 <button
                   key={item.color}
                   type="button"
@@ -1205,17 +1229,17 @@ export function EditorContextMenu({
                     editor.chain().focus().toggleHighlight({ color: item.color }).run();
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     <div
                       style={{
-                        width: 14,
-                        height: 14,
-                        borderRadius: 3,
+                        width: 'var(--dim-14)',
+                        height: 'var(--dim-14)',
+                        borderRadius: 'var(--radius-xs)',
                         background: item.color,
-                        border: `1px solid ${item.border}`,
+                        border: `var(--dim-1) solid ${item.border}`,
                       }}
                     />
                     <span>{item.name}</span>
@@ -1231,10 +1255,10 @@ export function EditorContextMenu({
                   editor.chain().focus().unsetHighlight().run();
                   onClose();
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--editor-text-secondary, #64748b)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)', color: 'var(--editor-text-secondary)' }}>
                   <X size={14} />
                   <span>清除高亮</span>
                 </div>
@@ -1245,7 +1269,7 @@ export function EditorContextMenu({
           {/* 二级：标题 H1~H6 */}
           {(activeSubmenu === 'selection-heading' || activeSubmenu === 'insert-heading') && (
             <>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--editor-text-secondary, #64748b)', padding: '4px 8px' }}>
+              <div style={{ fontSize: 'var(--text-11)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text-secondary)', padding: 'var(--dim-4) var(--dim-8)' }}>
                 标题层级 (H1~H6)
               </div>
               {[
@@ -1265,10 +1289,10 @@ export function EditorContextMenu({
                     editor.chain().focus().toggleHeading({ level: h.level }).run();
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     {h.icon}
                     <span>{h.label}</span>
                   </div>
@@ -1288,11 +1312,11 @@ export function EditorContextMenu({
                   editor.chain().focus().toggleTaskList().run();
                   onClose();
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <ListTodo size={15} color="#10b981" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                  <ListTodo size={15} color="var(--nb-emerald-500)" />
                   <span>任务清单 (Todo)</span>
                 </div>
               </button>
@@ -1305,10 +1329,10 @@ export function EditorContextMenu({
                   editor.chain().focus().toggleBulletList().run();
                   onClose();
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                   <List size={15} />
                   <span>无序列表 (Bullet)</span>
                 </div>
@@ -1322,10 +1346,10 @@ export function EditorContextMenu({
                   editor.chain().focus().toggleOrderedList().run();
                   onClose();
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                   <ListOrdered size={15} />
                   <span>有序列表 (Numbered)</span>
                 </div>
@@ -1351,13 +1375,13 @@ export function EditorContextMenu({
                     }
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     <CalloutPresetIcon preset={preset} />
                     <span>{preset.label}</span>
-                    <span style={{ fontSize: 12, opacity: 0.55 }}>{preset.description.split(' · ')[0]}</span>
+                    <span style={{ fontSize: 'var(--text-12)', opacity: 'var(--opacity-0-55)' }}>{preset.description.split(' · ')[0]}</span>
                   </div>
                 </button>
               ))}
@@ -1392,10 +1416,10 @@ export function EditorContextMenu({
                     insertColumnsBlock(editor, c.count);
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     {c.icon}
                     <span>{c.label}</span>
                   </div>
@@ -1421,10 +1445,10 @@ export function EditorContextMenu({
                     editor.chain().focus().insertTable({ rows: t.rows, cols: t.cols, withHeaderRow: true }).run();
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     <Table size={15} />
                     <span>{t.label}</span>
                   </div>
@@ -1442,13 +1466,13 @@ export function EditorContextMenu({
                 {
                   key: 'mermaid',
                   label: 'Mermaid 流程图表',
-                  icon: <Workflow size={15} color="var(--accent-500, #3b82f6)" />,
+                  icon: <Workflow size={15} color="var(--accent-500)" />,
                   content: { type: 'mermaidBlock', attrs: { code: 'graph TD\n  A[开始] --> B[处理]\n  B --> C[完成]' } },
                 },
                 {
                   key: 'infographic',
                   label: 'Infographic 现代信息图',
-                  icon: <BarChart3 size={15} color="#3b82f6" />,
+                  icon: <BarChart3 size={15} color="var(--nb-blue-500)" />,
                   // 默认信息图模板与工具栏、斜杠命令共用
                   content: { type: 'infographicBlock', attrs: { code: DEFAULT_INFOGRAPHIC_CODE } },
                 },
@@ -1461,10 +1485,10 @@ export function EditorContextMenu({
                     editor.chain().focus().insertContent(m.content).run();
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     {m.icon}
                     <span>{m.label}</span>
                   </div>
@@ -1487,10 +1511,10 @@ export function EditorContextMenu({
                     void insertLocalImageWithDialog(editor, docKey);
                   }
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                   <ImageIcon size={15} />
                   <span>本地图片</span>
                 </div>
@@ -1507,11 +1531,11 @@ export function EditorContextMenu({
                     }
                   });
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <ImageIcon size={15} style={{ opacity: 0.7 }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+                  <ImageIcon size={15} style={{ opacity: 'var(--opacity-0-7)' }} />
                   <span>网络图片</span>
                 </div>
               </button>
@@ -1537,10 +1561,10 @@ export function EditorContextMenu({
                     }
                     onClose();
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))')}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--editor-selection-background)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                     {a.icon}
                     <span>{a.label}</span>
                   </div>

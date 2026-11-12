@@ -35,16 +35,31 @@ pub fn setup(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(debug_assertions)]
     if let Some(window) = app.get_webview_window("nb-main") {
         // 开发版可与安装版并行运行，标题必须明确区分，避免调试时误操作正式实例。
-        let _ = window.set_title("NoteBoard Dev");
+        let _ = window.set_title("Loomark Dev");
     }
 
     // 按设置启用关闭到托盘与全局唤起快捷键（数据目录已初始化，可读取设置）
     #[cfg(desktop)]
     {
-        let settings = crate::settings::model::load();
+        let mut settings = crate::settings::model::load();
+        // 旧配置/手工编辑可能已开启 MCP 但没有令牌；启动时补齐并落盘，避免服务因缺少鉴权无法启动。
+        let mut mcp_changed = false;
+        if settings.mcp.port == 0 {
+            settings.mcp.port = 39731;
+            mcp_changed = true;
+        }
+        if settings.mcp.enabled && settings.mcp.token.trim().is_empty() {
+            settings.mcp.token = uuid::Uuid::new_v4().to_string();
+            mcp_changed = true;
+        }
+        if mcp_changed {
+            let _ = crate::settings::model::save(&mut settings);
+        }
         crate::window::apply_system_settings(app.handle(), &settings);
         // 本地文件搜索：开启时在后台延迟数秒加载索引快照并与磁盘对账
         crate::local_search::init(app.handle(), &settings.local_search);
+        // MCP 文档编辑服务：默认关闭；开启后只监听 127.0.0.1
+        crate::mcp::init(app.handle(), &settings.mcp);
     }
 
     // 多端同步后台调度线程（进程唯一；启动后延迟数秒在后台同步，不阻塞窗口显示）

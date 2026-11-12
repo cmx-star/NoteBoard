@@ -169,7 +169,7 @@ pub fn open_staging_directory() -> Result<String, String> {
 pub fn stash_documents(documents: Vec<StagingDocument>) -> Result<Vec<StagingResult>, String> {
     let _write_guard = STAGING_WRITE_LOCK
         .lock()
-        .map_err(|_| "暂存写入锁已损坏，请重启 NoteBoard".to_string())?;
+        .map_err(|_| "暂存写入锁已损坏，请重启 Loomark".to_string())?;
     let staging_dir = configured_staging_directory();
     std::fs::create_dir_all(&staging_dir)
         .map_err(|error| format!("创建暂存目录失败：{}", error))?;

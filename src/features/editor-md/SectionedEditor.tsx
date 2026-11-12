@@ -61,14 +61,14 @@ export function SectionedEditor({ docKey, content }: SectionedEditorProps) {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: 'var(--pct-100)' }}>
       {/* 分段模式横幅 */}
       <div
         style={{
-          padding: '8px 12px',
+          padding: 'var(--dim-8) var(--dim-12)',
           background: 'var(--warning-50)',
-          borderBottom: '1px solid var(--warning-200)',
-          fontSize: 13,
+          borderBottom: 'var(--dim-1) solid var(--warning-200)',
+          fontSize: 'var(--text-13)',
           color: 'var(--editor-text)',
           flexShrink: 0,
         }}
@@ -106,10 +106,10 @@ export function SectionedEditor({ docKey, content }: SectionedEditorProps) {
                   position: 'absolute',
                   top: 0,
                   left: 0,
-                  width: '100%',
+                  width: 'var(--pct-100)',
                   transform: `translateY(${virtualRow.start}px)`,
-                  padding: '8px 24px',
-                  borderBottom: '1px solid var(--editor-border)',
+                  padding: 'var(--dim-8) var(--dim-24)',
+                  borderBottom: 'var(--dim-1) solid var(--editor-border)',
                   background: isActive ? 'var(--editor-surface)' : 'var(--cm-background)',
                 }}
                 onClick={() => setActiveSection(virtualRow.index)}
@@ -117,9 +117,9 @@ export function SectionedEditor({ docKey, content }: SectionedEditorProps) {
                 {/* 段标记 */}
                 <div
                   style={{
-                    fontSize: 11,
+                    fontSize: 'var(--text-11)',
                     color: 'var(--editor-text-muted)',
-                    marginBottom: 4,
+                    marginBottom: 'var(--dim-4)',
                     userSelect: 'none',
                   }}
                 >
@@ -135,7 +135,7 @@ export function SectionedEditor({ docKey, content }: SectionedEditorProps) {
                     wordBreak: 'break-word',
                     color: isActive ? 'var(--editor-text)' : 'var(--editor-text-muted)',
                     opacity: isActive ? 1 : 0.7,
-                    minHeight: 40,
+                    minHeight: 'var(--dim-40)',
                     cursor: 'text',
                   }}
                   contentEditable={isActive}

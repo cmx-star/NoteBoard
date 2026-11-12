@@ -7,11 +7,11 @@
 /* ── 全局基础 ── */
 
 [data-platform='mobile'] {
-  --nb-m-topbar-h: 52px;
-  --nb-m-format-bar-h: 46px;
-  --nb-m-safe-top: env(safe-area-inset-top, 0px);
-  --nb-m-safe-bottom: env(safe-area-inset-bottom, 0px);
-  --ui-font-size: 15px;
+  --nb-m-topbar-h: var(--dim-52);
+  --nb-m-format-bar-h: var(--dim-46);
+  --nb-m-safe-top: env(safe-area-inset-top, var(--dim-0));
+  --nb-m-safe-bottom: env(safe-area-inset-bottom, var(--dim-0));
+  --ui-font-size: var(--dim-15);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -44,11 +44,11 @@ html[data-platform='mobile'] {
 /* 原本仅悬停显示的控件在触屏上常显（大纲行操作、甘特图拖拽手柄） */
 @media (hover: none) {
   [data-platform='mobile'] .nb-outliner-row .nb-outliner-actions {
-    opacity: 1 !important;
+    opacity: var(--opacity-1) !important;
     pointer-events: auto !important;
   }
   [data-platform='mobile'] .nb-bitable-gantt-bar-handle {
-    opacity: 1 !important;
+    opacity: var(--opacity-1) !important;
   }
 }
 
@@ -92,12 +92,12 @@ html[data-platform='mobile'] {
 .nb-m-topbar {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--dim-2);
   height: var(--nb-m-topbar-h);
   min-height: var(--nb-m-topbar-h);
-  padding: 0 4px;
+  padding: 0 var(--dim-4);
   background: var(--titlebar-bg, var(--editor-surface));
-  border-bottom: 1px solid var(--editor-border);
+  border-bottom: var(--dim-1) solid var(--editor-border);
   user-select: none;
 }
 
@@ -107,22 +107,22 @@ html[data-platform='mobile'] {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4px 2px;
+  padding: var(--dim-4) var(--dim-2);
   border-radius: var(--radius-md);
   transition: background var(--transition-fast);
 }
 
 .nb-m-topbar-title.has-padding {
-  padding-left: 12px;
+  padding-left: var(--dim-12);
 }
 
 .nb-m-topbar-title.is-clickable:active {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.08));
+  background: var(--toolbar-active);
 }
 
 .nb-m-topbar-main {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--dim-16);
+  font-weight: var(--weight-600);
   color: var(--editor-heading, var(--editor-text));
   white-space: nowrap;
   overflow: hidden;
@@ -130,7 +130,7 @@ html[data-platform='mobile'] {
 }
 
 .nb-m-topbar-sub {
-  font-size: 11px;
+  font-size: var(--text-11);
   color: var(--editor-text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -140,22 +140,22 @@ html[data-platform='mobile'] {
 .nb-m-topbar-actions {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--dim-2);
 }
 
 .nb-m-brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 650;
-  letter-spacing: 0.2px;
+  gap: var(--dim-8);
+  font-weight: var(--weight-650);
+  letter-spacing: var(--dim-0-2);
 }
 
 .nb-m-doc-title {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  max-width: 100%;
+  gap: var(--dim-6);
+  max-width: var(--pct-100);
 }
 
 .nb-m-doc-title-text {
@@ -169,8 +169,8 @@ html[data-platform='mobile'] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: var(--dim-44);
+  height: var(--dim-44);
   flex-shrink: 0;
   border: none;
   border-radius: var(--radius-lg);
@@ -181,12 +181,12 @@ html[data-platform='mobile'] {
 }
 
 .nb-m-icon-btn:active:not(:disabled) {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.08));
-  transform: scale(0.92);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-92));
 }
 
 .nb-m-icon-btn:disabled {
-  opacity: 0.4;
+  opacity: var(--opacity-0-4);
 }
 
 .nb-m-icon-btn.is-active {
@@ -198,75 +198,75 @@ html[data-platform='mobile'] {
 }
 
 .nb-m-text-btn {
-  min-height: 40px;
-  padding: 0 16px;
+  min-height: var(--dim-40);
+  padding: 0 var(--dim-16);
   border: none;
   border-radius: var(--radius-lg);
   background: transparent;
   color: var(--editor-text-secondary, var(--editor-text));
-  font-size: 15px;
-  font-weight: 500;
+  font-size: var(--dim-15);
+  font-weight: var(--weight-500);
   cursor: pointer;
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-m-text-btn:active:not(:disabled) {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.08));
-  transform: scale(0.96);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-96));
 }
 
 .nb-m-text-btn.is-primary {
   color: var(--accent-strong);
-  font-weight: 600;
+  font-weight: var(--weight-600);
 }
 
 .nb-m-text-btn.is-danger {
-  color: var(--error-500, #ef4444);
-  font-weight: 600;
+  color: var(--error-500);
+  font-weight: var(--weight-600);
 }
 
 .nb-m-pill-btn {
-  margin-top: 4px;
-  min-height: 40px;
-  padding: 0 20px;
-  border: 1px solid var(--editor-border);
-  border-radius: 999px;
+  margin-top: var(--dim-4);
+  min-height: var(--dim-40);
+  padding: 0 var(--dim-20);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-pill);
   background: var(--editor-surface);
   color: var(--accent-strong);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--dim-14);
+  font-weight: var(--weight-500);
   transition: transform var(--transition-fast), background var(--transition-fast);
 }
 
 .nb-m-pill-btn:active {
-  transform: scale(0.96);
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.08));
+  transform: scale(var(--scale-0-96));
+  background: var(--toolbar-active);
 }
 
 /* ── 分段控件 ── */
 
 .nb-m-segmented {
   display: flex;
-  gap: 4px;
-  margin: 10px 12px 6px;
-  padding: 3px;
+  gap: var(--dim-4);
+  margin: var(--dim-10) var(--dim-12) var(--dim-6);
+  padding: var(--dim-3);
   border-radius: var(--radius-lg);
-  background: var(--toolbar-hover, rgba(0, 0, 0, 0.05));
+  background: var(--toolbar-hover);
 }
 
 .nb-m-segment {
   flex: 1;
-  min-height: 36px;
+  min-height: var(--dim-36);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--dim-6);
   border: none;
-  border-radius: calc(var(--radius-lg) - 2px);
+  border-radius: calc(var(--radius-lg) - var(--dim-2));
   background: transparent;
   color: var(--editor-text-secondary, var(--editor-text));
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--dim-14);
+  font-weight: var(--weight-500);
   transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
@@ -281,18 +281,18 @@ html[data-platform='mobile'] {
 
 .nb-m-segment {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-1);
 }
 
 .nb-m-segment-indicator {
   position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  border-radius: calc(var(--radius-lg) - 2px);
+  top: var(--dim-3);
+  bottom: var(--dim-3);
+  left: var(--dim-3);
+  border-radius: calc(var(--radius-lg) - var(--dim-2));
   background: var(--editor-bg);
   box-shadow: var(--shadow-sm);
-  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform var(--duration-320) cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
@@ -308,14 +308,14 @@ html[data-platform='mobile'] {
 
 .nb-m-pager-track {
   display: flex;
-  height: 100%;
+  height: var(--pct-100);
   will-change: transform;
 }
 
 .nb-m-pager-page {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: var(--pct-100);
   min-width: 0;
   overflow: hidden;
 }
@@ -341,18 +341,18 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-segment:active:not(.is-active) {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.08));
+  background: var(--toolbar-active);
 }
 
 .nb-m-count {
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  border-radius: 9px;
+  min-width: var(--dim-18);
+  height: var(--dim-18);
+  padding: 0 var(--dim-5);
+  border-radius: var(--radius-lg);
   background: var(--accent-strong);
-  color: #fff;
-  font-size: 11px;
-  line-height: 18px;
+  color: var(--nb-white);
+  font-size: var(--text-11);
+  line-height: var(--dim-18);
   text-align: center;
 }
 
@@ -361,8 +361,8 @@ html[data-platform='mobile'] body {
 .nb-m-location {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 8px 2px 12px;
+  gap: var(--dim-8);
+  padding: var(--dim-4) var(--dim-8) var(--dim-2) var(--dim-12);
   /* 位置标签较多（我的笔记 / 手机存储 / 同步文件夹）时整行横向滚动，标签文字不折行 */
   overflow-x: auto;
   scrollbar-width: none;
@@ -384,39 +384,39 @@ html[data-platform='mobile'] body {
 .nb-m-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 34px;
-  padding: 0 12px;
-  border: 1px solid var(--editor-border);
-  border-radius: 999px;
+  gap: var(--dim-6);
+  min-height: var(--dim-34);
+  padding: 0 var(--dim-12);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--editor-text-secondary, var(--editor-text));
-  font-size: 13px;
+  font-size: var(--dim-13);
   white-space: nowrap;
   flex-shrink: 0;
   transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-m-chip.is-active {
-  border-color: color-mix(in srgb, var(--accent-strong) 45%, transparent);
-  background: color-mix(in srgb, var(--accent-strong) 10%, transparent);
+  border-color: color-mix(in srgb, var(--accent-strong) var(--pct-45), transparent);
+  background: color-mix(in srgb, var(--accent-strong) var(--pct-10), transparent);
   color: var(--accent-strong);
-  font-weight: 500;
+  font-weight: var(--weight-500);
 }
 
 .nb-m-chip:active {
-  transform: scale(0.96);
+  transform: scale(var(--scale-0-96));
 }
 
 .nb-m-chip-warn {
-  color: var(--warning-500, #f59e0b);
+  color: var(--warning-500);
 }
 
 .nb-m-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding: 4px 12px 6px;
+  gap: var(--dim-2);
+  padding: var(--dim-4) var(--dim-12) var(--dim-6);
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
@@ -437,23 +437,23 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-crumb {
-  min-height: 32px;
-  padding: 0 6px;
+  min-height: var(--dim-32);
+  padding: 0 var(--dim-6);
   border: none;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--editor-text-muted);
-  font-size: 13px;
+  font-size: var(--dim-13);
   transition: background var(--transition-fast);
 }
 
 .nb-m-crumb.is-current {
   color: var(--editor-text);
-  font-weight: 600;
+  font-weight: var(--weight-600);
 }
 
 .nb-m-crumb:active {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.08));
+  background: var(--toolbar-active);
 }
 
 /* ── 列表 ── */
@@ -463,37 +463,37 @@ html[data-platform='mobile'] body {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-bottom: calc(96px + var(--nb-m-safe-bottom));
+  padding-bottom: calc(var(--dim-96) + var(--nb-m-safe-bottom));
 }
 
 .nb-m-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-height: 60px;
-  padding: 8px 8px 8px 16px;
+  gap: var(--dim-14);
+  min-height: var(--dim-60);
+  padding: var(--dim-8) var(--dim-8) var(--dim-8) var(--dim-16);
   cursor: pointer;
   user-select: none;
   transition: background var(--transition-fast);
 }
 
 .nb-m-row:active {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.06));
+  background: var(--toolbar-active);
 }
 
 .nb-m-row + .nb-m-row {
-  border-top: 1px solid color-mix(in srgb, var(--editor-border) 55%, transparent);
+  border-top: var(--dim-1) solid color-mix(in srgb, var(--editor-border) var(--pct-55), transparent);
 }
 
 .nb-m-row-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: var(--dim-36);
+  height: var(--dim-36);
   flex-shrink: 0;
   border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--editor-text) 5%, transparent);
+  background: color-mix(in srgb, var(--editor-text) var(--pct-5), transparent);
 }
 
 .nb-m-row-text {
@@ -501,14 +501,14 @@ html[data-platform='mobile'] body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--dim-2);
 }
 
 .nb-m-row-title {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 15px;
+  gap: var(--dim-6);
+  font-size: var(--dim-15);
   color: var(--editor-text);
   white-space: nowrap;
   overflow: hidden;
@@ -516,7 +516,7 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-row-meta {
-  font-size: 12px;
+  font-size: var(--text-12);
   color: var(--editor-text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -525,52 +525,52 @@ html[data-platform='mobile'] body {
 
 .nb-m-row-chevron {
   flex-shrink: 0;
-  margin-right: 8px;
+  margin-right: var(--dim-8);
   color: var(--editor-text-muted);
   transition: transform var(--transition-fast);
 }
 
 .nb-m-row-chevron.is-expanded {
-  transform: rotate(90deg);
+  transform: rotate(var(--rotate-90));
 }
 
 .nb-m-badge {
   flex-shrink: 0;
-  padding: 1px 6px;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--accent-strong) 12%, transparent);
+  padding: var(--dim-1) var(--dim-6);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent-strong) var(--pct-12), transparent);
   color: var(--accent-strong);
-  font-size: 10px;
-  font-weight: 500;
+  font-size: var(--dim-10);
+  font-weight: var(--weight-500);
 }
 
 .nb-m-dirty-dot {
   display: inline-block;
   flex-shrink: 0;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--warning-500, #f59e0b);
+  width: var(--dim-7);
+  height: var(--dim-7);
+  border-radius: var(--radius-pill);
+  background: var(--warning-500);
 }
 
 .nb-m-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 72px 32px;
+  gap: var(--dim-10);
+  padding: var(--dim-72) var(--dim-32);
   color: var(--editor-text-muted);
-  font-size: 14px;
+  font-size: var(--dim-14);
   text-align: center;
 }
 
 .nb-m-empty svg {
-  opacity: 0.45;
+  opacity: var(--opacity-0-45);
 }
 
 .nb-m-empty-sub {
-  font-size: 12px;
-  opacity: 0.85;
+  font-size: var(--text-12);
+  opacity: var(--opacity-0-85);
   word-break: break-all;
 }
 
@@ -578,24 +578,24 @@ html[data-platform='mobile'] body {
 
 .nb-m-fab {
   position: absolute;
-  right: 20px;
-  bottom: calc(24px + var(--nb-m-safe-bottom));
-  z-index: 20;
+  right: var(--dim-20);
+  bottom: calc(var(--dim-24) + var(--nb-m-safe-bottom));
+  z-index: var(--z-20);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
+  width: var(--dim-56);
+  height: var(--dim-56);
   border: none;
-  border-radius: 18px;
+  border-radius: var(--radius-2xl);
   background: var(--accent-strong);
-  color: #fff;
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent-strong) 38%, transparent), var(--shadow-md);
+  color: var(--nb-white);
+  box-shadow: 0 var(--dim-6) var(--dim-18) color-mix(in srgb, var(--accent-strong) var(--pct-38), transparent), var(--shadow-md);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .nb-m-fab:active {
-  transform: scale(0.92);
+  transform: scale(var(--scale-0-92));
   box-shadow: var(--shadow-sm);
 }
 
@@ -604,18 +604,18 @@ html[data-platform='mobile'] body {
 .nb-m-create-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  padding: 4px 12px 8px;
+  gap: var(--dim-8);
+  padding: var(--dim-4) var(--dim-12) var(--dim-8);
 }
 
 .nb-m-create-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  min-height: 92px;
-  padding: 12px 6px 10px;
-  border: 1px solid color-mix(in srgb, var(--editor-border) 70%, transparent);
+  gap: var(--dim-4);
+  min-height: var(--dim-92);
+  padding: var(--dim-12) var(--dim-6) var(--dim-10);
+  border: var(--dim-1) solid color-mix(in srgb, var(--editor-border) var(--pct-70), transparent);
   border-radius: var(--radius-xl);
   background: var(--editor-bg);
   color: var(--editor-text);
@@ -624,54 +624,54 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-create-card:active {
-  transform: scale(0.95);
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.06));
+  transform: scale(var(--scale-0-95));
+  background: var(--toolbar-active);
 }
 
 .nb-m-create-icon {
   display: inline-flex;
-  margin-bottom: 2px;
+  margin-bottom: var(--dim-2);
 }
 
 .nb-m-create-label {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--dim-13);
+  font-weight: var(--weight-500);
 }
 
 .nb-m-create-desc {
-  font-size: 10.5px;
+  font-size: var(--dim-10-5);
   color: var(--editor-text-muted);
-  line-height: 1.3;
+  line-height: var(--leading-1-3);
 }
 
 /* 「更多格式」折叠行：展开后在下方追加一组网格 */
 .nb-m-create-more {
   display: flex;
   align-items: center;
-  gap: 6px;
-  width: calc(100% - 24px);
-  margin: 2px 12px 8px;
-  padding: 10px 12px;
-  border: 1px dashed var(--editor-border);
+  gap: var(--dim-6);
+  width: calc(var(--pct-100) - var(--dim-24));
+  margin: var(--dim-2) var(--dim-12) var(--dim-8);
+  padding: var(--dim-10) var(--dim-12);
+  border: var(--dim-1) dashed var(--editor-border);
   border-radius: var(--radius-xl);
   background: transparent;
   color: var(--editor-text-secondary, var(--editor-text));
-  font-size: 13px;
+  font-size: var(--dim-13);
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-m-create-more:active {
-  transform: scale(0.98);
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.06));
+  transform: scale(var(--scale-0-98));
+  background: var(--toolbar-active);
 }
 
 .nb-m-create-more-count {
-  padding: 0 6px;
-  border-radius: 999px;
+  padding: 0 var(--dim-6);
+  border-radius: var(--radius-pill);
   background: var(--toolbar-hover);
   color: var(--editor-text-muted);
-  font-size: 11px;
-  line-height: 18px;
+  font-size: var(--text-11);
+  line-height: var(--dim-18);
 }
 
 .nb-m-create-more-chevron {
@@ -681,35 +681,35 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-create-more.is-open .nb-m-create-more-chevron {
-  transform: rotate(180deg);
+  transform: rotate(var(--rotate-180));
 }
 
 .nb-m-create-extra {
-  border-top: 1px solid var(--editor-border);
-  margin-top: 4px;
-  padding-top: 4px;
+  border-top: var(--dim-1) solid var(--editor-border);
+  margin-top: var(--dim-4);
+  padding-top: var(--dim-4);
 }
 
 /* ── 底部面板 ── */
 
 @keyframes nb-m-sheet-in {
-  from { transform: translateY(100%); }
+  from { transform: translateY(var(--pct-100)); }
   to { transform: translateY(0); }
 }
 
 @keyframes nb-m-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: var(--opacity-0); }
+  to { opacity: var(--opacity-1); }
 }
 
 .nb-m-sheet-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1200;
+  z-index: var(--z-1200);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background: rgba(0, 0, 0, 0.38);
+  background: var(--nb-black-a38);
   animation: nb-m-fade-in var(--transition-normal) ease-out;
 }
 
@@ -717,11 +717,11 @@ html[data-platform='mobile'] body {
   display: flex;
   flex-direction: column;
   max-height: 85dvh;
-  padding-bottom: calc(8px + var(--nb-m-safe-bottom));
-  border-radius: 18px 18px 0 0;
+  padding-bottom: calc(var(--dim-8) + var(--nb-m-safe-bottom));
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   background: var(--editor-surface);
-  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
-  animation: nb-m-sheet-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 calc(var(--dim-8) * -1) var(--dim-30) var(--nb-black-a18);
+  animation: nb-m-sheet-in var(--duration-220) var(--ease-sheet);
 }
 
 .nb-m-sheet.is-tall {
@@ -729,17 +729,17 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-sheet-grip {
-  width: 36px;
-  height: 4px;
-  margin: 8px auto 4px;
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--editor-text) 22%, transparent);
+  width: var(--dim-36);
+  height: var(--dim-4);
+  margin: var(--dim-8) auto var(--dim-4);
+  border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--editor-text) var(--pct-22), transparent);
 }
 
 .nb-m-sheet-title {
-  padding: 6px 20px 10px;
-  font-size: 15px;
-  font-weight: 600;
+  padding: var(--dim-6) var(--dim-20) var(--dim-10);
+  font-size: var(--dim-15);
+  font-weight: var(--weight-600);
   color: var(--editor-heading, var(--editor-text));
   white-space: nowrap;
   overflow: hidden;
@@ -756,46 +756,46 @@ html[data-platform='mobile'] body {
 .nb-m-action-list {
   display: flex;
   flex-direction: column;
-  padding: 0 8px;
+  padding: 0 var(--dim-8);
 }
 
 .nb-m-action {
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-height: 52px;
-  padding: 6px 12px;
+  gap: var(--dim-14);
+  min-height: var(--dim-52);
+  padding: var(--dim-6) var(--dim-12);
   border: none;
   border-radius: var(--radius-lg);
   background: transparent;
   color: var(--editor-text);
-  font-size: 15px;
+  font-size: var(--dim-15);
   text-align: left;
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .nb-m-action:active:not(:disabled) {
-  background: var(--toolbar-active, rgba(0, 0, 0, 0.07));
-  transform: scale(0.99);
+  background: var(--toolbar-active);
+  transform: scale(var(--scale-0-99));
 }
 
 .nb-m-action:disabled {
-  opacity: 0.4;
+  opacity: var(--opacity-0-4);
 }
 
 .nb-m-action.is-danger {
-  color: var(--error-500, #ef4444);
+  color: var(--error-500);
 }
 
 .nb-m-action.is-current {
-  background: color-mix(in srgb, var(--accent-strong) 9%, transparent);
+  background: color-mix(in srgb, var(--accent-strong) var(--pct-9), transparent);
 }
 
 .nb-m-action-icon {
   display: inline-flex;
   flex-shrink: 0;
   color: inherit;
-  opacity: 0.85;
+  opacity: var(--opacity-0-85);
 }
 
 .nb-m-action-text {
@@ -807,14 +807,14 @@ html[data-platform='mobile'] body {
 .nb-m-action-label {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--dim-6);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .nb-m-action-desc {
-  font-size: 12px;
+  font-size: var(--text-12);
   color: var(--editor-text-muted);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -822,11 +822,11 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-outline {
-  height: 100%;
+  height: var(--pct-100);
 }
 
 .nb-m-outline > * {
-  height: 100%;
+  height: var(--pct-100);
 }
 
 /* ── 居中对话框 ── */
@@ -834,57 +834,57 @@ html[data-platform='mobile'] body {
 .nb-m-dialog-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1300;
+  z-index: var(--z-1300);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  background: rgba(0, 0, 0, 0.42);
+  padding: var(--space-24);
+  background: var(--nb-black-a42);
   animation: nb-m-fade-in var(--transition-normal) ease-out;
 }
 
 .nb-m-dialog {
-  width: 100%;
-  max-width: 420px;
-  padding: 20px 20px 10px;
-  border-radius: 20px;
+  width: var(--pct-100);
+  max-width: var(--dim-420);
+  padding: var(--dim-20) var(--dim-20) var(--dim-10);
+  border-radius: var(--radius-2xl);
   background: var(--editor-surface);
   box-shadow: var(--shadow-lg);
   color: var(--editor-text);
 }
 
 .nb-m-dialog-title {
-  font-size: 17px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-size: var(--dim-17);
+  font-weight: var(--weight-600);
+  margin-bottom: var(--dim-10);
   color: var(--editor-heading, var(--editor-text));
 }
 
 .nb-m-dialog-desc {
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: var(--dim-14);
+  line-height: var(--leading-1-6);
   color: var(--editor-text-secondary, var(--editor-text));
-  margin-bottom: 10px;
+  margin-bottom: var(--dim-10);
   word-break: break-all;
 }
 
 .nb-m-dialog-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 4px;
-  margin-top: 8px;
+  gap: var(--dim-4);
+  margin-top: var(--dim-8);
 }
 
 .nb-m-input {
-  width: 100%;
-  min-height: 44px;
-  padding: 0 12px;
+  width: var(--pct-100);
+  min-height: var(--dim-44);
+  padding: 0 var(--dim-12);
   box-sizing: border-box;
-  border: 1.5px solid var(--editor-border);
+  border: var(--dim-1-5) solid var(--editor-border);
   border-radius: var(--radius-lg);
   background: var(--editor-bg);
   color: var(--editor-text);
-  font-size: 16px; /* ≥16px 避免部分 WebView 聚焦时自动放大 */
+  font-size: var(--dim-16); /* ≥16px 避免部分 WebView 聚焦时自动放大 */
   outline: none;
   transition: border-color var(--transition-fast);
 }
@@ -894,21 +894,21 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-input.has-error {
-  border-color: var(--error-500, #ef4444);
+  border-color: var(--error-500);
 }
 
 .nb-m-input-error {
-  margin-top: 6px;
-  font-size: 12px;
-  color: var(--error-500, #ef4444);
+  margin-top: var(--dim-6);
+  font-size: var(--text-12);
+  color: var(--error-500);
 }
 
 /* ── 编辑页 ── */
 
 /* 收藏设置复用全局弹窗：键盘弹出时表单可滚动，所有输入和按钮至少留出 44px 触控高度。 */
 [data-platform='mobile'] .nb-add-favorite-dialog {
-  max-height: calc(100dvh - 32px);
-  border-radius: 16px !important;
+  max-height: calc(100dvh - var(--dim-32));
+  border-radius: var(--radius-2xl) !important;
 }
 
 [data-platform='mobile'] .nb-add-favorite-dialog > :first-child {
@@ -924,12 +924,12 @@ html[data-platform='mobile'] body {
 [data-platform='mobile'] .nb-add-favorite-dialog input,
 [data-platform='mobile'] .nb-add-favorite-dialog select,
 [data-platform='mobile'] .nb-add-favorite-dialog button {
-  min-height: 44px;
-  font-size: 16px !important;
+  min-height: var(--dim-44);
+  font-size: var(--dim-16) !important;
 }
 
 [data-platform='mobile'] .nb-add-favorite-dialog button {
-  min-width: 44px;
+  min-width: var(--dim-44);
 }
 
 /* 内联创建行的输入框允许在窄屏缩小，确认与取消按钮保留完整的触控区域。 */
@@ -942,14 +942,14 @@ html[data-platform='mobile'] body {
 }
 
 [data-platform='mobile'] .nb-add-favorite-dialog button:active {
-  transform: scale(0.96) !important;
+  transform: scale(var(--scale-0-96)) !important;
   filter: brightness(0.94);
 }
 
 .nb-m-editor-page {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  z-index: var(--z-10);
   background: var(--editor-bg);
 }
 
@@ -968,8 +968,8 @@ html[data-platform='mobile'] body {
   align-items: center;
   height: var(--nb-m-format-bar-h);
   min-height: var(--nb-m-format-bar-h);
-  padding: 0 6px calc(var(--nb-m-safe-bottom) * 0.6);
-  border-top: 1px solid var(--editor-border);
+  padding: 0 var(--dim-6) calc(var(--nb-m-safe-bottom) * 0.6);
+  border-top: var(--dim-1) solid var(--editor-border);
   background: var(--editor-surface, var(--editor-bg));
   overflow-x: auto;
   overflow-y: hidden;
@@ -988,32 +988,32 @@ html[data-platform='mobile'] body {
 }
 
 .nb-m-format-bar button {
-  min-width: 38px;
-  min-height: 38px;
+  min-width: var(--dim-38);
+  min-height: var(--dim-38);
 }
 
 /* 格式栏下拉菜单：改为贴在格式栏上方的固定面板，避免被横向滚动容器裁剪 */
 [data-platform='mobile'] .nb-m-format-bar .nb-toolbar-dropdown-panel {
   position: fixed !important;
-  left: 8px !important;
-  right: 8px !important;
+  left: var(--dim-8) !important;
+  right: var(--dim-8) !important;
   top: auto !important;
-  bottom: calc(var(--nb-m-format-bar-h) + 8px + var(--nb-m-safe-bottom)) !important;
+  bottom: calc(var(--nb-m-format-bar-h) + var(--dim-8) + var(--nb-m-safe-bottom)) !important;
   max-height: 55dvh;
   overflow-y: auto;
   border-radius: var(--radius-xl) !important;
-  padding: 6px !important;
+  padding: var(--dim-6) !important;
 }
 
 /* 子菜单在固定面板内内联展开（手风琴），不再向侧边弹出 */
 [data-platform='mobile'] .nb-toolbar-submenu {
   position: static !important;
-  margin: 2px 0 4px 18px;
+  margin: var(--dim-2) 0 var(--dim-4) var(--dim-18);
   box-shadow: none !important;
   border: none !important;
-  border-left: 2px solid var(--editor-border) !important;
+  border-left: var(--dim-2) solid var(--editor-border) !important;
   border-radius: 0 !important;
-  padding: 2px 0 2px 6px !important;
+  padding: var(--dim-2) 0 var(--dim-2) var(--dim-6) !important;
   background: transparent !important;
   backdrop-filter: none !important;
 }
@@ -1024,22 +1024,22 @@ html[data-platform='mobile'] body {
 [data-platform='mobile'] .nb-toolbar-dropdown-panel > div {
   flex-wrap: wrap;
   flex-shrink: 0;
-  min-height: 40px;
-  font-size: 14px !important;
+  min-height: var(--dim-40);
+  font-size: var(--dim-14) !important;
 }
 
 /* 子菜单内的条目：同样禁止收缩，并放大触控热区 */
 [data-platform='mobile'] .nb-toolbar-submenu > .nb-toolbar-dropdown-item {
   flex-wrap: wrap;
   flex-shrink: 0;
-  min-height: 36px;
-  font-size: 13px !important;
+  min-height: var(--dim-36);
+  font-size: var(--dim-13) !important;
 }
 
 /* 含子菜单的条目：子菜单独占下一行 */
 [data-platform='mobile'] .nb-toolbar-dropdown-panel .nb-toolbar-submenu {
-  flex-basis: 100%;
-  width: 100%;
+  flex-basis: var(--pct-100);
+  width: var(--pct-100);
   order: 3;
 }
 
@@ -1054,19 +1054,19 @@ html[data-platform='mobile'] body {
 }
 
 [data-platform='mobile'] .nb-toolbar-dropdown-item[data-submenu-open] > div > .nb-toolbar-submenu-arrow {
-  transform: rotate(90deg) !important;
+  transform: rotate(var(--rotate-90)) !important;
 }
 
 /* 斜杠菜单下钻子页的返回按钮（仅移动端渲染） */
 .nb-slash-submenu-back {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  min-height: 32px;
-  margin: -4px 0 -4px -6px;
-  padding: 0 8px 0 4px;
+  gap: var(--dim-4);
+  min-height: var(--dim-32);
+  margin: calc(var(--dim-4) * -1) 0 calc(var(--dim-4) * -1) calc(var(--dim-6) * -1);
+  padding: 0 var(--dim-8) 0 var(--dim-4);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   background: transparent;
   color: inherit;
   font: inherit;
@@ -1075,11 +1075,11 @@ html[data-platform='mobile'] body {
 }
 
 .nb-slash-submenu-back:hover {
-  background: var(--toolbar-hover, rgba(0, 0, 0, 0.06));
+  background: var(--toolbar-hover);
 }
 
 .nb-slash-submenu-back:active {
-  background: var(--editor-selection-background, rgba(59, 130, 246, 0.15));
+  background: var(--editor-selection-background);
 }
 
 /* 标题层级标记位于正文左侧留白，手机边距较窄时会被裁切，隐藏 */
@@ -1094,8 +1094,8 @@ html[data-platform='mobile'] body {
 
 /* 查找替换浮层：移动端铺满顶部宽度 */
 [data-platform='mobile'] .nb-m-editor-body .nb-search-bar {
-  left: 8px !important;
-  right: 8px !important;
+  left: var(--dim-8) !important;
+  right: var(--dim-8) !important;
   width: auto !important;
   max-width: none !important;
 }
@@ -1112,7 +1112,7 @@ html[data-platform='mobile'] body {
 [data-platform='mobile'] .nb-settings-panel {
   width: 100vw !important;
   max-width: 100vw !important;
-  height: 100% !important;
+  height: var(--pct-100) !important;
   max-height: none !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1126,11 +1126,11 @@ html[data-platform='mobile'] body {
 [data-platform='mobile'] .nb-settings-nav {
   width: auto !important;
   flex-direction: row !important;
-  gap: 4px !important;
-  padding: 8px !important;
+  gap: var(--dim-4) !important;
+  padding: var(--dim-8) !important;
   overflow-x: auto;
   border-right: none !important;
-  border-bottom: 1px solid var(--editor-border);
+  border-bottom: var(--dim-1) solid var(--editor-border);
   scrollbar-width: none;
 }
 
@@ -1141,25 +1141,25 @@ html[data-platform='mobile'] body {
 [data-platform='mobile'] .nb-settings-nav > button {
   flex-shrink: 0;
   width: auto !important;
-  min-height: 38px;
+  min-height: var(--dim-38);
   white-space: nowrap;
 }
 
 [data-platform='mobile'] .nb-settings-content {
-  padding: 16px 14px calc(24px + var(--nb-m-safe-bottom)) !important;
+  padding: var(--dim-16) var(--dim-14) calc(var(--dim-24) + var(--nb-m-safe-bottom)) !important;
 }
 
 /* 设置内多列行在窄屏上换行，输入控件不撑出屏幕 */
 [data-platform='mobile'] .nb-settings-content label,
 [data-platform='mobile'] .nb-settings-content div {
-  max-width: 100%;
+  max-width: var(--pct-100);
 }
 
 [data-platform='mobile'] .nb-settings-content select,
 [data-platform='mobile'] .nb-settings-content input[type='text'],
 [data-platform='mobile'] .nb-settings-content input[type='number'] {
-  min-height: 36px;
-  font-size: 14px;
+  min-height: var(--dim-36);
+  font-size: var(--dim-14);
 }
 
 /* 通用模态框：改为底部面板 */
@@ -1171,16 +1171,16 @@ html[data-platform='mobile'] body {
   width: 100vw;
   max-width: 100vw;
   max-height: 85dvh;
-  border-radius: 18px 18px 0 0;
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   border-bottom: none;
-  padding-bottom: calc(16px + var(--nb-m-safe-bottom));
-  animation: nb-m-sheet-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding-bottom: calc(var(--dim-16) + var(--nb-m-safe-bottom));
+  animation: nb-m-sheet-in var(--duration-220) cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* 编辑器内容：手机屏幕上收窄页边距、适度放大正文 */
 [data-platform='mobile'] .ProseMirror {
-  padding-left: 16px !important;
-  padding-right: 16px !important;
+  padding-left: var(--dim-16) !important;
+  padding-right: var(--dim-16) !important;
   padding-bottom: 40vh !important;
 }
 
@@ -1197,13 +1197,13 @@ html[data-platform='mobile'] body {
 /* 选中文字悬浮菜单：窄屏放不下一行时换行，不超出视口 */
 [data-platform='mobile'] .nb-bubble-menu {
   flex-wrap: wrap;
-  max-width: calc(100vw - 16px);
-  row-gap: 2px;
+  max-width: calc(100vw - var(--dim-16));
+  row-gap: var(--dim-2);
 }
 
 /* 自绘右键菜单（长按触发）：限制在视口内 */
 [data-platform='mobile'] .nb-context-menu {
-  max-width: calc(100vw - 16px);
+  max-width: calc(100vw - var(--dim-16));
   max-height: 70dvh;
   overflow-y: auto;
 }
@@ -1213,12 +1213,12 @@ html[data-platform='mobile'] body {
   .nb-guard-actions {
     display: grid !important;
     grid-template-columns: 1fr 1fr;
-    gap: 10px !important;
+    gap: var(--dim-10) !important;
   }
   .nb-guard-actions > button {
     justify-content: center;
-    min-height: 44px;
-    font-size: 14px !important;
+    min-height: var(--dim-44);
+    font-size: var(--dim-14) !important;
   }
 }
 
@@ -1230,14 +1230,14 @@ html[data-platform='mobile'] body {
   height: auto !important;
   min-height: 0 !important;
   flex-wrap: wrap;
-  row-gap: 6px;
-  column-gap: 8px;
-  padding: 6px 10px !important;
+  row-gap: var(--dim-6);
+  column-gap: var(--dim-8);
+  padding: var(--dim-6) var(--dim-10) !important;
 }
 
 [data-platform='mobile'] .nb-editor-topbar > div {
   flex-wrap: wrap;
-  row-gap: 6px;
+  row-gap: var(--dim-6);
   min-width: 0;
 }
 
@@ -1253,8 +1253,14 @@ html[data-platform='mobile'] body {
 [data-platform='mobile'] .nb-bitable-toolbar {
   height: auto !important;
   min-height: 0 !important;
-  gap: 6px;
-  padding: 6px 8px !important;
+  gap: var(--dim-6);
+  padding: var(--dim-4) var(--dim-8) !important;
+}
+
+/* 顶栏 / 工具条控件统一高度取触控尺寸，与下方按钮 min-height 保持一致 */
+[data-platform='mobile'] .nb-bitable-toolbar,
+[data-platform='mobile'] .nb-bitable-subbar {
+  --nb-bitable-control-h: var(--dim-34);
 }
 
 [data-platform='mobile'] .nb-bitable-views {
@@ -1268,7 +1274,7 @@ html[data-platform='mobile'] body {
 
 [data-platform='mobile'] .nb-bitable-search {
   min-width: 0;
-  min-height: 34px;
+  min-height: var(--dim-34);
 }
 
 /* 窄屏（竖屏手机）：工具栏改为两行，第一行视图 Tab（可横向滚动），第二行搜索 + 新建记录 */
@@ -1278,11 +1284,11 @@ html[data-platform='mobile'] body {
   }
 
   [data-platform='mobile'] .nb-bitable-views {
-    flex: 1 1 100% !important;
+    flex: 1 1 var(--pct-100) !important;
   }
 
   [data-platform='mobile'] .nb-bitable-actions {
-    flex: 1 1 100%;
+    flex: 1 1 var(--pct-100);
     min-width: 0;
   }
 
@@ -1293,13 +1299,13 @@ html[data-platform='mobile'] body {
 }
 
 [data-platform='mobile'] .nb-bitable-record-panel {
-  max-width: 100%;
+  max-width: var(--pct-100);
 }
 
 /* 窄屏记录详情侧栏占满宽度：保存的桌面宽度（360px 起）在竖屏手机上只会剩下一条无法操作的窄缝 */
 @media (max-width: 599px) {
   [data-platform='mobile'] .nb-bitable-record-panel {
-    width: 100% !important;
+    width: var(--pct-100) !important;
   }
 }
 
@@ -1314,12 +1320,12 @@ html[data-platform='mobile'] body {
   }
 
   [data-platform='mobile'] .nb-bitable-search {
-    width: 180px !important;
+    width: var(--dim-180) !important;
   }
 }
 
 [data-platform='mobile'] .nb-bitable-search input {
-  font-size: 14px !important;
+  font-size: var(--dim-14) !important;
 }
 
 /* 导出 CSV 使用频率低，移动端隐藏以让出空间 */
@@ -1334,7 +1340,7 @@ html[data-platform='mobile'] body {
 [data-platform='mobile'] .nb-bitable-tab {
   white-space: nowrap;
   flex-shrink: 0;
-  min-height: 34px;
+  min-height: var(--dim-34);
 }
 
 /* 分组 / 排序 / 固定列工具条：单行、可横向滚动 */
@@ -1342,7 +1348,7 @@ html[data-platform='mobile'] body {
   flex-wrap: nowrap !important;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 6px 8px !important;
+  padding: var(--dim-4) var(--dim-8) !important;
 }
 
 [data-platform='mobile'] .nb-bitable-subbar::-webkit-scrollbar {
@@ -1364,7 +1370,7 @@ html[data-platform='mobile'] body {
 @media (max-height: 500px) {
   /* 顶栏只保留文档名一行（所在文件夹副标题在横屏下价值低），对所有编辑器生效 */
   [data-platform='mobile'] {
-    --nb-m-topbar-h: 40px;
+    --nb-m-topbar-h: var(--dim-40);
   }
 
   [data-platform='mobile'] .nb-m-topbar-sub {
@@ -1373,17 +1379,18 @@ html[data-platform='mobile'] body {
 
   /* 顶栏按钮保持 44px 触控宽度，高度随顶栏收窄 */
   [data-platform='mobile'] .nb-m-topbar .nb-m-icon-btn {
-    height: 36px;
+    height: var(--dim-36);
   }
 
   [data-platform='mobile'] .nb-bitable-toolbar,
   [data-platform='mobile'] .nb-bitable-subbar {
-    padding-top: 4px !important;
-    padding-bottom: 4px !important;
+    --nb-bitable-control-h: var(--dim-30);
+    padding-top: var(--dim-4) !important;
+    padding-bottom: var(--dim-4) !important;
     /* 收起 / 展开时高度与透明度平滑过渡 */
-    max-height: 64px;
+    max-height: var(--dim-64);
     overflow: hidden;
-    transition: max-height 0.2s ease, padding 0.2s ease, opacity 0.16s ease;
+    transition: max-height var(--duration-0-2) var(--ease-default), padding var(--duration-0-2) var(--ease-default), opacity var(--duration-0-16) var(--ease-default);
   }
 
   [data-platform='mobile'] .nb-bitable-subbar {
@@ -1395,7 +1402,7 @@ html[data-platform='mobile'] body {
   [data-platform='mobile'] .nb-bitable-btn-ghost,
   [data-platform='mobile'] .nb-bitable-tab,
   [data-platform='mobile'] .nb-bitable-search {
-    min-height: 30px;
+    min-height: var(--dim-30);
   }
 
   [data-platform='mobile'] .nb-bitable-tab .nb-bitable-btn-ghost {
@@ -1409,7 +1416,7 @@ html[data-platform='mobile'] body {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     border-bottom-width: 0 !important;
-    opacity: 0;
+    opacity: var(--opacity-0);
     pointer-events: none;
   }
 }

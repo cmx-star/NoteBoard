@@ -109,8 +109,8 @@ describe('useUpdateStore 状态管理与检查逻辑', () => {
   it.each([false, true])('GitHub 失败后回退 CNB 并保存下载渠道，静默模式为 %s', async (silent) => {
     const result: UpdateCheckResult = {
       currentVersion: '0.1.0', latestVersion: '0.2.0', updateAvailable: true,
-      releaseUrl: 'https://cnb.cool/crazy-figure/NoteBoard/-/releases/tag/v0.2.0',
-      installerDownloadUrl: 'https://cnb.cool/crazy-figure/NoteBoard/-/releases/download/v0.2.0/setup.exe',
+      releaseUrl: 'https://cnb.cool/starcmx/NoteBoard/-/releases/tag/v0.2.0',
+      installerDownloadUrl: 'https://cnb.cool/starcmx/NoteBoard/-/releases/download/v0.2.0/setup.exe',
     };
     vi.mocked(ipc.checkForUpdates)
       .mockRejectedValueOnce(new Error('update_error:forbidden'))
@@ -134,7 +134,7 @@ describe('useUpdateStore 状态管理与检查逻辑', () => {
     } });
     vi.mocked(ipc.checkForUpdates).mockResolvedValueOnce({
       currentVersion: '0.1.0', latestVersion: '0.1.0', updateAvailable: false,
-      releaseUrl: 'https://cnb.cool/crazy-figure/NoteBoard/-/releases',
+      releaseUrl: 'https://cnb.cool/starcmx/NoteBoard/-/releases',
     });
 
     await useUpdateStore.getState().checkForUpdates(silent);

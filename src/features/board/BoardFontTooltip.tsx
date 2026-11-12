@@ -141,9 +141,9 @@ export function BoardFontTooltip({ rootRef }: { rootRef: RefObject<HTMLElement |
         left: 0,
         top: 0,
         transform: isRight
-          ? `translate3d(${left}px, ${tip.y}px, 0) translateY(-50%)`
-          : `translate3d(${left}px, ${tip.y}px, 0) translateX(-50%)`,
-        zIndex: 1000001,
+          ? `translate3d(${left}px, ${tip.y}px, 0) translateY(calc(var(--pct-50) * -1))`
+          : `translate3d(${left}px, ${tip.y}px, 0) translateX(calc(var(--pct-50) * -1))`,
+        zIndex: 'var(--z-1000001)',
         pointerEvents: 'none',
       }}
     >
@@ -152,7 +152,7 @@ export function BoardFontTooltip({ rootRef }: { rootRef: RefObject<HTMLElement |
         style={{
           position: 'relative',
           whiteSpace: 'nowrap',
-          animation: `${isRight ? 'nb-tooltip-slide-left-and-fade' : 'nb-tooltip-slide-up-and-fade'} 120ms cubic-bezier(0.16, 1, 0.3, 1)`,
+          animation: `${isRight ? 'nb-tooltip-slide-left-and-fade' : 'nb-tooltip-slide-up-and-fade'} var(--duration-120) cubic-bezier(0.16, 1, 0.3, 1)`,
         }}
       >
         <span>{tip.text}</span>
@@ -160,12 +160,12 @@ export function BoardFontTooltip({ rootRef }: { rootRef: RefObject<HTMLElement |
         <span
           style={{
             position: 'absolute',
-            width: 6,
-            height: 6,
+            width: 'var(--dim-6)',
+            height: 'var(--dim-6)',
             background: 'var(--editor-surface)',
             ...(isRight
-              ? { left: -3.5, top: '50%', transform: 'translateY(-50%) rotate(45deg)', borderLeft: '1px solid var(--editor-border)', borderBottom: '1px solid var(--editor-border)' }
-              : { top: -3.5, left: '50%', transform: 'translateX(-50%) rotate(45deg)', borderLeft: '1px solid var(--editor-border)', borderTop: '1px solid var(--editor-border)' }),
+              ? { left: 'calc(var(--dim-3-5) * -1)', top: 'var(--pct-50)', transform: 'translateY(calc(var(--pct-50) * -1)) rotate(45deg)', borderLeft: 'var(--dim-1) solid var(--editor-border)', borderBottom: 'var(--dim-1) solid var(--editor-border)' }
+              : { top: 'calc(var(--dim-3-5) * -1)', left: 'var(--pct-50)', transform: 'translateX(calc(var(--pct-50) * -1)) rotate(45deg)', borderLeft: 'var(--dim-1) solid var(--editor-border)', borderTop: 'var(--dim-1) solid var(--editor-border)' }),
           }}
         />
       </div>

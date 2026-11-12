@@ -352,7 +352,7 @@ const MATH_LEAFS: LeafCommandItem[] = [
     groupId: 'math',
     groupLabel: '公式与图表',
     shortcutHint: '/info',
-    icon: <BarChart3 size={17} color="#3b82f6" />,
+    icon: <BarChart3 size={17} color="var(--nb-blue-500)" />,
     aliases: ['infographic', 'info', 'xinxitu', 'xxt', 'kpi', 'timeline', 'funnel', 'comparison'],
     keywords: '信息图 infographic info xinxitu 指标 看板 时间线 流程 对比 漏斗 象限',
     action: (editor, range) => {
@@ -368,7 +368,7 @@ const INFOGRAPHIC_LEAFS: LeafCommandItem[] = INFOGRAPHIC_TEMPLATES.map((tmpl) =>
   groupId: 'infographics',
   groupLabel: '信息图模板',
   shortcutHint: `/info-${tmpl.id.slice(0, 4)}`,
-  icon: <BarChart3 size={17} color="#3b82f6" />,
+  icon: <BarChart3 size={17} color="var(--nb-blue-500)" />,
   aliases: ['info', 'infographic', 'xxt', tmpl.id],
   keywords: `信息图 ${tmpl.label} ${tmpl.description} infographic info`,
   action: (editor, range) => {
@@ -572,7 +572,7 @@ const IMAGE_URL_LEAF: LeafCommandItem = {
   label: '网络图片',
   description: '通过在线网络 URL 插入图片',
   shortcutHint: '/urlimg',
-  icon: <ImageIcon size={17} style={{ opacity: 0.7 }} />,
+  icon: <ImageIcon size={17} style={{ opacity: 'var(--opacity-0-7)' }} />,
   aliases: ['urltp', 'wangluotp', 'imgurl', 'imageurl'],
   keywords: '网络图片 图片链接 image url img photo wangluo',
   action: (editor, range) => {
@@ -591,7 +591,7 @@ const LINK_LEAF: LeafCommandItem = {
   label: '超链接',
   description: '插入网页链接或文档相对链接',
   shortcutHint: '/link',
-  icon: <Link2 size={17} color="#3b82f6" />,
+  icon: <Link2 size={17} color="var(--nb-blue-500)" />,
   aliases: ['link', 'url', 'lianjie', 'lj', 'chaolianjie', 'clj', 'http', 'https'],
   keywords: '超链接 链接 link url lianjie http https chaolianjie lj',
   action: (editor, range) => {
@@ -608,7 +608,7 @@ const WIKI_LINK_LEAF: LeafCommandItem = {
   label: '双向链接',
   description: '链接到仓库内的其它笔记',
   shortcutHint: '[[',
-  icon: <Waypoints size={17} color="#8b5cf6" />,
+  icon: <Waypoints size={17} color="var(--nb-purple-500)" />,
   aliases: ['wiki', 'wikilink', 'shuanglian', 'sl', 'backlink', 'note', 'biji'],
   keywords: '双向链接 双链 笔记链接 反向链接 wiki wikilink shuanglian sl',
   // 弹窗中选择笔记、标题、显示名与链接 / 嵌入方式
@@ -634,7 +634,7 @@ const CLEAR_FORMAT_LEAF: LeafCommandItem = {
   label: '清除格式',
   description: '清除文本样式、高亮与多余格式',
   shortcutHint: '/clear',
-  icon: <RemoveFormatting size={17} color="#ef4444" />,
+  icon: <RemoveFormatting size={17} color="var(--nb-red-500)" />,
   aliases: ['qingchu', 'qc', 'clear', 'clean', 'plain'],
   keywords: '清除格式 清空样式 clear clean format qingchu qc',
   action: (editor, range) => editor.chain().focus().deleteRange(range).unsetAllMarks().run(),
@@ -665,7 +665,7 @@ const ROOT_GROUPS: GroupCommandItem[] = [
     label: 'GitHub 提示块',
     description: 'Note, Tip, Important, Warning, Caution',
     shortcutHint: '/alert',
-    icon: <Boxes size={17} color="#3b82f6" />,
+    icon: <Boxes size={17} color="var(--nb-blue-500)" />,
     isGroup: true,
     children: ALERT_LEAFS,
   },
@@ -674,7 +674,7 @@ const ROOT_GROUPS: GroupCommandItem[] = [
     label: '高亮块',
     description: '带底色与图标的高亮块，颜色、图标可随时更换',
     shortcutHint: '/highlight',
-    icon: <Highlighter size={17} color="#8b5cf6" />,
+    icon: <Highlighter size={17} color="var(--nb-purple-500)" />,
     isGroup: true,
     children: CALLOUT_LEAFS,
   },
@@ -710,7 +710,7 @@ const ROOT_GROUPS: GroupCommandItem[] = [
     label: '信息图模板',
     description: '指标看板、时间线、步骤流程、对比表与漏斗',
     shortcutHint: '/info',
-    icon: <BarChart3 size={17} color="#3b82f6" />,
+    icon: <BarChart3 size={17} color="var(--nb-blue-500)" />,
     isGroup: true,
     children: INFOGRAPHIC_LEAFS,
   },
@@ -719,7 +719,7 @@ const ROOT_GROUPS: GroupCommandItem[] = [
     label: '表情',
     description: '插入标准 Unicode 表情，各平台通用',
     shortcutHint: '/emoji',
-    icon: <Smile size={17} color="#f59e0b" />,
+    icon: <Smile size={17} color="var(--nb-amber-500)" />,
     isGroup: true,
     layout: 'grid',
     children: EMOJI_LEAFS,
@@ -854,7 +854,7 @@ function SlashGridSubmenu({
   });
 
   return (
-    <div style={{ padding: '0 2px 2px' }}>
+    <div style={{ padding: '0 var(--dim-2) var(--dim-2)' }}>
       {sections.map((section) => (
         <div key={section.label}>
           {section.label && <div className="nb-callout-popover-title">{section.label}</div>}
@@ -1099,13 +1099,13 @@ function SlashMenu({
     return (
       <div
         style={{
-          background: 'var(--editor-surface, #ffffff)',
-          border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-          borderRadius: 8,
-          boxShadow: '0 8px 24px -4px rgba(0, 0, 0, 0.15)',
-          padding: '12px 16px',
-          fontSize: 13,
-          color: 'var(--editor-text-secondary, #64748b)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: '0 var(--dim-8) var(--dim-24) calc(var(--dim-4) * -1) var(--nb-black-a15)',
+          padding: 'var(--dim-12) var(--dim-16)',
+          fontSize: 'var(--text-13)',
+          color: 'var(--editor-text-secondary)',
         }}
       >
         未找到匹配的命令
@@ -1125,42 +1125,42 @@ function SlashMenu({
       {/* ── 一级主菜单面板 ── */}
       <div
         style={{
-          background: 'var(--editor-surface, #ffffff)',
-          border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-          borderRadius: 8,
-          boxShadow: '0 10px 30px -4px rgba(0, 0, 0, 0.18), 0 3px 8px -2px rgba(0, 0, 0, 0.1)',
-          backdropFilter: 'blur(10px)',
+          background: 'var(--editor-surface)',
+          border: 'var(--dim-1) solid var(--editor-border)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: '0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a18), 0 var(--dim-3) var(--dim-8) calc(var(--dim-2) * -1) var(--nb-black-a10)',
+          backdropFilter: 'blur(var(--dim-10))',
           overflow: 'hidden',
           // 窄屏（手机）下不超出视口：弹层左侧固定留 16px，右侧同样保留 16px
-          width: drillDown ? 'min(300px, calc(100vw - 32px))' : 300,
-          maxHeight: 370,
+          width: drillDown ? 'min(var(--dim-300), calc(100vw - var(--dim-32)))' : 300,
+          maxHeight: 'var(--dim-370)',
           display: 'flex',
           flexDirection: 'column',
-          zIndex: 10000,
+          zIndex: 'var(--z-10000)',
         }}
       >
         <div
           style={{
-            padding: '6px 10px',
-            fontSize: 11,
-            fontWeight: 600,
-            color: 'var(--editor-text-secondary, #64748b)',
-            borderBottom: '1px solid var(--editor-border, rgba(0,0,0,0.06))',
-            background: 'var(--editor-bg, rgba(0,0,0,0.02))',
+            padding: 'var(--dim-6) var(--dim-10)',
+            fontSize: 'var(--text-11)',
+            fontWeight: 'var(--weight-600)',
+            color: 'var(--editor-text-secondary)',
+            borderBottom: 'var(--dim-1) solid var(--editor-border)',
+            background: 'var(--editor-bg)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
           <span>{isSearching ? `搜索命令: "${query}"` : '插入块或命令'}</span>
-          {!drillDown && <span style={{ fontSize: 10, opacity: 0.8 }}>↑↓ 移动 · → 伸展子项</span>}
+          {!drillDown && <span style={{ fontSize: 'var(--text-10)', opacity: 'var(--opacity-0-8)' }}>↑↓ 移动 · → 伸展子项</span>}
         </div>
 
         <div
           style={{
             overflowY: 'auto',
-            padding: '4px',
-            maxHeight: 330,
+            padding: 'var(--dim-4)',
+            maxHeight: 'var(--dim-330)',
           }}
         >
           {displayedEntries.map((entry, index) => {
@@ -1203,40 +1203,40 @@ function SlashMenu({
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 10,
-                  width: '100%',
-                  padding: '7px 10px',
+                  gap: 'var(--dim-10)',
+                  width: 'var(--pct-100)',
+                  padding: 'var(--dim-7) var(--dim-10)',
                   textAlign: 'left',
                   border: 'none',
                   background:
                     isSelected || isGroupHovered
-                      ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                      ? 'var(--editor-selection-background)'
                       : 'transparent',
-                  borderRadius: 6,
-                  color: 'var(--editor-text, #1e293b)',
+                  borderRadius: 'var(--radius-md)',
+                  color: 'var(--editor-text)',
                   cursor: 'pointer',
-                  transition: 'background 100ms ease',
+                  transition: 'background var(--duration-100) ease',
                   userSelect: 'none',
                 }}
               >
                 {/* 图标 */}
                 <div
                   style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 6,
+                    width: 'var(--dim-30)',
+                    height: 'var(--dim-30)',
+                    borderRadius: 'var(--radius-md)',
                     background:
                       isSelected || isGroupHovered
-                        ? 'var(--editor-surface, #ffffff)'
-                        : 'var(--editor-bg, rgba(0,0,0,0.04))',
-                    border: '1px solid var(--editor-border, rgba(0,0,0,0.08))',
+                        ? 'var(--editor-surface)'
+                        : 'var(--editor-bg)',
+                    border: 'var(--dim-1) solid var(--editor-border)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     color:
                       isSelected || isGroupHovered
-                        ? 'var(--accent-500, #3b82f6)'
-                        : 'var(--editor-text-secondary, #475569)',
+                        ? 'var(--accent-500)'
+                        : 'var(--editor-text-secondary)',
                     flexShrink: 0,
                   }}
                 >
@@ -1250,9 +1250,9 @@ function SlashMenu({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      fontSize: 13,
-                      fontWeight: 500,
-                      lineHeight: 1.3,
+                      fontSize: 'var(--text-13)',
+                      fontWeight: 'var(--weight-500)',
+                      lineHeight: 'var(--leading-1-3)',
                     }}
                   >
                     <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -1261,12 +1261,12 @@ function SlashMenu({
                     {!isGroup && 'groupLabel' in item && item.groupLabel && isSearching && (
                       <span
                         style={{
-                          fontSize: 10,
-                          padding: '1px 4px',
-                          borderRadius: 3,
-                          background: 'rgba(59, 130, 246, 0.1)',
-                          color: 'var(--accent-500, #3b82f6)',
-                          marginLeft: 6,
+                          fontSize: 'var(--text-10)',
+                          padding: 'var(--dim-1) var(--dim-4)',
+                          borderRadius: 'var(--radius-xs)',
+                          background: 'var(--nb-auto-3b82f6-a10)',
+                          color: 'var(--accent-500)',
+                          marginLeft: 'var(--dim-6)',
                           flexShrink: 0,
                         }}
                       >
@@ -1276,10 +1276,10 @@ function SlashMenu({
                   </div>
                   <div
                     style={{
-                      fontSize: 11,
-                      color: 'var(--editor-text-secondary, #64748b)',
-                      lineHeight: 1.2,
-                      marginTop: 1,
+                      fontSize: 'var(--text-11)',
+                      color: 'var(--editor-text-secondary)',
+                      lineHeight: 'var(--leading-1-2)',
+                      marginTop: 'var(--dim-1)',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -1293,22 +1293,22 @@ function SlashMenu({
                 {item.shortcutHint && (
                   <span
                     style={{
-                      fontSize: 10.5,
+                      fontSize: 'var(--text-10-5)',
                       fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                      padding: '2px 6px',
-                      borderRadius: 4,
+                      padding: 'var(--dim-2) var(--dim-6)',
+                      borderRadius: 'var(--radius-sm)',
                       background:
                         isSelected || isGroupHovered
-                          ? 'rgba(59, 130, 246, 0.15)'
-                          : 'var(--editor-bg, rgba(0, 0, 0, 0.05))',
+                          ? 'var(--nb-auto-3b82f6-a15)'
+                          : 'var(--editor-bg)',
                       color:
                         isSelected || isGroupHovered
-                          ? 'var(--accent-500, #3b82f6)'
-                          : 'var(--editor-text-secondary, #64748b)',
-                      fontWeight: 500,
+                          ? 'var(--accent-500)'
+                          : 'var(--editor-text-secondary)',
+                      fontWeight: 'var(--weight-500)',
                       flexShrink: 0,
-                      letterSpacing: '0.01em',
-                      transition: 'all 120ms ease',
+                      letterSpacing: 'var(--em-0-01)',
+                      transition: 'all var(--duration-120) ease',
                     }}
                   >
                     {item.shortcutHint}
@@ -1322,10 +1322,10 @@ function SlashMenu({
                     style={{
                       color:
                         isSelected || isGroupHovered
-                          ? 'var(--accent-500, #3b82f6)'
-                          : 'var(--editor-text-secondary, #94a3b8)',
+                          ? 'var(--accent-500)'
+                          : 'var(--editor-text-secondary)',
                       flexShrink: 0,
-                      marginLeft: -2,
+                      marginLeft: 'calc(var(--dim-2) * -1)',
                     }}
                   />
                 )}
@@ -1348,30 +1348,30 @@ function SlashMenu({
               : {
                   top: submenuLayout.top,
                   ...(flipSubmenuLeft
-                    ? { right: 'calc(100% + 6px)' }
-                    : { left: 'calc(100% + 6px)' }),
-                  width: 290,
+                    ? { right: 'calc(var(--pct-100) + var(--dim-6))' }
+                    : { left: 'calc(var(--pct-100) + var(--dim-6))' }),
+                  width: 'var(--dim-290)',
                   maxHeight: submenuLayout.maxHeight,
                 }),
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-            borderRadius: 8,
-            boxShadow: '0 10px 30px -4px rgba(0, 0, 0, 0.2), 0 3px 8px -2px rgba(0, 0, 0, 0.08)',
-            backdropFilter: 'blur(10px)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: '0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a20), 0 var(--dim-3) var(--dim-8) calc(var(--dim-2) * -1) var(--nb-black-a08)',
+            backdropFilter: 'blur(var(--dim-10))',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
-            zIndex: 10001,
+            zIndex: 'var(--z-10001)',
           }}
         >
           <div
             style={{
-              padding: '6px 10px',
-              fontSize: 11,
-              fontWeight: 600,
-              color: 'var(--accent-500, #3b82f6)',
-              borderBottom: '1px solid var(--editor-border, rgba(0,0,0,0.06))',
-              background: 'var(--editor-bg, rgba(0,0,0,0.02))',
+              padding: 'var(--dim-6) var(--dim-10)',
+              fontSize: 'var(--text-11)',
+              fontWeight: 'var(--weight-600)',
+              color: 'var(--accent-500)',
+              borderBottom: 'var(--dim-1) solid var(--editor-border)',
+              background: 'var(--editor-bg)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -1393,7 +1393,7 @@ function SlashMenu({
             ) : (
               <span>{activeGroup.label}</span>
             )}
-            <span style={{ fontSize: 10, color: 'var(--editor-text-secondary, #64748b)' }}>
+            <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-secondary)' }}>
               {/* 网格只有图案没有文字：键盘移动时在标题栏显示当前项名称 */}
               {activeGroup.layout === 'grid' && isFocusInSubmenu && activeGroup.children[subSelectedIndex]
                 ? activeGroup.children[subSelectedIndex].label
@@ -1404,7 +1404,7 @@ function SlashMenu({
           <div
             style={{
               overflowY: 'auto',
-              padding: '4px',
+              padding: 'var(--dim-4)',
               flex: 1,
               minHeight: 0,
             }}
@@ -1439,36 +1439,36 @@ function SlashMenu({
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 8,
-                    width: '100%',
-                    padding: '7px 10px',
+                    gap: 'var(--dim-8)',
+                    width: 'var(--pct-100)',
+                    padding: 'var(--dim-7) var(--dim-10)',
                     textAlign: 'left',
                     border: 'none',
                     background: isSubSelected
-                      ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                      ? 'var(--editor-selection-background)'
                       : 'transparent',
-                    borderRadius: 6,
-                    color: 'var(--editor-text, #1e293b)',
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--editor-text)',
                     cursor: 'pointer',
-                    transition: 'background 100ms ease',
+                    transition: 'background var(--duration-100) ease',
                     userSelect: 'none',
                   }}
                 >
                   <div
                     style={{
-                      width: 26,
-                      height: 26,
-                      borderRadius: 5,
+                      width: 'var(--dim-26)',
+                      height: 'var(--dim-26)',
+                      borderRadius: 'var(--radius-sm)',
                       background: isSubSelected
-                        ? 'var(--editor-surface, #ffffff)'
-                        : 'var(--editor-bg, rgba(0,0,0,0.04))',
-                      border: '1px solid var(--editor-border, rgba(0,0,0,0.08))',
+                        ? 'var(--editor-surface)'
+                        : 'var(--editor-bg)',
+                      border: 'var(--dim-1) solid var(--editor-border)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       color: isSubSelected
-                        ? 'var(--accent-500, #3b82f6)'
-                        : 'var(--editor-text-secondary, #475569)',
+                        ? 'var(--accent-500)'
+                        : 'var(--editor-text-secondary)',
                       flexShrink: 0,
                     }}
                   >
@@ -1478,9 +1478,9 @@ function SlashMenu({
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div
                       style={{
-                        fontSize: 12.5,
-                        fontWeight: 500,
-                        lineHeight: 1.3,
+                        fontSize: 'var(--text-12-5)',
+                        fontWeight: 'var(--weight-500)',
+                        lineHeight: 'var(--leading-1-3)',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -1490,10 +1490,10 @@ function SlashMenu({
                     </div>
                     <div
                       style={{
-                        fontSize: 11,
-                        color: 'var(--editor-text-secondary, #64748b)',
-                        lineHeight: 1.2,
-                        marginTop: 1,
+                        fontSize: 'var(--text-11)',
+                        color: 'var(--editor-text-secondary)',
+                        lineHeight: 'var(--leading-1-2)',
+                        marginTop: 'var(--dim-1)',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -1507,20 +1507,20 @@ function SlashMenu({
                   {subLeaf.shortcutHint && (
                     <span
                       style={{
-                        fontSize: 10,
+                        fontSize: 'var(--text-10)',
                         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                        padding: '1px 5px',
-                        borderRadius: 3,
+                        padding: 'var(--dim-1) var(--dim-5)',
+                        borderRadius: 'var(--radius-xs)',
                         background: isSubSelected
-                          ? 'rgba(59, 130, 246, 0.15)'
-                          : 'var(--editor-bg, rgba(0, 0, 0, 0.05))',
+                          ? 'var(--nb-auto-3b82f6-a15)'
+                          : 'var(--editor-bg)',
                         color: isSubSelected
-                          ? 'var(--accent-500, #3b82f6)'
-                          : 'var(--editor-text-secondary, #64748b)',
-                        fontWeight: 500,
+                          ? 'var(--accent-500)'
+                          : 'var(--editor-text-secondary)',
+                        fontWeight: 'var(--weight-500)',
                         flexShrink: 0,
-                        letterSpacing: '0.01em',
-                        transition: 'all 120ms ease',
+                        letterSpacing: 'var(--em-0-01)',
+                        transition: 'all var(--duration-120) ease',
                       }}
                     >
                       {subLeaf.shortcutHint}

@@ -192,12 +192,12 @@ function MathComponent({ node, updateAttributes, selected }: NodeViewProps) {
             }
           }}
           style={{
-            width: '100%',
+            width: 'var(--pct-100)',
             minHeight: isBlock ? 80 : 32,
-            padding: '4px 8px',
+            padding: 'var(--dim-4) var(--dim-8)',
             fontFamily: 'var(--mono-font-family)',
             fontSize: 'var(--mono-font-size)',
-            border: '1px solid var(--editor-accent)',
+            border: 'var(--dim-1) solid var(--editor-accent)',
             borderRadius: 'var(--radius-sm)',
             background: 'var(--editor-surface)',
             color: 'var(--editor-text)',
@@ -217,7 +217,7 @@ function MathComponent({ node, updateAttributes, selected }: NodeViewProps) {
         display: isBlock ? 'block' : 'inline-block',
         cursor: 'pointer',
         borderRadius: 'var(--radius-sm)',
-        padding: isBlock ? '8px 0' : '0 2px',
+        padding: isBlock ? 'var(--dim-8) 0' : '0 var(--dim-2)',
         minHeight: isBlock ? 40 : 'auto',
         background: selected ? 'var(--editor-selection-background)' : 'transparent',
       }}
@@ -232,9 +232,9 @@ function MathComponent({ node, updateAttributes, selected }: NodeViewProps) {
           {rendered.error && (
             <span
               style={{
-                fontSize: 12,
+                fontSize: 'var(--text-12)',
                 color: 'var(--error-500)',
-                marginRight: 4,
+                marginRight: 'var(--dim-4)',
               }}
             >
               ⚠ {rendered.error}:

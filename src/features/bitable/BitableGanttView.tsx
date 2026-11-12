@@ -22,6 +22,7 @@ import { SortRulesPanel } from './BitableSortPanel';
 import { BITABLE_PALETTE, getOptionColor } from './bitableConverter';
 import { usePointerReorder } from './usePointerReorder';
 import { fitPaneWidths, useMobileViewportWidth } from './useMobileLayout';
+import { useColumnResize } from './useColumnResize';
 import { useCnHolidays } from './holidayCn';
 import { Tooltip } from '../../components/Tooltip';
 import { showToast } from '../../stores/toastStore';
@@ -85,6 +86,8 @@ import { formatShortcut } from '../../core/shortcuts';
 
 /** 左侧序号列宽度 */
 const NUM_COL_WIDTH = 44;
+/** 字段列最小宽度；移动端手动调宽时至少为时间轴保留同样宽度。 */
+const MIN_COLUMN_WIDTH = 90;
 /** 数据行高 */
 const ROW_HEIGHT = 40;
 /** 双层表头总高（上下各 28） */
@@ -104,16 +107,16 @@ const ZOOM_OPTIONS: Array<{ id: GanttZoom; label: string }> = [
 ];
 
 /** 周末底色：由主题弱化文字色混合而来，暖色主题下不会透出冷灰 */
-const WEEKEND_HEADER_BG = 'color-mix(in srgb, var(--editor-text-muted, #94a3b8) 10%, transparent)';
-const WEEKEND_BODY_BG = 'color-mix(in srgb, var(--editor-text-muted, #94a3b8) 8%, transparent)';
+const WEEKEND_HEADER_BG = 'color-mix(in srgb, var(--editor-text-muted) var(--pct-10), transparent)';
+const WEEKEND_BODY_BG = 'color-mix(in srgb, var(--editor-text-muted) var(--pct-8), transparent)';
 
 /** 「跟随主题」色：条形取当前主题强调色，与色板项同构以便统一取用 */
 const GANTT_THEME_COLOR = {
   id: 'theme',
   label: '跟随主题',
-  bg: 'color-mix(in srgb, var(--editor-accent, #3b82f6) 10%, transparent)',
-  text: 'var(--editor-accent, #3b82f6)',
-  border: 'color-mix(in srgb, var(--editor-accent, #3b82f6) 35%, transparent)',
+  bg: 'color-mix(in srgb, var(--editor-accent) var(--pct-10), transparent)',
+  text: 'var(--editor-accent)',
+  border: 'color-mix(in srgb, var(--editor-accent) var(--pct-35), transparent)',
 };
 
 /** 自定义色板：首项为「跟随主题」，其后为固定标签色 */
@@ -279,6 +282,8 @@ export function BitableGanttView({
   onCreateDateFields,
 }: GanttViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  // 与表格视图共用指针拖动及取消、卸载清理，列宽保存方式由各视图决定。
+  const startColumnResize = useColumnResize();
   // 行 DOM 节点表：用于测量行位置，支撑「拖拽 # 换行序」的落点计算
   const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map());
 
@@ -1104,10 +1109,10 @@ export function BitableGanttView({
    * 周 / 月刻度表头均细化到日，网格同样逐日画线，与表头日分栏对齐。
    */
   const gridBackground = useMemo(() => {
-    const line = 'var(--editor-border, #f1f5f9)';
+    const line = 'var(--editor-border)';
     if (zoom === 'week' || zoom === 'month') {
       return {
-        backgroundImage: `repeating-linear-gradient(to right, ${line} 0 1px, transparent 1px ${dayWidth}px)`,
+        backgroundImage: `repeating-linear-gradient(to right, ${line} 0 var(--dim-1), transparent var(--dim-1) ${dayWidth}px)`,
       };
     }
     // 季 / 年刻度下逐日线过密，交由表头分栏表达时间粒度
@@ -1148,11 +1153,22 @@ export function BitableGanttView({
     return map;
   }, [rows, startCol, endCol, axis, workdaysOnly, isRestDay]);
 
-  // ── 左侧固定列实际显示宽度：竖屏手机上按比例压缩，左侧栏不超过半屏，给时间轴留出空间（保存的列宽不变） ──
+  // ── 左侧固定列宽：移动端默认适配半屏，手动宽度优先；旋转后仍给时间轴留出空间 ──
   const viewportWidth = useMobileViewportWidth();
   const leftWidths = useMemo(
-    () => fitPaneWidths(leftColumns.map((col) => col.width || 160), NUM_COL_WIDTH, viewportWidth),
-    [leftColumns, viewportWidth],
+    () => {
+      const fitted = fitPaneWidths(leftColumns.map((col) => col.width || 160), NUM_COL_WIDTH, viewportWidth);
+      if (viewportWidth === null) return fitted;
+      const customized = fitted.map((width, idx) => {
+        const saved = config.mobileLeftColumnWidths?.[leftColumns[idx].id];
+        // 文档可能由外部编辑，忽略无效宽度，避免出现 NaN 或无限大的布局。
+        return typeof saved === 'number' && Number.isFinite(saved)
+          ? Math.max(MIN_COLUMN_WIDTH, saved)
+          : width;
+      });
+      return fitPaneWidths(customized, NUM_COL_WIDTH, viewportWidth, Math.max(0, 1 - MIN_COLUMN_WIDTH / viewportWidth));
+    },
+    [leftColumns, viewportWidth, config.mobileLeftColumnWidths],
   );
 
   // ── 左侧固定列偏移量 ──
@@ -1170,27 +1186,29 @@ export function BitableGanttView({
     [leftWidths],
   );
 
-  // ── 拖拽调整左侧固定列宽度（与表格视图共用字段宽度，最小 90） ──
-  const handleColumnResizeStart = (e: React.MouseEvent, col: BitableColumn) => {
+  // ── 鼠标、触摸和手写笔共用列宽拖动；以实际显示宽度起算，防止窄屏首次拖动跳变 ──
+  const handleColumnResizeStart = (e: React.PointerEvent<HTMLDivElement>, col: BitableColumn, width: number) => {
     if (!onUpdateColumn) return;
-    e.preventDefault();
-    e.stopPropagation();
-    const startX = e.clientX;
-    const startW = col.width || 160;
-    // 拖拽期间锁定全局光标，避免划过其他元素时光标闪回
-    document.body.style.cursor = 'col-resize';
-
-    const handleMouseMove = (moveEvent: MouseEvent) => {
-      const newWidth = Math.max(90, startW + moveEvent.clientX - startX);
-      onUpdateColumn(col.id, { width: newWidth });
-    };
-    const handleMouseUp = () => {
-      document.body.style.cursor = '';
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    // 旋转屏幕后各列可能被压缩；固定本次可见宽度，避免旧配置使邻列再次挤压当前拖动列。
+    const visibleMobileWidths = Object.fromEntries(leftColumns.map((item, idx) => [item.id, leftWidths[idx]]));
+    // 限制移动端拖动范围，避免固定列占满屏幕、把调宽把手推到屏外。
+    const maxWidth = viewportWidth === null ? Infinity : Math.max(
+      MIN_COLUMN_WIDTH,
+      viewportWidth - NUM_COL_WIDTH - (leftPaneWidth - NUM_COL_WIDTH - width) - MIN_COLUMN_WIDTH,
+    );
+    startColumnResize(e, {
+      width,
+      minWidth: MIN_COLUMN_WIDTH,
+      maxWidth,
+      onResize: (newWidth) => {
+        if (viewportWidth === null) {
+          onUpdateColumn(col.id, { width: newWidth });
+        } else {
+          // 独立保存移动端宽度，既保留手动调整，也不缩窄桌面与普通表格的字段。
+          onUpdateConfig({ mobileLeftColumnWidths: { ...config.mobileLeftColumnWidths, ...visibleMobileWidths, [col.id]: newWidth } });
+        }
+      },
+    });
   };
 
   // ── 条形拖拽 ──
@@ -1388,34 +1406,34 @@ export function BitableGanttView({
     return (
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'var(--editor-bg, #ffffff)',
-          padding: 24,
+          background: 'var(--editor-bg)',
+          padding: 'var(--dim-24)',
         }}
       >
         <div
           style={{
-            maxWidth: 420,
+            maxWidth: 'var(--dim-420)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 12,
-            padding: '28px 32px',
-            borderRadius: 14,
-            border: '1px dashed var(--editor-border, #cbd5e1)',
-            background: 'var(--editor-surface, #ffffff)',
+            gap: 'var(--dim-12)',
+            padding: 'var(--dim-28) var(--dim-32)',
+            borderRadius: 'var(--dim-14)',
+            border: 'var(--dim-1) dashed var(--editor-border)',
+            background: 'var(--editor-surface)',
             textAlign: 'center',
           }}
         >
-          <CalendarRange size={30} color="var(--editor-accent, #3b82f6)" />
-          <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+          <CalendarRange size={30} color="var(--editor-accent)" />
+          <div style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
             甘特图需要一个日期字段
           </div>
-          <div style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--editor-text-muted, #64748b)' }}>
+          <div style={{ fontSize: 'var(--text-12)', lineHeight: 'var(--leading-1-7)', color: 'var(--editor-text-muted)' }}>
             表格中还没有可用的「日期 / 日期时间」字段。创建「开始日期」与「结束日期」后即可按时间轴排布任务。
           </div>
           {onCreateDateFields && (
@@ -1423,7 +1441,7 @@ export function BitableGanttView({
               type="button"
               className="nb-bitable-btn-primary"
               onClick={onCreateDateFields}
-              style={{ padding: '6px 14px', marginTop: 4 }}
+              style={{ padding: 'var(--dim-6) var(--dim-14)', marginTop: 'var(--dim-4)' }}
             >
               <Plus size={13} />
               <span>创建日期字段</span>
@@ -1439,11 +1457,11 @@ export function BitableGanttView({
       // 点回甘特图时释放记录侧栏持有的焦点，键盘交还给表格
       onMouseDownCapture={releaseScopedFocusOnPointerDown}
       style={{
-        width: '100%',
-        height: '100%',
+        width: 'var(--pct-100)',
+        height: 'var(--pct-100)',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--editor-bg, #ffffff)',
+        background: 'var(--editor-bg)',
         overflow: 'hidden',
       }}
     >
@@ -1455,23 +1473,23 @@ export function BitableGanttView({
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: 10,
-          rowGap: 6,
-          padding: '6px 12px',
-          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-          background: 'var(--editor-surface, #f8fafc)',
+          gap: 'var(--dim-10)',
+          rowGap: 'var(--dim-6)',
+          padding: 'var(--dim-4) var(--dim-12)',
+          borderBottom: 'var(--dim-1) solid var(--editor-border)',
+          background: 'var(--editor-surface)',
           flexShrink: 0,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
           <button
             ref={configBtnRef}
             type="button"
             className="nb-bitable-btn-secondary"
             onClick={(e) => openPanel('config', e)}
             style={{
-              gap: 4,
-              background: panel?.kind === 'config' ? 'var(--editor-bg, #f1f5f9)' : undefined,
+              gap: 'var(--dim-4)',
+              background: panel?.kind === 'config' ? 'var(--editor-bg)' : undefined,
             }}
           >
             <Settings2 size={13} />
@@ -1483,8 +1501,8 @@ export function BitableGanttView({
             className="nb-bitable-btn-secondary"
             onClick={(e) => openPanel('fields', e)}
             style={{
-              gap: 4,
-              background: panel?.kind === 'fields' ? 'var(--editor-bg, #f1f5f9)' : undefined,
+              gap: 'var(--dim-4)',
+              background: panel?.kind === 'fields' ? 'var(--editor-bg)' : undefined,
             }}
           >
             <Pin size={13} />
@@ -1494,8 +1512,8 @@ export function BitableGanttView({
           {/* 分组依据 + 多字段排序：与表格视图共用同一套视图配置 */}
           {onUpdateGroupByColumnId && (
             <>
-              <div style={{ width: 1, height: 16, background: 'var(--editor-border, #e2e8f0)' }} />
-              <SlidersHorizontal size={13} color="var(--editor-text-muted, #64748b)" />
+              <div style={{ width: 'var(--dim-1)', height: 'var(--dim-16)', background: 'var(--editor-border)' }} />
+              <SlidersHorizontal size={13} color="var(--editor-text-muted)" />
               <FieldSelectButton
                 columns={columns}
                 value={groupByColumnId || null}
@@ -1510,7 +1528,7 @@ export function BitableGanttView({
                     className="nb-bitable-btn-ghost"
                     onClick={() => onUpdateGroupByColumnId('')}
                     aria-label="清除分组"
-                    style={{ padding: '3px 5px' }}
+                    style={{ padding: 'var(--dim-3) var(--dim-5)' }}
                   >
                     <X size={12} />
                   </button>
@@ -1529,13 +1547,13 @@ export function BitableGanttView({
                       setSortPanelOpen(true);
                     }}
                     style={{
-                      gap: 4,
-                      padding: '3px 8px',
+                      gap: 'var(--dim-4)',
+                      padding: 'var(--dim-3) var(--dim-8)',
                       background: sortRules.length > 0
-                        ? 'color-mix(in srgb, var(--editor-accent, #3b82f6) 8%, transparent)'
+                        ? 'color-mix(in srgb, var(--editor-accent) var(--pct-8), transparent)'
                         : undefined,
-                      color: sortRules.length > 0 ? 'var(--editor-accent, #3b82f6)' : undefined,
-                      borderColor: sortRules.length > 0 ? 'var(--editor-accent, #3b82f6)' : undefined,
+                      color: sortRules.length > 0 ? 'var(--editor-accent)' : undefined,
+                      borderColor: sortRules.length > 0 ? 'var(--editor-accent)' : undefined,
                     }}
                   >
                     <ArrowUpDown size={13} />
@@ -1564,17 +1582,18 @@ export function BitableGanttView({
           </FloatingPanel>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
           {/* 刻度切换：周 / 月 / 季 / 年 */}
           <div
+            className="nb-bitable-gantt-zoom-group"
             style={{
               display: 'flex',
               alignItems: 'center',
-              padding: 2,
-              gap: 2,
-              borderRadius: 7,
-              background: 'var(--editor-bg, #ffffff)',
-              border: '1px solid var(--editor-border, #e2e8f0)',
+              padding: 'var(--dim-2)',
+              gap: 'var(--dim-2)',
+              borderRadius: 'var(--dim-7)',
+              background: 'var(--editor-bg)',
+              border: 'var(--dim-1) solid var(--editor-border)',
             }}
           >
             {ZOOM_OPTIONS.map((option) => {
@@ -1586,10 +1605,10 @@ export function BitableGanttView({
                   onClick={() => onUpdateConfig({ zoom: option.id })}
                   className={`nb-bitable-gantt-zoom${isActive ? ' is-active' : ''}`}
                   style={{
-                    padding: '2px 12px',
-                    fontSize: 12,
+                    padding: 'var(--dim-2) var(--dim-12)',
+                    fontSize: 'var(--text-12)',
                     border: 'none',
-                    borderRadius: 5,
+                    borderRadius: 'var(--dim-5)',
                     cursor: 'pointer',
                   }}
                 >
@@ -1621,7 +1640,7 @@ export function BitableGanttView({
               setColorMenu(null);
             }}
           >
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+            <div style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
               甘特图配置
             </div>
 
@@ -1643,7 +1662,7 @@ export function BitableGanttView({
               />
             </ConfigRow>
 
-            <div style={{ height: 1, background: 'var(--editor-border, #f1f5f9)' }} />
+            <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)' }} />
 
             <ConfigRow label="标题展示">
               <FieldSelectButton
@@ -1669,19 +1688,19 @@ export function BitableGanttView({
                   setColorMenu({ anchor, trigger: e.currentTarget });
                 }}
                 style={{
-                  width: 150,
+                  width: 'var(--dim-150)',
                   justifyContent: 'space-between',
-                  padding: '3px 8px',
-                  fontWeight: 400,
+                  padding: 'var(--dim-3) var(--dim-8)',
+                  fontWeight: 'var(--weight-400)',
                 }}
               >
-                <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
                   {colorMode === 'custom' && (
                     <span
                       style={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: 3,
+                        width: 'var(--dim-10)',
+                        height: 'var(--dim-10)',
+                        borderRadius: 'var(--dim-3)',
                         background: palette.text,
                         flexShrink: 0,
                       }}
@@ -1689,7 +1708,7 @@ export function BitableGanttView({
                   )}
                   {COLOR_MODE_OPTIONS.find((o) => o.id === colorMode)?.label}
                 </span>
-                <ChevronDown size={12} style={{ opacity: 0.6 }} />
+                <ChevronDown size={12} style={{ opacity: 'var(--opacity-0-6)' }} />
               </button>
               {colorMenu && (
                 <FloatingPanel
@@ -1710,7 +1729,7 @@ export function BitableGanttView({
                       }}
                     >
                       <span style={{ flex: 1 }}>{option.label}</span>
-                      {colorMode === option.id && <Check size={13} color="var(--editor-accent, #3b82f6)" />}
+                      {colorMode === option.id && <Check size={13} color="var(--editor-accent)" />}
                     </button>
                   ))}
                 </FloatingPanel>
@@ -1723,10 +1742,10 @@ export function BitableGanttView({
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 8px',
-                  borderRadius: 7,
-                  background: 'var(--editor-bg, #f8fafc)',
+                  gap: 'var(--dim-6)',
+                  padding: 'var(--dim-6) var(--dim-8)',
+                  borderRadius: 'var(--dim-7)',
+                  background: 'var(--editor-bg)',
                 }}
               >
                 {GANTT_COLOR_SWATCHES.map((item) => (
@@ -1735,15 +1754,15 @@ export function BitableGanttView({
                       className="nb-bitable-color-swatch"
                       onClick={() => onUpdateConfig({ color: item.id as GanttViewConfig['color'] })}
                       style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: 5,
+                        width: 'var(--dim-18)',
+                        height: 'var(--dim-18)',
+                        borderRadius: 'var(--dim-5)',
                         background: item.text,
                         cursor: 'pointer',
                         border:
                           palette.id === item.id
-                            ? '2px solid var(--editor-text, #0f172a)'
-                            : '1px solid rgba(15,23,42,0.12)',
+                            ? 'var(--dim-2) solid var(--editor-text)'
+                            : 'var(--dim-1) solid var(--nb-auto-0f172a-a12)',
                       }}
                     />
                   </Tooltip>
@@ -1751,7 +1770,7 @@ export function BitableGanttView({
               </div>
             )}
 
-            <div style={{ height: 1, background: 'var(--editor-border, #f1f5f9)' }} />
+            <div style={{ height: 'var(--dim-1)', background: 'var(--editor-border)' }} />
 
             <ConfigRow label="仅计算工作日">
               <ConfigSwitch
@@ -1763,7 +1782,7 @@ export function BitableGanttView({
             {/* 每周休息日：时间轴底色与「仅计算工作日」共用此设置；仅在开启工作日模式时展示，关闭时沿用已保存的设置 */}
             {workdaysOnly && (
               <ConfigRow label="每周休息日">
-                <div style={{ display: 'flex', gap: 3 }}>
+                <div style={{ display: 'flex', gap: 'var(--dim-3)' }}>
                   {WEEKDAY_OPTIONS.map((option) => {
                     const isRest = restWeekdays.includes(option.id);
                     return (
@@ -1786,7 +1805,7 @@ export function BitableGanttView({
             <ConfigRow
               label={
                 <Tooltip content="按国务院放假安排：节假日休息，调休日上班" side="top" sideOffset={4}>
-                  <span style={{ cursor: 'help', borderBottom: '1px dashed var(--editor-text-muted, #94a3b8)' }}>
+                  <span style={{ cursor: 'help', borderBottom: 'var(--dim-1) dashed var(--editor-text-muted)' }}>
                     法定节假日与调休
                   </span>
                 </Tooltip>
@@ -1800,11 +1819,11 @@ export function BitableGanttView({
             {holidayHint && (
               <div
                 style={{
-                  marginTop: -4,
-                  fontSize: 11.5,
+                  marginTop: 'calc(var(--dim-4) * -1)',
+                  fontSize: 'var(--text-11-5)',
                   color: holidayState.status === 'error'
-                    ? 'var(--error-600, #dc2626)'
-                    : 'var(--editor-text-muted, #94a3b8)',
+                    ? 'var(--error-600)'
+                    : 'var(--editor-text-muted)',
                 }}
               >
                 {holidayHint}
@@ -1824,10 +1843,10 @@ export function BitableGanttView({
           >
             <div
               style={{
-                fontSize: 12,
-                color: 'var(--editor-text-muted, #94a3b8)',
-                padding: '2px 6px 6px',
-                lineHeight: 1.6,
+                fontSize: 'var(--text-12)',
+                color: 'var(--editor-text-muted)',
+                padding: 'var(--dim-2) var(--dim-6) var(--dim-6)',
+                lineHeight: 'var(--leading-1-6)',
               }}
             >
               勾选的字段会固定在时间轴左侧，横向滚动时始终可见。
@@ -1843,17 +1862,17 @@ export function BitableGanttView({
                   onClick={() => toggleLeftColumn(col.id)}
                   style={{ justifyContent: 'space-between' }}
                 >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 6, overflow: 'hidden' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)', overflow: 'hidden' }}>
                     {meta.icon}
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {col.name}
                     </span>
-                    {included && <Lock size={11} color="var(--editor-text-muted, #94a3b8)" />}
+                    {included && <Lock size={11} color="var(--editor-text-muted)" />}
                   </span>
                   {included ? (
-                    <Eye size={13} color="var(--editor-accent, #3b82f6)" />
+                    <Eye size={13} color="var(--editor-accent)" />
                   ) : (
-                    <EyeOff size={13} color="var(--editor-text-muted, #94a3b8)" />
+                    <EyeOff size={13} color="var(--editor-text-muted)" />
                   )}
                 </button>
               );
@@ -1880,7 +1899,7 @@ export function BitableGanttView({
             borderCollapse: 'separate',
             borderSpacing: 0,
             width: 'max-content',
-            minWidth: '100%',
+            minWidth: 'var(--pct-100)',
           }}
         >
           <thead>
@@ -1895,13 +1914,13 @@ export function BitableGanttView({
                   position: 'sticky',
                   left: 0,
                   top: 0,
-                  zIndex: 8,
-                  background: 'var(--editor-surface, #f8fafc)',
-                  borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-                  borderRight: '1px solid var(--editor-border, #e2e8f0)',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: 'var(--editor-text-muted, #94a3b8)',
+                  zIndex: 'var(--z-8)',
+                  background: 'var(--editor-surface)',
+                  borderBottom: 'var(--dim-1) solid var(--editor-border)',
+                  borderRight: 'var(--dim-1) solid var(--editor-border)',
+                  fontSize: 'var(--text-12)',
+                  fontWeight: 'var(--weight-500)',
+                  color: 'var(--editor-text-muted)',
                   textAlign: 'center',
                   userSelect: 'none',
                   padding: 0,
@@ -1926,33 +1945,33 @@ export function BitableGanttView({
                       position: 'sticky',
                       left: leftOffsets[idx],
                       top: 0,
-                      zIndex: 7,
-                      borderBottom: '1px solid var(--editor-border, #e2e8f0)',
+                      zIndex: 'var(--z-7)',
+                      borderBottom: 'var(--dim-1) solid var(--editor-border)',
                       borderRight: isLastLeft
-                        ? '1px solid var(--editor-border, #cbd5e1)'
-                        : '1px solid var(--editor-border, #f1f5f9)',
-                      padding: '0 10px',
+                        ? 'var(--dim-1) solid var(--editor-border)'
+                        : 'var(--dim-1) solid var(--editor-border)',
+                      padding: '0 var(--dim-10)',
                       textAlign: 'left',
-                      fontSize: 12,
-                      fontWeight: 600,
-                      color: 'var(--editor-text, #1e293b)',
+                      fontSize: 'var(--text-12)',
+                      fontWeight: 'var(--weight-600)',
+                      color: 'var(--editor-text)',
                       userSelect: 'none',
                       overflow: 'hidden',
                     }}
                   >
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
                       {meta.icon}
                       <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {col.name}
                       </span>
-                      <Lock size={11} color="var(--editor-text-muted, #94a3b8)" style={{ flexShrink: 0 }} />
+                      <Lock size={11} color="var(--editor-text-muted)" style={{ flexShrink: 0 }} />
                     </span>
 
                     {/* 拖拽列宽调整把手（th 为 sticky 定位，可直接承载绝对定位子元素） */}
                     {onUpdateColumn && (
                       <div
                         className="nb-bitable-gantt-col-resizer"
-                        onMouseDown={(e) => handleColumnResizeStart(e, col)}
+                        onPointerDown={(e) => handleColumnResizeStart(e, col, width)}
                       />
                     )}
                   </th>
@@ -1966,10 +1985,10 @@ export function BitableGanttView({
                   minWidth: timelineWidth,
                   position: 'sticky',
                   top: 0,
-                  zIndex: 6,
-                  background: 'var(--editor-surface, #f8fafc)',
-                  borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-                  borderRight: '1px solid var(--editor-border, #e2e8f0)',
+                  zIndex: 'var(--z-6)',
+                  background: 'var(--editor-surface)',
+                  borderBottom: 'var(--dim-1) solid var(--editor-border)',
+                  borderRight: 'var(--dim-1) solid var(--editor-border)',
                   padding: 0,
                 }}
               >
@@ -1999,14 +2018,14 @@ export function BitableGanttView({
                           width: band.span * dayWidth,
                           minWidth: band.span * dayWidth,
                           boxSizing: 'border-box',
-                          borderRight: '1px solid var(--editor-border, #e2e8f0)',
-                          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
+                          borderRight: 'var(--dim-1) solid var(--editor-border)',
+                          borderBottom: 'var(--dim-1) solid var(--editor-border)',
                           display: 'flex',
                           alignItems: 'center',
-                          paddingLeft: 8,
-                          fontSize: 11.5,
-                          fontWeight: 600,
-                          color: 'var(--editor-text-muted, #64748b)',
+                          paddingLeft: 'var(--dim-8)',
+                          fontSize: 'var(--text-11-5)',
+                          fontWeight: 'var(--weight-600)',
+                          color: 'var(--editor-text-muted)',
                           overflow: 'hidden',
                           whiteSpace: 'nowrap',
                         }}
@@ -2025,14 +2044,14 @@ export function BitableGanttView({
                           width: band.span * dayWidth,
                           minWidth: band.span * dayWidth,
                           boxSizing: 'border-box',
-                          borderRight: '1px solid var(--editor-border, #f1f5f9)',
+                          borderRight: 'var(--dim-1) solid var(--editor-border)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: isDayScale ? 'center' : 'flex-start',
-                          gap: 2,
+                          gap: 'var(--dim-2)',
                           paddingLeft: isDayScale ? 0 : 8,
-                          fontSize: 11,
-                          color: 'var(--editor-text-muted, #94a3b8)',
+                          fontSize: 'var(--text-11)',
+                          color: 'var(--editor-text-muted)',
                           overflow: 'hidden',
                           whiteSpace: 'nowrap',
                         }}
@@ -2042,12 +2061,12 @@ export function BitableGanttView({
                         {excludeHolidays && band.day !== undefined && holidays.has(band.day) && (
                           <span
                             style={{
-                              fontSize: 9,
-                              fontWeight: 600,
-                              lineHeight: 1,
+                              fontSize: 'var(--text-9)',
+                              fontWeight: 'var(--weight-600)',
+                              lineHeight: 'var(--leading-1)',
                               color: holidays.get(band.day)
-                                ? 'var(--editor-accent, #3b82f6)'
-                                : 'var(--editor-text-secondary, #64748b)',
+                                ? 'var(--editor-accent)'
+                                : 'var(--editor-text-secondary)',
                             }}
                           >
                             {holidays.get(band.day) ? '休' : '班'}
@@ -2065,8 +2084,8 @@ export function BitableGanttView({
                         top: 0,
                         bottom: 0,
                         left: todayX,
-                        width: 1,
-                        background: 'var(--editor-accent, #3b82f6)',
+                        width: 'var(--dim-1)',
+                        background: 'var(--editor-accent)',
                         pointerEvents: 'none',
                       }}
                     />
@@ -2086,21 +2105,21 @@ export function BitableGanttView({
                 return (
                   <React.Fragment key={`group-${item.key}`}>
                     {!isFirstGroup && (
-                      <tr aria-hidden="true" style={{ height: 8 }}>
+                      <tr aria-hidden="true" style={{ height: 'var(--dim-8)' }}>
                         <td
                           colSpan={leftColumns.length + 2}
                           style={{ border: 'none', padding: 0, background: 'transparent' }}
                         />
                       </tr>
                     )}
-                    <tr style={{ height: 34 }}>
+                    <tr style={{ height: 'var(--dim-34)' }}>
                       <td
                         colSpan={leftColumns.length + 2}
                         className="nb-bitable-gantt-group-cell"
                         onClick={() => toggleGroupCollapse(item.key)}
                         style={{
-                          borderTop: isFirstGroup ? '1px solid var(--editor-border, #e2e8f0)' : undefined,
-                          borderBottom: '1px solid var(--editor-border, #e2e8f0)',
+                          borderTop: isFirstGroup ? 'var(--dim-1) solid var(--editor-border)' : undefined,
+                          borderBottom: 'var(--dim-1) solid var(--editor-border)',
                           padding: 0,
                           cursor: 'pointer',
                         }}
@@ -2111,9 +2130,9 @@ export function BitableGanttView({
                             left: 0,
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: 8,
-                            padding: '0 12px',
-                            height: 34,
+                            gap: 'var(--dim-8)',
+                            padding: '0 var(--dim-12)',
+                            height: 'var(--dim-34)',
                             width: 'max-content',
                           }}
                         >
@@ -2124,18 +2143,18 @@ export function BitableGanttView({
                               e.stopPropagation();
                               toggleGroupCollapse(item.key);
                             }}
-                            style={{ padding: 2, color: 'var(--editor-text-muted, #64748b)' }}
+                            style={{ padding: 'var(--dim-2)', color: 'var(--editor-text-muted)' }}
                           >
                             {isCollapsed ? <ChevronRight size={13} /> : <ChevronDown size={13} />}
                           </button>
                           {item.color ? (
                             <OptionBadge option={{ id: item.key, label: item.label, color: item.color }} />
                           ) : (
-                            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+                            <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
                               {item.label}
                             </span>
                           )}
-                          <span style={{ fontSize: 12, color: 'var(--editor-text-muted, #94a3b8)' }}>
+                          <span style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)' }}>
                             总数 {item.count}
                           </span>
                         </div>
@@ -2153,7 +2172,7 @@ export function BitableGanttView({
                 selection.type === 'row' &&
                 rowIdx >= normalizedSelection.minRowIdx &&
                 rowIdx <= normalizedSelection.maxRowIdx;
-              const rowTint = isRowSelected ? '#eef4fe' : undefined;
+              const rowTint = isRowSelected ? 'var(--nb-auto-eef4fe)' : undefined;
               const bar = barsByRow.get(row.id);
               const rowHovered = hoverRowId === row.id;
               const drag = barDrag?.rowId === row.id ? barDrag : null;
@@ -2162,9 +2181,9 @@ export function BitableGanttView({
               const rowIndicator = rowIdx >= 0 ? getRowIndicator(rowIdx) : null;
               const rowDropShadow =
                 rowIndicator === 'top'
-                  ? 'inset 0 2px 0 #3b82f6'
+                  ? 'inset 0 var(--dim-2) 0 var(--nb-blue-500)'
                   : rowIndicator === 'bottom'
-                    ? 'inset 0 -2px 0 #3b82f6'
+                    ? 'inset 0 calc(var(--dim-2) * -1) 0 var(--nb-blue-500)'
                     : undefined;
               const isRowDragging = rowDrag !== null && rowDrag.fromIdx === rowIdx;
 
@@ -2236,12 +2255,12 @@ export function BitableGanttView({
                       maxWidth: NUM_COL_WIDTH,
                       position: 'sticky',
                       left: 0,
-                      zIndex: 5,
-                      borderBottom: '1px solid var(--editor-border, #f1f5f9)',
-                      borderRight: '1px solid var(--editor-border, #e2e8f0)',
+                      zIndex: 'var(--z-5)',
+                      borderBottom: 'var(--dim-1) solid var(--editor-border)',
+                      borderRight: 'var(--dim-1) solid var(--editor-border)',
                       textAlign: 'center',
-                      fontSize: 12,
-                      color: 'var(--editor-text-muted, #94a3b8)',
+                      fontSize: 'var(--text-12)',
+                      color: 'var(--editor-text-muted)',
                       padding: 0,
                       userSelect: 'none',
                       background: rowTint || undefined,
@@ -2256,7 +2275,7 @@ export function BitableGanttView({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: '100%',
+                        width: 'var(--pct-100)',
                         height: ROW_HEIGHT,
                       }}
                     >
@@ -2274,7 +2293,7 @@ export function BitableGanttView({
                         side="right"
                         sideOffset={4}
                       >
-                        <span style={{ cursor: 'inherit', display: 'inline-block', width: '100%' }}>
+                        <span style={{ cursor: 'inherit', display: 'inline-block', width: 'var(--pct-100)' }}>
                           {node.rowNumber}
                         </span>
                       </Tooltip>
@@ -2285,18 +2304,18 @@ export function BitableGanttView({
                         style={{
                           display: isRowSelected ? 'flex' : 'none',
                           position: 'absolute',
-                          left: '100%',
-                          top: '50%',
-                          transform: 'translateY(-50%)',
-                          zIndex: 99,
-                          background: 'var(--editor-surface, #ffffff)',
-                          border: '1px solid var(--editor-border, #cbd5e1)',
-                          borderRadius: 7,
-                          boxShadow: '0 6px 18px rgba(15,23,42,0.14)',
-                          padding: '4px 6px',
-                          gap: 3,
+                          left: 'var(--pct-100)',
+                          top: 'var(--pct-50)',
+                          transform: 'translateY(calc(var(--pct-50) * -1))',
+                          zIndex: 'var(--z-99)',
+                          background: 'var(--editor-surface)',
+                          border: 'var(--dim-1) solid var(--editor-border)',
+                          borderRadius: 'var(--dim-7)',
+                          boxShadow: '0 var(--dim-6) var(--dim-18) var(--nb-auto-0f172a-a14)',
+                          padding: 'var(--dim-4) var(--dim-6)',
+                          gap: 'var(--dim-3)',
                           alignItems: 'center',
-                          marginLeft: 4,
+                          marginLeft: 'var(--dim-4)',
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -2307,7 +2326,7 @@ export function BitableGanttView({
                               aria-label="展开记录详情"
                               className="nb-bitable-row-action-btn"
                               onClick={() => onOpenRecord(row.id)}
-                              style={{ color: 'var(--editor-accent, #3b82f6)' }}
+                              style={{ color: 'var(--editor-accent)' }}
                             >
                               <Maximize2 size={14} />
                             </button>
@@ -2326,7 +2345,7 @@ export function BitableGanttView({
                               disabled={!row.parentId}
                               className="nb-bitable-row-action-btn"
                               onClick={() => onOutdentRow(row.id)}
-                              style={{ color: 'var(--editor-text, #334155)' }}
+                              style={{ color: 'var(--editor-text)' }}
                             >
                               <IndentDecrease size={14} />
                             </button>
@@ -2339,7 +2358,7 @@ export function BitableGanttView({
                               aria-label="降级为子任务"
                               className="nb-bitable-row-action-btn"
                               onClick={() => onIndentRow(row.id)}
-                              style={{ color: 'var(--editor-text, #334155)' }}
+                              style={{ color: 'var(--editor-text)' }}
                             >
                               <IndentIncrease size={14} />
                             </button>
@@ -2352,7 +2371,7 @@ export function BitableGanttView({
                               aria-label="添加子任务"
                               className="nb-bitable-row-action-btn"
                               onClick={() => onAddSubRow(row.id)}
-                              style={{ color: 'var(--editor-accent, #3b82f6)' }}
+                              style={{ color: 'var(--editor-accent)' }}
                             >
                               <CornerDownRight size={14} />
                             </button>
@@ -2365,7 +2384,7 @@ export function BitableGanttView({
                               aria-label="在上方插入行"
                               className="nb-bitable-row-action-btn"
                               onClick={() => onInsertRowAbove(row.id)}
-                              style={{ color: 'var(--editor-text, #334155)' }}
+                              style={{ color: 'var(--editor-text)' }}
                             >
                               <ArrowUp size={14} />
                             </button>
@@ -2378,7 +2397,7 @@ export function BitableGanttView({
                               aria-label="在下方插入行"
                               className="nb-bitable-row-action-btn"
                               onClick={() => onInsertRowBelow(row.id)}
-                              style={{ color: 'var(--editor-text, #334155)' }}
+                              style={{ color: 'var(--editor-text)' }}
                             >
                               <ArrowDown size={14} />
                             </button>
@@ -2390,7 +2409,7 @@ export function BitableGanttView({
                             aria-label="删除该行"
                             className="nb-bitable-row-action-btn"
                             onClick={() => onDeleteRow(row.id)}
-                            style={{ color: '#ef4444' }}
+                            style={{ color: 'var(--nb-red-500)' }}
                           >
                             <Trash2 size={14} />
                           </button>
@@ -2428,22 +2447,22 @@ export function BitableGanttView({
                     const shadows: string[] = [];
                     if (rowDropShadow) shadows.push(rowDropShadow);
                     if (isCellSelected) {
-                      if (isTopEdge) shadows.push('inset 0 2px 0 0 var(--editor-accent, #3b82f6)');
-                      if (isBottomEdge) shadows.push('inset 0 -2px 0 0 var(--editor-accent, #3b82f6)');
-                      if (isLeftEdge) shadows.push('inset 2px 0 0 0 var(--editor-accent, #3b82f6)');
-                      if (isRightEdge) shadows.push('inset -2px 0 0 0 var(--editor-accent, #3b82f6)');
+                      if (isTopEdge) shadows.push('inset 0 var(--dim-2) 0 0 var(--editor-accent)');
+                      if (isBottomEdge) shadows.push('inset 0 calc(var(--dim-2) * -1) 0 0 var(--editor-accent)');
+                      if (isLeftEdge) shadows.push('inset var(--dim-2) 0 0 0 var(--editor-accent)');
+                      if (isRightEdge) shadows.push('inset calc(var(--dim-2) * -1) 0 0 0 var(--editor-accent)');
                     }
                     if (isInFillPreview) {
-                      if (isFillTop) shadows.push('inset 0 2px 0 0 #60a5fa');
-                      if (isFillBottom) shadows.push('inset 0 -2px 0 0 #60a5fa');
-                      if (isFillLeft) shadows.push('inset 2px 0 0 0 #60a5fa');
-                      if (isFillRight) shadows.push('inset -2px 0 0 0 #60a5fa');
+                      if (isFillTop) shadows.push('inset 0 var(--dim-2) 0 0 var(--nb-blue-400)');
+                      if (isFillBottom) shadows.push('inset 0 calc(var(--dim-2) * -1) 0 0 var(--nb-blue-400)');
+                      if (isFillLeft) shadows.push('inset var(--dim-2) 0 0 0 var(--nb-blue-400)');
+                      if (isFillRight) shadows.push('inset calc(var(--dim-2) * -1) 0 0 0 var(--nb-blue-400)');
                     }
 
                     const cellBg = isInFillPreview
-                      ? '#dbe9fd'
+                      ? 'var(--nb-auto-dbe9fd)'
                       : isCellSelected
-                        ? '#e7effd'
+                        ? 'var(--nb-auto-e7effd)'
                         : rowTint || undefined;
 
                     return (
@@ -2464,10 +2483,10 @@ export function BitableGanttView({
                           // 承载填充柄的单元格临时抬升层级，避免把手被下一列盖住
                           zIndex: isBottomRightCorner ? 2 : 1,
                           height: ROW_HEIGHT,
-                          borderBottom: '1px solid var(--editor-border, #f1f5f9)',
+                          borderBottom: 'var(--dim-1) solid var(--editor-border)',
                           borderRight: isLastLeft
-                            ? '1px solid var(--editor-border, #cbd5e1)'
-                            : '1px solid var(--editor-border, #f1f5f9)',
+                            ? 'var(--dim-1) solid var(--editor-border)'
+                            : 'var(--dim-1) solid var(--editor-border)',
                           padding: 0,
                           overflow: 'visible',
                           verticalAlign: 'middle',
@@ -2479,8 +2498,8 @@ export function BitableGanttView({
                           style={{
                             display: 'flex',
                             alignItems: 'center',
-                            width: '100%',
-                            height: '100%',
+                            width: 'var(--pct-100)',
+                            height: 'var(--pct-100)',
                             overflow: 'hidden',
                           }}
                         >
@@ -2491,7 +2510,7 @@ export function BitableGanttView({
                                 display: 'flex',
                                 alignItems: 'center',
                                 paddingLeft: node.depth * 18 + 2,
-                                marginRight: 2,
+                                marginRight: 'var(--dim-2)',
                                 flexShrink: 0,
                               }}
                             >
@@ -2503,20 +2522,20 @@ export function BitableGanttView({
                                     e.stopPropagation();
                                     toggleCollapse(row.id);
                                   }}
-                                  style={{ padding: 1, color: 'var(--editor-text-muted, #64748b)' }}
+                                  style={{ padding: 'var(--dim-1)', color: 'var(--editor-text-muted)' }}
                                 >
                                   {node.isCollapsed ? <ChevronRight size={13} /> : <ChevronDown size={13} />}
                                 </button>
                               ) : node.depth > 0 ? (
                                 <CornerDownRight
                                   size={11}
-                                  color="var(--editor-text-muted, #94a3b8)"
-                                  style={{ opacity: 0.7 }}
+                                  color="var(--editor-text-muted)"
+                                  style={{ opacity: 'var(--opacity-0-7)' }}
                                 />
                               ) : null}
                             </div>
                           )}
-                          <div style={{ flex: 1, height: '100%', minWidth: 0 }}>
+                          <div style={{ flex: 1, height: 'var(--pct-100)', minWidth: 0 }}>
                             <BitableCellEditor
                               column={col}
                               value={row[col.id]}
@@ -2536,16 +2555,16 @@ export function BitableGanttView({
                               className="nb-bitable-fill-handle"
                               style={{
                                 position: 'absolute',
-                                right: -4,
-                                bottom: -4,
-                                width: 7,
-                                height: 7,
-                                background: 'var(--editor-accent, #3b82f6)',
-                                border: '1px solid #ffffff',
-                                borderRadius: 1,
+                                right: 'calc(var(--dim-4) * -1)',
+                                bottom: 'calc(var(--dim-4) * -1)',
+                                width: 'var(--dim-7)',
+                                height: 'var(--dim-7)',
+                                background: 'var(--editor-accent)',
+                                border: 'var(--dim-1) solid var(--nb-white)',
+                                borderRadius: 'var(--dim-1)',
                                 cursor: 'crosshair',
-                                zIndex: 12,
-                                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                                zIndex: 'var(--z-12)',
+                                boxShadow: '0 var(--dim-1) var(--dim-3) var(--nb-black-a20)',
                               }}
                             />
                           </Tooltip>
@@ -2566,7 +2585,7 @@ export function BitableGanttView({
                     style={{
                       padding: 0,
                       height: ROW_HEIGHT,
-                      borderBottom: '1px solid var(--editor-border, #f1f5f9)',
+                      borderBottom: 'var(--dim-1) solid var(--editor-border)',
                       position: 'relative',
                       boxShadow: rowDropShadow,
                     }}
@@ -2603,9 +2622,9 @@ export function BitableGanttView({
                             top: 0,
                             bottom: 0,
                             left: todayX,
-                            width: 1,
-                            background: 'var(--editor-accent, #3b82f6)',
-                            opacity: 0.75,
+                            width: 'var(--dim-1)',
+                            background: 'var(--editor-accent)',
+                            opacity: 'var(--opacity-0-75)',
                             pointerEvents: 'none',
                           }}
                         />
@@ -2637,14 +2656,14 @@ export function BitableGanttView({
                                 left: barLeft + 3,
                                 width: effectiveWidth,
                                 height: BAR_HEIGHT,
-                                borderRadius: 6,
+                                borderRadius: 'var(--dim-6)',
                                 background: barPalette.text,
                                 // 颜色可能是 CSS 变量（跟随主题），透明度改用 color-mix 而非拼接十六进制
-                                boxShadow: `0 1px 3px color-mix(in srgb, ${barPalette.text} 27%, transparent)`,
+                                boxShadow: `0 var(--dim-1) var(--dim-3) color-mix(in srgb, ${barPalette.text} var(--pct-27), transparent)`,
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: 6,
-                                padding: showTitleInside ? '0 8px' : '0 4px',
+                                gap: 'var(--dim-6)',
+                                padding: showTitleInside ? '0 var(--dim-8)' : '0 var(--dim-4)',
                                 boxSizing: 'border-box',
                                 overflow: 'hidden',
                                 cursor: drag ? 'grabbing' : 'grab',
@@ -2655,9 +2674,9 @@ export function BitableGanttView({
                                 <span
                                   style={{
                                     flex: 1,
-                                    fontSize: 11.5,
-                                    fontWeight: 600,
-                                    color: '#ffffff',
+                                    fontSize: 'var(--text-11-5)',
+                                    fontWeight: 'var(--weight-600)',
+                                    color: 'var(--nb-white)',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                     whiteSpace: 'nowrap',
@@ -2669,9 +2688,9 @@ export function BitableGanttView({
                               {showDurationInside && (
                                 <span
                                   style={{
-                                    fontSize: 10.5,
-                                    fontWeight: 600,
-                                    color: 'rgba(255,255,255,0.92)',
+                                    fontSize: 'var(--text-10-5)',
+                                    fontWeight: 'var(--weight-600)',
+                                    color: 'var(--nb-white-a92)',
                                     flexShrink: 0,
                                     whiteSpace: 'nowrap',
                                   }}
@@ -2684,12 +2703,12 @@ export function BitableGanttView({
                               <div
                                 className="nb-bitable-gantt-bar-handle"
                                 onMouseDown={(e) => startBarDrag(e, row.id, 'resize-start', bar.aStart, bar.aEnd)}
-                                style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 7, cursor: 'col-resize' }}
+                                style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 'var(--dim-7)', cursor: 'col-resize' }}
                               />
                               <div
                                 className="nb-bitable-gantt-bar-handle"
                                 onMouseDown={(e) => startBarDrag(e, row.id, 'resize-end', bar.aStart, bar.aEnd)}
-                                style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 7, cursor: 'col-resize' }}
+                                style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 'var(--dim-7)', cursor: 'col-resize' }}
                               />
                             </div>
                           </Tooltip>
@@ -2704,8 +2723,8 @@ export function BitableGanttView({
                                 height: ROW_HEIGHT,
                                 display: 'flex',
                                 alignItems: 'center',
-                                fontSize: 11.5,
-                                color: 'var(--editor-text, #1e293b)',
+                                fontSize: 'var(--text-11-5)',
+                                color: 'var(--editor-text)',
                                 whiteSpace: 'nowrap',
                                 pointerEvents: 'none',
                               }}
@@ -2733,15 +2752,15 @@ export function BitableGanttView({
                               position: 'absolute',
                               left: todayX - 12,
                               top: (ROW_HEIGHT - 24) / 2,
-                              width: 24,
-                              height: 24,
+                              width: 'var(--dim-24)',
+                              height: 'var(--dim-24)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              borderRadius: 6,
-                              border: '1px dashed var(--control-border, #cbd5e1)',
-                              background: 'var(--editor-surface, #ffffff)',
-                              color: 'var(--editor-text-muted, #64748b)',
+                              borderRadius: 'var(--dim-6)',
+                              border: 'var(--dim-1) dashed var(--control-border)',
+                              background: 'var(--editor-surface)',
+                              color: 'var(--editor-text-muted)',
                               cursor: 'pointer',
                             }}
                           >
@@ -2761,21 +2780,21 @@ export function BitableGanttView({
               <td
                 colSpan={leftColumns.length + 1}
                 style={{
-                  padding: '8px 12px',
-                  borderTop: '1px solid var(--editor-border, #e2e8f0)',
-                  background: 'var(--editor-surface, #ffffff)',
+                  padding: 'var(--dim-8) var(--dim-12)',
+                  borderTop: 'var(--dim-1) solid var(--editor-border)',
+                  background: 'var(--editor-surface)',
                 }}
               >
-                <div style={{ position: 'sticky', left: 12, display: 'inline-flex', width: 'fit-content' }}>
+                <div style={{ position: 'sticky', left: 'var(--dim-12)', display: 'inline-flex', width: 'fit-content' }}>
                   <button
                     type="button"
                     className="nb-bitable-btn-secondary"
                     onClick={onAddRow}
                     style={{
                       borderStyle: 'dashed',
-                      padding: '5px 12px',
-                      color: 'var(--editor-text-muted, #64748b)',
-                      fontWeight: 500,
+                      padding: 'var(--dim-5) var(--dim-12)',
+                      color: 'var(--editor-text-muted)',
+                      fontWeight: 'var(--weight-500)',
                     }}
                   >
                     <Plus size={13} />
@@ -2785,8 +2804,8 @@ export function BitableGanttView({
               </td>
               <td
                 style={{
-                  borderTop: '1px solid var(--editor-border, #e2e8f0)',
-                  background: 'var(--editor-surface, #ffffff)',
+                  borderTop: 'var(--dim-1) solid var(--editor-border)',
+                  background: 'var(--editor-surface)',
                 }}
               />
             </tr>
@@ -2820,15 +2839,15 @@ export function BitableGanttView({
           position: 'fixed',
           top: 0,
           left: 0,
-          width: 1,
-          height: 1,
+          width: 'var(--dim-1)',
+          height: 'var(--dim-1)',
           padding: 0,
           border: 'none',
           outline: 'none',
           resize: 'none',
           opacity: 0,
           pointerEvents: 'none',
-          zIndex: -1,
+          zIndex: 'calc(var(--z-1) * -1)',
         }}
       />
 
@@ -2843,7 +2862,7 @@ export function BitableGanttView({
             {
               kind: 'item',
               key: 'copy',
-              icon: <Copy size={13} color="var(--editor-text-muted, #64748b)" />,
+              icon: <Copy size={13} color="var(--editor-text-muted)" />,
               label: '复制',
               shortcut: formatShortcut('Ctrl+C'),
               onSelect: () => {
@@ -2863,7 +2882,7 @@ export function BitableGanttView({
             {
               kind: 'item',
               key: 'cut',
-              icon: <Scissors size={13} color="var(--editor-text-muted, #64748b)" />,
+              icon: <Scissors size={13} color="var(--editor-text-muted)" />,
               label: '剪切',
               shortcut: formatShortcut('Ctrl+X'),
               onSelect: () => {
@@ -2879,7 +2898,7 @@ export function BitableGanttView({
             {
               kind: 'item',
               key: 'paste',
-              icon: <Clipboard size={13} color="var(--editor-text-muted, #64748b)" />,
+              icon: <Clipboard size={13} color="var(--editor-text-muted)" />,
               label: '粘贴',
               shortcut: formatShortcut('Ctrl+V'),
               onSelect: async () => {
@@ -2900,7 +2919,7 @@ export function BitableGanttView({
             {
               kind: 'item',
               key: 'clear-range',
-              icon: <Eraser size={13} color="var(--editor-text-muted, #64748b)" />,
+              icon: <Eraser size={13} color="var(--editor-text-muted)" />,
               label: '清空选区',
               shortcut: 'Del',
               onSelect: clearSelectedRange,
@@ -2909,13 +2928,13 @@ export function BitableGanttView({
             {
               kind: 'submenu',
               key: 'row',
-              icon: <Rows3 size={13} color="var(--editor-text-muted, #64748b)" />,
+              icon: <Rows3 size={13} color="var(--editor-text-muted)" />,
               label: '行操作',
               children: [
                 onInsertRowAbove && {
                   kind: 'item',
                   key: 'row-above',
-                  icon: <ArrowUp size={13} color="var(--editor-text-muted, #64748b)" />,
+                  icon: <ArrowUp size={13} color="var(--editor-text-muted)" />,
                   label: '在上方插入行',
                   onSelect: () => {
                     onInsertRowAbove(cellContextMenu.targetRowId);
@@ -2925,7 +2944,7 @@ export function BitableGanttView({
                 onInsertRowBelow && {
                   kind: 'item',
                   key: 'row-below',
-                  icon: <ArrowDown size={13} color="var(--editor-text-muted, #64748b)" />,
+                  icon: <ArrowDown size={13} color="var(--editor-text-muted)" />,
                   label: '在下方插入行',
                   onSelect: () => {
                     onInsertRowBelow(cellContextMenu.targetRowId);
@@ -2936,7 +2955,7 @@ export function BitableGanttView({
                 {
                   kind: 'item',
                   key: 'row-delete',
-                  icon: <Trash2 size={13} color="#ef4444" />,
+                  icon: <Trash2 size={13} color="var(--nb-red-500)" />,
                   label: '删除行',
                   danger: true,
                   onSelect: () => {
@@ -2954,13 +2973,13 @@ export function BitableGanttView({
             {
               kind: 'submenu',
               key: 'col',
-              icon: <Columns3 size={13} color="var(--editor-text-muted, #64748b)" />,
+              icon: <Columns3 size={13} color="var(--editor-text-muted)" />,
               label: '列操作',
               children: [
                 {
                   kind: 'item',
                   key: 'col-left',
-                  icon: <MoveLeft size={13} color="var(--editor-text-muted, #64748b)" />,
+                  icon: <MoveLeft size={13} color="var(--editor-text-muted)" />,
                   label: '在左侧插入列',
                   onSelect: () => {
                     onAddColumn('left', cellContextMenu.targetColId);
@@ -2970,7 +2989,7 @@ export function BitableGanttView({
                 {
                   kind: 'item',
                   key: 'col-right',
-                  icon: <MoveRight size={13} color="var(--editor-text-muted, #64748b)" />,
+                  icon: <MoveRight size={13} color="var(--editor-text-muted)" />,
                   label: '在右侧插入列',
                   onSelect: () => {
                     onAddColumn('right', cellContextMenu.targetColId);
@@ -2980,7 +2999,7 @@ export function BitableGanttView({
                 onClearColumn && {
                   kind: 'item',
                   key: 'col-clear',
-                  icon: <Eraser size={13} color="var(--editor-text-muted, #64748b)" />,
+                  icon: <Eraser size={13} color="var(--editor-text-muted)" />,
                   label: '清空整列数据',
                   onSelect: () => {
                     onClearColumn(cellContextMenu.targetColId);
@@ -2991,7 +3010,7 @@ export function BitableGanttView({
                 {
                   kind: 'item',
                   key: 'col-delete',
-                  icon: <Trash2 size={13} color="#ef4444" />,
+                  icon: <Trash2 size={13} color="var(--nb-red-500)" />,
                   label: '删除列',
                   danger: true,
                   onSelect: () => {
@@ -3005,7 +3024,7 @@ export function BitableGanttView({
             onOpenRecord && cellContextMenu.targetRowId ? {
               kind: 'item',
               key: 'open-record',
-              icon: <Maximize2 size={13} color="var(--editor-accent, #3b82f6)" />,
+              icon: <Maximize2 size={13} color="var(--editor-accent)" />,
               label: '展开记录详情',
               onSelect: () => onOpenRecord(cellContextMenu.targetRowId),
             } : null,
@@ -3019,8 +3038,8 @@ export function BitableGanttView({
 /** 配置面板「标签 + 控件」单行布局 */
 function ConfigRow({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-      <span style={{ fontSize: 12.5, color: 'var(--editor-text, #1e293b)', flexShrink: 0 }}>{label}</span>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--dim-10)' }}>
+      <span style={{ fontSize: 'var(--text-12-5)', color: 'var(--editor-text)', flexShrink: 0 }}>{label}</span>
       {children}
     </div>
   );
@@ -3036,28 +3055,28 @@ function ConfigSwitch({ checked, onChange }: { checked: boolean; onChange: () =>
       onClick={onChange}
       className="nb-bitable-gantt-switch"
       style={{
-        width: 34,
-        height: 20,
+        width: 'var(--dim-34)',
+        height: 'var(--dim-20)',
         padding: 0,
         border: 'none',
-        borderRadius: 10,
+        borderRadius: 'var(--dim-10)',
         cursor: 'pointer',
         position: 'relative',
         flexShrink: 0,
-        background: checked ? 'var(--editor-accent, #3b82f6)' : 'var(--editor-border, #cbd5e1)',
+        background: checked ? 'var(--editor-accent)' : 'var(--editor-border)',
         transition: 'background 0.18s ease',
       }}
     >
       <span
         style={{
           position: 'absolute',
-          top: 2,
+          top: 'var(--dim-2)',
           left: checked ? 16 : 2,
-          width: 16,
-          height: 16,
-          borderRadius: '50%',
-          background: '#ffffff',
-          boxShadow: '0 1px 2px rgba(15,23,42,0.25)',
+          width: 'var(--dim-16)',
+          height: 'var(--dim-16)',
+          borderRadius: 'var(--pct-50)',
+          background: 'var(--nb-white)',
+          boxShadow: '0 var(--dim-1) var(--dim-2) var(--nb-auto-0f172a-a25)',
           transition: 'left 0.18s ease',
         }}
       />

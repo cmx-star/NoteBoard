@@ -245,12 +245,12 @@ writeFileSync(
   proguardPath,
   [
     `# ${PATCH_MARKER}: 原生桥接插件与 FileProvider 由类名反射加载`,
-    '-keep class com.crazyfigure.noteboard.NbMobilePlugin { *; }',
-    '-keep class com.crazyfigure.noteboard.NbFileProvider { *; }',
-    '-keep class com.crazyfigure.noteboard.InboxArgs { *; }',
-    '-keep class com.crazyfigure.noteboard.ShareArgs { *; }',
-    '-keep class com.crazyfigure.noteboard.InstallApkArgs { *; }',
-    '-keep class com.crazyfigure.noteboard.SystemBarArgs { *; }',
+    '-keep class com.starcmx.loomark.NbMobilePlugin { *; }',
+    '-keep class com.starcmx.loomark.NbFileProvider { *; }',
+    '-keep class com.starcmx.loomark.InboxArgs { *; }',
+    '-keep class com.starcmx.loomark.ShareArgs { *; }',
+    '-keep class com.starcmx.loomark.InstallApkArgs { *; }',
+    '-keep class com.starcmx.loomark.SystemBarArgs { *; }',
     '',
   ].join('\n'),
 );

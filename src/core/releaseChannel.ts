@@ -18,14 +18,14 @@ export const RELEASE_CHANNELS: Record<UpdateChannel, ReleaseChannelInfo> = {
   github: {
     id: 'github',
     label: 'GitHub',
-    repoUrl: 'https://github.com/CrazyFigure/NoteBoard',
-    repoPath: 'CrazyFigure/NoteBoard',
+    repoUrl: 'https://github.com/cmx-star/NoteBoard',
+    repoPath: 'cmx-star/NoteBoard',
   },
   cnb: {
     id: 'cnb',
     label: '腾讯云 CNB',
-    repoUrl: 'https://cnb.cool/crazy-figure/NoteBoard',
-    repoPath: 'crazy-figure/NoteBoard',
+    repoUrl: 'https://cnb.cool/starcmx/NoteBoard',
+    repoPath: 'starcmx/NoteBoard',
   },
 };
 

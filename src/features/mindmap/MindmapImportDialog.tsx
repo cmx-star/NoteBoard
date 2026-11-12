@@ -53,5 +53,5 @@ export function requestMindmapChoice(title: string, options: Choice[], confirmLa
 export function confirmMindmapImport(warnings: string[]): Promise<boolean> {
   if (warnings.length === 0) return Promise.resolve(true);
   return presentDialog((settle) => <MindmapConfirmDialog title="导入前请确认" confirmLabel="继续导入" onConfirm={() => settle(true)} onCancel={() => settle(false)}
-    message={<><ul>{warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul><p>继续后转换为 NoteBoard 导图，原始文件保留。</p></>} />);
+    message={<><ul>{warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul><p>继续后转换为 Loomark 导图，原始文件保留。</p></>} />);
 }

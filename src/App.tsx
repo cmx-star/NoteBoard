@@ -42,6 +42,7 @@ import { startSyncEffects } from './features/sync/syncEffects';
 import { useSyncStore } from './stores/syncStore';
 import { installAnchorNavigationGuard } from './core/anchorNavigation';
 import { SUPPORTS_LOCAL_SEARCH, useLocalSearchStore } from './features/localSearch/localSearchStore';
+import { startMcpBridge } from './features/mcp/bridge';
 
 // 🔴 S05：全局弹窗首次触发才装载（E 节 6）——未打开时不渲染即不加载，
 //    装载后保持挂载以保留关闭动画；安全关闭保护（UnsavedGuardDialog）仍轻量常驻
@@ -109,6 +110,7 @@ export default function App() {
 
   useEffect(() => {
     let disposed = false;
+    let stopMcpBridge: (() => void) | null = null;
     // 启动自动检测更新定时任务（启动 3 秒后首次检测，随后每 5 分钟轮询一次）
     const stopAutoUpdate = initAutoUpdateTimer();
     const cleanup = initShortcuts();
@@ -130,6 +132,17 @@ export default function App() {
       // 设置初始化（字体服务独立，不阻塞渲染）
       await init();
       perfMark('settings_init_done');
+      // MCP 文档编辑桥接：服务未开启时不会收到请求；仅桌面端需要监听
+      if (!IS_WEB && !IS_MOBILE_UI) {
+        startMcpBridge()
+          .then((unlisten) => {
+            if (disposed) unlisten();
+            else stopMcpBridge = unlisten;
+          })
+          .catch((error) => {
+            console.error('MCP 桥接启动失败:', error);
+          });
+      }
       // 初始化加载收藏夹数据
       useFavoritesStore.getState().loadFavorites().catch((err) => {
         console.error('加载收藏夹失败:', err);
@@ -171,7 +184,7 @@ export default function App() {
     // 普通链接继续禁止原生导航；导出下载按浏览器或原生文件系统分别处理。
     const stopAnchorNavigationGuard = installAnchorNavigationGuard();
 
-    // 从其他软件或任务切回 NoteBoard 时检查活动文件是否在运行期间被删除，
+    // 从其他软件或任务切回 Loomark 时检查活动文件是否在运行期间被删除，
     // 并重新消费打开队列（窗口重新获得焦点时的恢复机制）。
     const handleWindowFocus = () => {
       // 🔴 N07：事件唤醒受业务就绪门槛——设置加载完成前仅记录待处理
@@ -234,6 +247,7 @@ export default function App() {
       window.removeEventListener('contextmenu', handleContextMenu);
       stopAnchorNavigationGuard();
       window.removeEventListener('focus', handleWindowFocus);
+      stopMcpBridge?.();
       disposeWindowManager();
       unregNewWindow();
       unregOpenFile();
@@ -295,7 +309,7 @@ export default function App() {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 12,
+          gap: 'var(--dim-12)',
           height: '100vh',
           alignItems: 'center',
           justifyContent: 'center',
@@ -304,8 +318,8 @@ export default function App() {
           fontFamily: 'var(--ui-font-family, sans-serif)',
         }}
       >
-        <span style={{ fontSize: 15 }}>窗口启动失败：{bootError}</span>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <span style={{ fontSize: 'var(--text-15)' }}>窗口启动失败：{bootError}</span>
+        <div style={{ display: 'flex', gap: 'var(--dim-8)' }}>
           <button
             type="button"
             onClick={() => {
@@ -313,7 +327,7 @@ export default function App() {
               setBootError(null);
               setBootRetryAttempt((n) => n + 1);
             }}
-            style={{ padding: '6px 16px', fontSize: 13, cursor: 'pointer', borderRadius: 6 }}
+            style={{ padding: 'var(--dim-6) var(--dim-16)', fontSize: 'var(--text-13)', cursor: 'pointer', borderRadius: 'var(--radius-md)' }}
           >
             重试
           </button>
@@ -323,7 +337,7 @@ export default function App() {
               // 安全退出：关闭本窗口（已有未保存内容已受暂存保护）
               void ipc.closeWindow(getCurrentWindow().label).catch(() => {});
             }}
-            style={{ padding: '6px 16px', fontSize: 13, cursor: 'pointer', borderRadius: 6 }}
+            style={{ padding: 'var(--dim-6) var(--dim-16)', fontSize: 'var(--text-13)', cursor: 'pointer', borderRadius: 'var(--radius-md)' }}
           >
             关闭窗口
           </button>
@@ -347,7 +361,7 @@ export default function App() {
           fontFamily: 'var(--content-font-family)',
         }}
       >
-        <span style={{ color: 'var(--editor-text-muted)', fontSize: 13 }}>NoteBoard 加载中</span>
+        <span style={{ color: 'var(--editor-text-muted)', fontSize: 'var(--text-13)' }}>Loomark 加载中</span>
       </div>
     );
   }

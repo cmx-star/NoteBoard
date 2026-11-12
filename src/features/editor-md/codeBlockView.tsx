@@ -133,11 +133,11 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
       data-nb-collapsed={expanded ? undefined : ''}
       style={{
         position: 'relative',
-        margin: '16px 0',
+        margin: 'var(--dim-16) 0',
         borderRadius: 'var(--radius-md)',
         // 允许下拉浮层自由溢出，不受代码块自身低高度裁剪限制
         overflow: 'visible',
-        border: '1px solid var(--editor-border)',
+        border: 'var(--dim-1) solid var(--editor-border)',
         background: 'var(--code-block-bg)',
       }}
     >
@@ -149,14 +149,14 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '4px 10px 4px 4px',
+          padding: 'var(--dim-4) var(--dim-10) var(--dim-4) var(--dim-4)',
           background: 'var(--editor-surface)',
           // 收起时工具条即整个代码块，去掉分隔线并补齐底部圆角
-          borderBottom: expanded ? '1px solid var(--editor-border)' : 'none',
+          borderBottom: expanded ? 'var(--dim-1) solid var(--editor-border)' : 'none',
           borderRadius: expanded
-            ? 'calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0'
-            : 'calc(var(--radius-md) - 1px)',
-          fontSize: 12,
+            ? 'calc(var(--radius-md) - var(--dim-1)) calc(var(--radius-md) - var(--dim-1)) 0 0'
+            : 'calc(var(--radius-md) - var(--dim-1))',
+          fontSize: 'var(--text-12)',
           color: 'var(--editor-text-muted)',
           userSelect: 'none',
         }}
@@ -168,7 +168,7 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
           if (e.target === e.currentTarget) setExpanded(!expanded);
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-2)', minWidth: 0 }}>
         {/* 展开/收起按钮 */}
         <Tooltip content={expanded ? '收起代码块' : '展开代码块'} side="top" sideOffset={4}>
           <button
@@ -191,15 +191,15 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
-            gap: 4,
+            gap: 'var(--dim-4)',
             cursor: 'pointer',
-            padding: '2px 6px',
+            padding: 'var(--dim-2) var(--dim-6)',
             borderRadius: 'var(--radius-sm)',
             transition: 'background var(--transition-fast)',
           }}
           onClick={() => setShowDropdown(!showDropdown)}
         >
-          <span style={{ fontWeight: 500, color: 'var(--editor-text)' }}>
+          <span style={{ fontWeight: 'var(--weight-500)', color: 'var(--editor-text)' }}>
             {LANGUAGES.find((l) => l.value === language)?.label ?? language}
           </span>
           <ChevronDown size={12} />
@@ -209,15 +209,15 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
             <div
               style={{
                 position: 'absolute',
-                top: '100%',
+                top: 'var(--pct-100)',
                 left: 0,
-                marginTop: 6,
-                background: 'var(--editor-surface, #ffffff)',
-                border: '1px solid var(--editor-border, rgba(0,0,0,0.12))',
-                borderRadius: 8,
-                boxShadow: '0 10px 30px -4px rgba(0, 0, 0, 0.18), 0 3px 8px -2px rgba(0, 0, 0, 0.08)',
-                width: 210,
-                zIndex: 10000,
+                marginTop: 'var(--dim-6)',
+                background: 'var(--editor-surface)',
+                border: 'var(--dim-1) solid var(--editor-border)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: '0 var(--dim-10) var(--dim-30) calc(var(--dim-4) * -1) var(--nb-black-a18), 0 var(--dim-3) var(--dim-8) calc(var(--dim-2) * -1) var(--nb-black-a08)',
+                width: 'var(--dim-210)',
+                zIndex: 'var(--z-10000)',
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
@@ -229,13 +229,13 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 8px',
-                  borderBottom: '1px solid var(--editor-border, rgba(0,0,0,0.08))',
-                  background: 'var(--editor-bg, rgba(0,0,0,0.02))',
+                  gap: 'var(--dim-6)',
+                  padding: 'var(--dim-6) var(--dim-8)',
+                  borderBottom: 'var(--dim-1) solid var(--editor-border)',
+                  background: 'var(--editor-bg)',
                 }}
               >
-                <Search size={13} style={{ opacity: 0.5, flexShrink: 0 }} />
+                <Search size={13} style={{ opacity: 'var(--opacity-0-5)', flexShrink: 0 }} />
                 <input
                   ref={searchInputRef}
                   type="text"
@@ -250,9 +250,9 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
                     border: 'none',
                     outline: 'none',
                     background: 'transparent',
-                    fontSize: 12,
-                    color: 'var(--editor-text, #1e293b)',
-                    width: '100%',
+                    fontSize: 'var(--text-12)',
+                    color: 'var(--editor-text)',
+                    width: 'var(--pct-100)',
                   }}
                 />
                 {searchQuery && (
@@ -262,10 +262,10 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
                       border: 'none',
                       background: 'transparent',
                       cursor: 'pointer',
-                      padding: 2,
+                      padding: 'var(--dim-2)',
                       display: 'flex',
                       alignItems: 'center',
-                      color: 'var(--editor-text-muted, #94a3b8)',
+                      color: 'var(--editor-text-muted)',
                     }}
                     onClick={() => {
                       setSearchQuery('');
@@ -281,18 +281,18 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
               <div
                 ref={listRef}
                 style={{
-                  maxHeight: 220,
+                  maxHeight: 'var(--dim-220)',
                   overflowY: 'auto',
-                  padding: '4px',
+                  padding: 'var(--dim-4)',
                 }}
               >
                 {filteredLanguages.length === 0 ? (
                   <div
                     style={{
-                      padding: '12px 8px',
-                      fontSize: 12,
+                      padding: 'var(--dim-12) var(--dim-8)',
+                      fontSize: 'var(--text-12)',
                       textAlign: 'center',
-                      color: 'var(--editor-text-muted, #94a3b8)',
+                      color: 'var(--editor-text-muted)',
                     }}
                   >
                     未找到匹配语言
@@ -309,20 +309,20 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '6px 10px',
+                          padding: 'var(--dim-6) var(--dim-10)',
                           cursor: 'pointer',
-                          fontSize: 12,
-                          color: 'var(--editor-text, #1e293b)',
+                          fontSize: 'var(--text-12)',
+                          color: 'var(--editor-text)',
                           background: isHovered
-                            ? 'var(--editor-selection-background, rgba(59, 130, 246, 0.12))'
+                            ? 'var(--editor-selection-background)'
                             : isSelected
-                              ? 'var(--editor-bg, rgba(0,0,0,0.04))'
+                              ? 'var(--editor-bg)'
                               : 'transparent',
                           border: 'none',
-                          borderRadius: 5,
-                          width: '100%',
+                          borderRadius: 'var(--radius-sm)',
+                          width: 'var(--pct-100)',
                           textAlign: 'left',
-                          marginBottom: 1,
+                          marginBottom: 'var(--dim-1)',
                         }}
                         onMouseEnter={() => setSelectedIndex(idx)}
                         onClick={(e) => {
@@ -330,13 +330,13 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
                           handleLanguageChange(lang.value);
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
                           <span style={{ fontWeight: isSelected ? 600 : 400 }}>{lang.label}</span>
-                          <span style={{ fontSize: 10, color: 'var(--editor-text-muted, #94a3b8)' }}>
+                          <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-muted)' }}>
                             {lang.value}
                           </span>
                         </div>
-                        {isSelected && <Check size={13} color="var(--accent-500, #3b82f6)" />}
+                        {isSelected && <Check size={13} color="var(--accent-500)" />}
                       </button>
                     );
                   })
@@ -365,13 +365,13 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 'var(--dim-4)',
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
               color: copied ? 'var(--success-600)' : 'var(--editor-text-muted)',
-              fontSize: 12,
-              padding: '2px 6px',
+              fontSize: 'var(--text-12)',
+              padding: 'var(--dim-2) var(--dim-6)',
               borderRadius: 'var(--radius-sm)',
               transition: 'all var(--transition-fast)',
             }}
@@ -382,15 +382,15 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = copied ? 'var(--success-600)' : 'var(--editor-text-muted)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-active)';
-              e.currentTarget.style.transform = 'scale(0.94)';
+              e.currentTarget.style.transform = 'scale(var(--scale-0-94))';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.background = 'var(--toolbar-hover)';
-              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.transform = 'scale(var(--scale-1))';
             }}
             onClick={handleCopy}
             aria-label="复制代码内容"
@@ -406,13 +406,13 @@ function CodeBlockComponent({ node, editor, getPos, updateAttributes }: NodeView
         style={{
           display: expanded ? undefined : 'none',
           margin: 0,
-          padding: '12px 16px',
+          padding: 'var(--dim-12) var(--dim-16)',
           overflowX: 'auto',
-          borderBottomLeftRadius: 'calc(var(--radius-md) - 1px)',
-          borderBottomRightRadius: 'calc(var(--radius-md) - 1px)',
+          borderBottomLeftRadius: 'calc(var(--radius-md) - var(--dim-1))',
+          borderBottomRightRadius: 'calc(var(--radius-md) - var(--dim-1))',
           fontSize: 'var(--mono-font-size)',
           fontFamily: 'var(--mono-font-family)',
-          lineHeight: 1.5,
+          lineHeight: 'var(--leading-1-5)',
           background: 'transparent',
           border: 'none',
         }}

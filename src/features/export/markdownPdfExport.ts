@@ -26,7 +26,7 @@ const PRINT_STYLE_ID = 'nb-pdf-print-style';
 /** 导出期间挂在 <html> 上的标记类，打印样式只在此期间生效 */
 const EXPORTING_CLASS = 'nb-pdf-exporting';
 /** 暗色主题导出时借用的亮色主题 */
-const LIGHT_THEME_ID: ThemeId = 'chen-guang';
+const LIGHT_THEME_ID: ThemeId = 'su-bai';
 
 /** 等待离屏块渲染的上限与判定静止的时长 */
 const RENDER_SETTLE_TIMEOUT_MS = 8000;
@@ -35,14 +35,14 @@ const RENDER_QUIET_MS = 300;
 const IMAGE_LOAD_TIMEOUT_MS = 5000;
 
 /** 屏幕上隐藏的打印容器宽度：A4 去掉左右页边距后的近似宽度，供图表等按宽度布局 */
-const SCREEN_LAYOUT_WIDTH = 688;
+const SCREEN_LAYOUT_WIDTH = 'var(--dim-688)';
 
 const PRINT_STYLE_TEXT = `
 #${PRINT_ROOT_ID} {
   position: fixed;
-  left: -100000px;
+  left: calc(var(--dim-100000) * -1);
   top: 0;
-  width: ${SCREEN_LAYOUT_WIDTH}px;
+  width: ${SCREEN_LAYOUT_WIDTH};
   pointer-events: none;
   color: var(--editor-text);
   -webkit-print-color-adjust: exact;
@@ -70,7 +70,7 @@ const PRINT_STYLE_TEXT = `
     height: auto !important;
     min-height: 0 !important;
     overflow: visible !important;
-    background: #ffffff !important;
+    background: var(--nb-white) !important;
   }
   html.${EXPORTING_CLASS} body > *:not(#${PRINT_ROOT_ID}) { display: none !important; }
   html.${EXPORTING_CLASS} #${PRINT_ROOT_ID} {
@@ -255,7 +255,7 @@ function syncLiveState(source: HTMLElement, clone: HTMLElement): void {
       img.src = canvas.toDataURL('image/png');
       img.style.cssText = canvas.style.cssText;
       img.style.width = `${canvas.clientWidth || canvas.width}px`;
-      img.style.maxWidth = '100%';
+      img.style.maxWidth = 'var(--pct-100)';
       target.replaceWith(img);
     } catch {
       // 跨域污染的 canvas 无法导出像素，保留原节点

@@ -142,16 +142,16 @@ export function ExplorerBreadcrumb({ root, onRefresh }: ExplorerBreadcrumbProps)
       ref={containerRef}
       onWheel={handleWheel}
       style={{
-        height: 24,
-        minHeight: 24,
+        height: 'var(--dim-24)',
+        minHeight: 'var(--dim-24)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 6px',
+        padding: '0 var(--dim-6)',
         overflowX: 'auto',
         overflowY: 'hidden',
         scrollbarWidth: 'none',
         flexShrink: 0,
-        borderBottom: '1px solid var(--editor-border)',
+        borderBottom: 'var(--dim-1) solid var(--editor-border)',
         background: 'var(--explorer-bg)',
         userSelect: 'none',
         boxSizing: 'border-box',
@@ -174,8 +174,8 @@ export function ExplorerBreadcrumb({ root, onRefresh }: ExplorerBreadcrumbProps)
                   display: 'inline-flex',
                   alignItems: 'center',
                   color: 'var(--explorer-text-muted)',
-                  opacity: 0.6,
-                  margin: '0 2px',
+                  opacity: 'var(--opacity-0-6)',
+                  margin: '0 var(--dim-2)',
                   flexShrink: 0,
                 }}
               >
@@ -191,19 +191,19 @@ export function ExplorerBreadcrumb({ root, onRefresh }: ExplorerBreadcrumbProps)
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: 3,
-                  height: 18,
-                  padding: '0 4px',
+                  gap: 'var(--dim-3)',
+                  height: 'var(--dim-18)',
+                  padding: '0 var(--dim-4)',
                   border: 'none',
-                  borderRadius: 3,
+                  borderRadius: 'var(--radius-xs)',
                   background: 'transparent',
                   color: seg.isLast ? 'var(--explorer-text)' : 'var(--explorer-text-muted)',
                   fontWeight: seg.isLast ? 600 : 400,
-                  fontSize: 11,
+                  fontSize: 'var(--text-11)',
                   cursor: 'pointer',
                   transition: 'all var(--transition-fast)',
                   whiteSpace: 'nowrap',
-                  maxWidth: 160,
+                  maxWidth: 'var(--dim-160)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
@@ -216,20 +216,20 @@ export function ExplorerBreadcrumb({ root, onRefresh }: ExplorerBreadcrumbProps)
                   e.currentTarget.style.color = seg.isLast
                     ? 'var(--explorer-text)'
                     : 'var(--explorer-text-muted)';
-                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1))';
                 }}
                 onMouseDown={(e) => {
-                  e.currentTarget.style.transform = 'scale(0.96)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-0-96))';
                 }}
                 onMouseUp={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.transform = 'scale(var(--scale-1))';
                 }}
                 aria-label={seg.fullPath}
               >
                 {seg.isDrive ? (
-                  <HardDrive size={11} style={{ flexShrink: 0, opacity: 0.75 }} />
+                  <HardDrive size={11} style={{ flexShrink: 0, opacity: 'var(--opacity-0-75)' }} />
                 ) : (
-                  <Folder size={11} style={{ flexShrink: 0, opacity: 0.7 }} />
+                  <Folder size={11} style={{ flexShrink: 0, opacity: 'var(--opacity-0-7)' }} />
                 )}
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{seg.name}</span>
               </button>

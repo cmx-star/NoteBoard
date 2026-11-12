@@ -10,24 +10,24 @@ import type { Extension } from '@codemirror/state';
 export const nbMergeDiffTheme: Extension = EditorView.theme(
   {
     // 差异行底色（cm-merge-a=左侧原文，cm-merge-b=右侧修改文）
-    '&.cm-merge-a .cm-changedLine': { backgroundColor: 'color-mix(in srgb, var(--diff-delete-border) 10%, transparent)' },
-    '&.cm-merge-b .cm-changedLine': { backgroundColor: 'color-mix(in srgb, var(--diff-insert-border) 10%, transparent)' },
+    '&.cm-merge-a .cm-changedLine': { backgroundColor: 'color-mix(in srgb, var(--diff-delete-border) var(--pct-10), transparent)' },
+    '&.cm-merge-b .cm-changedLine': { backgroundColor: 'color-mix(in srgb, var(--diff-insert-border) var(--pct-10), transparent)' },
     // 行内词级差异高亮
-    '&.cm-merge-a .cm-changedText': { background: 'color-mix(in srgb, var(--diff-delete-border) 35%, transparent)', borderRadius: '2px' },
-    '&.cm-merge-b .cm-changedText': { background: 'color-mix(in srgb, var(--diff-insert-border) 32%, transparent)', borderRadius: '2px' },
+    '&.cm-merge-a .cm-changedText': { background: 'color-mix(in srgb, var(--diff-delete-border) var(--pct-35), transparent)', borderRadius: 'var(--radius-xs)' },
+    '&.cm-merge-b .cm-changedText': { background: 'color-mix(in srgb, var(--diff-insert-border) var(--pct-32), transparent)', borderRadius: 'var(--radius-xs)' },
     // 内联删除文本（deletedChunk 占位中的删除内容）
-    '.cm-deletedText': { background: 'color-mix(in srgb, var(--diff-delete-border) 35%, transparent)', borderRadius: '2px' },
+    '.cm-deletedText': { background: 'color-mix(in srgb, var(--diff-delete-border) var(--pct-35), transparent)', borderRadius: 'var(--radius-xs)' },
     // 差异行 gutter 色条
     '&.cm-merge-a .cm-changedLineGutter, & .cm-deletedLineGutter': {
-      backgroundColor: 'color-mix(in srgb, var(--diff-delete-border) 50%, transparent)',
+      backgroundColor: 'color-mix(in srgb, var(--diff-delete-border) var(--pct-50), transparent)',
     },
-    '&.cm-merge-b .cm-changedLineGutter': { backgroundColor: 'color-mix(in srgb, var(--diff-insert-border) 50%, transparent)' },
+    '&.cm-merge-b .cm-changedLineGutter': { backgroundColor: 'color-mix(in srgb, var(--diff-insert-border) var(--pct-50), transparent)' },
     // 折叠相同行提示（点击展开；⦚ 装饰符沿用 merge 内置样式）
     '.cm-collapsedLines': {
-      color: 'var(--editor-text-muted, #64748b)',
-      background: 'var(--editor-surface, #f1f5f9)',
-      border: '1px solid var(--editor-border, #e2e8f0)',
-      borderRadius: '4px',
+      color: 'var(--editor-text-muted)',
+      background: 'var(--editor-surface)',
+      border: 'var(--dim-1) solid var(--editor-border)',
+      borderRadius: 'var(--radius-sm)',
     },
   },
   { dark: false },

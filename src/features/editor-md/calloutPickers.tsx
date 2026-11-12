@@ -484,7 +484,7 @@ export function CalloutColorPicker({
           spellCheck={false}
           maxLength={7}
           aria-label="十六进制颜色"
-          placeholder="#3B82F6"
+          placeholder="var(--nb-blue-500)"
           onChange={(event) => setHexInput(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {

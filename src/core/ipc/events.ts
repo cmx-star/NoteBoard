@@ -9,6 +9,7 @@ import type {
   ExternalChangePayload,
   FontPackStatus,
   BoardFontPackStatus,
+  McpBridgeRequest,
   Settings,
   SyncConfigFile,
   SyncLocalChange,
@@ -40,6 +41,7 @@ export const EVENTS = {
   SYNC_CONFIG_CHANGED: 'nb://sync-config-changed',
   HISTORY_CHANGED: 'nb://history-changed',
   LOCAL_SEARCH_UPDATED: 'nb://local-search-updated',
+  MCP_REQUEST: 'nb://mcp-request',
 } as const;
 
 // ── 监听封装 ──
@@ -107,6 +109,11 @@ export function onSettingsChanged(cb: (s: Settings) => void): Promise<UnlistenFn
 /** 本地搜索索引有更新（建索引进展或文件变化），打开中的搜索面板据此静默刷新结果 */
 export function onLocalSearchUpdated(cb: () => void): Promise<UnlistenFn> {
   return listen<null>(EVENTS.LOCAL_SEARCH_UPDATED, () => cb());
+}
+
+/** MCP 工具调用：Rust 转发给当前聚焦窗口，前端执行后通过 mcp_respond 回包 */
+export function onMcpRequest(cb: (request: McpBridgeRequest) => void): Promise<UnlistenFn> {
+  return listen<McpBridgeRequest>(EVENTS.MCP_REQUEST, (event) => cb(event.payload));
 }
 
 export function onBeforeQuit(cb: () => void): Promise<UnlistenFn> {

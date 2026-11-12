@@ -107,7 +107,7 @@ pub mod commands {
     pub fn save_session(session: Session) -> Result<(), String> {
         let _write_guard = SESSION_WRITE_LOCK
             .lock()
-            .map_err(|_| "会话写入锁已损坏，请重启 NoteBoard".to_string())?;
+            .map_err(|_| "会话写入锁已损坏，请重启 Loomark".to_string())?;
         let dir = app_data_dir();
         if !dir.exists() {
             std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
@@ -130,7 +130,7 @@ pub mod commands {
     pub fn clear_session() -> Result<(), String> {
         let _write_guard = SESSION_WRITE_LOCK
             .lock()
-            .map_err(|_| "会话写入锁已损坏，请重启 NoteBoard".to_string())?;
+            .map_err(|_| "会话写入锁已损坏，请重启 Loomark".to_string())?;
         let path = session_path();
         if path.exists() {
             std::fs::remove_file(&path).map_err(|e| e.to_string())?;

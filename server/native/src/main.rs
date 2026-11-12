@@ -108,7 +108,7 @@ fn save_config(value: Value) -> Result<Value, String> {
     let backups = app_dirs::app_data_dir().join("backups");
     if cfg.backup.local_dir.is_empty() { cfg.backup.local_dir = backups.to_string_lossy().into(); }
     if Path::new(&cfg.backup.local_dir) != backups { checked_path(&cfg.backup.local_dir)?; }
-    if cfg.sync.device_name.trim().is_empty() { cfg.sync.device_name = "NoteBoard 网页服务".into(); }
+    if cfg.sync.device_name.trim().is_empty() { cfg.sync.device_name = "Loomark 网页服务".into(); }
     sync::config::save(&cfg)?;
     sync::scheduler::get().ok_or("同步服务未就绪")?.set_config(cfg.clone());
     serde_json::to_value(cfg).map_err(|error| error.to_string())

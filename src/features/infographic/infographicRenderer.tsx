@@ -23,14 +23,14 @@ interface InfographicRendererProps {
 
 /** 预置主题色彩色板（支持浅色与暗黑模式自适应） */
 const COLOR_MAP: Record<string, { bg: string; border: string; text: string; lightBg: string }> = {
-  blue: { bg: '#3b82f6', border: '#93c5fd', text: '#2563eb', lightBg: 'rgba(59, 130, 246, 0.08)' },
-  emerald: { bg: '#10b981', border: '#a7f3d0', text: '#059669', lightBg: 'rgba(16, 185, 129, 0.08)' },
-  green: { bg: '#22c55e', border: '#bbf7d0', text: '#16a34a', lightBg: 'rgba(34, 197, 94, 0.08)' },
-  purple: { bg: '#8b5cf6', border: '#ddd6fe', text: '#7c3aed', lightBg: 'rgba(139, 92, 246, 0.08)' },
-  amber: { bg: '#f59e0b', border: '#fde68a', text: '#d97706', lightBg: 'rgba(245, 158, 11, 0.08)' },
-  red: { bg: '#ef4444', border: '#fecaca', text: '#dc2626', lightBg: 'rgba(239, 68, 68, 0.08)' },
-  cyan: { bg: '#06b6d4', border: '#a5f3fc', text: '#0891b2', lightBg: 'rgba(6, 182, 212, 0.08)' },
-  gray: { bg: '#64748b', border: '#cbd5e1', text: '#475569', lightBg: 'rgba(100, 116, 139, 0.08)' },
+  blue: { bg: 'var(--nb-blue-500)', border: 'var(--nb-blue-300)', text: 'var(--nb-blue-600)', lightBg: 'var(--nb-auto-3b82f6-a8)' },
+  emerald: { bg: 'var(--nb-emerald-500)', border: 'var(--nb-emerald-200)', text: 'var(--nb-emerald-600)', lightBg: 'var(--nb-auto-10b981-a8)' },
+  green: { bg: 'var(--nb-green-500)', border: 'var(--nb-green-200)', text: 'var(--nb-green-600)', lightBg: 'var(--nb-auto-22c55e-a8)' },
+  purple: { bg: 'var(--nb-purple-500)', border: 'var(--nb-auto-ddd6fe)', text: 'var(--nb-purple-600)', lightBg: 'var(--nb-auto-8b5cf6-a8)' },
+  amber: { bg: 'var(--nb-amber-500)', border: 'var(--nb-amber-200)', text: 'var(--nb-amber-600)', lightBg: 'var(--nb-auto-f59e0b-a8)' },
+  red: { bg: 'var(--nb-red-500)', border: 'var(--nb-red-200)', text: 'var(--nb-red-600)', lightBg: 'var(--nb-auto-ef4444-a8)' },
+  cyan: { bg: 'var(--nb-cyan-500)', border: 'var(--nb-cyan-200)', text: 'var(--nb-cyan-600)', lightBg: 'var(--nb-auto-06b6d4-a8)' },
+  gray: { bg: 'var(--nb-slate-500)', border: 'var(--nb-slate-300)', text: 'var(--nb-slate-600)', lightBg: 'var(--nb-auto-64748b-a8)' },
 };
 
 function getColor(colorName?: string) {
@@ -46,9 +46,9 @@ function MetricCardsView({ items }: { items: InfographicItem[] }) {
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: 14,
-        width: '100%',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(var(--dim-200), 1fr))',
+        gap: 'var(--dim-14)',
+        width: 'var(--pct-100)',
       }}
     >
       {items.map((item, idx) => {
@@ -57,14 +57,14 @@ function MetricCardsView({ items }: { items: InfographicItem[] }) {
           <div
             key={idx}
             style={{
-              padding: '16px 18px',
-              borderRadius: 10,
-              background: 'var(--editor-surface, #ffffff)',
-              border: '1px solid var(--editor-border, #e2e8f0)',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+              padding: 'var(--dim-16) var(--dim-18)',
+              borderRadius: 'var(--dim-10)',
+              background: 'var(--editor-surface)',
+              border: 'var(--dim-1) solid var(--editor-border)',
+              boxShadow: '0 var(--dim-2) var(--dim-8) var(--nb-black-a03)',
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
+              gap: 'var(--dim-8)',
               position: 'relative',
               overflow: 'hidden',
               transition: 'all 0.2s ease',
@@ -77,14 +77,14 @@ function MetricCardsView({ items }: { items: InfographicItem[] }) {
                 top: 0,
                 left: 0,
                 right: 0,
-                height: 3,
-                background: `linear-gradient(90deg, ${c.bg}, ${c.border})`,
+                height: 'var(--dim-3)',
+                background: `linear-gradient(var(--rotate-90), ${c.bg}, ${c.border})`,
               }}
             />
 
             {/* 标签标题与趋势指示 */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: 13, color: 'var(--editor-text-muted, #64748b)', fontWeight: 500 }}>
+              <span style={{ fontSize: 'var(--text-13)', color: 'var(--editor-text-muted)', fontWeight: 'var(--weight-500)' }}>
                 {item.label || item.title || '指标'}
               </span>
               {item.change && (
@@ -92,13 +92,13 @@ function MetricCardsView({ items }: { items: InfographicItem[] }) {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 3,
-                    padding: '2px 7px',
-                    borderRadius: 12,
-                    fontSize: 11,
-                    fontWeight: 600,
-                    background: item.trend === 'down' ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
-                    color: item.trend === 'down' ? '#dc2626' : '#16a34a',
+                    gap: 'var(--dim-3)',
+                    padding: 'var(--dim-2) var(--dim-7)',
+                    borderRadius: 'var(--dim-12)',
+                    fontSize: 'var(--text-11)',
+                    fontWeight: 'var(--weight-600)',
+                    background: item.trend === 'down' ? 'var(--nb-auto-ef4444-a12)' : 'var(--nb-auto-10b981-a12)',
+                    color: item.trend === 'down' ? 'var(--nb-red-600)' : 'var(--nb-green-600)',
                   }}
                 >
                   {item.trend === 'up' && <TrendingUp size={11} />}
@@ -112,11 +112,11 @@ function MetricCardsView({ items }: { items: InfographicItem[] }) {
             {/* 核心数值展示 */}
             <div
               style={{
-                fontSize: 26,
-                fontWeight: 700,
-                color: 'var(--editor-text, #0f172a)',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.2,
+                fontSize: 'var(--text-26)',
+                fontWeight: 'var(--weight-700)',
+                color: 'var(--editor-text)',
+                letterSpacing: '-var(--em-0-02)',
+                lineHeight: 'var(--leading-1-2)',
               }}
             >
               {item.value ?? '-'}
@@ -126,10 +126,10 @@ function MetricCardsView({ items }: { items: InfographicItem[] }) {
             {(item.desc || item.description) && (
               <div
                 style={{
-                  fontSize: 11,
-                  color: 'var(--editor-text-muted, #94a3b8)',
-                  lineHeight: 1.4,
-                  marginTop: 2,
+                  fontSize: 'var(--text-11)',
+                  color: 'var(--editor-text-muted)',
+                  lineHeight: 'var(--leading-1-4)',
+                  marginTop: 'var(--dim-2)',
                 }}
               >
                 {item.desc || item.description}
@@ -147,7 +147,7 @@ function MetricCardsView({ items }: { items: InfographicItem[] }) {
  */
 function TimelineView({ items }: { items: InfographicItem[] }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 0, padding: '10px 0', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0, padding: 'var(--dim-10) 0', width: 'var(--pct-100)' }}>
       {items.map((item, idx) => {
         const c = getColor(item.color);
         const isLast = idx === items.length - 1;
@@ -155,28 +155,28 @@ function TimelineView({ items }: { items: InfographicItem[] }) {
         const isActive = item.status === 'active';
 
         return (
-          <div key={idx} style={{ display: 'flex', gap: 16, position: 'relative' }}>
+          <div key={idx} style={{ display: 'flex', gap: 'var(--dim-16)', position: 'relative' }}>
             {/* 时间线轴与圆点 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 24 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 'var(--dim-24)' }}>
               <div
                 style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: '50%',
-                  background: isDone ? c.bg : isActive ? 'var(--editor-surface, #ffffff)' : 'var(--editor-border, #cbd5e1)',
-                  border: `3px solid ${c.bg}`,
-                  boxShadow: isActive ? `0 0 0 4px ${c.lightBg}` : 'none',
-                  zIndex: 2,
+                  width: 'var(--dim-14)',
+                  height: 'var(--dim-14)',
+                  borderRadius: 'var(--pct-50)',
+                  background: isDone ? c.bg : isActive ? 'var(--editor-surface)' : 'var(--editor-border)',
+                  border: `var(--dim-3) solid ${c.bg}`,
+                  boxShadow: isActive ? `0 0 0 var(--dim-4) ${c.lightBg}` : 'none',
+                  zIndex: 'var(--z-2)',
                 }}
               />
               {!isLast && (
                 <div
                   style={{
-                    width: 2,
+                    width: 'var(--dim-2)',
                     flex: 1,
-                    minHeight: 44,
-                    background: isDone ? c.bg : 'var(--editor-border, #e2e8f0)',
-                    margin: '4px 0',
+                    minHeight: 'var(--dim-44)',
+                    background: isDone ? c.bg : 'var(--editor-border)',
+                    margin: 'var(--dim-4) 0',
                   }}
                 />
               )}
@@ -186,20 +186,20 @@ function TimelineView({ items }: { items: InfographicItem[] }) {
             <div
               style={{
                 flex: 1,
-                padding: '0 0 20px 0',
+                padding: '0 0 var(--dim-20) 0',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 4,
+                gap: 'var(--dim-4)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
                 {item.label && (
                   <span
                     style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      padding: '2px 8px',
-                      borderRadius: 10,
+                      fontSize: 'var(--text-11)',
+                      fontWeight: 'var(--weight-600)',
+                      padding: 'var(--dim-2) var(--dim-8)',
+                      borderRadius: 'var(--dim-10)',
                       background: c.lightBg,
                       color: c.text,
                     }}
@@ -207,12 +207,12 @@ function TimelineView({ items }: { items: InfographicItem[] }) {
                     {item.label}
                   </span>
                 )}
-                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+                <span style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
                   {item.title || item.name}
                 </span>
               </div>
               {(item.desc || item.description) && (
-                <div style={{ fontSize: 12, color: 'var(--editor-text-muted, #64748b)', lineHeight: 1.5 }}>
+                <div style={{ fontSize: 'var(--text-12)', color: 'var(--editor-text-muted)', lineHeight: 'var(--leading-1-5)' }}>
                   {item.desc || item.description}
                 </div>
               )}
@@ -232,9 +232,9 @@ function ProcessStepsView({ items }: { items: InfographicItem[] }) {
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-        gap: 12,
-        width: '100%',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(var(--dim-180), 1fr))',
+        gap: 'var(--dim-12)',
+        width: 'var(--pct-100)',
         alignItems: 'stretch',
       }}
     >
@@ -244,40 +244,40 @@ function ProcessStepsView({ items }: { items: InfographicItem[] }) {
           <div
             key={idx}
             style={{
-              padding: '14px 16px',
-              borderRadius: 8,
-              background: 'var(--editor-surface, #ffffff)',
-              border: '1px solid var(--editor-border, #e2e8f0)',
+              padding: 'var(--dim-14) var(--dim-16)',
+              borderRadius: 'var(--dim-8)',
+              background: 'var(--editor-surface)',
+              border: 'var(--dim-1) solid var(--editor-border)',
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
+              gap: 'var(--dim-8)',
               position: 'relative',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
               <div
                 style={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: 6,
+                  width: 'var(--dim-22)',
+                  height: 'var(--dim-22)',
+                  borderRadius: 'var(--dim-6)',
                   background: c.bg,
-                  color: '#ffffff',
+                  color: 'var(--nb-white)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 12,
-                  fontWeight: 700,
+                  fontSize: 'var(--text-12)',
+                  fontWeight: 'var(--weight-700)',
                   flexShrink: 0,
                 }}
               >
                 {idx + 1}
               </div>
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--editor-text, #1e293b)' }}>
+              <span style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)', color: 'var(--editor-text)' }}>
                 {item.title || item.label}
               </span>
             </div>
             {(item.desc || item.description) && (
-              <div style={{ fontSize: 11, color: 'var(--editor-text-muted, #64748b)', lineHeight: 1.45 }}>
+              <div style={{ fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', lineHeight: 'var(--leading-1-45)' }}>
                 {item.desc || item.description}
               </div>
             )}
@@ -293,7 +293,7 @@ function ProcessStepsView({ items }: { items: InfographicItem[] }) {
  */
 function FunnelView({ items }: { items: InfographicItem[] }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: 580, margin: '0 auto' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-8)', width: 'var(--pct-100)', maxWidth: 'var(--dim-580)', margin: '0 auto' }}>
       {items.map((item, idx) => {
         const c = getColor(item.color);
         // 按阶梯收窄宽度展示漏斗感
@@ -305,25 +305,25 @@ function FunnelView({ items }: { items: InfographicItem[] }) {
             style={{
               width: `${widthPct}%`,
               margin: '0 auto',
-              padding: '10px 16px',
-              borderRadius: 8,
-              background: `linear-gradient(135deg, ${c.bg}, ${c.border})`,
-              color: '#ffffff',
+              padding: 'var(--dim-10) var(--dim-16)',
+              borderRadius: 'var(--dim-8)',
+              background: `linear-gradient(var(--rotate-135), ${c.bg}, ${c.border})`,
+              color: 'var(--nb-white)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+              boxShadow: '0 var(--dim-2) var(--dim-8) var(--nb-black-a06)',
               transition: 'transform 0.15s ease',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, opacity: 0.85 }}>0{idx + 1}</span>
-              <span style={{ fontSize: 13, fontWeight: 600 }}>{item.label || item.title}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-8)' }}>
+              <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-700)', opacity: 'var(--opacity-0-85)' }}>0{idx + 1}</span>
+              <span style={{ fontSize: 'var(--text-13)', fontWeight: 'var(--weight-600)' }}>{item.label || item.title}</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 14, fontWeight: 700 }}>{item.value}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
+              <span style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-700)' }}>{item.value}</span>
               {item.change && (
-                <span style={{ fontSize: 11, opacity: 0.9, background: 'rgba(255, 255, 255, 0.2)', padding: '1px 6px', borderRadius: 10 }}>
+                <span style={{ fontSize: 'var(--text-11)', opacity: 'var(--opacity-0-9)', background: 'var(--nb-white-a20)', padding: 'var(--dim-1) var(--dim-6)', borderRadius: 'var(--dim-10)' }}>
                   {item.change}
                 </span>
               )}
@@ -346,8 +346,8 @@ function ComparisonView({ groups }: { groups: ComparisonGroup[] }) {
       style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${groups.length}, 1fr)`,
-        gap: 14,
-        width: '100%',
+        gap: 'var(--dim-14)',
+        width: 'var(--pct-100)',
       }}
     >
       {groups.map((group, idx) => {
@@ -358,10 +358,10 @@ function ComparisonView({ groups }: { groups: ComparisonGroup[] }) {
           <div
             key={idx}
             style={{
-              borderRadius: 10,
-              border: isHighlight ? `2px solid ${c.bg}` : '1px solid var(--editor-border, #e2e8f0)',
-              background: 'var(--editor-surface, #ffffff)',
-              boxShadow: isHighlight ? `0 4px 16px ${c.lightBg}` : '0 2px 6px rgba(0,0,0,0.02)',
+              borderRadius: 'var(--dim-10)',
+              border: isHighlight ? `var(--dim-2) solid ${c.bg}` : 'var(--dim-1) solid var(--editor-border)',
+              background: 'var(--editor-surface)',
+              boxShadow: isHighlight ? `0 var(--dim-4) var(--dim-16) ${c.lightBg}` : '0 var(--dim-2) var(--dim-6) var(--nb-black-a02)',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
@@ -370,16 +370,16 @@ function ComparisonView({ groups }: { groups: ComparisonGroup[] }) {
             {/* 组头 */}
             <div
               style={{
-                padding: '14px 16px',
-                borderBottom: '1px solid var(--editor-border, #e2e8f0)',
-                background: isHighlight ? c.lightBg : 'var(--editor-bg, #f8fafc)',
+                padding: 'var(--dim-14) var(--dim-16)',
+                borderBottom: 'var(--dim-1) solid var(--editor-border)',
+                background: isHighlight ? c.lightBg : 'var(--editor-bg)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--editor-text, #1e293b)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
+                <span style={{ fontSize: 'var(--text-14)', fontWeight: 'var(--weight-700)', color: 'var(--editor-text)' }}>
                   {group.name}
                 </span>
                 {isHighlight && <Sparkles size={13} color={c.text} />}
@@ -387,12 +387,12 @@ function ComparisonView({ groups }: { groups: ComparisonGroup[] }) {
               {group.badge && (
                 <span
                   style={{
-                    fontSize: 10,
-                    fontWeight: 600,
-                    padding: '2px 8px',
-                    borderRadius: 10,
+                    fontSize: 'var(--text-10)',
+                    fontWeight: 'var(--weight-600)',
+                    padding: 'var(--dim-2) var(--dim-8)',
+                    borderRadius: 'var(--dim-10)',
                     background: c.bg,
-                    color: '#ffffff',
+                    color: 'var(--nb-white)',
                   }}
                 >
                   {group.badge}
@@ -401,7 +401,7 @@ function ComparisonView({ groups }: { groups: ComparisonGroup[] }) {
             </div>
 
             {/* 特性项目列表 */}
-            <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ padding: 'var(--dim-12) var(--dim-16)', display: 'flex', flexDirection: 'column', gap: 'var(--dim-10)' }}>
               {(group.features || []).map((feat, fIdx) => (
                 <div
                   key={fIdx}
@@ -409,18 +409,18 @@ function ComparisonView({ groups }: { groups: ComparisonGroup[] }) {
                     display: 'flex',
                     alignItems: 'flex-start',
                     justifyContent: 'space-between',
-                    gap: 8,
-                    fontSize: 12,
-                    borderBottom: fIdx < group.features.length - 1 ? '1px dashed var(--editor-border, #f1f5f9)' : 'none',
-                    paddingBottom: 8,
+                    gap: 'var(--dim-8)',
+                    fontSize: 'var(--text-12)',
+                    borderBottom: fIdx < group.features.length - 1 ? 'var(--dim-1) dashed var(--editor-border)' : 'none',
+                    paddingBottom: 'var(--dim-8)',
                   }}
                 >
-                  <span style={{ color: 'var(--editor-text-muted, #64748b)' }}>{feat.name}</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontWeight: 500 }}>
-                    {feat.included === true && <Check size={14} color="#16a34a" />}
-                    {feat.included === false && <X size={14} color="#dc2626" />}
+                  <span style={{ color: 'var(--editor-text-muted)' }}>{feat.name}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)', fontWeight: 'var(--weight-500)' }}>
+                    {feat.included === true && <Check size={14} color="var(--nb-green-600)" />}
+                    {feat.included === false && <X size={14} color="var(--nb-red-600)" />}
                     {feat.value !== undefined && feat.value !== true && feat.value !== false && (
-                      <span style={{ color: 'var(--editor-text, #1e293b)' }}>{String(feat.value)}</span>
+                      <span style={{ color: 'var(--editor-text)' }}>{String(feat.value)}</span>
                     )}
                   </div>
                 </div>
@@ -441,9 +441,9 @@ function QuadrantView({ data }: { data: InfographicData }) {
   const q = data.quadrants || {};
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-12)', width: 'var(--pct-100)' }}>
       {/* 轴标签指示 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--editor-text-muted, #64748b)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)' }}>
         <span>⬆ {data.quadrantYLabel || '纵轴 (高)'}</span>
         <span>{data.quadrantXLabel || '横轴 (低 → 高)'} ➡</span>
       </div>
@@ -454,87 +454,87 @@ function QuadrantView({ data }: { data: InfographicData }) {
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gridTemplateRows: '1fr 1fr',
-          gap: 8,
-          minHeight: 280,
+          gap: 'var(--dim-8)',
+          minHeight: 'var(--dim-280)',
           position: 'relative',
         }}
       >
         {/* Q2 左上 */}
         <div
           style={{
-            padding: 12,
-            borderRadius: 8,
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, #e2e8f0)',
+            padding: 'var(--dim-12)',
+            borderRadius: 'var(--dim-8)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 4,
+            gap: 'var(--dim-4)',
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#3b82f6' }}>
+          <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-700)', color: 'var(--nb-blue-500)' }}>
             {q.q2?.title || '第二象限 (左上)'}
           </span>
-          <span style={{ fontSize: 10, color: 'var(--editor-text-muted, #94a3b8)' }}>{q.q2?.desc}</span>
+          <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-muted)' }}>{q.q2?.desc}</span>
         </div>
 
         {/* Q1 右上 */}
         <div
           style={{
-            padding: 12,
-            borderRadius: 8,
-            background: 'rgba(16, 185, 129, 0.05)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
+            padding: 'var(--dim-12)',
+            borderRadius: 'var(--dim-8)',
+            background: 'var(--nb-auto-10b981-a5)',
+            border: 'var(--dim-1) solid var(--nb-auto-10b981-a25)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 4,
+            gap: 'var(--dim-4)',
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#10b981' }}>
+          <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-700)', color: 'var(--nb-emerald-500)' }}>
             {q.q1?.title || '第一象限 (右上)'}
           </span>
-          <span style={{ fontSize: 10, color: 'var(--editor-text-muted, #94a3b8)' }}>{q.q1?.desc}</span>
+          <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-muted)' }}>{q.q1?.desc}</span>
         </div>
 
         {/* Q3 左下 */}
         <div
           style={{
-            padding: 12,
-            borderRadius: 8,
-            background: 'var(--editor-bg, #f8fafc)',
-            border: '1px solid var(--editor-border, #e2e8f0)',
+            padding: 'var(--dim-12)',
+            borderRadius: 'var(--dim-8)',
+            background: 'var(--editor-bg)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 4,
+            gap: 'var(--dim-4)',
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#64748b' }}>
+          <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-700)', color: 'var(--nb-slate-500)' }}>
             {q.q3?.title || '第三象限 (左下)'}
           </span>
-          <span style={{ fontSize: 10, color: 'var(--editor-text-muted, #94a3b8)' }}>{q.q3?.desc}</span>
+          <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-muted)' }}>{q.q3?.desc}</span>
         </div>
 
         {/* Q4 右下 */}
         <div
           style={{
-            padding: 12,
-            borderRadius: 8,
-            background: 'var(--editor-surface, #ffffff)',
-            border: '1px solid var(--editor-border, #e2e8f0)',
+            padding: 'var(--dim-12)',
+            borderRadius: 'var(--dim-8)',
+            background: 'var(--editor-surface)',
+            border: 'var(--dim-1) solid var(--editor-border)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 4,
+            gap: 'var(--dim-4)',
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#f59e0b' }}>
+          <span style={{ fontSize: 'var(--text-12)', fontWeight: 'var(--weight-700)', color: 'var(--nb-amber-500)' }}>
             {q.q4?.title || '第四象限 (右下)'}
           </span>
-          <span style={{ fontSize: 10, color: 'var(--editor-text-muted, #94a3b8)' }}>{q.q4?.desc}</span>
+          <span style={{ fontSize: 'var(--text-10)', color: 'var(--editor-text-muted)' }}>{q.q4?.desc}</span>
         </div>
       </div>
 
       {/* 散点要素清单标签 */}
       {points.length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--dim-6)', marginTop: 'var(--dim-4)' }}>
           {points.map((p: QuadrantItem, idx: number) => {
             const c = getColor(p.color);
             return (
@@ -543,19 +543,19 @@ function QuadrantView({ data }: { data: InfographicData }) {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 5,
-                  padding: '3px 9px',
-                  borderRadius: 12,
+                  gap: 'var(--dim-5)',
+                  padding: 'var(--dim-3) var(--dim-9)',
+                  borderRadius: 'var(--dim-12)',
                   background: c.lightBg,
-                  border: `1px solid ${c.border}`,
-                  fontSize: 11,
+                  border: `var(--dim-1) solid ${c.border}`,
+                  fontSize: 'var(--text-11)',
                   color: c.text,
-                  fontWeight: 500,
+                  fontWeight: 'var(--weight-500)',
                 }}
               >
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: c.bg }} />
+                <div style={{ width: 'var(--dim-6)', height: 'var(--dim-6)', borderRadius: 'var(--pct-50)', background: c.bg }} />
                 <span>{p.name}</span>
-                {p.desc && <span style={{ opacity: 0.75, fontSize: 10 }}>({p.desc})</span>}
+                {p.desc && <span style={{ opacity: 'var(--opacity-0-75)', fontSize: 'var(--text-10)' }}>({p.desc})</span>}
               </div>
             );
           })}
@@ -580,13 +580,13 @@ function ChartView({ data }: { data: InfographicData }) {
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-14)', width: 'var(--pct-100)' }}>
       {/* 柱状图列表 */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-10)' }}>
         {categories.map((cat, catIdx) => (
-          <div key={catIdx} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
-              <span style={{ fontWeight: 500, color: 'var(--editor-text, #1e293b)' }}>{cat}</span>
+          <div key={catIdx} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dim-4)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-12)' }}>
+              <span style={{ fontWeight: 'var(--weight-500)', color: 'var(--editor-text)' }}>{cat}</span>
             </div>
             {series.map((s, sIdx) => {
               const val = s.data[catIdx] ?? 0;
@@ -594,27 +594,27 @@ function ChartView({ data }: { data: InfographicData }) {
               const c = getColor(s.color || (sIdx === 0 ? 'blue' : 'emerald'));
 
               return (
-                <div key={sIdx} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div key={sIdx} style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
                   <div
                     style={{
                       flex: 1,
-                      height: 16,
-                      borderRadius: 4,
-                      background: 'var(--editor-bg, #f1f5f9)',
+                      height: 'var(--dim-16)',
+                      borderRadius: 'var(--dim-4)',
+                      background: 'var(--editor-bg)',
                       overflow: 'hidden',
                     }}
                   >
                     <div
                       style={{
                         width: `${pct}%`,
-                        height: '100%',
-                        borderRadius: 4,
-                        background: `linear-gradient(90deg, ${c.bg}, ${c.border})`,
+                        height: 'var(--pct-100)',
+                        borderRadius: 'var(--dim-4)',
+                        background: `linear-gradient(var(--rotate-90), ${c.bg}, ${c.border})`,
                         transition: 'width 0.4s ease',
                       }}
                     />
                   </div>
-                  <span style={{ fontSize: 11, fontWeight: 600, minWidth: 40, textAlign: 'right', color: 'var(--editor-text, #334155)' }}>
+                  <span style={{ fontSize: 'var(--text-11)', fontWeight: 'var(--weight-600)', minWidth: 'var(--dim-40)', textAlign: 'right', color: 'var(--editor-text)' }}>
                     {val}
                   </span>
                 </div>
@@ -626,13 +626,13 @@ function ChartView({ data }: { data: InfographicData }) {
 
       {/* 系列图例 */}
       {series.length > 1 && (
-        <div style={{ display: 'flex', gap: 14, justifyContent: 'center', fontSize: 11 }}>
+        <div style={{ display: 'flex', gap: 'var(--dim-14)', justifyContent: 'center', fontSize: 'var(--text-11)' }}>
           {series.map((s, sIdx) => {
             const c = getColor(s.color || (sIdx === 0 ? 'blue' : 'emerald'));
             return (
-              <div key={sIdx} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                <div style={{ width: 10, height: 10, borderRadius: 2, background: c.bg }} />
-                <span style={{ color: 'var(--editor-text-muted, #64748b)' }}>{s.name}</span>
+              <div key={sIdx} style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-5)' }}>
+                <div style={{ width: 'var(--dim-10)', height: 'var(--dim-10)', borderRadius: 'var(--dim-2)', background: c.bg }} />
+                <span style={{ color: 'var(--editor-text-muted)' }}>{s.name}</span>
               </div>
             );
           })}
@@ -654,19 +654,19 @@ export function InfographicRenderer({ data }: InfographicRendererProps) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 14,
-        width: '100%',
-        padding: '16px 20px',
-        borderRadius: 10,
-        background: 'var(--editor-bg, #f8fafc)',
-        border: '1px solid var(--editor-border, #e2e8f0)',
+        gap: 'var(--dim-14)',
+        width: 'var(--pct-100)',
+        padding: 'var(--dim-16) var(--dim-20)',
+        borderRadius: 'var(--dim-10)',
+        background: 'var(--editor-bg)',
+        border: 'var(--dim-1) solid var(--editor-border)',
       }}
     >
       {/* 标题 */}
       {data.title && (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--editor-text, #0f172a)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-6)' }}>
+            <span style={{ fontSize: 'var(--text-16)', fontWeight: 'var(--weight-700)', color: 'var(--editor-text)' }}>
               {data.title}
             </span>
           </div>

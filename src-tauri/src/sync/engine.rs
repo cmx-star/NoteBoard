@@ -153,7 +153,7 @@ async fn run_with_retry(
             super::history_phase::run(cfg, device_id, &mut backend, &mut r).await;
         }
         if locked {
-            let _ = backend.delete(&lock_path(), "NoteBoard 同步").await;
+            let _ = backend.delete(&lock_path(), "Loomark 同步").await;
         }
         // 合并多次尝试的本机改动通知（前端据此刷新）
         changes.extend(ch);
@@ -198,7 +198,7 @@ async fn acquire_lock(backend: &mut Backend, device_id: &str, name: &str) -> Syn
         }
     }
     let lock = LockFile { device: device_id.to_string(), name: name.to_string(), expires: now + LOCK_TTL_MS };
-    backend.put(&lock_path(), serde_json::to_vec(&lock).unwrap_or_default(), "NoteBoard 同步锁").await?;
+    backend.put(&lock_path(), serde_json::to_vec(&lock).unwrap_or_default(), "Loomark 同步锁").await?;
     // 回读确认（两台设备几乎同时写锁时，后写者获胜，先写者放弃）
     if let Some(bytes) = backend.read(&lock_path()).await? {
         if let Ok(lock) = serde_json::from_slice::<LockFile>(&bytes) {
@@ -845,7 +845,7 @@ async fn sync_once(
             manifest_path: manifest_path(),
             manifest: manifest.to_bytes(),
             base_rev,
-            message: format!("NoteBoard 同步（{}）", cfg.device_name),
+            message: format!("Loomark 同步（{}）", cfg.device_name),
         };
         backend.commit(batch).await?;
         report.upload = upload_counts;

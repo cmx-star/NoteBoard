@@ -40,17 +40,17 @@ export function CompactModeNotice({ tab }: { tab: Tab }) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 6,
-        minHeight: 28,
-        padding: '0 4px 0 10px',
-        background: 'color-mix(in srgb, var(--accent-strong) 8%, var(--editor-bg))',
-        borderBottom: '1px solid var(--editor-border)',
+        gap: 'var(--dim-6)',
+        minHeight: 'var(--dim-28)',
+        padding: '0 var(--dim-4) 0 var(--dim-10)',
+        background: 'color-mix(in srgb, var(--accent-strong) var(--pct-8), var(--editor-bg))',
+        borderBottom: 'var(--dim-1) solid var(--editor-border)',
         color: 'var(--editor-text-secondary)',
         fontFamily: 'var(--ui-font-family, inherit)',
-        fontSize: 12,
+        fontSize: 'var(--text-12)',
         flexShrink: 0,
         userSelect: 'none',
-        animation: 'nb-fade-in 160ms ease-out',
+        animation: 'nb-fade-in var(--duration-160) ease-out',
       }}
     >
       <Info size={13} style={{ color: 'var(--accent-strong)', flexShrink: 0 }} />

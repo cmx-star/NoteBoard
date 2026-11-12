@@ -19,9 +19,12 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
     "test:unit": "vitest run",
+    "test:changed": "node scripts/test-changed.mjs",
+    "check:fast": "pnpm typecheck && pnpm test:changed",
     "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
     "test:contract": "vitest run test/core/editorRegistry.test.ts test/session test/window test/staging",
     "gate:budget": "node scripts/check-budget.mjs --check",
+    "gate:file-size": "node scripts/check-file-size.mjs",
     "generate:icons": "node scripts/generate-icons.mjs",
     "verify:ico": "node scripts/verify-ico.mjs"
   },

@@ -20,6 +20,7 @@ import {
   Minimize2,
   Maximize2,
   Ellipsis,
+  Languages,
 } from 'lucide-react';
 import {
   ToolbarButton,
@@ -41,6 +42,7 @@ import { USES_COMMAND_KEY } from '../../core/platform';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { useSearchStore } from '../../stores/searchStore';
 import type { LanguageId } from '../../core/ipc/types';
+import { runCjkFormatWithToast } from '../cjkFormat/applyCjkFormat';
 
 // Mac 键盘没有 Insert 键，只提示拖动和工具栏入口
 const COLUMN_EDIT_SHORTCUT = USES_COMMAND_KEY ? undefined : 'Alt+Shift+Insert';
@@ -265,6 +267,17 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
               />
             </>
           }
+        />
+
+        {/* 中文排版：中英间距、全角标点与括号 */}
+        <ToolbarDropdownItem
+          icon={<Languages size={14} color="var(--nb-emerald-500)" />}
+          label="格式化中文排版"
+          shortcut="Ctrl+Alt+F"
+          onClick={() => {
+            setTextDropdownOpen(false);
+            void runCjkFormatWithToast();
+          }}
         />
       </ToolbarDropdown>
 

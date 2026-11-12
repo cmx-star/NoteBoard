@@ -40,6 +40,7 @@ import { getEditorCapabilities } from '../core/editor/editorRegistry';
 import { registerShortcut } from '../core/shortcuts';
 import { emit } from '../core/emitter';
 import { saveDocument } from '../features/editor-code/orchestration/saveDocument';
+import { runCjkFormatWithToast } from '../features/cjkFormat/applyCjkFormat';
 import {
   openFileDialog,
   openFolderDialog,
@@ -338,7 +339,18 @@ export function AppShell(_props: { children?: React.ReactNode }) {
       description: '历史记录',
     });
 
+    // Ctrl+Alt+F 中文排版格式化（选区优先，无选区处理全文）
+    const unregCjkFormat = registerShortcut({
+      key: 'Ctrl+Alt+F',
+      action: () => {
+        void runCjkFormatWithToast();
+      },
+      scope: 'global',
+      description: '格式化中文排版',
+    });
+
     return () => {
+      unregCjkFormat();
       unregHistory();
       unregCtrlS();
       unregCtrlF();

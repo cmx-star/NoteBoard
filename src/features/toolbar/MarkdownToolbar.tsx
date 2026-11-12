@@ -46,6 +46,7 @@ import {
   BarChart3,
   Smile,
   Ellipsis,
+  Languages,
 } from 'lucide-react';
 import {
   ToolbarButton,
@@ -84,6 +85,7 @@ import { TextColorGrid, TextColorIcon } from '../editor-md/formatPickers';
 import { getMdTipTapEditor as getActiveTipTapEditor, getMdSourceView as getActiveSourceView } from '../editor-md/editorInstances';
 import { emit } from '../../core/emitter';
 import { DEFAULT_INFOGRAPHIC_CODE } from '../infographic/infographicTemplates';
+import { runCjkFormatWithToast } from '../cjkFormat/applyCjkFormat';
 import type { EditorView } from '@codemirror/view';
 
 /**
@@ -1192,6 +1194,16 @@ export function MarkdownToolbar({
         />
       )}
 
+      {/* ── 中文排版：中英间距、全角标点、括号与省略号 ── */}
+      {!compact && (
+        <ToolbarButton
+          icon={<Languages size={15} color="var(--nb-emerald-500)" />}
+          title="格式化中文排版（选区优先，未选中时处理全文）"
+          shortcut="Ctrl+Alt+F"
+          onClick={() => void runCjkFormatWithToast()}
+        />
+      )}
+
       {/* ── 极窄模式「更多」菜单：收纳次常用格式与外部追加条目 ── */}
       {compact && (
         <ToolbarDropdown
@@ -1272,6 +1284,12 @@ export function MarkdownToolbar({
             icon={<RemoveFormatting size={14} color="var(--nb-red-500)" />}
             label="清除格式"
             onClick={runFromMore(handleClearFormat)}
+          />
+          <ToolbarDropdownItem
+            icon={<Languages size={14} color="var(--nb-emerald-500)" />}
+            label="格式化中文排版"
+            shortcut="Ctrl+Alt+F"
+            onClick={runFromMore(() => void runCjkFormatWithToast())}
           />
           {moreItems && (
             <>

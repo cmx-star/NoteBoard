@@ -495,11 +495,16 @@ export interface TitleBarButtons {
   compactMode: boolean;
 }
 
+/** 桌面端侧栏布局：文件树在左或在右 */
+export type ExplorerSide = 'left' | 'right';
+
 export interface LayoutSettings {
   statusBarVisible: boolean;
   uiScale: number;
   createFormats: CreateFormatsLayout;
   titleBarButtons: TitleBarButtons;
+  /** 文件树所在侧；大纲自动位于另一侧。旧设置缺失时按左侧处理 */
+  explorerSide: ExplorerSide;
 }
 
 /** 系统集成设置（仅桌面端生效） */

@@ -1,5 +1,5 @@
 // NoteBoard AppShell
-// 三栏布局：资源管理器 | 编辑区 | 大纲
+// 三栏布局：资源管理器与大纲可左右互换，编辑区居中
 // 详见 docs/07-UI布局与交互规范.md §1
 
 import { useEffect, useRef } from 'react';
@@ -26,6 +26,7 @@ import {
   OUTLINE_MIN,
   OUTLINE_MAX,
 } from '../stores/layoutStore';
+import { useSettingsStore } from '../stores/settingsStore';
 // 🔴 S05：全部编辑器按类型懒加载（EditorStack → EditorHost + editorLoaders），壳不再静态导入任何编辑器
 import { OutlinePanel } from '../features/outline/OutlinePanel';
 import { UnsavedGuardDialog } from '../features/editor-code/UnsavedGuardDialog';
@@ -116,6 +117,8 @@ export function AppShell(_props: { children?: React.ReactNode }) {
     boardPresentationMode: s.boardPresentationMode, readingMode: s.readingMode, compactMode: s.compactMode,
     toggleExplorer: s.toggleExplorer, toggleOutline: s.toggleOutline,
   })));
+  const explorerSide = useSettingsStore((s) => s.settings.layout?.explorerSide ?? 'left');
+  const explorerOnLeft = explorerSide !== 'right';
 
   // Markdown 内核登记（大纲数据源）：桌面/移动外壳共用
   const { activeEditor, getMarkdownEditorReadyHandler } = useMarkdownEditorRegistry(tabs, activeKey);
@@ -377,6 +380,153 @@ export function AppShell(_props: { children?: React.ReactNode }) {
     background: 'var(--editor-bg)',
   };
 
+  // 侧栏按设置决定文件树/大纲位置；面板隐藏时保持各自侧位，避免显示/隐藏导致另一侧跳动。
+  const explorerPanel = showSidePanels && explorerVisible ? (
+    <Panel
+      key="nb-explorer-panel"
+      id="nb-explorer"
+      defaultSize={explorerWidth}
+      minSize={EXPLORER_MIN}
+      maxSize={EXPLORER_MAX}
+      onResize={(size: PanelSize) => {
+        explorerWidthRef.current = size.inPixels;
+      }}
+      style={{
+        background: 'var(--explorer-bg)',
+        borderRight: explorerOnLeft ? 'var(--dim-1) solid var(--explorer-border)' : 'none',
+        borderLeft: explorerOnLeft ? 'none' : 'var(--dim-1) solid var(--explorer-border)',
+        overflow: 'hidden',
+      }}
+    >
+      <Explorer />
+    </Panel>
+  ) : null;
+
+  const outlinePanel = showSidePanels && outlineVisible && showOutline ? (
+    <Panel
+      key="nb-outline-panel"
+      id="nb-outline"
+      defaultSize={outlineWidth}
+      minSize={OUTLINE_MIN}
+      maxSize={OUTLINE_MAX}
+      onResize={(size: PanelSize) => {
+        outlineWidthRef.current = size.inPixels;
+      }}
+      style={{
+        background: 'var(--outline-bg)',
+        borderLeft: explorerOnLeft ? 'var(--dim-1) solid var(--editor-border)' : 'none',
+        borderRight: explorerOnLeft ? 'none' : 'var(--dim-1) solid var(--editor-border)',
+        overflow: 'hidden',
+      }}
+    >
+      <OutlinePanel editor={activeEditor} docKey={activeKey} />
+    </Panel>
+  ) : null;
+
+  const editorPanel = (
+    <Panel
+      key="nb-editor-panel"
+      id="nb-editor"
+      minSize="30%"
+    >
+      <div
+        onFocusCapture={() => {
+          checkActiveDocumentStillExists().catch(() => {});
+        }}
+        onPointerDownCapture={() => {
+          checkActiveDocumentStillExists().catch(() => {});
+        }}
+        style={{
+          position: 'relative',
+          width: 'var(--pct-100)',
+          height: 'var(--pct-100)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          background: 'var(--editor-bg)',
+        }}
+      >
+        {/* 文件树折叠把手：跟随文件树所在侧 */}
+        {showSidePanels && (
+          <RailToggle
+            side={explorerOnLeft ? 'left' : 'right'}
+            visible={explorerVisible}
+            onToggle={toggleExplorer}
+            ariaLabel="展开/收起资源管理器"
+          />
+        )}
+
+        {/* 编辑器内容 */}
+        <div
+          style={{
+            flex: 1,
+            overflow: 'hidden',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* 顶部操作栏（针对 Markdown 与代码/纯文本格式，支持多级菜单与收起/悬浮恢复） */}
+          {!isShellHidden && tabs.length > 0 && activeTab && !sharedReadonlyActive && (
+            <EditorToolbar
+              activeTab={activeTab}
+              activeEditor={activeEditor}
+            />
+          )}
+
+          {/* 极窄模式下适配受限的格式给出提示 */}
+          {compactMode && !isShellHidden && activeTab && <CompactModeNotice tab={activeTab} />}
+
+          {/* 🔴 N08：Home 与编辑器容器并存——显示 Home（无活动标签）不销毁 */}
+          {/* 已打开文档的会话/实例；不可回收类型（Markdown/Board 等）的实例保持挂载。 */}
+          {/* display:none 不卸载 React 组件，编辑器内核与撤销历史完整保留。 */}
+          {tabs.length === 0 || !activeTab ? (
+            <WelcomeScreen
+              onOpenFile={openFileDialog}
+              onOpenFolder={openFolderDialog}
+              onOpenStaging={openStagingArea}
+              onOpenSyncFolder={openSyncFolder}
+              onOpenFavorites={() => useFavoritesStore.getState().openFavoritesModal()}
+              onNewMarkdown={newMarkdown}
+              onNewText={newText}
+              onNewBoard={newBoard}
+              onNewMindmap={newMindmap}
+              onTextDiff={newTextDiff}
+              onNewDrawio={newDrawio}
+              onNewBitable={newBitable}
+              onNewMermaid={newMermaid}
+              onNewPlantUml={newPlantUml}
+              onNewInfographic={newInfographic}
+              onNewJson={newJson}
+              onNewSql={newSql}
+            />
+          ) : null}
+          <EditorStack
+            tabs={tabs}
+            activeKey={activeKey}
+            transferringKeys={transferringKeys}
+            hasActiveTab={!!activeTab}
+            getMarkdownEditorReadyHandler={getMarkdownEditorReadyHandler}
+          />
+
+          {/* 大纲折叠把手：跟随大纲所在侧，仅 Markdown 显示 */}
+          {showSidePanels && tabs.length > 0 && (
+            <RailToggle
+              side={explorerOnLeft ? 'right' : 'left'}
+              visible={outlineVisible}
+              onToggle={toggleOutline}
+              show={showOutline}
+              ariaLabel="展开/收起大纲"
+            />
+          )}
+
+          {/* 自研现代搜索与替换栏 */}
+          {!isBoardPresentationMode && <SearchReplaceBar />}
+        </div>
+      </div>
+    </Panel>
+  );
+
   return (
     <div style={handleStyle}>
       {/* 标题栏 */}
@@ -412,152 +562,21 @@ export function AppShell(_props: { children?: React.ReactNode }) {
             }
           }}
         >
-          {/* 资源管理器 */}
-          {showSidePanels && explorerVisible && (
+          {explorerOnLeft ? (
             <>
-              <Panel
-                id="nb-explorer"
-                defaultSize={explorerWidth}
-                minSize={EXPLORER_MIN}
-                maxSize={EXPLORER_MAX}
-                onResize={(size: PanelSize) => {
-                  explorerWidthRef.current = size.inPixels;
-                }}
-                style={{
-                  background: 'var(--explorer-bg)',
-                  borderRight: 'var(--dim-1) solid var(--explorer-border)',
-                  overflow: 'hidden',
-                }}
-              >
-                <Explorer />
-              </Panel>
-              <ResizeHandle />
+              {explorerPanel}
+              {explorerPanel && <ResizeHandle />}
+              {editorPanel}
+              {outlinePanel && <ResizeHandle />}
+              {outlinePanel}
             </>
-          )}
-
-          {/* 编辑区 */}
-          <Panel
-            key="nb-editor-panel"
-            id="nb-editor"
-            minSize="30%"
-          >
-            <div
-              onFocusCapture={() => {
-                checkActiveDocumentStillExists().catch(() => {});
-              }}
-              onPointerDownCapture={() => {
-                checkActiveDocumentStillExists().catch(() => {});
-              }}
-              style={{
-                position: 'relative',
-                width: 'var(--pct-100)',
-                height: 'var(--pct-100)',
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
-                background: 'var(--editor-bg)',
-              }}
-            >
-              {/* 左折叠把手 */}
-              {showSidePanels && (
-                <RailToggle
-                  side="left"
-                  visible={explorerVisible}
-                  onToggle={toggleExplorer}
-                  ariaLabel="展开/收起资源管理器"
-                />
-              )}
-
-              {/* 编辑器内容 */}
-              <div
-                style={{
-                  flex: 1,
-                  overflow: 'hidden',
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                {/* 顶部操作栏（针对 Markdown 与代码/纯文本格式，支持多级菜单与收起/悬浮恢复） */}
-                {!isShellHidden && tabs.length > 0 && activeTab && !sharedReadonlyActive && (
-                  <EditorToolbar
-                    activeTab={activeTab}
-                    activeEditor={activeEditor}
-                  />
-                )}
-
-                {/* 极窄模式下适配受限的格式给出提示 */}
-                {compactMode && !isShellHidden && activeTab && <CompactModeNotice tab={activeTab} />}
-
-                {/* 🔴 N08：Home 与编辑器容器并存——显示 Home（无活动标签）不销毁 */}
-                {/* 已打开文档的会话/实例；不可回收类型（Markdown/Board 等）的实例保持挂载。 */}
-                {/* display:none 不卸载 React 组件，编辑器内核与撤销历史完整保留。 */}
-                {tabs.length === 0 || !activeTab ? (
-                  <WelcomeScreen
-                    onOpenFile={openFileDialog}
-                    onOpenFolder={openFolderDialog}
-                    onOpenStaging={openStagingArea}
-                    onOpenSyncFolder={openSyncFolder}
-                    onOpenFavorites={() => useFavoritesStore.getState().openFavoritesModal()}
-                    onNewMarkdown={newMarkdown}
-                    onNewText={newText}
-                    onNewBoard={newBoard}
-                    onNewMindmap={newMindmap}
-                    onTextDiff={newTextDiff}
-                    onNewDrawio={newDrawio}
-                    onNewBitable={newBitable}
-                    onNewMermaid={newMermaid}
-                    onNewPlantUml={newPlantUml}
-                    onNewInfographic={newInfographic}
-                    onNewJson={newJson}
-                    onNewSql={newSql}
-                  />
-                ) : null}
-                <EditorStack
-                  tabs={tabs}
-                  activeKey={activeKey}
-                  transferringKeys={transferringKeys}
-                  hasActiveTab={!!activeTab}
-                  getMarkdownEditorReadyHandler={getMarkdownEditorReadyHandler}
-                />
-
-                {/* 右折叠把手（仅 Markdown） */}
-                {showSidePanels && tabs.length > 0 && (
-                  <RailToggle
-                    side="right"
-                    visible={outlineVisible}
-                    onToggle={toggleOutline}
-                    show={showOutline}
-                    ariaLabel="展开/收起大纲"
-                  />
-                )}
-
-                {/* 自研现代搜索与替换栏 */}
-                {!isBoardPresentationMode && <SearchReplaceBar />}
-              </div>
-            </div>
-          </Panel>
-
-          {/* 大纲 */}
-          {showSidePanels && outlineVisible && showOutline && (
+          ) : (
             <>
-              <ResizeHandle />
-              <Panel
-                id="nb-outline"
-                defaultSize={outlineWidth}
-                minSize={OUTLINE_MIN}
-                maxSize={OUTLINE_MAX}
-                onResize={(size: PanelSize) => {
-                  outlineWidthRef.current = size.inPixels;
-                }}
-                style={{
-                  background: 'var(--outline-bg)',
-                  borderLeft: 'var(--dim-1) solid var(--editor-border)',
-                  overflow: 'hidden',
-                }}
-              >
-                <OutlinePanel editor={activeEditor} docKey={activeKey} />
-              </Panel>
+              {outlinePanel && <ResizeHandle />}
+              {outlinePanel}
+              {editorPanel}
+              {explorerPanel && <ResizeHandle />}
+              {explorerPanel}
             </>
           )}
         </Group>

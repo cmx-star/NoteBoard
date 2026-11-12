@@ -411,6 +411,33 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </div>
                   <p className="nb-material-hint">{MATERIAL_DESCRIPTIONS[currentMaterial]}</p>
                 </section>
+
+                {/* 侧栏布局：文件树与大纲互换，移动端不展示 */}
+                {!IS_MOBILE_UI && (
+                  <section>
+                    <div className="nb-appearance-heading">
+                      <h3>侧栏布局</h3>
+                      <span>桌面端生效</span>
+                    </div>
+                    <div className="nb-material-segmented nb-sidebar-segmented" role="group" aria-label="侧栏布局">
+                      <MaterialSegment
+                        label="文件树在左"
+                        selected={(settings.layout?.explorerSide ?? 'left') === 'left'}
+                        onClick={() => setLayout({ explorerSide: 'left' })}
+                      />
+                      <MaterialSegment
+                        label="大纲在左"
+                        selected={settings.layout?.explorerSide === 'right'}
+                        onClick={() => setLayout({ explorerSide: 'right' })}
+                      />
+                    </div>
+                    <p className="nb-material-hint">
+                      {(settings.layout?.explorerSide ?? 'left') === 'left'
+                        ? '文件树在左，文档大纲在右。'
+                        : '文档大纲在左，文件树在右。'}
+                    </p>
+                  </section>
+                )}
                 </div>
 
                 <aside className="nb-appearance-preview">

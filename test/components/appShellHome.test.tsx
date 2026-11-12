@@ -32,9 +32,15 @@ vi.mock('@/components/UnsupportedView', () => ({ UnsupportedView: () => null }))
 vi.mock('@/components/Toast', () => ({ ToastContainer: () => null }));
 vi.mock('@/components/rail/RailToggle', () => ({ RailToggle: () => null }));
 vi.mock('@/components/FileDropOverlay', () => ({ FileDropOverlay: () => null }));
-vi.mock('@/features/outline/OutlinePanel', () => ({ OutlinePanel: () => null }));
+vi.mock('@/features/outline/OutlinePanel', async () => {
+  const { createElement } = await import('react');
+  return { OutlinePanel: () => createElement('div', { 'data-testid': 'outline-panel' }) };
+});
 vi.mock('@/features/editor-code/UnsavedGuardDialog', () => ({ UnsavedGuardDialog: () => null }));
-vi.mock('@/features/explorer/Explorer', () => ({ Explorer: () => null }));
+vi.mock('@/features/explorer/Explorer', async () => {
+  const { createElement } = await import('react');
+  return { Explorer: () => createElement('div', { 'data-testid': 'explorer-panel' }) };
+});
 vi.mock('@/features/search/SearchReplaceBar', () => ({ SearchReplaceBar: () => null }));
 vi.mock('@/features/toolbar/EditorToolbar', () => ({ EditorToolbar: () => null }));
 vi.mock('@/features/external/MissingFileDialog', () => ({ MissingFileDialog: () => null }));
@@ -69,6 +75,7 @@ vi.mock('@/features/session/editorSuspension', () => ({
 import { AppShell } from '@/components/AppShell';
 import { useWindowStore, type Tab } from '@/stores/windowStore';
 import { useLayoutStore } from '@/stores/layoutStore';
+import { DEFAULT_SETTINGS, useSettingsStore } from '@/stores/settingsStore';
 
 // react-resizable-panels 在挂载时使用 ResizeObserver（jsdom 缺失，补最小 stub）
 class ResizeObserverStub {
@@ -161,6 +168,44 @@ describe('🔴 N08 Home 不卸载已打开编辑器（宿主级断言）', () =>
     expect(container.querySelector('[data-testid="welcome"]')).not.toBeNull();
     // 🔴 Home 期间零卸载
     expect(hostLog.filter((entry) => entry.startsWith('unmount:'))).toEqual([]);
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it('设置决定文件树与大纲的左右顺序', async () => {
+    const tab = mockTab('doc-a');
+    act(() => {
+      useWindowStore.setState({ tabs: [tab], activeKey: 'doc-a' });
+      useLayoutStore.setState({ explorerVisible: true, outlineVisible: true, statusBarVisible: false });
+      useSettingsStore.setState({
+        settings: {
+          ...DEFAULT_SETTINGS,
+          layout: { ...DEFAULT_SETTINGS.layout, explorerSide: 'left' },
+        },
+      });
+    });
+    await act(async () => {
+      root.render(<AppShell />);
+    });
+
+    const panelOrder = () =>
+      Array.from(
+        container.querySelectorAll('[data-testid="explorer-panel"], [data-testid="outline-panel"]'),
+      ).map((element) => element.getAttribute('data-testid'));
+
+    expect(panelOrder()).toEqual(['explorer-panel', 'outline-panel']);
+
+    await act(async () => {
+      useSettingsStore.setState({
+        settings: {
+          ...DEFAULT_SETTINGS,
+          layout: { ...DEFAULT_SETTINGS.layout, explorerSide: 'right' },
+        },
+      });
+    });
+    expect(panelOrder()).toEqual(['outline-panel', 'explorer-panel']);
 
     act(() => {
       root.unmount();

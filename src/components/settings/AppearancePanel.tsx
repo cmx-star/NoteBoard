@@ -4,7 +4,7 @@
 
 import { useSettingsStore } from '../../stores/settingsStore';
 import { getAllThemes } from '../../core/theme/themes';
-import type { MaterialStyle, ThemeId } from '../../core/ipc/types';
+import type { ExplorerSide, MaterialStyle, ThemeId } from '../../core/ipc/types';
 
 export function AppearancePanel() {
   const settings = useSettingsStore((s) => s.settings);
@@ -12,6 +12,7 @@ export function AppearancePanel() {
   const setSystemLightTheme = useSettingsStore((s) => s.setSystemLightTheme);
   const setSystemDarkTheme = useSettingsStore((s) => s.setSystemDarkTheme);
   const setMaterial = useSettingsStore((s) => s.setMaterial);
+  const setLayout = useSettingsStore((s) => s.setLayout);
 
   const material: MaterialStyle = settings.appearance.material ?? 'classic';
 
@@ -128,6 +129,19 @@ export function AppearancePanel() {
           <option value="classic">经典（有边框）</option>
           <option value="borderless">无边框（光影分层）</option>
           <option value="candy">糖果（无边框 + 糖果按钮）</option>
+        </select>
+      </div>
+
+      {/* 桌面端侧栏布局：文件树与大纲互换 */}
+      <div style={rowStyle}>
+        <span style={labelStyle}>侧栏布局</span>
+        <select
+          value={settings.layout?.explorerSide ?? 'left'}
+          onChange={(e) => setLayout({ explorerSide: e.target.value as ExplorerSide })}
+          style={selectStyle}
+        >
+          <option value="left">文件树在左，大纲在右</option>
+          <option value="right">大纲在左，文件树在右</option>
         </select>
       </div>
     </div>

@@ -594,6 +594,17 @@
   box-shadow: inset 0 var(--dim-1) var(--dim-2) var(--nb-black-a06);
 }
 
+/* 侧栏布局：两档互换，沿用材质分段外观，只把列数与滑块宽度改为两等分 */
+.nb-material-segmented.nb-sidebar-segmented {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@supports selector(:has(*)) {
+  .nb-material-segmented.nb-sidebar-segmented::before {
+    width: calc((var(--pct-100) - var(--dim-6)) / 2);
+  }
+}
+
 .nb-material-segment {
   position: relative;
   z-index: var(--z-1);

@@ -144,6 +144,7 @@ export const DEFAULT_SETTINGS: Settings = {
       more: [...DEFAULT_CREATE_FORMATS.more],
     },
     titleBarButtons: { ...DEFAULT_TITLE_BAR_BUTTONS },
+    explorerSide: 'left',
   },
   system: {
     closeToTray: false,

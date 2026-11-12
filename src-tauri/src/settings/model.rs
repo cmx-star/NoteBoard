@@ -420,6 +420,9 @@ pub struct LayoutSettings {
     // 标题栏可选按钮是否展示（默认全部展示）
     #[serde(default)]
     pub title_bar_buttons: TitleBarButtons,
+    // 文件树所在侧，大纲自动位于另一侧
+    #[serde(default)]
+    pub explorer_side: ExplorerSide,
 }
 
 impl Default for LayoutSettings {
@@ -429,7 +432,21 @@ impl Default for LayoutSettings {
             ui_scale: 100,
             create_formats: CreateFormatsLayout::default(),
             title_bar_buttons: TitleBarButtons::default(),
+            explorer_side: ExplorerSide::Left,
         }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Copy, Debug, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum ExplorerSide {
+    Left,
+    Right,
+}
+
+impl Default for ExplorerSide {
+    fn default() -> Self {
+        Self::Left
     }
 }
 
@@ -704,6 +721,20 @@ mod tests {
             .expect("部分字段应能补全");
         assert!(!partial.layout.title_bar_buttons.theme);
         assert!(partial.layout.title_bar_buttons.home);
+    }
+
+    /// 旧版 layout 不含侧栏位置时默认文件树在左；显式选右后可往返。
+    #[test]
+    fn explorer_side_defaults_left_and_round_trips() {
+        let legacy: Settings = serde_json::from_str(r#"{"layout":{"uiScale":110}}"#)
+            .expect("旧版设置应能补全侧栏位置");
+        assert_eq!(legacy.layout.explorer_side, ExplorerSide::Left);
+
+        let right: Settings = serde_json::from_str(r#"{"layout":{"explorerSide":"right"}}"#)
+            .expect("侧栏位置应能解析");
+        assert_eq!(right.layout.explorer_side, ExplorerSide::Right);
+        let restored: Settings = serde_json::from_str(&serde_json::to_string(&right).unwrap()).unwrap();
+        assert_eq!(restored.layout.explorer_side, ExplorerSide::Right);
     }
 
     /// 旧版三套主题在加载与保存前都迁移到四套主题 ID，未知值回退到默认。

@@ -420,4 +420,20 @@ describe('设置页同步与备份切换', () => {
     expect(document.querySelector('[role="listbox"]')).toBeNull();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
+
+  it('外观页提供侧栏左右互换并写入布局设置', async () => {
+    const previous = useSettingsStore.getState().settings;
+    const setLayout = vi.spyOn(useSettingsStore.getState(), 'setLayout').mockResolvedValue(undefined);
+    try {
+      await act(async () => useSettingsStore.setState({ settings: structuredClone(DEFAULT_SETTINGS) }));
+      const group = host.querySelector<HTMLElement>('[aria-label="侧栏布局"]');
+      expect(group).not.toBeNull();
+      const right = Array.from(group!.querySelectorAll<HTMLButtonElement>('button'))
+        .find((button) => button.textContent === '大纲在左')!;
+      await act(async () => right.click());
+      expect(setLayout).toHaveBeenCalledWith({ explorerSide: 'right' });
+    } finally {
+      await act(async () => useSettingsStore.setState({ settings: previous }));
+    }
+  });
 });

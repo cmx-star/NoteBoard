@@ -35,7 +35,7 @@ pub fn setup(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(debug_assertions)]
     if let Some(window) = app.get_webview_window("nb-main") {
         // 开发版可与安装版并行运行，标题必须明确区分，避免调试时误操作正式实例。
-        let _ = window.set_title("NoteBoard Dev");
+        let _ = window.set_title("Loomark Dev");
     }
 
     // 按设置启用关闭到托盘与全局唤起快捷键（数据目录已初始化，可读取设置）

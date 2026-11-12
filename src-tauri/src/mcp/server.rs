@@ -155,10 +155,10 @@ async fn handle_message(state: &ServerState, message: Value) -> Option<Value> {
                     "capabilities": { "tools": { "listChanged": false } },
                     "serverInfo": {
                         "name": "noteboard",
-                        "title": "NoteBoard 文档编辑",
+                        "title": "Loomark 文档编辑",
                         "version": env!("CARGO_PKG_VERSION")
                     },
-                    "instructions": "操作 NoteBoard 当前窗口中的 Markdown 与代码/纯文本文档。先用 noteboard_list_documents 获取 docKey；写入工具本身不主动保存，需要落盘时调用 noteboard_save_document。"
+                    "instructions": "操作 Loomark 当前窗口中的 Markdown 与代码/纯文本文档。先用 noteboard_list_documents 获取 docKey；写入工具本身不主动保存，需要落盘时调用 noteboard_save_document。"
                 }),
             ))
         }

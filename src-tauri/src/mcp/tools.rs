@@ -20,7 +20,7 @@ pub fn definitions() -> Vec<Value> {
     vec![
         json!({
             "name": "noteboard_list_documents",
-            "description": "列出 NoteBoard 当前窗口的文档标签。docKey 用于后续读取、写入或保存；supported=false 的文档类型不支持编辑。",
+            "description": "列出 Loomark 当前窗口的文档标签。docKey 用于后续读取、写入或保存；supported=false 的文档类型不支持编辑。",
             "inputSchema": {
                 "type": "object",
                 "properties": {},

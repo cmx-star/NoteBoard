@@ -11,12 +11,6 @@
   [![Release](https://img.shields.io/github/v/release/cmx-star/NoteBoard)](https://github.com/cmx-star/NoteBoard/releases/latest)
 </div>
 
-<p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/CrazyFigure/NoteBoard@7a93c374fca401830bbc655dda050618fe78e6e2/assets/tour.mp4"><img src="assets/tour.webp" alt="Loomark 一分钟速览：Markdown 双模编辑、多维表格（表格 / 看板 / 甘特图）、思维导图、白板、图表与信息图、文本对比、Office / PDF / CAD / EPUB 插件、多端同步、三套主题与全平台支持" /></a>
-  <br />
-  ▶ <a href="https://cdn.jsdelivr.net/gh/CrazyFigure/NoteBoard@7a93c374fca401830bbc655dda050618fe78e6e2/assets/tour.mp4">观看高清完整版</a>
-</p>
-
 ---
 
 本地优先、文件优先：无强制工作区、无强制云同步，双击即开、即开即写，数据完全由你掌控。
@@ -32,13 +26,13 @@
 | **安卓** | `Loomark_x.y.z_android_arm64.apk` | arm64 设备 |
 | **macOS** | `.dmg` | Apple Silicon / Intel 分别提供；未经 Apple 公证 |
 | **Linux** | `.deb` / `.AppImage` | x86_64；AppImage 需 `chmod +x`，可能需安装 FUSE |
-| **网页** | Docker 镜像 `starcmx/loomark`（手动构建） | 见下方 [网页部署](#网页部署) |
+| **网页** | Docker 镜像 `starcmx/loomark`（`v*` 标签自动发布） | 见下方 [网页部署](#网页部署) |
 
 国内访问 GitHub 较慢时，可从腾讯云 CNB 镜像 [cnb.cool/starcmx/NoteBoard](https://cnb.cool/starcmx/NoteBoard/-/releases) 下载同名安装包；镜像由 GitHub 自动同步，只读，问题反馈与 PR 请提交到 GitHub。
 
 Windows 免安装版首次运行会自动创建 `data/Loomark/`，设置、会话、草稿、默认暂存、历史、同步配置、插件、字体和 WebView 数据均保存在其中；`data/` 中其他内容保持原样。同名 `Loomark/` 子目录若已有内容但没有应用归属标记，或目录不可写，会提示并停止，不会覆盖文件或回退到安装版目录。更新时替换 EXE，搬移时同时带上 `data/`；同目录的程序共用一份数据，不同目录的副本可以独立运行。
 
-原版 NoteBoard 的 `%APPDATA%\NoteBoard` 和 `%LOCALAPPDATA%\com.crazyfigure.noteboard` 数据不会自动导入。需要迁移时先运行 Loomark 生成目录并完全退出所有实例，再按需把旧设置、会话等复制到 `data/Loomark/`，把旧插件和字体复制到其 `plugins/`、`font-packs/` 子目录，保留新生成的 `.loomark-portable` 标记。迁移的暂存自选路径和文档绝对路径仍需按实际位置调整；Windows 加密的同步密码/令牌换电脑后需重新填写。Windows 安装版和开发版保留原目录；macOS、Linux、Android/iOS 继续使用平台应用数据/缓存目录，网页端继续使用服务器数据卷。
+原版 NoteBoard 的 `%APPDATA%\NoteBoard` 和 `%LOCALAPPDATA%\com.crazyfigure.noteboard` 数据不会自动导入。需要迁移时先运行 Loomark 生成目录并完全退出所有实例，再按需把旧设置、会话等复制到 `data/Loomark/`，把旧插件和字体复制到其 `plugins/`、`font-packs/` 子目录，保留新生成的 `.loomark-portable` 标记。迁移的暂存自选路径和文档绝对路径仍需按实际位置调整；Windows 加密的同步密码/令牌换电脑后需重新填写。Windows 安装版和开发版保留原目录；macOS、Linux、Android 继续使用平台应用数据/缓存目录，网页端继续使用服务器数据卷。
 
 ## 插件与字体
 

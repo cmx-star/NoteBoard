@@ -508,7 +508,7 @@ fn notify(registry: &Registry, report: &Report) {
         if MessageBoxW(
             None,
             &HSTRING::from(message),
-            &HSTRING::from("NoteBoard 文件关联恢复"),
+            &HSTRING::from("Loomark 文件关联恢复"),
             MB_OK | MB_ICONINFORMATION,
         ) == IDOK
         {

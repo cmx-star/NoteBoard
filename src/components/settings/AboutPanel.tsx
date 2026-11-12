@@ -75,7 +75,7 @@ export function AboutPanel() {
 
   return (
     <div>
-      <h2 style={headingStyle}>关于 NoteBoard</h2>
+      <h2 style={headingStyle}>关于 Loomark</h2>
 
       <div style={sectionStyle}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-12)', marginBottom: 'var(--dim-8)' }}>

@@ -58,7 +58,7 @@ export function MissingFileDialog() {
           <span style={{ fontSize: 'var(--text-16)', fontWeight: 'var(--weight-600)' }}>文件已被删除</span>
         </div>
         <div style={{ fontSize: 'var(--text-13)', lineHeight: 'var(--leading-1-7)', color: 'var(--editor-text-secondary)' }}>
-          “{activeTab.displayName}”在 NoteBoard 运行期间已从原位置删除。
+          “{activeTab.displayName}”在 Loomark 运行期间已从原位置删除。
           {canSaveAs ? ' 当前编辑内容仍保留在内存中，可以另存到新位置。' : ' 当前格式没有可另存的内存内容。'}
         </div>
         <div style={{ marginTop: 'var(--dim-8)', fontSize: 'var(--text-11)', color: 'var(--editor-text-muted)', wordBreak: 'break-all' }}>

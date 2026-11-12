@@ -37,14 +37,14 @@ fn platform_name() -> &'static str {
 }
 
 /// 移动端首次启动的欢迎笔记
-const WELCOME_NOTE: &str = "# 欢迎使用 NoteBoard\n\n这是你的笔记工作区，所有内容默认保存在本应用的私有目录中。\n\n## 快速上手\n\n- 点击右下角 **＋** 新建笔记、画板、思维导图或多维表格\n- 长按文件可重命名、分享、加入收藏或删除\n- 在「设置 → 存储」中授权后，可以打开手机里的其它文件夹\n- 编辑页右上角 **⋮** 可切换源码 / 可视化模式、查看大纲\n\n> [!TIP]\n> 从其它应用「分享」或「用其他应用打开」文件到 NoteBoard，即可直接编辑。\n";
+const WELCOME_NOTE: &str = "# 欢迎使用 Loomark\n\n这是你的笔记工作区，所有内容默认保存在本应用的私有目录中。\n\n## 快速上手\n\n- 点击右下角 **＋** 新建笔记、画板、思维导图或多维表格\n- 长按文件可重命名、分享、加入收藏或删除\n- 在「设置 → 存储」中授权后，可以打开手机里的其它文件夹\n- 编辑页右上角 **⋮** 可切换源码 / 可视化模式、查看大纲\n\n> [!TIP]\n> 从其它应用「分享」或「用其他应用打开」文件到 Loomark，即可直接编辑。\n";
 
 /// 确保默认工作区存在；首次创建时写入欢迎笔记（不覆盖已有文件）
 fn ensure_workspace(dir: &Path) -> Result<(), String> {
     let existed = dir.exists();
     std::fs::create_dir_all(dir).map_err(|e| format!("创建工作区失败: {}", e))?;
     if !existed {
-        let welcome = dir.join("欢迎使用 NoteBoard.md");
+        let welcome = dir.join("欢迎使用 Loomark.md");
         if !welcome.exists() {
             std::fs::write(&welcome, WELCOME_NOTE).map_err(|e| format!("写入欢迎笔记失败: {}", e))?;
         }
@@ -224,7 +224,7 @@ mod tests {
         let root = tempfile::tempdir().unwrap();
         let workspace = root.path().join("workspace");
         ensure_workspace(&workspace).unwrap();
-        let welcome = workspace.join("欢迎使用 NoteBoard.md");
+        let welcome = workspace.join("欢迎使用 Loomark.md");
         assert!(welcome.exists());
         // 用户删除欢迎笔记后，再次调用不得重新写入
         std::fs::remove_file(&welcome).unwrap();

@@ -29,7 +29,7 @@ fn validate(pkg: &Value, id: &str) -> Result<(), String> {
     let m = &pkg["manifest"];
     if !IDS.contains(&id) || m["id"].as_str() != Some(id) || m["apiVersion"].as_u64() != Some(1) { return Err("插件协议或标识无效".into()); }
     version(m["version"].as_str().unwrap_or(""))?;
-    if version(m["minAppVersion"].as_str().unwrap_or(""))? > version(env!("CARGO_PKG_VERSION"))? { return Err("请先升级 NoteBoard 再安装此插件".into()); }
+    if version(m["minAppVersion"].as_str().unwrap_or(""))? > version(env!("CARGO_PKG_VERSION"))? { return Err("请先升级 Loomark 再安装此插件".into()); }
     let code = pkg["code"].as_str().ok_or("插件正文缺失")?;
     if code.is_empty() || code.len() > MAX_BYTES || m["codeSha256"].as_str() != Some(format!("{:x}", Sha256::digest(code.as_bytes())).as_str()) { return Err("插件完整性校验失败".into()); }
     Ok(())

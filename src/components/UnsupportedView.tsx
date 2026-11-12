@@ -169,7 +169,7 @@ export function UnsupportedView({ filePath, fileName, description, pluginAction 
           }}
         >
           {description ?? <>
-            NoteBoard 专为 Markdown 笔记、自由画板及轻量纯文本设计。
+            Loomark 专为 Markdown 笔记、自由画板及轻量纯文本设计。
             <br />
             当前文件格式暂不支持直接在软件内查看或编辑。
           </>}

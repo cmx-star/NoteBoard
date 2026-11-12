@@ -86,7 +86,7 @@ function seed(path: string, content: string, ageMinutes: number): void {
   files.set(path, { content, mtime: now - ageMinutes * 60_000 });
 }
 
-seed(`${WORKSPACE}/欢迎使用 NoteBoard.md`, '# 欢迎使用 NoteBoard\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n- 输入 `[[` 链接其它笔记：[[周报]]、[[需求#目标|项目目标]]、[[尚未同步的笔记]]\n\n> [!TIP]\n> 从其它应用分享文件到 NoteBoard 即可编辑。\n\n![[需求]]\n', 3);
+seed(`${WORKSPACE}/欢迎使用 Loomark.md`, '# 欢迎使用 Loomark\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n- 输入 `[[` 链接其它笔记：[[周报]]、[[需求#目标|项目目标]]、[[尚未同步的笔记]]\n\n> [!TIP]\n> 从其它应用分享文件到 Loomark 即可编辑。\n\n![[需求]]\n', 3);
 seed(`${WORKSPACE}/周报.md`, '* 本周完成\n* 下周计划\n\n_重点_：移动端适配，见 [[需求]]\n', 60 * 30);
 seed(`${WORKSPACE}/购物清单.txt`, '牛奶\n面包\n鸡蛋\n', 60 * 24 * 40);
 seed(`${WORKSPACE}/架构草图.excalidraw`, '', 60 * 5);
@@ -108,7 +108,7 @@ seed(`${WORKSPACE}/产品介绍.html`, `<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <h1>NoteBoard</h1>
+  <h1>Loomark</h1>
   <p class="lead">一站式笔记、画板与图表工具。</p>
   <div class="card">
     <h2>功能</h2>
@@ -262,10 +262,10 @@ seedHistory(`${WORKSPACE}/周报.md`, [
   mockVersion('* 本周完成：同步设置页\n* 下周计划：历史记录\n\n_重点_：移动端适配\n', 60 * 26),
   mockVersion('* 本周完成\n* 下周计划\n\n_重点_：移动端适配\n', 60 * 30),
 ]);
-seedHistory(`${WORKSPACE}/欢迎使用 NoteBoard.md`, [
-  mockVersion('# 欢迎使用 NoteBoard\n\n这是你的笔记工作区。\n', 60 * 24 * 2, 'initial'),
-  mockVersion('# 欢迎使用 NoteBoard\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n', 60 * 5),
-  mockVersion(files.get(`${WORKSPACE}/欢迎使用 NoteBoard.md`)?.content ?? '', 3),
+seedHistory(`${WORKSPACE}/欢迎使用 Loomark.md`, [
+  mockVersion('# 欢迎使用 Loomark\n\n这是你的笔记工作区。\n', 60 * 24 * 2, 'initial'),
+  mockVersion('# 欢迎使用 Loomark\n\n这是你的笔记工作区。\n\n- 点击右下角 **＋** 新建\n- 长按文件查看更多操作\n', 60 * 5),
+  mockVersion(files.get(`${WORKSPACE}/欢迎使用 Loomark.md`)?.content ?? '', 3),
 ]);
 seedHistory(`${WORKSPACE}/购物清单.txt`, [
   mockVersion('牛奶\n面包\n', 60 * 24 * 41, 'initial'),

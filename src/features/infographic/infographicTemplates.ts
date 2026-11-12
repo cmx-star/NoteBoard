@@ -54,7 +54,7 @@ data:
     iconColor: 'var(--nb-emerald-500)',
     iconBg: 'var(--nb-auto-10b981-a12)',
     code: `type: timeline
-title: NoteBoard 产品演进路线图
+title: Loomark 产品演进路线图
 data:
   - label: 2026 Q1
     title: 架构底座与性能筑基
@@ -137,7 +137,7 @@ data:
     code: `type: comparison
 title: 架构方案与技术特性对比
 groups:
-  - name: NoteBoard 方案
+  - name: Loomark 方案
     badge: 推荐
     highlight: true
     color: blue

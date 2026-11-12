@@ -94,7 +94,7 @@ impl Manifest {
     pub fn parse(bytes: &[u8]) -> Result<Self, String> {
         let m: Manifest = serde_json::from_slice(bytes).map_err(|e| format!("远端同步清单已损坏：{}", e))?;
         if m.format > MANIFEST_FORMAT {
-            return Err("远端同步数据由更新版本的 NoteBoard 创建，请先升级本机 NoteBoard".to_string());
+            return Err("远端同步数据由更新版本的 Loomark 创建，请先升级本机 Loomark".to_string());
         }
         // 远端内容不是可信路径；先验证全部条目，避免落盘时越过同步根目录。
         for entry in m.entries.values() {

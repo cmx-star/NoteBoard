@@ -413,7 +413,7 @@ export function TypographyPanel({ onOpenFonts }: { onOpenFonts?: () => void } = 
               justifyContent: 'space-between',
             }}
           >
-            <span style={{ fontWeight: 'var(--weight-600)' }}>软件界面 UI 预览 · 中西混排 NoteBoard 2026</span>
+            <span style={{ fontWeight: 'var(--weight-600)' }}>软件界面 UI 预览 · 中西混排 Loomark 2026</span>
             <span style={{ padding: 'var(--dim-2) var(--dim-6)', background: 'var(--editor-selection)', color: 'var(--accent-strong)', borderRadius: 'var(--radius-xs)', fontSize: 'var(--em-0-9)' }}>
               按钮示例 (Button)
             </span>

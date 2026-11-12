@@ -233,7 +233,7 @@ function SyncSection({ draft, update, flush }: { draft: SyncConfigFile; update: 
               Markdown、纯文本等文档如果两端改的是不同段落，会按行合并、两边的修改都保留。
             </li>
             <li>正在编辑的文件被其他设备删除时，你的未保存修改不会丢失，保存后会作为新文件重新创建。</li>
-            <li>同步文件夹中的所有文件（包括 NoteBoard 不能打开的格式、图片、附件）都会同步；空文件夹不会同步。</li>
+            <li>同步文件夹中的所有文件（包括 Loomark 不能打开的格式、图片、附件）都会同步；空文件夹不会同步。</li>
             <li>启用回收站时，被删除的文件会先进入回收站，在任一设备上都可以恢复。</li>
           </ul>
         </div>
@@ -371,7 +371,7 @@ function TimingSection({ draft, update, nextSyncAt }: { draft: SyncConfigFile; u
       />
       <ToggleRow
         title="启动后同步"
-        desc="每次打开 NoteBoard 后在后台同步一次，不阻塞正常使用"
+        desc="每次打开 Loomark 后在后台同步一次，不阻塞正常使用"
         checked={draft.sync.syncOnStartup}
         onChange={(checked) => update((c) => (c.sync.syncOnStartup = checked), true)}
       />

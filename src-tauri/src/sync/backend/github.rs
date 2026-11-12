@@ -169,7 +169,7 @@ impl GitHub {
     async fn init_empty_repo(&mut self, manifest_path: &str, manifest: &[u8]) -> SyncResult<()> {
         let full = join_remote(&self.dir, manifest_path);
         let body = json!({
-            "message": "NoteBoard 同步：初始化",
+            "message": "Loomark 同步：初始化",
             "content": STANDARD.encode(manifest),
             "branch": self.branch,
         });

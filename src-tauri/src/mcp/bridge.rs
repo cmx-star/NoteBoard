@@ -33,7 +33,7 @@ fn pending() -> &'static Mutex<HashMap<String, oneshot::Sender<BridgeReply>>> {
 fn target_window(app: &AppHandle) -> Result<String, String> {
     let windows = app.webview_windows();
     if windows.is_empty() {
-        return Err("没有已打开的 NoteBoard 窗口".to_string());
+        return Err("没有已打开的 Loomark 窗口".to_string());
     }
     for (label, window) in &windows {
         if window.is_focused().unwrap_or(false) {
@@ -47,7 +47,7 @@ fn target_window(app: &AppHandle) -> Result<String, String> {
         .keys()
         .next()
         .cloned()
-        .ok_or_else(|| "没有已打开的 NoteBoard 窗口".to_string())
+        .ok_or_else(|| "没有已打开的 Loomark 窗口".to_string())
 }
 
 /// 向前端发送一次工具调用并等待回包。
@@ -82,7 +82,7 @@ pub async fn request(app: &AppHandle, tool: &str, arguments: Value) -> Result<Va
         Ok(Ok(reply)) if reply.ok => Ok(reply.data.unwrap_or(Value::Null)),
         Ok(Ok(reply)) => Err(format_bridge_error(reply.error)),
         Ok(Err(_)) => Err("编辑窗口未返回结果（可能已关闭或正在重载）".to_string()),
-        Err(_) => Err("操作超时（30 秒）：请确认 NoteBoard 窗口已打开且编辑器完成加载".to_string()),
+        Err(_) => Err("操作超时（30 秒）：请确认 Loomark 窗口已打开且编辑器完成加载".to_string()),
     }
 }
 

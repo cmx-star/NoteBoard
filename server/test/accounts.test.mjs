@@ -266,6 +266,8 @@ test('反向代理声明 HTTPS 时会话 Cookie 带 Secure；同一来源连续�
   const secure = await fetch(`${url}/api/login`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-NoteBoard-Request': '1', 'X-Forwarded-Proto': 'https' }, body: JSON.stringify({ username: 'admin', password: '管理员密码' }) });
   assert.match(secure.headers.get('set-cookie'), /; Secure/);
   assert.doesNotMatch((await login('admin', '管理员密码')).cookie ?? '', /Secure/);
+  // 登录页使用新的 Loomark 请求头；服务端需同时兼容旧 NoteBoard 请求头。
+  assert.equal((await fetch(`${url}/api/login`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Loomark-Request': '1' }, body: JSON.stringify({ username: 'admin', password: '管理员密码' }) })).status, 200);
   // 缺少自定义请求头的跨站表单无法登录
   assert.equal((await fetch(`${url}/api/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: 'admin', password: '管理员密码' }) })).status, 403);
   let status = 0;

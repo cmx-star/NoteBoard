@@ -106,7 +106,8 @@ export async function createWebServer(options = {}) {
     const origin = req.headers.origin;
     const publicUrl = process.env.NOTEBOARD_PUBLIC_URL;
     if (req.headers['sec-fetch-site'] === 'cross-site' || origin && origin !== `http://${req.headers.host}` && origin !== `https://${req.headers.host}` && origin !== publicUrl) throw fail('拒绝跨站写入请求', 403);
-    if (req.headers['x-noteboard-request'] !== '1') throw fail('请求校验失败', 403);
+    const writeHeader = req.headers['x-loomark-request'] ?? req.headers['x-noteboard-request'];
+    if (writeHeader !== '1') throw fail('请求校验失败', 403);
   }
 
   function requireAdmin(user, message = '仅管理员可执行此操作') {

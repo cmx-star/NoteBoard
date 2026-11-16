@@ -306,6 +306,7 @@ export interface Settings {
 
 export interface AppearanceSettings {
   themeMode: ThemeMode;
+  // 以下两项仅为兼容旧配置保留，不再读取：跟随系统固定浅色晨光、深色墨夜
   systemLightTheme: ThemeId;
   systemDarkTheme: ThemeId;
   /** 界面材质（旧设置文件与网页端可能缺失，缺省按 classic 处理） */
@@ -381,6 +382,12 @@ export interface EditorSettings {
   mindmapTextAlign?: 'left' | 'center';
   // 思维导图节点图片默认显示方式：原始比例 / 宽度填充（缺省视为 original）
   mindmapImageFit?: 'original' | 'fill';
+  // Markdown 大纲位置：右侧栏 / 编辑区内悬浮目录（缺省视为 sidebar）
+  outlinePosition?: 'sidebar' | 'inline';
+  // 编辑区内目录靠哪一侧（缺省视为 left）
+  outlineInlineSide?: 'left' | 'right';
+  // Markdown 可视化模式 Ctrl+C 的复制格式：带格式（Markdown 源码）/ 纯文本（缺省视为 markdown）
+  copyFormat?: 'markdown' | 'plain';
   // 用户固定的自定义颜色（十六进制小写），按用途分组；旧配置缺失时视为空
   customColors?: CustomColorSettings;
 }
@@ -515,6 +522,8 @@ export interface SystemSettings {
   showWindowShortcut: string;
   /** 更新渠道（默认 github）：同时决定安装包、字体包与插件的下载来源；旧设置文件可能缺失 */
   updateChannel?: UpdateChannel;
+  /** 自动检查更新（默认 true）：启动及每 5 分钟静默检查；旧设置文件可能缺失 */
+  autoCheckUpdate?: boolean;
 }
 
 /** 本地文件搜索设置（仅桌面端生效） */
@@ -935,87 +944,4 @@ export interface BackupInfo {
   device: string;
   isOwn: boolean;
 }
-
-// ── 文档历史记录 ──
-
-/** 历史记录模式：关闭 / 仅本机 / 跨设备同步 */
-export type HistoryMode = 'off' | 'local' | 'sync';
-
-export interface HistoryConfigView {
-  mode: HistoryMode;
-  /** 保留天数，0 表示永久 */
-  retentionDays: number;
-  mergeWindowMin: number;
-  /** 全部保留的天数，更早的版本每天只留一个 */
-  fullKeepDays: number;
-  /** 容量上限（MB），0 表示按模式默认 */
-  maxTotalMb: number;
-  effectiveMaxMb: number;
-  /** 已开启多端同步（可选择跨设备同步） */
-  syncAvailable: boolean;
-  /** 同步服务为 Git 类仓库 */
-  gitBackend: boolean;
-}
-
-export interface HistoryOptionsInput {
-  retentionDays: number;
-  mergeWindowMin: number;
-  fullKeepDays: number;
-  maxTotalMb: number;
-}
-
-export type HistoryReason =
-  | 'initial'
-  | 'save'
-  | 'external'
-  | 'before-sync'
-  | 'sync-pull'
-  | 'sync-merge'
-  | 'before-restore'
-  | 'restore';
-
-export interface HistoryStats {
-  ins: number;
-  del: number;
-  modified?: number;
-  /** char 字符 / element 画板元素 / node 导图节点 / row 表格行 / cell 图形单元 */
-  unit: string;
-}
-
-export interface HistoryEntry {
-  id: string;
-  start: number;
-  at: number;
-  hash: string;
-  size: number;
-  reason: HistoryReason;
-  origin: { device: string; name: string };
-  stats?: HistoryStats;
-  restoredFrom?: string;
-  pinned?: boolean;
-  /** 合并窗口中（后续保存仍会并入这一版） */
-  open?: boolean;
-  isOwn: boolean;
-}
-
-export interface HistoryListResult {
-  docId: string | null;
-  kind: string;
-  deviceId: string;
-  /** 新到旧 */
-  entries: HistoryEntry[];
-}
-
-export interface HistoryReadResult {
-  content: string;
-  encoding: Encoding;
-  size: number;
-}
-
-export interface HistoryUsage {
-  bytes: number;
-  docs: number;
-  entries: number;
-}
-
-export type HistoryCheckpointReason = 'close' | 'before-restore' | 'restore';
+export * from './historyTypes';

@@ -26,6 +26,7 @@ import {
 import { handlePastedImageFile } from './imagePaste';
 import { EditorBubbleMenu, TableToolbar } from './bubbleMenu';
 import { BlockDragHandle } from './blockDragHandle';
+import { TableDragHandles } from './tableDragHandle';
 import { PasteFormatPrompt } from './PasteFormatPrompt';
 import { EditorContextMenu } from './EditorContextMenu';
 import { LinkModal } from './LinkModal';
@@ -37,6 +38,7 @@ import { getAutoSaveDelayMs } from '../../stores/settingsStore';
 import { registerHistoryMaterializeHook } from '../history/documentHistory';
 import { saveViewState } from '../session/editorSuspension';
 import { findVisualScrollContainer } from './visualScroller';
+import { makeLinkModalOpener, useReleaseNativeSelectionOnTabSwitch } from './visualKernelEffects';
 
 interface VisualKernelProps {
   docKey: string;
@@ -66,12 +68,6 @@ interface VisualKernelProps {
 // WeakRef 存活实验证实：组件闭包 60/60 泄漏，工厂闭包 0/60。
 // 点击链路：LinkClickHandler → emit('open-link-modal') → 组件内 on('open-link-modal')
 // 监听（按 docKey 过滤）→ handleOpenLinkModal（组件内，可安全捕获 editor）。
-function makeLinkModalOpener(docKey: string): () => void {
-  return () => {
-    emit('open-link-modal', { key: docKey });
-  };
-}
-
 export function VisualKernel({
   docKey,
   visible,
@@ -265,6 +261,8 @@ export function VisualKernel({
     };
   }, [active, docKey, editor, isInitializingRef, visible]);
 
+  useReleaseNativeSelectionOnTabSwitch(editor, docKey);
+
   // 打开超链接插入与编辑模态弹窗
   const handleOpenLinkModal = useCallback(() => {
     if (!editor) return;
@@ -437,6 +435,8 @@ export function VisualKernel({
       {showEditingUi && editor && <EditorBubbleMenu editor={editor} onOpenLinkModal={handleOpenLinkModal} />}
       {showEditingUi && editor && <TableToolbar editor={editor} />}
       {showEditingUi && editor && <BlockDragHandle editor={editor} />}
+      {/* 表格行 / 列拖动把手：悬停或光标在单元格时出现 */}
+      {showEditingUi && editor && <TableDragHandles editor={editor} />}
       {showEditingUi && editor && <PasteFormatPrompt editor={editor} />}
       {showEditingUi && contextMenu && editor && (
         <EditorContextMenu

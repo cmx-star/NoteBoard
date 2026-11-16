@@ -2,9 +2,9 @@
 // 三栏布局：资源管理器与大纲可左右互换，编辑区居中
 // 详见 docs/07-UI布局与交互规范.md §1
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import { Group, Panel, Separator } from 'react-resizable-panels';
+import { Group, Panel, Separator, useGroupRef } from 'react-resizable-panels';
 import type { PanelSize } from 'react-resizable-panels';
 import { TitleBar } from './titlebar/TitleBar';
 import { StatusBar } from './statusbar/StatusBar';
@@ -13,6 +13,7 @@ import { ToastContainer } from './Toast';
 import { PromptDialogHost } from './PromptDialogHost';
 import { ExportResultDialogHost } from './ExportResultDialogHost';
 import { WikiLinkDialogHost } from '../features/wikilink/WikiLinkDialogHost';
+import { LinkGraphHost } from '../features/wikilink/LinkGraphHost';
 import { RailToggle } from './rail/RailToggle';
 import { FileDropOverlay } from './FileDropOverlay';
 import { EditorStack } from './shell/EditorStack';
@@ -34,13 +35,7 @@ import { Explorer } from '../features/explorer/Explorer';
 import { SearchReplaceBar } from '../features/search/SearchReplaceBar';
 import { EditorToolbar } from '../features/toolbar/EditorToolbar';
 import { useSharedReadonly } from '../features/account/sharedReadonly';
-import { useSearchStore } from '../stores/searchStore';
 // 🔴 S03：快捷键与工具栏统一走 core 能力注册表，不再从编辑器组件导入实例 getter
-import { getEditorCapabilities } from '../core/editor/editorRegistry';
-import { registerShortcut } from '../core/shortcuts';
-import { emit } from '../core/emitter';
-import { saveDocument } from '../features/editor-code/orchestration/saveDocument';
-import { runCjkFormatWithToast } from '../features/cjkFormat/applyCjkFormat';
 import {
   openFileDialog,
   openFolderDialog,
@@ -63,12 +58,13 @@ import { useFavoritesStore } from '../features/favorites/favoritesStore';
 import { MissingFileDialog } from '../features/external/MissingFileDialog';
 import { ExternalChangeDialog } from '../features/external/ExternalChangeDialog';
 import { checkActiveDocumentStillExists } from '../features/external/missingFileGuard';
-import { isDocumentReading, requestReadingMode, supportsReadingMode, useWindowFullscreen } from '../features/reading/readingMode';
+import { requestReadingMode, supportsReadingMode, useWindowFullscreen } from '../features/reading/readingMode';
 import { USES_MAC_TRAFFIC_LIGHTS } from '../core/platform';
 import { setTrafficLightsHidden } from '../core/ipc/commands';
 // 历史记录：挂载点只订阅开关，查看界面按需懒加载
 import { HistoryHost } from '../features/versionHistory/HistoryHost';
-import { openVersionHistory, useVersionHistoryStore } from '../features/versionHistory/versionHistoryStore';
+import { useVersionHistoryStore } from '../features/versionHistory/versionHistoryStore';
+import { useAppShellShortcuts } from './shell/useAppShellShortcuts';
 
 // ── 分隔条样式 ──
 
@@ -148,6 +144,71 @@ export function AppShell(_props: { children?: React.ReactNode }) {
   const sharedReadonlyActive = useSharedReadonly(activeTab?.key ?? '');
   // 极窄模式只保留编辑区：侧栏与大纲按渲染条件隐藏，不改写各自的可见性记忆
   const showSidePanels = !isShellHidden && !compactMode;
+  // 当前实际挂载的侧栏面板
+  const hasExplorerPanel = showSidePanels && explorerVisible;
+  const hasOutlinePanel = showSidePanels && outlineVisible && showOutline;
+  const groupRef = useGroupRef();
+  const groupElRef = useRef<HTMLDivElement | null>(null);
+
+  // 面板组合变化（开关大纲/资源管理器、Markdown 与其他格式互切）时，库会套用该组合上次缓存的百分比布局
+  // 或基于过期 store 宽度的 defaultSize，导致另一侧栏宽度跳变；这里按变化前的像素宽度恢复侧栏，差额全交给编辑区。
+  useLayoutEffect(() => {
+    // 快照须在库重新注册布局之前读取：重新注册时 onLayoutChanged 会把跳变后的宽度写进 ref
+    const explorerPx = Math.max(EXPLORER_MIN, Math.min(EXPLORER_MAX, explorerWidthRef.current));
+    const outlinePx = Math.max(OUTLINE_MIN, Math.min(OUTLINE_MAX, outlineWidthRef.current));
+    const expectedIds = [
+      ...(hasExplorerPanel ? ['nb-explorer'] : []),
+      'nb-editor',
+      ...(hasOutlinePanel ? ['nb-outline'] : []),
+    ];
+    let cancelled = false;
+    let rafId = 0;
+
+    const restore = (allowRetry: boolean) => {
+      if (cancelled) return;
+      const group = groupRef.current;
+      const groupEl = groupElRef.current;
+      if (!group || !groupEl) return;
+      const current = group.getLayout();
+      const ready =
+        Object.keys(current).length === expectedIds.length && expectedIds.every((id) => id in current);
+      // 新面板组合尚未注册完成时，下一帧再试一次
+      if (!ready) {
+        if (allowRetry) rafId = requestAnimationFrame(() => restore(false));
+        return;
+      }
+      // 库的百分比以各面板宽度之和为基数（不含分隔条）
+      let panelsPx = 0;
+      groupEl.querySelectorAll<HTMLElement>(':scope > [data-panel]').forEach((el) => {
+        panelsPx += el.offsetWidth;
+      });
+      if (panelsPx <= 0) return;
+
+      const explorerPct = hasExplorerPanel ? (explorerPx / panelsPx) * 100 : 0;
+      const outlinePct = hasOutlinePanel ? (outlinePx / panelsPx) * 100 : 0;
+      const pctById: Record<string, number> = {
+        'nb-explorer': explorerPct,
+        'nb-editor': 100 - explorerPct - outlinePct,
+        'nb-outline': outlinePct,
+      };
+      // ⚠️ 库校验布局时用 Object.values 按顺序对应面板，必须按左→右的面板顺序构造
+      const next: Record<string, number> = {};
+      for (const id of expectedIds) next[id] = pctById[id];
+      // 与当前布局相差不足 1px 时不改动，避免无意义的重排
+      const changed = expectedIds.some(
+        (id) => (Math.abs((current[id] ?? 0) - next[id]) / 100) * panelsPx > 1,
+      );
+      // setLayout 内部会按 min/max 约束校验，窗口过窄时自动收敛
+      if (changed) group.setLayout(next);
+    };
+
+    // 子 Panel 注册触发的 Group 重新注册在本次提交内同步完成，微任务里已是新组合的布局，且早于绘制
+    queueMicrotask(() => restore(true));
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(rafId);
+    };
+  }, [hasExplorerPanel, hasOutlinePanel, groupRef]);
 
   // 极窄模式标记写到根节点：各格式自带工具栏经全局样式统一切换为图标按钮、自动换行
   useEffect(() => {
@@ -181,191 +242,7 @@ export function AppShell(_props: { children?: React.ReactNode }) {
   // 🔴 S10：激活会话恢复的轻量标签时按需加载正文
   useRestoredTabLoader(activeKey);
 
-  // Ctrl+S 快捷键注册
-  useEffect(() => {
-    const unregCtrlS = registerShortcut({
-      key: 'Ctrl+S',
-      action: () => {
-        const cur = useWindowStore.getState().activeKey;
-        if (cur) {
-          saveDocument(cur);
-        }
-      },
-      scope: 'global',
-      description: '保存当前文档',
-    });
-
-    // Ctrl+F 查找
-    const unregCtrlF = registerShortcut({
-      key: 'Ctrl+F',
-      action: () => {
-        const currentTab = useWindowStore.getState().activeTab();
-        if (!currentTab) return;
-        // 选中文本经能力注册表按当前模式获取（code / markdown visual / markdown source）
-        const capabilities = getEditorCapabilities(currentTab.key);
-        // 画板/思维导图/表格等无文本搜索能力的编辑器不打开搜索栏（打开也永远 0 匹配）
-        if (!capabilities?.search) return;
-        const selected = capabilities.getSelectedText();
-        const searchStore = useSearchStore.getState();
-        searchStore.openSearch(selected.trim() ? selected : undefined, 'search');
-      },
-      scope: 'global',
-      description: '查找文本',
-    });
-
-    // Ctrl+H 替换
-    const unregCtrlH = registerShortcut({
-      key: 'Ctrl+H',
-      action: () => {
-        const currentTab = useWindowStore.getState().activeTab();
-        if (!currentTab) return;
-        const capabilities = getEditorCapabilities(currentTab.key);
-        // 画板/思维导图/表格等无文本搜索能力的编辑器不打开搜索栏（打开也永远 0 匹配）
-        if (!capabilities?.search) return;
-        const selected = capabilities.getSelectedText();
-        const searchStore = useSearchStore.getState();
-        searchStore.openSearch(selected.trim() ? selected : undefined, 'replace');
-      },
-      scope: 'global',
-      description: '替换文本',
-    });
-
-    // Ctrl+W 关闭当前标签页
-    const unregCtrlW = registerShortcut({
-      key: 'Ctrl+W',
-      action: () => {
-        const curKey = useWindowStore.getState().activeKey;
-        if (curKey) {
-          useWindowStore.getState().requestCloseTab(curKey);
-        }
-      },
-      scope: 'global',
-      description: '关闭当前标签页',
-    });
-
-    // Ctrl+/ 切换 Markdown 可视化 / 源码模式：全局只注册一次，按活动标签分发
-    // （非 Markdown 标签没有该事件的监听者，按下无副作用）
-    const unregToggleMdMode = registerShortcut({
-      key: 'Ctrl+/',
-      action: () => {
-        const curKey = useWindowStore.getState().activeKey;
-        if (curKey) {
-          emit('toggle-md-view-mode', { key: curKey });
-        }
-      },
-      scope: 'global',
-      description: '切换 Markdown 可视化 / 源码模式',
-    });
-
-    // ── JSON 快捷操作（支持 .json / .txt / 源码模式等） ──
-
-    // 1. JSON 展开 / 格式化 (Shift+Alt+F / Ctrl+Alt+L)
-    const handleExpandAction = () => {
-      const currentTab = useWindowStore.getState().activeTab();
-      if (!currentTab) return;
-      // code 与 markdown 源码模式均通过能力注册表分发；能力内部按当前模式判断可用性
-      // 沉浸阅读只读：不改写正文
-      if (isDocumentReading(currentTab.key)) return;
-      getEditorCapabilities(currentTab.key)?.codeOps?.expandJson();
-    };
-
-    const unregExpandShiftAltF = registerShortcut({
-      key: 'Shift+Alt+F',
-      action: handleExpandAction,
-      scope: 'global',
-      description: 'JSON 展开 / 格式化',
-    });
-
-    const unregExpandCtrlAltL = registerShortcut({
-      key: 'Ctrl+Alt+L',
-      action: handleExpandAction,
-      scope: 'global',
-      description: 'JSON 展开 / 格式化 (JetBrains)',
-    });
-
-    // 2. JSON 压缩 (Shift+Alt+M / Ctrl+Alt+M)
-    const handleMinifyAction = () => {
-      const currentTab = useWindowStore.getState().activeTab();
-      if (!currentTab) return;
-      // 沉浸阅读只读：不改写正文
-      if (isDocumentReading(currentTab.key)) return;
-      getEditorCapabilities(currentTab.key)?.codeOps?.minifyJson();
-    };
-
-    const unregMinifyShiftAltM = registerShortcut({
-      key: 'Shift+Alt+M',
-      action: handleMinifyAction,
-      scope: 'global',
-      description: 'JSON 压缩为单行',
-    });
-
-    const unregMinifyCtrlAltM = registerShortcut({
-      key: 'Ctrl+Alt+M',
-      action: handleMinifyAction,
-      scope: 'global',
-      description: 'JSON 压缩为单行',
-    });
-
-    // 3. JSON 格式校验 (Shift+Alt+V / Ctrl+Alt+V)
-    const handleValidateAction = () => {
-      const currentTab = useWindowStore.getState().activeTab();
-      if (!currentTab) return;
-      getEditorCapabilities(currentTab.key)?.codeOps?.validateJson();
-    };
-
-    const unregValidateShiftAltV = registerShortcut({
-      key: 'Shift+Alt+V',
-      action: handleValidateAction,
-      scope: 'global',
-      description: 'JSON 格式校验',
-    });
-
-    const unregValidateCtrlAltV = registerShortcut({
-      key: 'Ctrl+Alt+V',
-      action: handleValidateAction,
-      scope: 'global',
-      description: 'JSON 格式校验',
-    });
-
-    // Ctrl+Alt+Z 查看当前文档的历史记录
-    const unregHistory = registerShortcut({
-      key: 'Ctrl+Alt+Z',
-      action: () => {
-        const history = useVersionHistoryStore.getState();
-        if (history.open) history.close();
-        else openVersionHistory();
-      },
-      scope: 'global',
-      description: '历史记录',
-    });
-
-    // Ctrl+Alt+F 中文排版格式化（选区优先，无选区处理全文）
-    const unregCjkFormat = registerShortcut({
-      key: 'Ctrl+Alt+F',
-      action: () => {
-        void runCjkFormatWithToast();
-      },
-      scope: 'global',
-      description: '格式化中文排版',
-    });
-
-    return () => {
-      unregCjkFormat();
-      unregHistory();
-      unregCtrlS();
-      unregCtrlF();
-      unregCtrlH();
-      unregCtrlW();
-      unregToggleMdMode();
-      unregExpandShiftAltF();
-      unregExpandCtrlAltL();
-      unregMinifyShiftAltM();
-      unregMinifyCtrlAltM();
-      unregValidateShiftAltV();
-      unregValidateCtrlAltV();
-    };
-  // 所有 action 都在触发时读取 store 中的活动标签，无需随文件切换反复注销和注册。
-  }, []);
+  useAppShellShortcuts();
 
   // 组件卸载时将 ref 中的宽度写回 store（持久化）
   useEffect(() => {
@@ -553,6 +430,8 @@ export function AppShell(_props: { children?: React.ReactNode }) {
         {!isShellHidden && <HistoryHost />}
         <Group
           id="nb-layout"
+          groupRef={groupRef}
+          elementRef={groupElRef}
           orientation="horizontal"
           style={{ width: 'var(--pct-100)', height: 'var(--pct-100)' }}
           onLayoutChanged={(layout) => {
@@ -620,6 +499,9 @@ export function AppShell(_props: { children?: React.ReactNode }) {
 
       {/* 双向链接插入 / 编辑弹窗 */}
       <WikiLinkDialogHost />
+
+      {/* 全屏关系图谱 */}
+      <LinkGraphHost />
 
       {/* 全局文件拖拽释放提示 */}
       {!isShellHidden && <FileDropOverlay />}

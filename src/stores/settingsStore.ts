@@ -116,6 +116,9 @@ export const DEFAULT_SETTINGS: Settings = {
     mindmapNodeMaxWidth: 280,
     mindmapTextAlign: 'left',
     mindmapImageFit: 'original',
+    outlinePosition: 'sidebar',
+    outlineInlineSide: 'left',
+    copyFormat: 'markdown',
   },
   file: {
     autoSaveMarkdown: false,
@@ -150,6 +153,7 @@ export const DEFAULT_SETTINGS: Settings = {
     closeToTray: false,
     showWindowShortcut: '',
     updateChannel: 'github',
+    autoCheckUpdate: true,
   },
   localSearch: {
     enabled: false,
@@ -359,35 +363,8 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     }
   },
 
-  setSystemLightTheme: async (theme) => {
-    const current = get().settings;
-    const updated: Settings = {
-      ...current,
-      appearance: { ...current.appearance, systemLightTheme: theme },
-    };
-    const resolved = resolveAndApply(updated);
-    set({ settings: updated, resolvedTheme: resolved });
-    try {
-      await ipc.saveSettings(updated);
-    } catch (e) {
-      console.error('保存设置失败:', e);
-    }
-  },
-
-  setSystemDarkTheme: async (theme) => {
-    const current = get().settings;
-    const updated: Settings = {
-      ...current,
-      appearance: { ...current.appearance, systemDarkTheme: theme },
-    };
-    const resolved = resolveAndApply(updated);
-    set({ settings: updated, resolvedTheme: resolved });
-    try {
-      await ipc.saveSettings(updated);
-    } catch (e) {
-      console.error('保存设置失败:', e);
-    }
-  },
+  setSystemLightTheme: (theme) => setSystemTheme({ systemLightTheme: theme }),
+  setSystemDarkTheme: (theme) => setSystemTheme({ systemDarkTheme: theme }),
 
   setMaterial: async (material) => {
     const current = get().settings;
@@ -531,3 +508,19 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     }
   },
 }));
+
+/** 保存「跟随系统」使用的浅色 / 深色主题，并立即重新解析当前主题 */
+async function setSystemTheme(patch: { systemLightTheme?: ThemeId; systemDarkTheme?: ThemeId }) {
+  const current = useSettingsStore.getState().settings;
+  const updated: Settings = {
+    ...current,
+    appearance: { ...current.appearance, ...patch },
+  };
+  const resolved = resolveAndApply(updated);
+  useSettingsStore.setState({ settings: updated, resolvedTheme: resolved });
+  try {
+    await ipc.saveSettings(updated);
+  } catch (e) {
+    console.error('保存设置失败:', e);
+  }
+}

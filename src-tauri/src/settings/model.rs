@@ -106,6 +106,7 @@ pub struct LocalSearchSettings {
 pub struct AppearanceSettings {
     #[serde(default = "default_theme_mode")]
     pub theme_mode: String,
+    // 以下两项仅为兼容旧配置保留（前端不再读取）：跟随系统固定浅色晨光、深色墨夜
     #[serde(default = "default_light_theme")]
     pub system_light_theme: String,
     #[serde(default = "default_dark_theme")]
@@ -292,6 +293,15 @@ pub struct EditorSettings {
     // 思维导图节点图片默认显示方式：original（原始比例）/ fill（宽度填充）
     #[serde(default = "default_mindmap_image_fit")]
     pub mindmap_image_fit: String,
+    // Markdown 大纲位置：sidebar（右侧栏）/ inline（编辑区内悬浮目录）
+    #[serde(default = "default_outline_position")]
+    pub outline_position: String,
+    // 编辑区内目录靠哪一侧：left / right
+    #[serde(default = "default_outline_inline_side")]
+    pub outline_inline_side: String,
+    // Markdown 可视化模式 Ctrl+C 的复制格式：markdown（带格式）/ plain（纯文本）
+    #[serde(default = "default_copy_format")]
+    pub copy_format: String,
     // 用户固定的自定义颜色（十六进制），按用途分组；旧配置缺失时为空
     #[serde(default)]
     pub custom_colors: CustomColorSettings,
@@ -331,6 +341,9 @@ impl Default for EditorSettings {
             mindmap_node_max_width: default_mindmap_node_max_width(),
             mindmap_text_align: default_mindmap_text_align(),
             mindmap_image_fit: default_mindmap_image_fit(),
+            outline_position: default_outline_position(),
+            outline_inline_side: default_outline_inline_side(),
+            copy_format: default_copy_format(),
             custom_colors: CustomColorSettings::default(),
         }
     }
@@ -507,6 +520,9 @@ pub struct SystemSettings {
     // 更新渠道：github（默认）或 cnb；同时决定安装包、字体包与插件的下载来源
     #[serde(default = "default_update_channel")]
     pub update_channel: String,
+    // 自动检查更新（默认 true）：启动及每 5 分钟静默检查，由前端读取
+    #[serde(default = "default_true")]
+    pub auto_check_update: bool,
 }
 
 impl Default for SystemSettings {
@@ -515,6 +531,7 @@ impl Default for SystemSettings {
             close_to_tray: false,
             show_window_shortcut: String::new(),
             update_channel: default_update_channel(),
+            auto_check_update: true,
         }
     }
 }
@@ -550,6 +567,9 @@ fn default_tab_size() -> u32 { 2 }
 fn default_mindmap_node_max_width() -> u32 { 280 }
 fn default_mindmap_text_align() -> String { "left".to_string() }
 fn default_mindmap_image_fit() -> String { "original".to_string() }
+fn default_outline_position() -> String { "sidebar".to_string() }
+fn default_outline_inline_side() -> String { "left".to_string() }
+fn default_copy_format() -> String { "markdown".to_string() }
 fn default_image_dir() -> String { "img".to_string() }
 fn default_large_file_mb() -> u32 { 50 }
 fn default_auto_save_delay_ms() -> u32 { 1000 }

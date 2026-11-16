@@ -23,10 +23,12 @@ import { WikiLink } from '../wikiLinkNode';
 import { WikiLinkSuggestion } from '../wikiLinkSuggestion';
 import { handleLinkClick } from '../linkHandler';
 import { TableClipboard } from '../tableClipboard';
-import { MarkdownClipboard } from '../markdownClipboard';
+import { TableCrossDelete } from '../tableCrossDelete';
+import { AlternateCopyShortcut, MarkdownClipboard } from '../markdownClipboard';
 import { PasteFormatDetect } from '../pasteFormatDetect';
 import { ListEmptyItemBackspaceFix } from '../listItemBackspace';
 import { SelectionHighlight } from '../selectionHighlight';
+import { ReactSelectionTrackingBypass } from '../selectionPerformance';
 import { InlineEmojiRender } from '../inlineEmoji';
 import { MultiClickSelectionFix } from '../multiClickSelection';
 import { CollapsedBlockSelection } from '../collapsedBlockSelection';
@@ -216,6 +218,8 @@ export function buildExtensions(docKey = '', options?: BuildExtensionsOptions): 
 
     // 选区可视化：完整选中的块（列表、代码块、折叠块、图片等）整体显示底板
     SelectionHighlight,
+    // 长文档大选区：React 提交时不再逐节点遍历正文计算选区偏移（全选后卡顿数秒的根因）
+    ReactSelectionTrackingBypass,
     // 粘贴 / 拖入 / 选择本地图片时，保存期间在插入位置显示预览与加载动画
     ImageUploadPlaceholder,
     // 正文表情：表情库内的 Unicode 表情显示为与表情面板一致的 Noto SVG（文件中仍是标准字符）
@@ -233,8 +237,12 @@ export function buildExtensions(docKey = '', options?: BuildExtensionsOptions): 
 
     // 表格及表格剪贴板增强（支持标准 TSV 复制与二维矩阵粘贴）
     TableClipboard,
+    // 跨表格边界的选区删除：完整选中的表格整块删除，部分选中只清空单元格，不留残缺表格
+    TableCrossDelete,
     // Markdown 文档优先输出源码；表格粘贴增强继续由 TableClipboard 处理。
     ...(options?.markdownClipboard ? [MarkdownClipboard] : []),
+    // Ctrl+Shift+C 复制为另一种格式（Markdown 文档与 Ctrl+C 互补，嵌入式编辑器为纯文本）
+    AlternateCopyShortcut,
 
     // 查找/替换
     searchReplaceExtension(),

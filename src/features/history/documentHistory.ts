@@ -11,6 +11,7 @@
 //   - 公开 API（DocumentHistoryEntry.content 等）与 201 节点上限、分组语义完全不变。
 
 import { useState, useEffect } from 'react';
+import { applyPatch, diffText, reversePatch, type TextPatch } from './textPatches';
 
 /** 单条历史所在的编辑模式，用于尽可能恢复同内核的光标位置 */
 export type DocumentHistoryMode = 'visual' | 'source' | 'code' | 'board' | 'mindmap' | 'drawio' | 'bitable';
@@ -44,6 +45,8 @@ export interface RecordDocumentChangeOptions {
 /** 撤销/重做应用快照时提供给当前编辑器的定位信息 */
 export interface DocumentHistoryNavigation {
   direction: 'undo' | 'redo';
+  /** 磁盘重载不作为用户输入，也不主动聚焦或滚动编辑器；普通历史导航保持原有行为。 */
+  externalReload?: boolean;
   /** 前后快照首个差异的文本偏移，跨编辑器内核时作为通用定位坐标 */
   changeOffset: number;
   /** 同一编辑器内核可直接恢复的精确光标位置 */
@@ -57,12 +60,6 @@ export interface DocumentHistoryAdapter {
 }
 
 /** 可逆文本替换补丁：next = prev[0..prefixLen) + inserted + prev[prefixLen+removed.length..) */
-interface TextPatch {
-  prefixLen: number;
-  removed: string;
-  inserted: string;
-}
-
 /**
  * 历史节点（内部存储）：检查点存全文；补丁节点存相对前一节点的变化。
  * 公开的 DocumentHistoryEntry（含全文 content）经物化函数按需生成。
@@ -97,39 +94,6 @@ const MAX_HISTORY_ENTRIES = 201;
 const CHECKPOINT_INTERVAL = 20;
 
 // ── 补丁原语 ──
-
-/** 计算相邻两个文本的最小替换补丁（最长公共前/后缀；UTF-16 code unit 逐字一致） */
-function diffText(prev: string, next: string): TextPatch {
-  const maxPrefix = Math.min(prev.length, next.length);
-  let prefixLen = 0;
-  while (prefixLen < maxPrefix && prev.charCodeAt(prefixLen) === next.charCodeAt(prefixLen)) {
-    prefixLen += 1;
-  }
-  // 前后缀不重叠：公共后缀最多延伸到 prefixLen
-  let suffixLen = 0;
-  const maxSuffix = maxPrefix - prefixLen;
-  while (
-    suffixLen < maxSuffix &&
-    prev.charCodeAt(prev.length - 1 - suffixLen) === next.charCodeAt(next.length - 1 - suffixLen)
-  ) {
-    suffixLen += 1;
-  }
-  return {
-    prefixLen,
-    removed: prev.slice(prefixLen, prev.length - suffixLen),
-    inserted: next.slice(prefixLen, next.length - suffixLen),
-  };
-}
-
-/** 应用补丁：基于前一节点内容重建本节点内容 */
-function applyPatch(base: string, patch: TextPatch): string {
-  return base.slice(0, patch.prefixLen) + patch.inserted + base.slice(patch.prefixLen + patch.removed.length);
-}
-
-/** 取补丁的逆（撤销方向重放用） */
-function reversePatch(patch: TextPatch): TextPatch {
-  return { prefixLen: patch.prefixLen, removed: patch.inserted, inserted: patch.removed };
-}
 
 /** 物化指定节点的完整内容（带相邻缓存与链式回溯） */
 function materializeNode(state: DocumentHistoryState, index: number): string {
@@ -558,7 +522,7 @@ function moveHistory(docKey: string, offset: -1 | 1): boolean {
  * 追加为独立的历史分组并交给当前编辑器呈现，Ctrl+Z 可回到替换前；
  * 没有已挂载的编辑器时返回 false，由调用方提示。
  */
-export function applyDocumentContentAsChange(docKey: string, content: string): boolean {
+export function applyDocumentContentAsChange(docKey: string, content: string, options?: { externalReload?: boolean }): boolean {
   materializePending(docKey);
   const state = histories.get(docKey);
   const adapter = adapters.get(docKey);
@@ -573,6 +537,7 @@ export function applyDocumentContentAsChange(docKey: string, content: string): b
     adapter.applyEntry(toPublicEntry(state, state.index), {
       direction: 'redo',
       changeOffset: findFirstChangeOffset(previousContent, content),
+      externalReload: options?.externalReload,
     });
     state.forceNextGroup = true;
     state.lastEditMode = null;

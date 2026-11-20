@@ -585,39 +585,40 @@ export function MindmapEditor({ docKey }: MindmapEditorProps) {
           </div>
         </div>
 
-        {/* 右侧：缩放控制与 XMind 导入导出 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
+        {/* 右侧：缩放控制与 XMind 导入导出（nb-mindmap-topbar-actions 统一按钮高度） */}
+        <div className="nb-mindmap-topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-10)' }}>
           {viewMode === 'mindmap' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dim-4)', marginRight: 'var(--dim-6)' }}>
               <Tooltip content="缩小画布" side="bottom" sideOffset={4}>
                 <button
                   type="button"
-                  className="nb-editor-icon-btn"
+                  className="nb-editor-icon-btn nb-mindmap-zoom-btn"
                   onClick={() => setZoom((z) => Math.max(0.2, z - 0.15))}
                   aria-label="缩小画布"
                 >
-                  <ZoomOut size={13} />
+                  <ZoomOut size={15} />
                 </button>
               </Tooltip>
-              <span style={{ fontSize: 'var(--text-11)', minWidth: 'var(--dim-42)', textAlign: 'center' }}>
+              {/* 缩放百分比：收窄最小宽度贴近两侧按钮；等宽数字避免缩放时宽度抖动 */}
+              <span style={{ fontSize: 'var(--text-12)', minWidth: 'var(--dim-36)', textAlign: 'center', fontVariantNumeric: 'tabular-nums' }}>
                 {Math.round(zoom * 100)}%
               </span>
               <Tooltip content="放大画布" side="bottom" sideOffset={4}>
                 <button
                   type="button"
-                  className="nb-editor-icon-btn"
+                  className="nb-editor-icon-btn nb-mindmap-zoom-btn"
                   onClick={() => setZoom((z) => Math.min(3, z + 0.15))}
                   aria-label="放大画布"
                 >
-                  <ZoomIn size={13} />
+                  <ZoomIn size={15} />
                 </button>
               </Tooltip>
-              <Tooltip content="复位 var(--pct-100)" side="bottom" sideOffset={4}>
+              <Tooltip content="复位 100%" side="bottom" sideOffset={4}>
                 <button
                   type="button"
-                  className="nb-editor-icon-btn"
+                  className="nb-editor-icon-btn nb-mindmap-zoom-btn"
                   onClick={() => setZoom(1)}
-                  aria-label="复位 var(--pct-100)"
+                  aria-label="复位 100%"
                 >
                   <RotateCcw size={13} />
                 </button>

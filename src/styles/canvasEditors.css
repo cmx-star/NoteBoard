@@ -5,8 +5,14 @@
   opacity: var(--opacity-1) !important;
 }
 
-.nb-mindmap-node:hover .nb-mindmap-node-toolbar {
-  display: flex !important;
+/* 节点工具栏优先跟随鼠标；没有悬停节点时才保留主选中节点的工具栏。 */
+.nb-mindmap-node > .nb-mindmap-node-toolbar {
+  display: none;
+}
+
+.nb-mindmap-node:hover > .nb-mindmap-node-toolbar,
+.nb-mindmap-transform:not(:has(.nb-mindmap-node:hover)) > .nb-mindmap-node > .nb-mindmap-node-toolbar[data-selected='true'] {
+  display: flex;
 }
 
 /* 节点标题按行渲染：行内容已由布局引擎断好，禁止浏览器二次折行 */
@@ -155,6 +161,27 @@
 .nb-editor-icon-btn:active {
   background: var(--toolbar-active);
   transform: scale(var(--scale-0-94));
+}
+
+/* 思维导图顶栏右侧按钮统一高度：以「概要」文本按钮（12px × 1.6 行高 + 4px 上下内边距 + 1px 边框 ≈ 29px）为基准，
+   缩放图标、样式下拉、阅读、导入、导出全部对齐；固定高度后紧凑模式隐藏文字时也不会塌缩 */
+.nb-mindmap-topbar-actions .nb-editor-icon-btn,
+.nb-mindmap-topbar-actions .nb-editor-toolbar-btn,
+.nb-mindmap-topbar-actions .nb-editor-primary-btn,
+.nb-mindmap-topbar-actions .nb-mindmap-style-trigger {
+  box-sizing: border-box;
+  height: 29px;
+}
+
+/* 图标按钮加高后保持接近方形，并与文本按钮圆角一致 */
+.nb-mindmap-topbar-actions .nb-editor-icon-btn {
+  min-width: 29px;
+  border-radius: 5px;
+}
+
+/* 缩小 / 放大 / 复位按钮：静止时无边框，与百分比数字视觉上连成一组；悬停时沿用通用的边框高亮 */
+.nb-mindmap-topbar-actions .nb-mindmap-zoom-btn:not(:hover) {
+  border-color: transparent;
 }
 
 /* HTML 双栏编辑器分隔条：悬停浅色提示，拖动中强调色 */
@@ -1232,8 +1259,25 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--dim-3);
+  /* 不参与菜单宽度计算：宽度跟随上方按钮行，色块多时换行（每行 8 个，与节点样式浮层一致） */
+  box-sizing: border-box;
+  width: 0;
+  min-width: var(--pct-100);
   padding: var(--dim-4) var(--dim-2) var(--dim-2);
   border-top: var(--dim-1) solid var(--editor-border);
+}
+
+/* 文字颜色色样：衬底由 textSwatchBackground 决定，保证白色 / 黑色等可见 */
+.nb-mindmap-format-text-swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .nb-mindmap-format-swatch {
@@ -1308,6 +1352,87 @@
   border-radius: var(--radius-md);
   background: var(--editor-bg);
   border: var(--dim-1) solid var(--editor-border);
+}
+
+/* 节点样式浮层：多选数量与内部滚动 */
+.nb-mindmap-popover-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--editor-accent, #3b82f6);
+}
+
+.nb-mindmap-node-style-popover {
+  overscroll-behavior: contain;
+}
+
+/* 节点颜色预设色板：每行 8 格，按浮层宽度等分 */
+.nb-mindmap-color-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.nb-mindmap-color-swatch {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px solid var(--editor-border, #e2e8f0);
+  background: var(--editor-surface, #ffffff);
+  color: var(--editor-text-secondary, #64748b);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--transition-fast, 120ms ease), box-shadow var(--transition-fast, 120ms ease);
+}
+
+.nb-mindmap-color-swatch[data-variant='fill'] {
+  background: var(--nb-swatch-color);
+  border-color: color-mix(in srgb, var(--nb-swatch-color) 80%, #000000);
+}
+
+.nb-mindmap-color-swatch[data-variant='text'] {
+  color: var(--nb-swatch-color);
+}
+
+.nb-mindmap-color-swatch:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  z-index: 1;
+}
+
+.nb-mindmap-color-swatch:active {
+  transform: scale(0.94);
+}
+
+.nb-mindmap-color-swatch[data-active='true'] {
+  outline: 2px solid var(--editor-accent, #3b82f6);
+  outline-offset: 1px;
+}
+
+.nb-mindmap-color-swatch.is-default[data-active='true'] {
+  color: var(--editor-accent, #3b82f6);
+}
+
+.nb-mindmap-popover-custom {
+  margin-top: 6px;
+}
+
+/* 节点设置了文字颜色（无背景色）时：深色主题下向白色提亮，与 Markdown 字体颜色一致，文件中仍保存原色 */
+.nb-mindmap-node[data-text-tint] {
+  color: var(--nb-node-text);
+}
+
+:root[data-theme="mo-ye"] .nb-mindmap-node[data-text-tint] {
+  color: color-mix(in srgb, var(--nb-node-text) 68%, #ffffff);
 }
 
 /* 思维导图二次确认对话框 */

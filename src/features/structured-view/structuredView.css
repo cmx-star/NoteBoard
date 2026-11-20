@@ -1,0 +1,285 @@
+/* 结构化视图：只读 JSON 树与 package.json 摘要 */
+
+.nb-structured-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-5, 5);
+  width: min(42%, var(--dim-460, 460px));
+  min-width: var(--dim-280, 280px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-bg);
+  color: var(--editor-text);
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size);
+  box-shadow: var(--shadow-lg);
+}
+
+.nb-structured-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--dim-4, 4px);
+  z-index: 1;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.nb-structured-resizer:hover,
+.nb-structured-resizer:active {
+  background: var(--editor-border-focus);
+}
+
+.nb-structured-resizer:focus-visible {
+  outline: var(--dim-1) solid var(--editor-border-focus);
+  outline-offset: calc(var(--dim-1) * -1);
+}
+
+.nb-structured-search {
+  display: flex;
+  align-items: center;
+  gap: var(--dim-4);
+  margin: var(--dim-8) var(--dim-12) 0;
+  padding: 0 var(--dim-8);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--editor-code-bg);
+}
+
+.nb-structured-search:focus-within {
+  border-color: var(--editor-border-focus);
+}
+
+.nb-structured-search input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--dim-4) 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--dim-12);
+}
+
+.nb-structured-search button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--dim-20, 20px);
+  height: var(--dim-20, 20px);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  background: transparent;
+  color: var(--editor-text-muted);
+  cursor: pointer;
+}
+
+.nb-structured-search button:hover {
+  background: var(--editor-hover);
+  color: var(--editor-text);
+}
+
+.nb-structured-header {
+  display: flex;
+  align-items: center;
+  gap: var(--dim-8);
+  padding: var(--dim-8) var(--dim-12);
+  border-bottom: var(--dim-1) solid var(--editor-border);
+  background: var(--editor-surface);
+  flex-shrink: 0;
+}
+
+.nb-structured-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.nb-structured-badge {
+  padding: 0 var(--dim-6);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--editor-text-muted);
+  font-size: var(--dim-11);
+}
+
+.nb-structured-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--dim-24, 24px);
+  height: var(--dim-24, 24px);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  background: transparent;
+  color: var(--editor-text-muted);
+  cursor: pointer;
+}
+
+.nb-structured-close:hover {
+  background: var(--editor-hover);
+  color: var(--editor-text);
+}
+
+.nb-structured-body {
+  flex: 1;
+  overflow: auto;
+  padding: var(--dim-8) 0;
+}
+
+.nb-structured-summary {
+  margin: var(--dim-8) var(--dim-12) var(--dim-12);
+  padding: var(--dim-10);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-md, 6px);
+  background: var(--editor-code-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dim-4);
+}
+
+.nb-structured-summary-name {
+  font-weight: 600;
+}
+
+.nb-structured-summary-meta,
+.nb-structured-summary-deps {
+  color: var(--editor-text-muted);
+  font-size: var(--dim-12);
+}
+
+.nb-structured-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--dim-6);
+  width: 100%;
+  padding: var(--dim-2) var(--dim-8) var(--dim-2) var(--dim-12);
+  color: inherit;
+  font-family: var(--mono-font-family, monospace);
+  font-size: var(--mono-font-size, 12px);
+}
+
+.nb-structured-row:hover {
+  background: var(--editor-hover);
+}
+
+.nb-structured-row-main {
+  display: flex;
+  align-items: baseline;
+  gap: var(--dim-6);
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+button.nb-structured-row-main {
+  cursor: pointer;
+}
+
+.nb-structured-row-main:focus-visible {
+  outline: var(--dim-1) solid var(--editor-border-focus);
+  outline-offset: calc(var(--dim-1) * -1);
+}
+
+.nb-structured-copy {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--dim-20, 20px);
+  height: var(--dim-20, 20px);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  background: transparent;
+  color: var(--editor-text-muted);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.nb-structured-row:hover .nb-structured-copy,
+.nb-structured-copy:focus-visible {
+  opacity: 1;
+}
+
+.nb-structured-copy:hover {
+  background: var(--editor-border);
+  color: var(--editor-text);
+}
+
+@media (hover: none) {
+  .nb-structured-copy {
+    opacity: 1;
+  }
+}
+
+.nb-structured-caret {
+  flex-shrink: 0;
+  width: var(--dim-10, 10px);
+  color: var(--editor-text-muted);
+}
+
+.nb-structured-key {
+  color: var(--editor-accent);
+  flex-shrink: 0;
+}
+
+.nb-structured-index {
+  color: var(--editor-text-muted);
+  flex-shrink: 0;
+}
+
+.nb-structured-preview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nb-structured-preview.is-string { color: var(--editor-link); }
+.nb-structured-preview.is-number { color: var(--nb-amber-500, #d97706); }
+.nb-structured-preview.is-boolean { color: var(--nb-purple-500, #7c3aed); }
+.nb-structured-preview.is-null { color: var(--editor-text-muted); }
+
+.nb-structured-hint {
+  margin: var(--dim-8) var(--dim-12);
+  padding: var(--dim-10);
+  border: var(--dim-1) solid var(--editor-border);
+  border-radius: var(--radius-md, 6px);
+  color: var(--editor-text-muted);
+  line-height: 1.6;
+}
+
+.nb-structured-error {
+  border-color: var(--nb-red-500, #dc2626);
+  color: var(--editor-text);
+}
+
+@media (max-width: 900px) {
+  .nb-structured-panel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-width: 0;
+    z-index: var(--z-5, 5);
+  }
+
+  .nb-structured-resizer {
+    display: none;
+  }
+}

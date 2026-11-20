@@ -20,7 +20,7 @@ import {
 import { Tooltip } from '../../components/Tooltip';
 import type { FileTreeNode } from '../../core/ipc/types';
 import { useExplorerStore } from './explorerStore';
-import { useTreeData } from './useTreeData';
+import { useTreeData, PAGE_SIZE, OVERFLOW_PREFIX } from './useTreeData';
 import { openDocument } from '../editor-code/orchestration/openDocument';
 import { markOpenDocumentDeleted } from '../external/missingFileGuard';
 import { getExplorerFileIcon } from './fileIcons';
@@ -31,6 +31,7 @@ import { showToast } from '../../stores/toastStore';
 import * as ipc from '../../core/ipc/commands';
 import { syncTrashPath, useSyncStore } from '../../stores/syncStore';
 import { sameKey, pathKey, dirnameOf, joinPath } from './pathUtils';
+import { renameOpenFile } from './renameOpenFile';
 import { IS_WEB } from '../../core/platform';
 // 网页多用户：共享入口、共享标记与共享路径内的操作限制
 import { isMultiUser, isSharedPath } from '../account/accountState';
@@ -51,8 +52,70 @@ export const TreeNode = memo(function TreeNode(props: TreeNodeProps) {
     return trash !== null && props.node.isDir && sameKey(trash, props.node.path);
   });
   if (isSyncTrash) return <SyncTrashNode depth={props.depth} path={props.node.path} />;
+  // 溢出占位：目录条目超出上限时显示的加载更多按钮
+  if (props.node.path.startsWith('nb:overflow:')) return <LoadMoreNode depth={props.depth} sentinelPath={props.node.path} />;
   return <TreeNodeImpl {...props} />;
 });
+
+/** 目录条目超出首屏上限时的"加载更多"按钮，点击后追加下一批条目 */
+function LoadMoreNode({ depth, sentinelPath }: { depth: number; sentinelPath: string }) {
+  const [loading, setLoading] = useState(false);
+  const showHidden = useSettingsStore((s) => s.settings.file.showHiddenFiles);
+
+  // 解析占位节点路径：nb:overflow:${remaining}:${dirPath}
+  const match = sentinelPath.match(/^nb:overflow:(\d+):(.+)$/s);
+  const remaining = match ? parseInt(match[1]) : 0;
+  const dirPath = match?.[2] ?? '';
+
+  const handleClick = async () => {
+    if (loading || !dirPath) return;
+    setLoading(true);
+    try {
+      // 计算当前已加载的真实条目数（排除旧占位节点）
+      const current = useExplorerStore.getState().getChildren(dirPath) ?? [];
+      const currentVisible = current.filter((n) => !n.path.startsWith(OVERFLOW_PREFIX)).length;
+      const freshNodes = await ipc.readDir(dirPath, showHidden);
+      const nextBatch = freshNodes.slice(currentVisible, currentVisible + PAGE_SIZE);
+      if (nextBatch.length > 0) {
+        const newRemaining = freshNodes.length - currentVisible - nextBatch.length;
+        useExplorerStore.getState().appendChildren(dirPath, nextBatch, newRemaining);
+      }
+    } catch (e) {
+      console.error('加载更多失败:', dirPath, e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      style={{
+        height: 'var(--explorer-item-height, 24px)',
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: depth * 12 + 8 + 16,
+        paddingRight: 8,
+        fontSize: 'calc(var(--explorer-font-size, 13px) - 1px)',
+        color: loading ? 'var(--explorer-text-muted)' : 'var(--editor-accent)',
+        cursor: loading ? 'default' : 'pointer',
+        userSelect: 'none',
+        transition: 'opacity var(--transition-fast)',
+        opacity: loading ? 0.6 : 1,
+      }}
+      onClick={loading ? undefined : () => { void handleClick(); }}
+      onKeyDown={(e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && !loading) {
+          e.preventDefault();
+          void handleClick();
+        }
+      }}
+    >
+      {loading ? '加载中…' : `加载更多（剩余 ${remaining} 个）`}
+    </div>
+  );
+}
 
 /** 同步回收站节点：不可展开、不可打开其中文件，单击/双击打开回收站弹窗（恢复、彻底删除） */
 function SyncTrashNode({ depth, path }: { depth: number; path: string }) {
@@ -389,14 +452,13 @@ const TreeNodeImpl = memo(function TreeNodeImpl({
       const wikiLinks = await import('../wikilink/renameLinks');
       const linkPlan = await wikiLinks.planWikiLinkRenameSafely(node.path, node.isDir);
 
-      await ipc.renamePath(node.path, newPath);
+      if (node.isDir) await ipc.renamePath(node.path, newPath);
+      else await renameOpenFile(node.path, newPath, trimmed);
       // 服务端会让共享随改名移动，刷新本地共享标记
       if (IS_WEB && isMultiUser()) void useShareStore.getState().refresh().catch(() => undefined);
 
       if (!node.isDir) {
-        // 单文件：同步迁移已打开文档 store 与 Tab 标签页
-        useDocumentStore.getState().renameDocument(node.path, newPath, trimmed, parentDir);
-        useWindowStore.getState().updateTabPath(node.path, newPath, trimmed);
+        // 单文件会话已由 renameOpenFile 迁移，此处只更新文件树定位。
         if (isRevealed) {
           setRevealed(newPath, false);
         }

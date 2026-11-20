@@ -374,7 +374,7 @@ export interface EditorSettings {
   codeBlockDefaultExpanded?: boolean;
   // 可视化模式中折叠块 <details> 默认展开（缺省视为 false；源码带 open 属性时始终展开）
   detailsDefaultExpanded?: boolean;
-  // 可视化模式中 Enter 与 Shift+Enter 互换：Enter 段内换行、Shift+Enter 换段落（缺省视为 false）
+  // 可视化模式中 Enter 与 Shift+Enter 互换：Enter 段内换行、Shift+Enter 换段落（缺省视为 true）
   swapEnterKeys?: boolean;
   // 思维导图节点最大宽度（px），超出后自动换行；缺省视为 280
   mindmapNodeMaxWidth?: number;
@@ -419,7 +419,12 @@ export interface FileSettings {
   restoreSession: boolean;
   // 重新打开 Markdown / 文本文件时恢复阅读位置；旧配置缺失时默认开启。
   restoreReadingPosition?: boolean;
+  // 图片目录名称（两种模式共用）：同级模式为文档所在目录下的子文件夹，统一模式为统一目录所在位置下的文件夹
   imageDirName: string;
+  // 图片存放模式：sibling（文档同级子目录）/ global（统一目录）；旧配置缺失时视为 sibling
+  imageStorageMode?: ImageStorageMode;
+  // 统一目录所在位置（绝对路径）；为空时跟随同步文件夹
+  imageGlobalRoot?: string;
   largeFileConfirmMb: number;
   // 未保存文件的用户可见暂存目录（绝对路径）
   stagingDirectory: string;
@@ -428,6 +433,9 @@ export interface FileSettings {
   // 文档中本地 HTML 链接的打开方式（缺省视为 browser 系统默认浏览器；仅桌面端生效）
   htmlOpenMode?: HtmlOpenMode;
 }
+
+/** 图片存放模式：文档同级子目录 / 统一目录（位置可选，开启同步或备份时须在同步文件夹内） */
+export type ImageStorageMode = 'sibling' | 'global';
 
 /** 资源管理器打开文件的方式：双击 / 单击 */
 export type ExplorerOpenMode = 'double' | 'single';
@@ -685,8 +693,12 @@ export interface UpdateCheckResult {
   releaseNotes?: UpdateReleaseNote[];
   // 未安装版本超出单页 Release 列表，更早的日志需前往 Release 页面查看
   releaseNotesTruncated?: boolean;
-  // Windows 免安装版：不提供安装包，引导前往 Release 页面下载
+  // 当前是否为 Windows 免安装版
   portable?: boolean;
+  // 当前安装方式有匹配的签名更新包，允许应用内安装并重启
+  canUpdateInPlace?: boolean;
+  // 检查本次更新时使用的发布渠道
+  updateChannel?: UpdateChannel;
 }
 
 // 单个版本的更新日志条目

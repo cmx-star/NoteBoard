@@ -1,6 +1,6 @@
 [package]
 name = "loomark"
-version = "0.8.5"
+version = "0.8.9"
 description = "Loomark 桌面笔记 + 画板软件（基于 NoteBoard 的开源分支）"
 authors = ["CrazyFigure"]
 license = "AGPL-3.0-only"
@@ -63,6 +63,8 @@ axum = "0.8.9"
 tauri-plugin-global-shortcut = "~2.3"
 trash = "5"
 font-kit = "0.14"
+# 桌面更新包沿用 Tauri 签名格式，流式校验大文件以降低内存占用。
+minisign-verify = "0.3"
 # 复制图片到剪贴板：原生端直接解码本地图片（4K JPEG 约 30 毫秒），避免经 IPC 传输数十 MB 像素
 image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "bmp", "ico"] }
 
@@ -88,6 +90,14 @@ windows = { version = "0.58", features = ["Win32_Foundation", "Win32_System_Thre
 # Markdown 导出 PDF：直接调用 WebView2 PrintToPdf，版本须与 tauri/wry 使用的保持一致
 webview2-com = "0.38"
 windows-core = "0.61"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# Markdown 导出 PDF：通过 WKWebView + NSPrintOperation 直接输出分页 A4 PDF，版本复用 wry 依赖树已锁定的 objc2 生态
+objc2 = { version = "0.6.4", features = ["exception"] }
+objc2-core-foundation = { version = "0.3.2", default-features = false, features = ["std", "CFCGTypes"] }
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "objc2-core-foundation", "NSDictionary", "NSGeometry", "NSObject", "NSString", "NSURL", "NSValue"] }
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "objc2-core-foundation", "NSPrintInfo", "NSPrintOperation", "NSResponder", "NSView", "NSWindow"] }
+objc2-web-kit = { version = "0.3.2", default-features = false, features = ["std", "objc2-core-foundation", "objc2-app-kit", "WKPreferences", "WKWebView", "WKWebViewConfiguration"] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 # WebKitGTK 页面进程退出后自动重载（web-process-terminated 信号），版本须与 tauri/wry 使用的保持一致

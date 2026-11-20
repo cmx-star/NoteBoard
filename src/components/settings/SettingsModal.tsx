@@ -3,8 +3,8 @@
 // 页名与搜索索引见 settingsSearchIndex.ts；详见 docs/06-主题与设计规范.md 及 docs/07-UI布局与交互规范.md
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Palette, Type, Keyboard, Info, FileText, FileCode, Folder, LayoutTemplate, RefreshCw, ExternalLink, Save, Image as ImageIcon, Cloud, ChevronRight, Monitor, History, UserRound, Users, Globe, RotateCcw, Search, RotateCw } from 'lucide-react';
-import { AUTO_SAVE_DELAY_MAX_MS, AUTO_SAVE_DELAY_MIN_MS, DEFAULT_SETTINGS, clampAutoSaveDelayMs, useSettingsStore } from '../../stores/settingsStore';
+import { X, Palette, Type, Keyboard, Info, Check, FileText, FileCode, Folder, LayoutTemplate, RefreshCw, ExternalLink, Save, Image as ImageIcon, Cloud, ChevronRight, Monitor, History, PanelTop, UserRound, Users, Globe, RotateCcw, Search, RotateCw } from 'lucide-react';
+import { AUTO_SAVE_DELAY_MAX_MS, AUTO_SAVE_DELAY_MIN_MS, DEFAULT_SETTINGS, clampAutoSaveDelayMs, useSettingsStore, useTitleBarButtons } from '../../stores/settingsStore';
 import { ConfirmDialog } from '../../features/sync/SyncControls';
 import { contentWidthToPercent, CONTENT_WIDTH_PERCENT_MAP } from '../../core/theme/applyTheme';
 import { FontSelect } from './FontSelect';
@@ -15,6 +15,7 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { showToast } from '../../stores/toastStore';
 import { FontPackSettingsCard } from './FontPackSettingsCard';
 import { AppearancePage } from './AppearancePage';
+import { ImageStorageSettingsCard } from './ImageStorageSettingsCard';
 import { SettingsRange } from './SettingsRange';
 import { SettingsSelect } from './SettingsSelect';
 import { TabSizeSelect } from './TabSizeSelect';
@@ -1163,7 +1164,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <input
                       type="checkbox"
                       aria-label="Enter 与 Shift + Enter 互换"
-                      checked={settings.editor.swapEnterKeys ?? false}
+                      checked={settings.editor.swapEnterKeys ?? true}
                       onChange={(e) => setEditor({ swapEnterKeys: e.target.checked })}
                     />
                   </div>
@@ -1451,27 +1452,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </div>
                 </div>
 
-                {/* ── 4.4 图片目录设置 ── */}
-                <div data-setting-id="imageDir" style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '18px 20px', background: 'var(--editor-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--editor-border)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600, fontSize: 13, color: 'var(--editor-text)' }}>
-                    <ImageIcon size={15} color="var(--accent-strong)" />
-                    <span>图片目录设置</span>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--editor-text)' }}>图片目录名称</div>
-                    <div style={{ fontSize: 11, color: 'var(--editor-text-muted)', marginBottom: 2 }}>
-                      插入或粘贴本地图片时，自动在当前 Markdown 文档所在目录同一层创建的子文件夹名称（默认 <code>img</code>）
-                    </div>
-                    <input
-                      type="text"
-                      value={settings.file.imageDirName ?? 'img'}
-                      onChange={(e) => setFile({ imageDirName: e.target.value })}
-                      placeholder="img"
-                      style={{ ...inputStyle, width: '100%', maxWidth: 280, padding: '6px 10px' }}
-                    />
-                  </div>
-                </div>
+                {/* ── 4.4 图片目录设置：存放位置（文档同级 / 统一目录）与整理现有图片 ── */}
+                <ImageStorageSettingsCard />
               </div>
             )}
 
@@ -1693,12 +1675,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <span style={{ fontSize: 11, color: 'var(--editor-text-muted)' }}>可在 编辑器 中互换 Enter 与 Shift + Enter</span>
                   </div>
                   <ShortcutItem
-                    keyCombo={settings.editor.swapEnterKeys ? 'Shift + Enter' : 'Enter'}
+                    keyCombo={(settings.editor.swapEnterKeys ?? true) ? 'Shift + Enter' : 'Enter'}
                     label="换段落"
                     tip="新建段落或列表新项，源码中以空行分隔；在空行上再按一次，跳出列表、引用、提示块、高亮块、折叠块"
                   />
                   <ShortcutItem
-                    keyCombo={settings.editor.swapEnterKeys ? 'Enter' : 'Shift + Enter'}
+                    keyCombo={(settings.editor.swapEnterKeys ?? true) ? 'Enter' : 'Shift + Enter'}
                     label="段内换行"
                     tip="不新建段落、没有段落间距，源码中为行尾两个空格；标题中与空行上等同换段落"
                   />

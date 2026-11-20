@@ -7,6 +7,7 @@ import type { Tab } from '../../stores/windowStore';
 import { UnsupportedView } from '../UnsupportedView';
 // 🔴 S05：全部编辑器按类型懒加载（EditorHost + editorLoaders），壳不再静态导入任何编辑器
 import { EditorHost } from '../../features/editor-host/EditorHost';
+import { StructuredPreviewPanel } from '../../features/structured-view/StructuredPreviewPanel';
 // 用户已确认：已打开内核保留至关闭，切换不进入回收调度。
 import { EditorActivityContext } from '../../core/editor/EditorActivityContext';
 
@@ -108,6 +109,7 @@ export function EditorStack({
           </div>
         );
       })}
+      <StructuredPreviewPanel />
     </div>
   );
 }

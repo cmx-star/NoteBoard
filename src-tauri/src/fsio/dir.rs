@@ -96,10 +96,10 @@ fn natural_compare(a: &str, b: &str) -> std::cmp::Ordering {
 
         // 如果两边都是数字，提取数字段比较
         if ac.is_ascii_digit() && bc.is_ascii_digit() {
-            let (a_num, a_end) = extract_number(a_bytes, i);
-            let (b_num, b_end) = extract_number(b_bytes, j);
+            let a_end = digit_run_end(a_bytes, i);
+            let b_end = digit_run_end(b_bytes, j);
 
-            match a_num.cmp(&b_num) {
+            match compare_digit_runs(a_bytes, i, a_end, b_bytes, j, b_end) {
                 std::cmp::Ordering::Equal => {
                     i = a_end;
                     j = b_end;
@@ -122,15 +122,40 @@ fn natural_compare(a: &str, b: &str) -> std::cmp::Ordering {
     (a_bytes.len() - i).cmp(&(b_bytes.len() - j))
 }
 
-/// 从字节数组的指定位置提取数字
-fn extract_number(bytes: &[u8], start: usize) -> (u64, usize) {
-    let mut num: u64 = 0;
-    let mut i = start;
-    while i < bytes.len() && (bytes[i] as char).is_ascii_digit() {
-        num = num * 10 + (bytes[i] - b'0') as u64;
-        i += 1;
+/// 返回从 `start` 开始的连续数字段的结束位置（不含）
+fn digit_run_end(bytes: &[u8], start: usize) -> usize {
+    let mut end = start;
+    while end < bytes.len() && bytes[end].is_ascii_digit() {
+        end += 1;
     }
-    (num, i)
+    end
+}
+
+/// 比较两个数字段的数值，不解析成整数，避免超长数字段溢出
+/// 数值大小等价于「去掉前导零后的长度」再按字典序比较
+fn compare_digit_runs(
+    a: &[u8],
+    a_start: usize,
+    a_end: usize,
+    b: &[u8],
+    b_start: usize,
+    b_end: usize,
+) -> std::cmp::Ordering {
+    fn significant(digits: &[u8]) -> &[u8] {
+        let first = digits.iter().position(|d| *d != b'0');
+        match first {
+            Some(pos) => &digits[pos..],
+            // 全零按单个 0 处理，"0" 与 "000" 数值相等
+            None => &digits[digits.len()..],
+        }
+    }
+
+    let a_digits = significant(&a[a_start..a_end]);
+    let b_digits = significant(&b[b_start..b_end]);
+    a_digits
+        .len()
+        .cmp(&b_digits.len())
+        .then_with(|| a_digits.cmp(b_digits))
 }
 
 /// Windows 隐藏属性检测
@@ -159,5 +184,47 @@ mod tests {
         assert_eq!(natural_compare("file10.md", "file2.md"), std::cmp::Ordering::Greater);
         assert_eq!(natural_compare("a.md", "b.md"), std::cmp::Ordering::Less);
         assert_eq!(natural_compare("A.md", "a.md"), std::cmp::Ordering::Equal);
+    }
+
+    #[test]
+    fn test_natural_compare_long_digit_run_does_not_overflow() {
+        // 下载文件名里可能出现远超 u64 的连续数字段
+        let a = "报告-123456789012345678901234567890.md";
+        let b = "报告-123456789012345678901234567891.md";
+        assert_eq!(natural_compare(a, b), std::cmp::Ordering::Less);
+        assert_eq!(natural_compare(b, a), std::cmp::Ordering::Greater);
+        assert_eq!(natural_compare(a, a), std::cmp::Ordering::Equal);
+    }
+
+    #[test]
+    fn test_natural_compare_digit_run_value_semantics() {
+        // 长度不同时按有效位数比较，而不是首个不同字符
+        assert_eq!(
+            natural_compare("x999999999999999999999999999999.md", "x1000000000000000000000000000000.md"),
+            std::cmp::Ordering::Less
+        );
+        // 前导零不影响数值
+        assert_eq!(natural_compare("file007.md", "file7.md"), std::cmp::Ordering::Equal);
+        assert_eq!(natural_compare("file0.md", "file000.md"), std::cmp::Ordering::Equal);
+    }
+
+    #[test]
+    fn test_read_directory_with_long_digit_file_name() {
+        // 下载的 Markdown 文件名可能带超长数字段，读取目录不得 panic
+        let dir = tempfile::tempdir().unwrap();
+        fs::write(dir.path().join("报告-123456789012345678901234567890.md"), "# a").unwrap();
+        fs::write(dir.path().join("报告-123456789012345678901234567891.md"), "# b").unwrap();
+        fs::write(dir.path().join("报告-2.md"), "# c").unwrap();
+
+        let nodes = read_directory(dir.path(), false).unwrap();
+        let names: Vec<&str> = nodes.iter().map(|n| n.name.as_str()).collect();
+        assert_eq!(
+            names,
+            vec![
+                "报告-2.md",
+                "报告-123456789012345678901234567890.md",
+                "报告-123456789012345678901234567891.md",
+            ]
+        );
     }
 }

@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { IS_MOBILE_UI, IS_WEB, USES_MAC_TRAFFIC_LIGHTS } from '../../core/platform';
+import { registerShortcut } from '../../core/shortcuts';
 import { useLayoutStore } from '../../stores/layoutStore';
 import { useWindowStore, type Tab } from '../../stores/windowStore';
 import { showToast } from '../../stores/toastStore';
@@ -133,16 +134,20 @@ function isTypingTarget(event: KeyboardEvent): boolean {
 }
 
 /** 阅读期间按 Esc 退出：让弹窗与输入框优先处理自己的 Esc */
+export function shouldExitReadingOnEscape(event: KeyboardEvent): boolean {
+  if (event.key !== 'Escape' || event.defaultPrevented || isTypingTarget(event)) return false;
+  return !document.querySelector('[role="dialog"], [aria-modal="true"]');
+}
+
 export function useReadingEscape(enabled: boolean, onExit: () => void = () => requestReadingMode(false)): void {
   useEffect(() => {
     if (!enabled) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || event.defaultPrevented || isTypingTarget(event)) return;
-      if (document.querySelector('[role="dialog"], [aria-modal="true"]')) return;
-      event.preventDefault();
-      onExit();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return registerShortcut({
+      key: 'Escape',
+      scope: 'global',
+      description: '退出沉浸阅读',
+      when: shouldExitReadingOnEscape,
+      action: onExit,
+    });
   }, [enabled, onExit]);
 }

@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Undo2,
   Redo2,
-  Braces,
   CodeXml,
   CaseSensitive,
   WrapText,
@@ -16,11 +15,9 @@ import {
   Search,
   Replace,
   Sparkles,
-  CheckCircle2,
-  Minimize2,
-  Maximize2,
   Ellipsis,
   Languages,
+  ListTree,
 } from 'lucide-react';
 import {
   ToolbarButton,
@@ -43,6 +40,8 @@ import { useSettingsStore } from '../../stores/settingsStore';
 import { useSearchStore } from '../../stores/searchStore';
 import type { LanguageId } from '../../core/ipc/types';
 import { runCjkFormatWithToast } from '../cjkFormat/applyCjkFormat';
+import { useViewStore } from '../../stores/viewStore';
+import { JsonToolsMenu } from './JsonToolsMenu';
 
 // Mac 键盘没有 Insert 键，只提示拖动和工具栏入口
 const COLUMN_EDIT_SHORTCUT = USES_COMMAND_KEY ? undefined : 'Alt+Shift+Insert';
@@ -76,6 +75,9 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
   const { settings, setEditor } = useSettingsStore();
   const editorSettings = settings.editor;
   const { openSearch } = useSearchStore();
+  const structuredViewOpen = useViewStore((s) => s.structuredViewOpen);
+  const structuredViewDocKey = useViewStore((s) => s.structuredViewDocKey);
+  const toggleStructuredView = useViewStore((s) => s.toggleStructuredView);
 
   // ── 代码操作能力（按 docKey 从注册表查询，避免多标签串线） ──
   const getCodeOps = () => getEditorCapabilities(docKey)?.codeOps;
@@ -141,80 +143,17 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
       <ToolbarDivider />
 
       {/* ── JSON 工具组（二级菜单）；极窄模式仅在 JSON 文件中显示，快捷键始终可用 ── */}
-      {(!compact || isJson) && <ToolbarDropdown
-        isOpen={jsonDropdownOpen}
-        onOpenChange={setJsonDropdownOpen}
-        trigger={
-          <ToolbarButton
-            icon={<Braces size={15} />}
-            label={compact ? undefined : 'JSON 工具'}
-            hasDropdown
-            title="JSON 展开格式化、单行压缩与格式校验"
-            active={isJson}
-          />
-        }
-      >
-        {/* 展开 / 格式化二级菜单 */}
-        <ToolbarDropdownItem
-          icon={<Maximize2 size={14} color="var(--nb-blue-500)" />}
-          label="JSON 展开 / 格式化"
-          submenu={
-            <>
-              <ToolbarDropdownItem
-                label="格式化全文 (2 空格缩进)"
-                shortcut="Shift+Alt+F"
-                onClick={() => onExpandJson('all', 2)}
-              />
-              <ToolbarDropdownItem
-                label="格式化全文 (4 空格缩进)"
-                onClick={() => onExpandJson('all', 4)}
-              />
-              <ToolbarDropdownItem
-                label="格式化选中文本"
-                onClick={() => onExpandJson('selection')}
-              />
-            </>
-          }
+      {(!compact || isJson) && (
+        <JsonToolsMenu
+          compact={compact}
+          isJson={isJson}
+          open={jsonDropdownOpen}
+          onOpenChange={setJsonDropdownOpen}
+          onExpand={onExpandJson}
+          onMinify={onMinifyJson}
+          onValidate={onValidateJson}
         />
-
-        {/* 压缩二级菜单 */}
-        <ToolbarDropdownItem
-          icon={<Minimize2 size={14} color="var(--nb-purple-500)" />}
-          label="JSON 压缩 (Minify)"
-          submenu={
-            <>
-              <ToolbarDropdownItem
-                label="压缩全文为单行"
-                shortcut="Shift+Alt+M"
-                onClick={() => onMinifyJson('all')}
-              />
-              <ToolbarDropdownItem
-                label="压缩选中文本"
-                onClick={() => onMinifyJson('selection')}
-              />
-            </>
-          }
-        />
-
-        {/* 校验二级菜单 */}
-        <ToolbarDropdownItem
-          icon={<CheckCircle2 size={14} color="var(--nb-emerald-500)" />}
-          label="JSON 格式校验"
-          submenu={
-            <>
-              <ToolbarDropdownItem
-                label="校验全文语法"
-                shortcut="Shift+Alt+V"
-                onClick={() => onValidateJson('all')}
-              />
-              <ToolbarDropdownItem
-                label="校验选中文本"
-                onClick={() => onValidateJson('selection')}
-              />
-            </>
-          }
-        />
-      </ToolbarDropdown>}
+      )}
 
       {/* ── 文本与代码增强工具组（二级菜单） ── */}
       <ToolbarDropdown
@@ -280,6 +219,17 @@ export function CodeToolbar({ docKey, language, compact = false, moreItems }: Co
           }}
         />
       </ToolbarDropdown>
+
+      {/* ── JSON 结构化视图（只读树 + package.json 摘要） ── */}
+      {isJson && (
+        <ToolbarButton
+          icon={<ListTree size={15} />}
+          label={compact ? undefined : '结构'}
+          title="结构化视图（只读 JSON 树）"
+          active={structuredViewOpen && structuredViewDocKey === docKey}
+          onClick={toggleStructuredView}
+        />
+      )}
 
       <ToolbarDivider />
 

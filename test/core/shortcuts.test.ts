@@ -1,7 +1,7 @@
 // NoteBoard 快捷键与浏览器拦截测试
 
-import { describe, test, expect } from 'vitest';
-import { shouldPreventBrowserDefault } from '@/core/shortcuts';
+import { afterEach, describe, test, expect, vi } from 'vitest';
+import { initShortcuts, registerShortcut, shouldPreventBrowserDefault } from '@/core/shortcuts';
 
 describe('shortcuts 浏览器默认快捷键拦截', () => {
   // 辅助构造 KeyboardEvent
@@ -80,5 +80,89 @@ describe('shortcuts 浏览器默认快捷键拦截', () => {
     expect(shouldPreventBrowserDefault(makeKey('a', { ctrlKey: true }))).toBe(false);
     expect(shouldPreventBrowserDefault(makeKey('z', { ctrlKey: true }))).toBe(false);
     expect(shouldPreventBrowserDefault(makeKey('y', { ctrlKey: true }))).toBe(false);
+  });
+});
+
+describe('registerShortcut 条件分发', () => {
+  const cleanups: Array<() => void> = [];
+
+  afterEach(() => {
+    while (cleanups.length > 0) cleanups.pop()?.();
+  });
+
+  const setup = () => {
+    cleanups.push(initShortcuts());
+  };
+
+  test('when 返回 false 时跳过，返回 true 时执行', () => {
+    setup();
+    const calls: string[] = [];
+    let allowed = false;
+    cleanups.push(registerShortcut({
+      key: 'F9',
+      scope: 'global',
+      description: '条件测试',
+      action: () => calls.push('hit'),
+      when: () => allowed,
+    }));
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'F9' }));
+    expect(calls).toEqual([]);
+
+    allowed = true;
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'F9' }));
+    expect(calls).toEqual(['hit']);
+  });
+
+  test('when 抛错时只跳过该快捷键，不影响其它注册项', () => {
+    setup();
+    const calls: string[] = [];
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    cleanups.push(() => consoleError.mockRestore());
+    cleanups.push(registerShortcut({
+      key: 'F9',
+      scope: 'global',
+      description: '异常条件',
+      action: () => calls.push('broken'),
+      when: () => {
+        throw new Error('boom');
+      },
+    }));
+    cleanups.push(registerShortcut({
+      key: 'F10',
+      scope: 'global',
+      description: '正常快捷键',
+      action: () => calls.push('normal'),
+    }));
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'F9' }));
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'F10' }));
+    expect(calls).toEqual(['normal']);
+    expect(consoleError).toHaveBeenCalled();
+  });
+
+  test('默认阻止默认行为，preventDefault: false 时保留', () => {
+    setup();
+    cleanups.push(registerShortcut({
+      key: 'F9',
+      scope: 'global',
+      description: '阻止默认',
+      action: () => {},
+    }));
+    cleanups.push(registerShortcut({
+      key: 'F10',
+      scope: 'global',
+      description: '保留默认',
+      action: () => {},
+      preventDefault: false,
+    }));
+
+    const prevented = new KeyboardEvent('keydown', { key: 'F9', cancelable: true });
+    window.dispatchEvent(prevented);
+    expect(prevented.defaultPrevented).toBe(true);
+
+    const kept = new KeyboardEvent('keydown', { key: 'F10', cancelable: true });
+    window.dispatchEvent(kept);
+    expect(kept.defaultPrevented).toBe(false);
   });
 });

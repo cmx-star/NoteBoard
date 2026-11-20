@@ -3,6 +3,8 @@
 // 详见 docs/07-UI布局与交互规范.md §9
 
 import { USES_COMMAND_KEY } from './platform';
+import { platformFromCommandKey } from './keybinding/canonicalChord';
+import { findConflicts } from './keybinding/conflicts';
 
 type ShortcutScope = 'global' | 'editor' | 'explorer' | 'outline';
 
@@ -15,12 +17,35 @@ interface ShortcutEntry {
   description: string;
   /** 是否阻止默认行为 */
   preventDefault?: boolean;
+  /** 额外分发条件（如输入框、弹窗内不触发）；返回 false 时跳过该快捷键 */
+  when?: (event: KeyboardEvent) => boolean;
 }
 
 const registry: ShortcutEntry[] = [];
 let activeScope: ShortcutScope = 'global';
 // 录制快捷键期间暂停应用内快捷键，避免录制 Ctrl+S 等组合时误触发保存
 let suspended = false;
+
+const PLATFORM = platformFromCommandKey(USES_COMMAND_KEY);
+const isDev =
+  typeof import.meta !== 'undefined' &&
+  Boolean((import.meta as { env?: { DEV?: boolean } }).env?.DEV);
+/** 同一冲突只提示一次，避免组件重挂载刷屏 */
+const reportedConflicts = new Set<string>();
+
+/** 开发态冲突提示：只报告，不改变现有分发行为 */
+function warnOnConflict(entry: ShortcutEntry): void {
+  if (!isDev) return;
+  const conflict = findConflicts(registry, PLATFORM).find((item) => item.bindings.includes(entry));
+  if (!conflict) return;
+  const id = `${conflict.scope}:${conflict.id}`;
+  if (reportedConflicts.has(id)) return;
+  reportedConflicts.add(id);
+  console.warn(
+    `[shortcuts] 快捷键冲突：${conflict.id}（作用域 ${conflict.scope}）`,
+    conflict.bindings.map((binding) => binding.key),
+  );
+}
 
 /** 暂停 / 恢复应用内快捷键分发（浏览器默认行为仍照常屏蔽） */
 export function setShortcutsSuspended(value: boolean): void {
@@ -35,6 +60,7 @@ export function setShortcutScope(scope: ShortcutScope): void {
 /** 注册快捷键 */
 export function registerShortcut(entry: ShortcutEntry): () => void {
   registry.push(entry);
+  warnOnConflict(entry);
   return () => {
     const idx = registry.indexOf(entry);
     if (idx >= 0) registry.splice(idx, 1);
@@ -60,6 +86,17 @@ function eventToKey(e: KeyboardEvent): string {
     parts.push(e.key.length === 1 ? e.key.toUpperCase() : e.key);
   }
   return parts.join('+');
+}
+
+/** 条件判断失败按「不匹配」处理，避免单个快捷键的异常中断整张注册表 */
+function matchesWhen(entry: ShortcutEntry, event: KeyboardEvent): boolean {
+  if (!entry.when) return true;
+  try {
+    return entry.when(event);
+  } catch (error) {
+    console.error('[shortcuts] when 条件判断失败，已跳过：', entry.key, error);
+    return false;
+  }
 }
 
 /**
@@ -157,7 +194,10 @@ export function initShortcuts(): () => void {
     const key = eventToKey(e);
     // 按作用域优先级查找：当前作用域 > global
     const entries = registry.filter(
-      (entry) => entry.key === key && (entry.scope === activeScope || entry.scope === 'global'),
+      (entry) =>
+        entry.key === key &&
+        (entry.scope === activeScope || entry.scope === 'global') &&
+        matchesWhen(entry, e),
     );
     // 作用域优先：editor/explorer/outline > global
     const scoped = entries.find((entry) => entry.scope === activeScope);
